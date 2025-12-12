@@ -1,0 +1,1585 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PHÖNIX Prototyp</title>
+
+  <!-- Bootstrap & Styles -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bs-stepper/dist/css/bs-stepper.min.css" rel="stylesheet" />
+  <link href="css/custom.css" rel="stylesheet" />
+</head>
+<body class="bg-light p-4 p-lg-5">
+
+  
+<div class="card border-0 shadow-sm mb-3">
+  <div class="card-body py-3 px-4">
+
+    <!-- Kopfzeile -->
+    <div class="d-flex flex-wrap align-items-start justify-content-between gap-3">
+
+      <!-- Linker Bereich -->
+      <div class="d-flex align-items-center gap-3 flex-grow-1">
+
+
+        <div>
+
+          <!-- Titel + Info -->
+          <div class="d-flex align-items-center gap-2">
+            <h2 class="fw-normal mb-0">Max Mustermann – Maßnahmebezogene Daten</h2>
+
+            <!-- Info Toggle -->
+            <button
+              class="btn btn-sm p-0 text-muted"
+              data-bs-toggle="collapse"
+              data-bs-target="#hilfeMassnahme"
+              aria-expanded="false"
+              aria-controls="hilfeMassnahme"
+            >
+              <i class="bi bi-info-circle"></i>
+            </button>
+          </div>
+
+          <!-- Meta -->
+          <div class="d-flex flex-wrap gap-4 mt-1 small text-muted">
+            <div>
+              <span class="text-secondary">TN-ID:</span>
+              <span class="fw-semibold text-dark ms-1">12345</span>
+            </div>
+            <div>
+              <span class="text-secondary">Kennung:</span>
+              <span class="fw-semibold text-dark ms-1">555XV5974</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+
+
+    </div>
+
+    <!-- Hilfetext -->
+    <div class="collapse mt-3" id="hilfeMassnahme">
+      <div class="bg-body-tertiary rounded p-3 text-muted small">
+        In dieser Ansicht bearbeiten und verwalten Sie ausschließlich
+        <strong>maßnahmebezogene Informationen</strong> von
+        <strong>Max Mustermann</strong>.
+        <br><br>
+        Allgemeine Stammdaten (z.&nbsp;B. Adresse, Kontaktdaten,
+        persönliche Angaben) können nur über den Bereich
+        <strong>„Teilnehmer“</strong> angepasst werden.
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+  <!-- Teilnehmer – Maßnahme-spezifische Ansicht -->
+  <div class="">
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+
+          <!-- Linke Seitenleiste (Profil + Maßnahme-Info) -->
+          <div class="col-lg-3 border-end mb-4 mb-lg-0">
+
+            <!-- ID / Kennung / Status -->
+            <div class="d-flex justify-content-between align-items-start mb-2 small text-muted">
+              <div>
+                <div>TN-ID: <strong>12345</strong></div>
+                <div>Kennung: <strong>555XV5974</strong></div>
+              </div>
+              <span class="badge rounded-pill bg-success">aktiv</span>
+            </div>
+
+            <!-- Avatar + Name -->
+<div class="text-center mt-2 mb-3">
+  <div
+    class="avatar-initials bg-secondary text-white mx-auto mb-2 d-flex align-items-center justify-content-center rounded-circle border border-4 border-success"
+    style="
+      width: 90px;
+      height: 90px;
+      font-size: 36px;
+      box-shadow:
+        0 0 0 3px rgba(25,135,84,.35),
+        0 0 14px rgba(25,135,84,.55);
+    "
+  >
+    MM
+  </div>
+
+  <h4 class="mb-0">Max Mustermann</h4>
+</div>
+
+
+            <!-- Maßnahme-Block -->
+            <div class="bg-body-secondary rounded-3 p-3 mb-3">
+              <div class="text-center mb-3">
+                <div class="text-muted small mb-1">Zugewiesene Maßnahme</div>
+                <div class="h5 mb-1 text-primary fw-bold">Integra 2025</div>
+                <div class="small text-muted">01.01.2024 – 31.12.2024</div>
+              </div>
+
+              <div class="row text-center small g-2">
+                <div class="col-4">
+                  <div class="text-muted">Betreuer</div>
+                  <div class="fw-semibold">D. Chu</div>
+                </div>
+                <div class="col-4">
+                  <div class="text-muted">Bereich</div>
+                  <div class="fw-semibold">Maler</div>
+                </div>
+                <div class="col-4">
+                  <div class="text-muted">JC</div>
+                  <div class="fw-semibold">F. Beispiel</div>
+                </div>
+              </div>
+            </div>
+
+<div>
+  <div class="list-group small" id="sektionenNav" role="tablist">
+
+    <!-- Grunddaten bearbeiten – ganz oben -->
+    <a
+      href="TN-Profil_grunddaten.html"
+      class="list-group-item list-group-item-action d-flex align-items-center gap-2 text-success fw-semibold"
+    >
+      <i class="bi bi-pencil-square"></i>
+      Grunddaten bearbeiten
+    </a>
+
+    <!-- Dokumentation -->
+    <button
+      class="list-group-item list-group-item-action active"
+      id="sektionDok-tab"
+      data-bs-toggle="tab"
+      data-bs-target="#sektionDok"
+      type="button"
+      role="tab"
+      aria-controls="sektionDok"
+      aria-selected="true"
+    >
+      <i class="bi bi-file-text me-1"></i> Dokumentation
+    </button>
+
+    <!-- Verlauf & Bewertung -->
+    <button
+      class="list-group-item list-group-item-action"
+      id="sektionVerlauf-tab"
+      data-bs-toggle="tab"
+      data-bs-target="#sektionVerlauf"
+      type="button"
+      role="tab"
+      aria-controls="sektionVerlauf"
+      aria-selected="false"
+    >
+      <i class="bi bi-graph-up me-1"></i> Verlauf &amp; Bewertung
+    </button>
+
+    <!-- Organisation -->
+    <button
+      class="list-group-item list-group-item-action"
+      id="sektionOrga-tab"
+      data-bs-toggle="tab"
+      data-bs-target="#sektionOrga"
+      type="button"
+      role="tab"
+      aria-controls="sektionOrga"
+      aria-selected="false"
+    >
+      <i class="bi bi-briefcase me-1"></i> Organisation
+    </button>
+
+    <!-- Teilnahme beenden – unverändert -->
+    <button
+      class="list-group-item list-group-item-action text-danger"
+      id="sektionEnde-tab"
+      data-bs-toggle="tab"
+      data-bs-target="#sektionEnde"
+      type="button"
+      role="tab"
+      aria-controls="sektionEnde"
+      aria-selected="false"
+    >
+      <i class="bi bi-door-closed me-1"></i> Teilnahme beenden
+    </button>
+
+  </div>
+</div>
+
+
+            
+          </div>
+
+          <!-- Rechte Seite: Sektionen-Navigation + Inhalt -->
+          <div class="col-lg-9">
+            <div class="row">
+              <!-- Sektionen-Navigation (rechte "Mini-Sidebar") -->
+
+
+              <!-- Sektionen-Inhalt -->
+              <div class="">
+                <div class="tab-content">
+
+                  <!-- SEKTION: DOKUMENTATION -->
+                  <div class="tab-pane fade show active"
+                       id="sektionDok"
+                       role="tabpanel"
+                       aria-labelledby="sektionDok-tab">
+
+                    <!-- Innere Tabs für Dokumentation -->
+                    <ul class="nav nav-pills mb-3" id="dokTabs" role="tablist">
+                      <li class="nav-item" role="presentation">
+                        <button class="nav-link active"
+                                id="dokInterventionen-tab"
+                                data-bs-toggle="tab"
+                                data-bs-target="#dokInterventionen"
+                                type="button"
+                                role="tab"
+                                aria-controls="dokInterventionen"
+                                aria-selected="true">
+                          Interventionen
+                        </button>
+                      </li>
+                      <li class="nav-item" role="presentation">
+                        <button class="nav-link"
+                                id="dokBriefe-tab"
+                                data-bs-toggle="tab"
+                                data-bs-target="#dokBriefe"
+                                type="button"
+                                role="tab"
+                                aria-controls="dokBriefe"
+                                aria-selected="false">
+                          Briefe
+                        </button>
+                      </li>
+                      <li class="nav-item" role="presentation">
+                        <button class="nav-link"
+                                id="dokAktennotizen-tab"
+                                data-bs-toggle="tab"
+                                data-bs-target="#dokAktennotizen"
+                                type="button"
+                                role="tab"
+                                aria-controls="dokAktennotizen"
+                                aria-selected="false">
+                          Aktennotizen
+                        </button>
+                      </li>
+                      <li class="nav-item" role="presentation">
+                        <button class="nav-link"
+                                id="dokNotizen-tab"
+                                data-bs-toggle="tab"
+                                data-bs-target="#dokNotizen"
+                                type="button"
+                                role="tab"
+                                aria-controls="dokNotizen"
+                                aria-selected="false">
+                          Notizen
+                        </button>
+                      </li>
+                    </ul>
+
+                    <div class="tab-content">
+                      <!-- DOK: INTERVENTIONEN (dein voller UI-Block) -->
+                      <div class="tab-pane fade show active"
+                           id="dokInterventionen"
+                           role="tabpanel"
+                           aria-labelledby="dokInterventionen-tab">
+
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                              <div>
+                                <h5 class="mb-0">Interventionen</h5>
+                                <small class="text-muted">Übersicht aller Maßnahmen zum Teilnehmer</small>
+                              </div>
+
+                              <!-- Rechte Button-Gruppe -->
+                              <div class="d-flex gap-2">
+<button class="btn btn-outline-primary btn-sm"
+        data-bs-toggle="modal"
+        data-bs-target="#interventionModal">
+  <i class="bi bi-plus-lg me-1"></i> Neue Intervention
+</button>
+
+                                <button class="btn btn-outline-primary btn-sm">
+                                  <i class="bi bi-plus-lg me-1"></i> export
+                                </button>
+                              </div>
+                            </div>
+
+
+                        <!-- kleine Stat-Kacheln -->
+                        <div class="row g-3 mb-3">
+                          <div class="col-6 col-lg-3">
+                            <div class="border rounded-3 p-3 h-100">
+                              <div class="d-flex justify-content-between align-items-center">
+                                <span class="text-muted small">Gesamt</span>
+                                <i class="bi bi-collection"></i>
+                              </div>
+                              <div class="fs-4 fw-semibold" id="interventionCountTotal">3</div>
+                            </div>
+                          </div>
+                          <div class="col-6 col-lg-3">
+                            <div class="border rounded-3 p-3 h-100">
+                              <div class="d-flex justify-content-between align-items-center">
+                                <span class="text-muted small">Offen</span>
+                                <i class="bi bi-exclamation-circle"></i>
+                              </div>
+                              <div class="fs-4 fw-semibold" id="interventionCountOpen">2</div>
+                            </div>
+                          </div>
+                          <div class="col-6 col-lg-3">
+                            <div class="border rounded-3 p-3 h-100">
+                              <div class="d-flex justify-content-between align-items-center">
+                                <span class="text-muted small">Mit Meldefrist</span>
+                                <i class="bi bi-hourglass-split"></i>
+                              </div>
+                              <div class="fs-4 fw-semibold" id="interventionCountDeadline">1</div>
+                            </div>
+                          </div>
+                          <div class="col-6 col-lg-3">
+                            <div class="border rounded-3 p-3 h-100">
+                              <div class="d-flex justify-content-between align-items-center">
+                                <span class="text-muted small">Hausbesuche</span>
+                                <i class="bi bi-house-door"></i>
+                              </div>
+                              <div class="fs-4 fw-semibold" id="interventionCountVisits">0</div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- Übersichtstabelle -->
+                        <div class="table-responsive">
+                          <table class="table table-sm align-middle mb-0">
+                            <thead class="table-light">
+                              <tr>
+                                <th style="width: 12%">Datum</th>
+                                <th style="width: 16%">Art</th>
+                                <th style="width: 26%">Details</th>
+                                <th style="width: 16%">Meldefrist</th>
+                                <th style="width: 14%">Status</th>
+                                <th style="width: 16%" class="text-end">Aktionen</th>
+                              </tr>
+                            </thead>
+                            <tbody id="interventionTableBody">
+                              <!-- Beispiel-Daten -->
+                              <tr>
+                                <td>10.12.2025</td>
+                                <td><span class="badge bg-light text-dark">Anschreiben</span></td>
+                                <td>Einladung zum Meldetermin</td>
+                                <td>17.12.2025</td>
+                                <td><span class="badge bg-warning-subtle text-warning-emphasis">Offen</span></td>
+                                <td class="text-end">
+                                  <button class="btn btn-outline-secondary btn-sm">
+                                    <i class="bi bi-eye"></i>
+                                  </button>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>05.12.2025</td>
+                                <td><span class="badge bg-light text-dark">Hausbesuch</span></td>
+                                <td>Mitarbeiter: Meier / Schulz – angetroffen</td>
+                                <td>–</td>
+                                <td><span class="badge bg-success-subtle text-success-emphasis">Erledigt</span></td>
+                                <td class="text-end">
+                                  <button class="btn btn-outline-secondary btn-sm">
+                                    <i class="bi bi-eye"></i>
+                                  </button>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>02.12.2025</td>
+                                <td><span class="badge bg-light text-dark">1. Ermahnung</span></td>
+                                <td>Klärungsbedarf: ja</td>
+                                <td>09.12.2025</td>
+                                <td><span class="badge bg-warning-subtle text-warning-emphasis">Offen</span></td>
+                                <td class="text-end">
+                                  <button class="btn btn-outline-secondary btn-sm">
+                                    <i class="bi bi-eye"></i>
+                                  </button>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+
+                      <!-- DOK: BRIEFE -->
+                      <div class="tab-pane fade"
+                           id="dokBriefe"
+                           role="tabpanel"
+                           aria-labelledby="dokBriefe-tab">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                          <div>
+                            <h5 class="mb-0">Briefe</h5>
+                            <small class="text-muted">Erzeugte Schreiben & Vorlagen</small>
+                          </div>
+                          <button class="btn btn-outline-primary btn-sm">
+                            <i class="bi bi-plus-lg me-1"></i> Neuen Brief erzeugen
+                          </button>
+                        </div>
+
+                        <div class="table-responsive">
+                          <table class="table table-sm align-middle mb-0">
+                            <thead class="table-light">
+                              <tr>
+                                <th>Datum</th>
+                                <th>Vorlage</th>
+                                <th>Status</th>
+                                <th class="text-end">Aktionen</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td>01.12.2025</td>
+                                <td>Einladung Erstgespräch</td>
+                                <td><span class="badge bg-success-subtle text-success-emphasis">gedruckt</span></td>
+                                <td class="text-end">
+                                  <button class="btn btn-outline-secondary btn-sm"><i class="bi bi-eye"></i></button>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>15.11.2025</td>
+                                <td>Erinnerung Meldetermin</td>
+                                <td><span class="badge bg-secondary-subtle text-secondary-emphasis">Entwurf</span></td>
+                                <td class="text-end">
+                                  <button class="btn btn-outline-secondary btn-sm"><i class="bi bi-pencil"></i></button>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+
+ <!-- DOK: AKTENNOTIZEN -->
+<div class="tab-pane fade"
+     id="dokAktennotizen"
+     role="tabpanel"
+     aria-labelledby="dokAktennotizen-tab">
+
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+      <h5 class="mb-0">Aktennotizen</h5>
+      <small class="text-muted">Formale Notizen zum Vorgang</small>
+    </div>
+
+    <!-- Rechte Button-Gruppe -->
+    <div class="d-flex gap-2">
+      <button class="btn btn-outline-primary btn-sm"
+              type="button"
+              data-bs-toggle="modal"
+              data-bs-target="#modalAktennotiz">
+        <i class="bi bi-plus-lg me-1"></i> Neue Aktennotiz
+      </button>
+
+      <button class="btn btn-outline-primary btn-sm" type="button" id="btnAktenExport">
+        <i class="bi bi-journal-text me-1"></i> Export
+      </button>
+    </div>
+  </div>
+
+  <!-- Liste -->
+  <div class="list-group small" id="aktennotizenList"></div>
+
+  <!-- Modal: Neue / Bearbeiten Aktennotiz -->
+  <div class="modal fade" id="modalAktennotiz" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h5 class="modal-title" id="aktenModalTitle">
+            <i class="bi bi-journal-plus me-2"></i> Aktennotiz
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Schließen"></button>
+        </div>
+
+        <form id="aktennotizForm">
+          <div class="modal-body">
+            <input type="hidden" id="aktenEditIndex" value="">
+
+            <div class="row g-3">
+              <div class="col-md-7">
+                <div class="form-floating">
+                  <input type="text" class="form-control" id="aktenTitel" placeholder="Titel" required>
+                  <label for="aktenTitel">Titel</label>
+                </div>
+              </div>
+
+              <div class="col-md-5">
+                <div class="form-floating">
+                  <input type="date" class="form-control" id="aktenDatum" placeholder="Datum" required>
+                  <label for="aktenDatum">Datum</label>
+                </div>
+              </div>
+
+              <div class="col-12">
+                <div class="form-floating">
+                  <textarea class="form-control" id="aktenText" placeholder="Inhalt" style="height: 140px" required></textarea>
+                  <label for="aktenText">Inhalt</label>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-floating">
+                  <input type="text" class="form-control" id="aktenAutor" placeholder="Angelegt von" value="D. Chu">
+                  <label for="aktenAutor">Angelegt von</label>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-floating">
+                  <select class="form-select" id="aktenTyp" aria-label="Typ">
+                    <option value="Aktennotiz" selected>Aktennotiz</option>
+                    <option value="Telefonat">Telefonat</option>
+                    <option value="Gespräch">Gespräch</option>
+                    <option value="E-Mail">E-Mail</option>
+                  </select>
+                  <label for="aktenTyp">Typ</label>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="modal-footer d-flex justify-content-between">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+              Abbrechen
+            </button>
+
+            <div class="d-flex gap-2">
+              <button type="button" class="btn btn-outline-danger d-none" id="btnAktenDelete">
+                <i class="bi bi-trash me-1"></i> Löschen
+              </button>
+              <button type="submit" class="btn btn-primary">
+                <i class="bi bi-save me-1"></i> Speichern
+              </button>
+            </div>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+                      <!-- DOK: NOTIZEN -->
+                      <div class="tab-pane fade"
+                           id="dokNotizen"
+                           role="tabpanel"
+                           aria-labelledby="dokNotizen-tab">
+                        <h5>Freie Notizen</h5>
+                        <p class="text-muted small">
+                          Hier können schnelle, informelle Notizen zur Person erfasst werden.
+                        </p>
+
+                        <div class="mb-3">
+                          <label class="form-label">Neue Notiz</label>
+                          <textarea class="form-control" rows="3" placeholder="Kurznotiz eingeben …"></textarea>
+                        </div>
+                        <button class="btn btn-primary btn-sm mb-3">
+                          <i class="bi bi-plus-lg me-1"></i> Notiz speichern
+                        </button>
+
+                        <hr>
+
+                        <h6>Letzte Notizen</h6>
+                        
+                        <ul class="list-unstyled small">
+                          <li class="mb-2">
+                            <strong>09.12.2025</strong>: Teilnehmer wirkte heute motiviert im Praxisbereich.
+                          </li>
+                          <li class="mb-2">
+                            <strong>07.12.2025</strong>: Meldung von Verspätungen – Ursache: ÖPNV-Störung.
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- SEKTION: VERLAUF & BEWERTUNG -->
+                  <div class="tab-pane fade"
+                       id="sektionVerlauf"
+                       role="tabpanel"
+                       aria-labelledby="sektionVerlauf-tab">
+                    <h5 class="mb-3">Verlauf &amp; Bewertung</h5>
+
+                        <div class="mb-3">
+                          <div class="border rounded-3 p-3">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                              <h6 class="mb-0">Anwesenheit</h6>
+                              <button class="btn btn-outline-secondary btn-sm"
+                                      data-bs-toggle="modal"
+                                      data-bs-target="#anwesenheitModal">
+                                <i class="bi bi-calendar3 me-1"></i> Detailansicht
+                              </button>
+                            </div>
+                            <p class="text-muted small mb-2">
+                              Übersicht zu Anwesenheit/Fehlzeiten während dieser Maßnahme.
+                            </p>
+                            <div class="small">
+                              <span class="badge bg-success-subtle text-success-emphasis me-1">56 % Anwesenheitsquote</span>
+                              <span class="badge bg-warning-subtle text-warning-emphasis">2 Fehltage</span>
+                            </div>
+                          </div>
+                        </div>
+                              <!-- Modal: Anwesenheit Detailansicht -->
+                              <div class="modal fade" id="anwesenheitModal" tabindex="-1"
+                                  aria-labelledby="anwesenheitModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-xl modal-dialog-centered">
+                                  <div class="modal-content">
+
+                                    <div class="modal-header">
+                                      <h5 class="modal-title" id="anwesenheitModalLabel">Anwesenheit – Detailansicht</h5>
+                                      <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                              aria-label="Close"></button>
+                                    </div>
+
+                                    <div class="modal-body">
+
+                                      <!-- Karten-Übersicht oben -->
+                                      <div class="row g-3 mb-4">
+                                        <!-- Große Karte: Anwesenheitsquote -->
+                                        <div class="col-md-4">
+                                          <div class="border rounded-3 p-4 h-100 d-flex flex-column justify-content-center text-center">
+                                            <div class="display-4 fw-semibold">56&nbsp;%</div>
+                                            <div class="text-muted text-uppercase small mt-2">
+                                              Anwesenheitsquote
+                                            </div>
+                                          </div>
+                                        </div>
+
+                                        <!-- Kleine Karten rechts -->
+                                        <div class="col-md-8">
+                                          <div class="row g-3">
+
+                                            <div class="col-6">
+                                              <div class="border rounded-3 p-3 text-center h-100">
+                                                <div class="small text-muted">Fehltage</div>
+                                                <div class="fs-4 fw-semibold">2</div>
+                                              </div>
+                                            </div>
+
+                                            <div class="col-6">
+                                              <div class="border rounded-3 p-3 text-center h-100">
+                                                <div class="small text-muted">Quote AU</div>
+                                                <div class="fs-4 fw-semibold">90&nbsp;%</div>
+                                              </div>
+                                            </div>
+
+                                            <div class="col-6">
+                                              <div class="border rounded-3 p-3 text-center h-100">
+                                                <div class="small text-muted">Urlaub</div>
+                                                <div class="fs-4 fw-semibold">30</div>
+                                              </div>
+                                            </div>
+
+                                            <div class="col-6">
+                                              <div class="border rounded-3 p-3 text-center h-100">
+                                                <div class="small text-muted">Quote F</div>
+                                                <div class="fs-4 fw-semibold">10&nbsp;%</div>
+                                              </div>
+                                            </div>
+
+                                          </div>
+                                        </div>
+                                      </div>
+
+                                      <!-- Steuerleiste über dem Kalender -->
+                                      <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+                                        <div class="d-flex flex-wrap gap-2 align-items-center">
+                                          <select class="form-select form-select-sm" style="width:auto;">
+                                            <option selected>2025</option>
+                                            <option>2024</option>
+                                            <option>2023</option>
+                                          </select>
+
+                                          <select class="form-select form-select-sm" style="width:auto;">
+                                            <option>Januar</option>
+                                            <option>Februar</option>
+                                            <option>März</option>
+                                            <option>April</option>
+                                            <option>Mai</option>
+                                            <option>Juni</option>
+                                            <option>Juli</option>
+                                            <option>August</option>
+                                            <option>September</option>
+                                            <option>Oktober</option>
+                                            <option>November</option>
+                                            <option>Dezember</option>
+                                          </select>
+
+                                          <div class="btn-group btn-group-sm" role="group">
+                                            <button type="button" class="btn btn-primary">Monat</button>
+                                            <button type="button" class="btn btn-outline-primary">Jahr</button>
+                                          </div>
+                                        </div>
+
+                                        <button class="btn btn-outline-secondary btn-sm">
+                                          Anwesenheit exportieren
+                                        </button>
+                                      </div>
+
+                                      <!-- Kalender -->
+                                      <div class="border rounded-3">
+                                        <table class="table table-bordered mb-0 align-middle text-center small">
+                                          <thead class="table-light">
+                                            <tr>
+                                              <th scope="col">Mon</th>
+                                              <th scope="col">Tue</th>
+                                              <th scope="col">Wed</th>
+                                              <th scope="col">Thu</th>
+                                              <th scope="col">Fri</th>
+                                              <th scope="col">Sat</th>
+                                              <th scope="col">Sun</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody>
+                                            <!-- Woche 1 -->
+                                            <tr>
+                                              <td class="text-muted">26</td>
+                                              <td class="text-muted">27</td>
+                                              <td class="text-muted">28</td>
+                                              <td class="text-muted">29</td>
+                                              <td class="text-muted">30</td>
+                                              <td>1</td>
+                                              <td>2</td>
+                                            </tr>
+                                            <!-- Woche 2 -->
+                                            <tr>
+                                              <td>
+                                                <span class="badge bg-success-subtle text-success-emphasis px-3">3</span>
+                                              </td>
+                                              <td>
+                                                <span class="badge bg-success-subtle text-success-emphasis px-3">4</span>
+                                              </td>
+                                              <td>
+                                                <span class="badge bg-danger-subtle text-danger-emphasis px-3">5</span>
+                                              </td>
+                                              <td>
+                                                <span class="badge bg-danger-subtle text-danger-emphasis px-3">6</span>
+                                              </td>
+                                              <td>
+                                                <span class="badge bg-warning-subtle text-warning-emphasis px-3">7</span>
+                                              </td>
+                                              <td>8</td>
+                                              <td>9</td>
+                                            </tr>
+                                            <!-- Woche 3 -->
+                                            <tr>
+                                              <td>10</td>
+                                              <td>11</td>
+                                              <td>12</td>
+                                              <td>13</td>
+                                              <td>14</td>
+                                              <td>15</td>
+                                              <td>16</td>
+                                            </tr>
+                                            <!-- Woche 4 -->
+                                            <tr>
+                                              <td>17</td>
+                                              <td>18</td>
+                                              <td>19</td>
+                                              <td>20</td>
+                                              <td>21<br>
+                                                <span class="badge bg-primary-subtle text-primary-emphasis mt-1">•</span>
+                                              </td>
+                                              <td>22</td>
+                                              <td>23</td>
+                                            </tr>
+                                            <!-- Woche 5 -->
+                                            <tr>
+                                              <td>24</td>
+                                              <td>25</td>
+                                              <td>26</td>
+                                              <td>27</td>
+                                              <td>28</td>
+                                              <td>29</td>
+                                              <td>
+                                                <span class="badge bg-primary-subtle text-primary-emphasis px-3">30</span>
+                                              </td>
+                                            </tr>
+                                          </tbody>
+                                        </table>
+                                      </div>
+
+                                    </div>
+
+                                    <div class="modal-footer">
+                                      <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">
+                                        Schließen
+                                      </button>
+                                    </div>
+
+                                  </div>
+                                </div>
+                              </div>
+
+
+                              <div class="mb-3">
+                                <div class="border rounded-3 p-3">
+
+                                  <!-- Header -->
+                                  <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <h6 class="mb-0">Zielvereinbarung</h6>
+
+                                    <!-- Button-Gruppe -->
+                                    <div class="d-flex gap-2">
+                                      <button class="btn btn-outline-secondary btn-sm"
+                                              data-bs-toggle="modal"
+                                              data-bs-target="#zielvereinbarungModal">
+                                        <i class="bi bi-calendar-check me-1"></i> Detailansicht
+                                      </button>
+
+                                      <button class="btn btn-primary btn-sm"
+                                              data-bs-toggle="modal"
+                                              data-bs-target="#zielvereinbarungErstellenModal">
+                                        <i class="bi bi-plus-lg me-1"></i>erstellen
+                                      </button>
+                                    </div>
+                                  </div>
+
+                                  <!-- Beschreibung -->
+                                  <p class="text-muted small mb-2">
+                                    Vereinbarte Ziele und Fortschritt des Teilnehmers.
+                                  </p>
+
+                                  <!-- Schnellüberblick -->
+                                  <div class="small">
+                                    <div class="mb-1">
+                                      <strong>Letzte Zielvereinbarung:</strong>
+                                      <span class="text-muted">12. November 2025</span>
+                                    </div>
+
+                                  </div>
+
+                                </div>
+                              </div>
+
+
+                                                            <div class="mb-3">
+                                <div class="border rounded-3 p-3">
+
+                                  <!-- Header -->
+                                  <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <h6 class="mb-0">Förderplan</h6>
+
+                                    <!-- Button-Gruppe -->
+                                    <div class="d-flex gap-2">
+                                      <button class="btn btn-outline-secondary btn-sm"
+                                              data-bs-toggle="modal"
+                                              data-bs-target="#zielvereinbarungModal">
+                                        <i class="bi bi-calendar-check me-1"></i> Detailansicht
+                                      </button>
+
+                                      <button class="btn btn-primary btn-sm"
+                                              data-bs-toggle="modal"
+                                              data-bs-target="#zielvereinbarungErstellenModal">
+                                        <i class="bi bi-plus-lg me-1"></i>erstellen
+                                      </button>
+                                    </div>
+                                  </div>
+
+                                  <!-- Beschreibung -->
+                                  <p class="text-muted small mb-2">
+                                    Vereinbarte Förderplan des Teilnehmers.
+                                  </p>
+
+                                  <!-- Schnellüberblick -->
+                                  <div class="small">
+                                    <div class="mb-1">
+                                      <strong>Letzter Förderplan:</strong>
+                                      <span class="text-muted">12. November 2025</span>
+                                    </div>
+
+                                  </div>
+
+                                </div>
+                              </div>
+
+
+                              <div class="mb-3">
+                                <div class="border rounded-3 p-3">
+
+                                  <!-- Header + Buttons -->
+                                  <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <h6 class="mb-0">Leistungs- &amp; Verhaltensbeurteilung</h6>
+
+                                    <div class="d-flex gap-2">
+                                      <button class="btn btn-outline-secondary btn-sm">
+                                        <i class="bi bi-pencil me-1"></i> Bearbeiten
+                                      </button>
+
+                                      <button class="btn btn-primary btn-sm">
+                                        <i class="bi bi-plus-lg me-1"></i> erstellen
+                                      </button>
+                                    </div>
+                                  </div>
+
+                                  <!-- Beschreibung -->
+                                  <p class="text-muted small mb-2">
+                                    Einschätzungen zum Arbeitsverhalten, Sozialverhalten und Lernfortschritt.
+                                    Erstellte LUVs:
+                                  </p>
+
+                                  <!-- Neue LUV-Badges -->
+                                  <div class="small d-flex flex-wrap gap-2">
+
+                                    <span class="badge bg-primary-subtle text-primary-emphasis">
+                                      Start LUV 12.09.2025
+                                    </span>
+                                    <span class="badge bg-primary-subtle text-primary-emphasis">
+                                      Verlaufs LUV 31.11.2025
+                                    </span>
+
+                                  </div>
+
+                                </div>
+                              </div>
+
+
+                    <div>
+                      <div class="border rounded-3 p-3">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                          <h6 class="mb-0">Anleiterbewertung</h6>
+                          <button class="btn btn-outline-secondary btn-sm">
+                            <i class="bi bi-clipboard-check me-1"></i> Bewertungen ansehen
+                          </button>
+                        </div>
+                        <p class="text-muted small mb-2">
+                          Bewertung durch Praxisanleiter / Ausbilder im Einsatzbetrieb.
+                        </p>
+
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- SEKTION: ORGANISATION -->
+                  <div class="tab-pane fade"
+                       id="sektionOrga"
+                       role="tabpanel"
+                       aria-labelledby="sektionOrga-tab">
+                    <h5 class="mb-3">Organisation</h5>
+
+                    <div class="mb-3">
+                      <div class="border rounded-3 p-3">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                          <h6 class="mb-0">Gruppen</h6>
+                          <button class="btn btn-outline-secondary btn-sm">
+                            <i class="bi bi-people me-1"></i> Gruppen bearbeiten
+                          </button>
+                        </div>
+                        <p class="text-muted small mb-1">
+                          Zuweisung zu Trainingsgruppen, Kleingruppen oder Projektteams.
+                        </p>
+                        <div class="small">
+                          Aktuelle Gruppe: <strong>Werkstatt Maler – Vormittagsgruppe</strong>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="mb-3">
+                      <div class="border rounded-3 p-3">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                          <h6 class="mb-0">Praktika</h6>
+                          <button class="btn btn-outline-secondary btn-sm">
+                            <i class="bi bi-briefcase me-1"></i> Praktikum planen
+                          </button>
+                        </div>
+                        <p class="text-muted small mb-1">
+                          Übersicht geplanter und vergangener Praktikumsphasen.
+                        </p>
+                        <div class="small">
+                          Aktuelles Praktikum: <strong>Malerbetrieb Farbenfroh</strong> (01.02. – 31.03.2025)
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="mb-3">
+                      <div class="border rounded-3 p-3">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                          <h6 class="mb-0">Fahrtkosten</h6>
+                          <button class="btn btn-outline-secondary btn-sm">
+                            <i class="bi bi-cash-coin me-1"></i> Übersicht der Fahrtkosten
+                          </button>
+                        </div>
+                        <p class="text-muted small mb-1">
+                          Erfassung &amp; Abrechnung von Fahrtkosten zur Maßnahme / Praktikum.
+                        </p>
+                        <div class="small">
+
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="mb-3">
+                      <div class="border rounded-3 p-3">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                          <h6 class="mb-0">Persönliche Arbeitszeit des TN</h6>
+                          <button class="btn btn-outline-secondary btn-sm">
+                            <i class="bi bi-clock me-1"></i> Zeiten bearbeiten
+                          </button>
+                        </div>
+                        <p class="text-muted small mb-1">
+                          Hinterlegte individuelle Arbeits- bzw. Anwesenheitszeiten.
+                        </p>
+
+                      </div>
+                    </div>
+
+                    <div>
+
+                    </div>
+                  </div>
+
+                  <!-- SEKTION: TEILNAHME BEENDEN -->
+                  <div class="tab-pane fade"
+                       id="sektionEnde"
+                       role="tabpanel"
+                       aria-labelledby="sektionEnde-tab">
+                    <div class="border rounded-3 p-3">
+                      <h5>Teilnahme beenden</h5>
+                      <p class="text-muted small mb-3">
+                        Hier wird die Maßnahme für diesen Teilnehmer offiziell beendet.
+                        Bitte Gründe und Datum dokumentieren. Die Beendigung kann an
+                        Kostenträger und interne Stellen gemeldet werden.
+                      </p>
+
+                      <div class="mb-3">
+                        <label class="form-label">Beendigungsdatum</label>
+                        <input type="date" class="form-control">
+                      </div>
+
+                      <div class="mb-3">
+                        <label class="form-label">Beendigungsgrund</label>
+                        <select class="form-select">
+                          <option>Bitte wählen …</option>
+                          <option>Maßnahme erfolgreich abgeschlossen</option>
+                          <option>Eigenkündigung Teilnehmer</option>
+                          <option>Abbruch durch Träger</option>
+                          <option>Abbruch durch Kostenträger</option>
+                          <option>Nichtantritt / wiederholte Nichtteilnahme</option>
+                        </select>
+                      </div>
+
+                      <div class="mb-3">
+                        <label class="form-label">Bemerkungen (intern)</label>
+                        <textarea class="form-control" rows="3"
+                                  placeholder="Optionale Zusatzinfos, z.B. Vereinbarungen, offene Punkte …"></textarea>
+                      </div>
+
+                      <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="teilnahmeEndeInfoJC">
+                        <label class="form-check-label small" for="teilnahmeEndeInfoJC">
+                          Kostenträger (z.&nbsp;B. Jobcenter) automatisch informieren
+                        </label>
+                      </div>
+
+                      <button class="btn btn-danger">
+                        <i class="bi bi-door-closed me-1"></i> Teilnahme jetzt beenden
+                      </button>
+                    </div>
+                  </div>
+
+                </div>
+              </div> <!-- /col-md-9 -->
+            </div> <!-- /row -->
+          </div> <!-- /col-lg-9 -->
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: NEUE INTERVENTION -->
+  <div class="modal fade" id="interventionModal" tabindex="-1" aria-labelledby="interventionModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+      <div class="modal-content">
+        <form id="interventionForm">
+          <div class="modal-header">
+            <h5 class="modal-title" id="interventionModalLabel">Neue Intervention erstellen</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Schließen"></button>
+          </div>
+          <div class="modal-body">
+
+            <!-- Interventionsart -->
+            <div class="mb-3">
+              <label for="interventionType" class="form-label">Interventionsart</label>
+              <select class="form-select" id="interventionType" required>
+                <option value="" selected disabled>Bitte auswählen …</option>
+                <option value="Anschreiben">Anschreiben</option>
+                <option value="Meldetermin">Meldetermin</option>
+                <option value="Hausbesuch">Hausbesuch</option>
+                <option value="1. Ermahnung">1. Ermahnung</option>
+                <option value="2. Ermahnung">2. Ermahnung</option>
+                <option value="Beendigung">Beendigung</option>
+              </select>
+              <div class="form-text">
+                Je nach Auswahl werden die passenden Felder eingeblendet.
+              </div>
+            </div>
+
+            <div class="row g-3">
+              <!-- Datum (für alle Arten) -->
+              <div class="col-md-6" data-intervention-group="Anschreiben,Meldetermin,Hausbesuch,1. Ermahnung,2. Ermahnung,Beendigung">
+                <label for="interventionDate" class="form-label">Datum</label>
+                <input type="date" class="form-control" id="interventionDate" required>
+              </div>
+
+              <!-- Meldefrist (Anschreiben, Meldetermin, 1./2. Ermahnung) -->
+              <div class="col-md-6" data-intervention-group="Anschreiben,Meldetermin,1. Ermahnung,2. Ermahnung">
+                <label for="interventionDeadline" class="form-label">Meldefrist</label>
+                <input type="date" class="form-control" id="interventionDeadline">
+                <div class="form-text">
+                  Wird bei Bedarf der Watchlist hinzugefügt.
+                </div>
+              </div>
+
+              <!-- Hausbesuch: Mitarbeiter 1 -->
+              <div class="col-md-6" data-intervention-group="Hausbesuch">
+                <label for="interventionEmployee1" class="form-label">Mitarbeiter 1</label>
+                <input type="text" class="form-control" id="interventionEmployee1" placeholder="Name Mitarbeiter 1">
+              </div>
+
+              <!-- Hausbesuch: Mitarbeiter 2 -->
+              <div class="col-md-6" data-intervention-group="Hausbesuch">
+                <label for="interventionEmployee2" class="form-label">Mitarbeiter 2 (optional)</label>
+                <input type="text" class="form-control" id="interventionEmployee2" placeholder="Name Mitarbeiter 2">
+              </div>
+
+              <!-- Hausbesuch: Angetroffen / Nicht angetroffen -->
+              <div class="col-12" data-intervention-group="Hausbesuch">
+                <label class="form-label d-block">Ergebnis Hausbesuch</label>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="visitResult" id="visitMet" value="Angetroffen">
+                  <label class="form-check-label" for="visitMet">Angetroffen</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="visitResult" id="visitNotMet" value="Nicht angetroffen">
+                  <label class="form-check-label" for="visitNotMet">Nicht angetroffen</label>
+                </div>
+              </div>
+
+              <!-- 1. Ermahnung: Klärungsbedarf -->
+              <div class="col-12" data-intervention-group="1. Ermahnung">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="interventionClarification">
+                  <label class="form-check-label" for="interventionClarification">
+                    Klärungsbedarf vorhanden
+                  </label>
+                </div>
+              </div>
+
+              <!-- Beendigung: Bemerkung -->
+              <div class="col-12" data-intervention-group="Beendigung">
+                <label for="interventionEndNote" class="form-label">Beendigungsgrund / Bemerkung</label>
+                <input type="text" class="form-control" id="interventionEndNote" placeholder="Kurz begründen (optional)">
+              </div>
+
+              <!-- Allgemeine Notiz für alle Arten -->
+              <div class="col-12" data-intervention-group="Anschreiben,Meldetermin,Hausbesuch,1. Ermahnung,2. Ermahnung,Beendigung">
+                <label for="interventionNote" class="form-label">Notiz (intern)</label>
+                <textarea class="form-control" id="interventionNote" rows="2" placeholder="Optionale Zusatzinformationen …"></textarea>
+              </div>
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Abbrechen</button>
+            <button type="submit" class="btn btn-primary">
+              <i class="bi bi-check-lg me-1"></i> Intervention speichern
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCRIPTS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const typeSelect = document.getElementById('interventionType');
+      const fieldGroups = document.querySelectorAll('[data-intervention-group]');
+      const form = document.getElementById('interventionForm');
+      const tableBody = document.getElementById('interventionTableBody');
+
+      const countTotal    = document.getElementById('interventionCountTotal');
+      const countOpen     = document.getElementById('interventionCountOpen');
+      const countDeadline = document.getElementById('interventionCountDeadline');
+      const countVisits   = document.getElementById('interventionCountVisits');
+
+      function updateFieldVisibility() {
+        if (!typeSelect) return;
+        const type = typeSelect.value;
+        fieldGroups.forEach(group => {
+          const types = group.getAttribute('data-intervention-group').split(',');
+          if (types.map(t => t.trim()).includes(type)) {
+            group.classList.remove('d-none');
+          } else {
+            group.classList.add('d-none');
+          }
+        });
+      }
+
+      function formatDateForDisplay(value) {
+        if (!value) return '–';
+        const parts = value.split('-'); // yyyy-mm-dd
+        if (parts.length !== 3) return value;
+        return parts[2] + '.' + parts[1] + '.' + parts[0];
+      }
+
+      function createBadge(type) {
+        return '<span class="badge bg-outline-secondary border">' + type + '</span>';
+      }
+
+      function updateStats(newType, hasDeadline, isVisit) {
+        const total = tableBody.querySelectorAll('tr').length;
+        countTotal.textContent = total.toString();
+
+        // einfache Demo-Logik: neue Intervention ist "Offen"
+        const open = tableBody.querySelectorAll('span.badge.bg-warning-subtle').length;
+        countOpen.textContent = open.toString();
+
+        if (hasDeadline) {
+          const withDeadline = parseInt(countDeadline.textContent || '0', 10) + 1;
+          countDeadline.textContent = withDeadline.toString();
+        }
+
+        if (isVisit) {
+          const visits = parseInt(countVisits.textContent || '0', 10) + 1;
+          countVisits.textContent = visits.toString();
+        }
+      }
+
+      if (typeSelect) {
+        typeSelect.addEventListener('change', updateFieldVisibility);
+        updateFieldVisibility(); // initial
+      }
+
+      if (form) {
+        form.addEventListener('submit', function (e) {
+          e.preventDefault();
+
+          const type = typeSelect.value;
+          if (!type) return;
+
+          const dateValue      = document.getElementById('interventionDate').value;
+          const deadlineValue  = document.getElementById('interventionDeadline') ? document.getElementById('interventionDeadline').value : '';
+          const employee1      = document.getElementById('interventionEmployee1') ? document.getElementById('interventionEmployee1').value : '';
+          const employee2      = document.getElementById('interventionEmployee2') ? document.getElementById('interventionEmployee2').value : '';
+          const clarification  = document.getElementById('interventionClarification') ? document.getElementById('interventionClarification').checked : false;
+          const endNote        = document.getElementById('interventionEndNote') ? document.getElementById('interventionEndNote').value : '';
+          const note           = document.getElementById('interventionNote') ? document.getElementById('interventionNote').value : '';
+
+          let visitResult = '';
+          const visitMetRadio = document.getElementById('visitMet');
+          const visitNotMetRadio = document.getElementById('visitNotMet');
+
+          if (visitMetRadio && visitMetRadio.checked) {
+            visitResult = 'Angetroffen';
+          } else if (visitNotMetRadio && visitNotMetRadio.checked) {
+            visitResult = 'Nicht angetroffen';
+          }
+
+          // Details-Text je nach Art
+          let detailsText = '';
+          if (type === 'Hausbesuch') {
+            const employeesText = [employee1, employee2].filter(Boolean).join(' / ') || 'Mitarbeiter nicht hinterlegt';
+            const resultText = visitResult || 'Ergebnis offen';
+            detailsText = 'Mitarbeiter: ' + employeesText + ' – ' + resultText;
+          } else if (type === '1. Ermahnung') {
+            detailsText = 'Klärungsbedarf: ' + (clarification ? 'ja' : 'nein');
+          } else if (type === 'Beendigung') {
+            detailsText = endNote ? ('Grund: ' + endNote) : 'Beendigung ohne nähere Angabe';
+          } else {
+            detailsText = note || 'Keine Zusatznotiz';
+          }
+
+          const hasDeadline = !!deadlineValue;
+          const isVisit = (type === 'Hausbesuch');
+
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${formatDateForDisplay(dateValue)}</td>
+            <td>${createBadge(type)}</td>
+            <td>${detailsText}</td>
+            <td>${hasDeadline ? formatDateForDisplay(deadlineValue) : '–'}</td>
+            <td><span class="badge bg-warning-subtle text-warning-emphasis">Offen</span></td>
+            <td class="text-end">
+              <button type="button" class="btn btn-outline-secondary btn-sm">
+                <i class="bi bi-eye"></i>
+              </button>
+            </td>
+          `;
+
+          // Neue Intervention nach oben setzen
+          tableBody.prepend(tr);
+
+          // Watchlist-Popup (nur Anschreiben + Meldetermin)
+          if ((type === 'Anschreiben' || type === 'Meldetermin') && hasDeadline) {
+            const addToWatchlist = window.confirm('Möchten Sie die Meldefrist in die Watchlist eintragen?');
+            if (addToWatchlist) {
+              // hier später echte Watchlist-Logik
+              window.alert('Meldefrist wurde (Demo) zur Watchlist hinzugefügt.');
+            }
+          }
+
+          updateStats(type, hasDeadline, isVisit);
+
+          // Modal schließen
+          const modalElement = document.getElementById('interventionModal');
+          const modalInstance = bootstrap.Modal.getInstance(modalElement);
+          if (modalInstance) {
+            modalInstance.hide();
+          }
+
+          // Formular zurücksetzen
+          form.reset();
+          updateFieldVisibility();
+        });
+      }
+    });
+
+
+
+(function () {
+  const STORAGE_KEY = "aktennotizen_demo";
+
+  const listEl = document.getElementById("aktennotizenList");
+  const modalEl = document.getElementById("modalAktennotiz");
+
+  const form = document.getElementById("aktennotizForm");
+  const editIndexEl = document.getElementById("aktenEditIndex");
+  const titleEl = document.getElementById("aktenTitel");
+  const dateEl = document.getElementById("aktenDatum");
+  const textEl = document.getElementById("aktenText");
+  const authorEl = document.getElementById("aktenAutor");
+  const typeEl = document.getElementById("aktenTyp");
+
+  const modalTitleEl = document.getElementById("aktenModalTitle");
+  const btnDelete = document.getElementById("btnAktenDelete");
+  const btnExport = document.getElementById("btnAktenExport");
+
+  function esc(s) {
+    return String(s ?? "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+  }
+
+  function load() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"); }
+    catch { return []; }
+  }
+  function save(arr) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
+  }
+
+  function formatDateDE(iso) {
+    if (!iso) return "";
+    const [y,m,d] = iso.split("-");
+    if (!y || !m || !d) return iso;
+    return `${d}.${m}.${y}`;
+  }
+
+  function render() {
+    const data = load();
+
+    if (!listEl) return;
+
+    if (data.length === 0) {
+      listEl.innerHTML = `
+        <div class="border rounded bg-white p-3 text-muted small">
+          Noch keine Aktennotizen vorhanden.
+        </div>`;
+      return;
+    }
+
+    // neueste oben
+    const sorted = data
+      .map((x, i) => ({...x, _i: i}))
+      .sort((a,b) => (b.datum || "").localeCompare(a.datum || ""));
+
+    listEl.innerHTML = sorted.map(item => `
+      <a href="#"
+         class="list-group-item list-group-item-action"
+         data-edit="${item._i}">
+        <div class="d-flex w-100 justify-content-between align-items-start gap-3">
+          <div class="flex-grow-1">
+            <div class="d-flex align-items-center gap-2">
+              <h6 class="mb-1">${esc(item.titel)}</h6>
+              <span class="badge text-bg-light border">${esc(item.typ || "Aktennotiz")}</span>
+            </div>
+            <p class="mb-1">${esc(item.text)}</p>
+            <small class="text-muted">angelegt von: ${esc(item.autor || "-")}</small>
+          </div>
+          <small class="text-muted flex-shrink-0">${esc(formatDateDE(item.datum))}</small>
+        </div>
+      </a>
+    `).join("");
+
+    listEl.querySelectorAll("[data-edit]").forEach(a => {
+      a.addEventListener("click", (e) => {
+        e.preventDefault();
+        const idx = Number(a.getAttribute("data-edit"));
+        openEdit(idx);
+      });
+    });
+  }
+
+  function resetModalForNew() {
+    modalTitleEl.innerHTML = `<i class="bi bi-journal-plus me-2"></i> Neue Aktennotiz`;
+    editIndexEl.value = "";
+    btnDelete.classList.add("d-none");
+
+    form.reset();
+
+    // Default: heute
+    const today = new Date();
+    const yyyy = String(today.getFullYear());
+    const mm = String(today.getMonth()+1).padStart(2,"0");
+    const dd = String(today.getDate()).padStart(2,"0");
+    dateEl.value = `${yyyy}-${mm}-${dd}`;
+
+    // Default Autor lassen (falls schon gesetzt)
+    if (!authorEl.value) authorEl.value = "D. Chu";
+    typeEl.value = "Aktennotiz";
+  }
+
+  function openEdit(idx) {
+    const data = load();
+    const item = data[idx];
+    if (!item) return;
+
+    modalTitleEl.innerHTML = `<i class="bi bi-pencil-square me-2"></i> Aktennotiz bearbeiten`;
+    editIndexEl.value = String(idx);
+    btnDelete.classList.remove("d-none");
+
+    titleEl.value = item.titel || "";
+    dateEl.value = item.datum || "";
+    textEl.value = item.text || "";
+    authorEl.value = item.autor || "";
+    typeEl.value = item.typ || "Aktennotiz";
+
+    const bsModal = bootstrap.Modal.getOrCreateInstance(modalEl);
+    bsModal.show();
+  }
+
+  // Wenn Modal aufgeht: prüfen ob neu (kein editIndex) oder edit
+  if (modalEl) {
+    modalEl.addEventListener("show.bs.modal", () => {
+      // Wenn Button "Neue Aktennotiz" öffnet, ist editIndex leer → reset
+      if (!editIndexEl.value) resetModalForNew();
+    });
+
+    // Beim Schließen: editIndex leeren, damit nächstes Öffnen "neu" ist
+    modalEl.addEventListener("hidden.bs.modal", () => {
+      editIndexEl.value = "";
+      btnDelete.classList.add("d-none");
+    });
+  }
+
+  // Speichern (Neu oder Update)
+  if (form) {
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const obj = {
+        titel: titleEl.value.trim(),
+        datum: dateEl.value,
+        text: textEl.value.trim(),
+        autor: authorEl.value.trim(),
+        typ: typeEl.value
+      };
+
+      if (!obj.titel || !obj.datum || !obj.text) return;
+
+      const data = load();
+      const idx = editIndexEl.value === "" ? -1 : Number(editIndexEl.value);
+
+      if (idx >= 0 && data[idx]) {
+        data[idx] = obj;
+      } else {
+        data.push(obj);
+      }
+
+      save(data);
+      render();
+
+      const bsModal = bootstrap.Modal.getOrCreateInstance(modalEl);
+      bsModal.hide();
+    });
+  }
+
+  // Löschen
+  if (btnDelete) {
+    btnDelete.addEventListener("click", () => {
+      const idx = editIndexEl.value === "" ? -1 : Number(editIndexEl.value);
+      if (idx < 0) return;
+
+      const data = load();
+      data.splice(idx, 1);
+      save(data);
+      render();
+
+      const bsModal = bootstrap.Modal.getOrCreateInstance(modalEl);
+      bsModal.hide();
+    });
+  }
+
+  // Export (JSON Download – Demo)
+  if (btnExport) {
+    btnExport.addEventListener("click", () => {
+      const data = load();
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "aktennotizen.json";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    });
+  }
+
+  // Initial Demo-Daten (nur wenn leer)
+  const existing = load();
+  if (existing.length === 0) {
+    save([
+      {
+        titel: "Telefonat mit JC",
+        datum: "2025-11-10",
+        text: "Rückmeldung zur Anwesenheit und Leistungsstand besprochen.",
+        autor: "D. Chu",
+        typ: "Telefonat"
+      },
+      {
+        titel: "Gespräch mit Teilnehmer",
+        datum: "2025-11-03",
+        text: "Motivation und Ziele im weiteren Verlauf dokumentiert.",
+        autor: "D. Chu",
+        typ: "Gespräch"
+      }
+    ]);
+  }
+
+  render();
+})();
+
+
+
+
+  </script>
+
+</body>
+</html>

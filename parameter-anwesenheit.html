@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Parameter – Anwesenheit & Verbleib</title>
+
+  <!-- Bootstrap & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+</head>
+
+<body class="p-4 bg-light">
+
+<div class="container-fluid">
+
+        <!-- Header Card -->
+    <div class="card border-0 shadow mb-3">
+      <div class="card-body p-4">
+        <div class="d-flex flex-wrap justify-content-between align-items-start gap-3">
+          <div>
+            <div class="text-secondary small">Parameter</div>
+            <h1 class="h4 mb-2"><i class="bi bi-chat-square-text me-2"></i>Anwesenheit</h1>
+
+            <!-- aufklappbare Hilfe -->
+            <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#helpTextbausteine">
+              <i class="bi bi-info-circle me-1"></i> Hinweis
+            </button>
+
+            <div class="collapse mt-3" id="helpTextbausteine">
+              <div class="alert alert-light border mb-0">
+                Hier definieren Sie die <strong>Kürzel</strong>, <strong>Bezeichnungen</strong> und die
+<strong>Berechnungslogik</strong> der Anwesenheitseinträge.
+Diese Angaben steuern die Auswertung in <strong>Berichten</strong>, <strong>Statistiken</strong>
+und <strong>Formularen</strong> (z. B. Anwesenheits- und Fehlzeitenquoten).
+
+              </div>
+            </div>
+          </div>
+
+          <div class="text-end">
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+  <!-- Accordion -->
+  <div class="accordion" id="anwVerbleibAccordion">
+
+    <!-- ================= ANWESENHEIT ================= -->
+    <div class="accordion-item border-0 shadow-sm mb-3">
+      <h2 class="accordion-header" id="headingAnwesenheit">
+        <button
+          class="accordion-button collapsed bg-white text-dark fw-semibold"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#collapseAnwesenheit"
+          aria-expanded="false"
+          aria-controls="collapseAnwesenheit"
+        >
+          <i class="bi bi-calendar-check me-2"></i>
+          Anwesenheitseinträge
+        </button>
+      </h2>
+
+      <div
+        id="collapseAnwesenheit"
+        class="accordion-collapse collapse"
+        aria-labelledby="headingAnwesenheit"
+        data-bs-parent="#anwVerbleibAccordion"
+      >
+        <div class="accordion-body">
+
+          <form id="formAnwesenheit">
+            <div class="row g-3">
+
+              <div class="col-md-2">
+                <div class="form-floating">
+                  <input type="text" class="form-control text-uppercase" id="anwCode" placeholder="Kürzel" maxlength="3" required>
+                  <label for="anwCode">Kürzel</label>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="form-floating">
+                  <input type="text" class="form-control" id="anwBezeichnung" placeholder="Bezeichnung" required>
+                  <label for="anwBezeichnung">Bezeichnung</label>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-floating">
+                  <input type="text" class="form-control" id="anwBeschreibung" placeholder="Beschreibung">
+                  <label for="anwBeschreibung">Beschreibung (optional)</label>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-floating">
+                  <select class="form-select" id="anwKategorie" required>
+                    <option value="" selected disabled>Bitte wählen…</option>
+                    <option value="anwesend">Anwesend</option>
+                    <option value="fehlzeit_entschuldigt">Fehlzeit (entschuldigt)</option>
+                    <option value="fehlzeit_unentschuldigt">Fehlzeit (unentschuldigt)</option>
+                    <option value="neutral">Neutral / keine Quote</option>
+                  </select>
+                  <label for="anwKategorie">Kategorie für Berichte</label>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="bg-white border rounded-2 p-3 h-100">
+                  <div class="text-secondary small mb-2">Quotenrelevanz</div>
+
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="quoteAnwesenheit">
+                    <label class="form-check-label" for="quoteAnwesenheit">
+                      zählt zur Anwesenheitsquote
+                    </label>
+                  </div>
+
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="quoteFehlzeit">
+                    <label class="form-check-label" for="quoteFehlzeit">
+                      zählt zur Fehlzeitquote
+                    </label>
+                  </div>
+
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="quoteNeutral">
+                    <label class="form-check-label" for="quoteNeutral">
+                      neutral (keine Quote)
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="d-flex justify-content-end gap-2 mt-3">
+              <button type="reset" class="btn btn-outline-secondary btn-sm">
+                <i class="bi bi-x-circle me-1"></i> Zurücksetzen
+              </button>
+              <button type="submit" class="btn btn-primary btn-sm">
+                <i class="bi bi-save me-1"></i> Speichern
+              </button>
+            </div>
+          </form>
+
+          <hr class="my-4">
+
+          <!-- kleine Demo-Tabelle -->
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <div class="fw-semibold">Vorhandene Anwesenheitskürzel (Demo)</div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table table-sm align-middle mb-0">
+              <thead class="table-light">
+                <tr>
+                  <th>Kürzel</th>
+                  <th>Bezeichnung</th>
+                  <th>Kategorie</th>
+                  <th>Quoten</th>
+                  <th class="text-end">Aktion</th>
+                </tr>
+              </thead>
+              <tbody id="anwTableBody">
+                <tr class="text-muted small">
+                  <td colspan="5">Noch keine Einträge – speichern Sie oben einen Datensatz.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= VERBLEIB ================= -->
+    <div class="accordion-item border-0 shadow-sm">
+      <h2 class="accordion-header" id="headingVerbleib">
+        <button
+          class="accordion-button collapsed bg-white text-dark fw-semibold"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#collapseVerbleib"
+          aria-expanded="false"
+          aria-controls="collapseVerbleib"
+        >
+          <i class="bi bi-flag me-2"></i>
+          Verbleibsangaben
+        </button>
+      </h2>
+
+      <div
+        id="collapseVerbleib"
+        class="accordion-collapse collapse"
+        aria-labelledby="headingVerbleib"
+        data-bs-parent="#anwVerbleibAccordion"
+      >
+        <div class="accordion-body">
+
+          <form id="formVerbleib">
+            <div class="row g-3">
+
+              <div class="col-md-6">
+                <div class="form-floating">
+                  <input type="text" class="form-control" id="verbleibName" placeholder="Bezeichnung" required>
+                  <label for="verbleibName">Bezeichnung</label>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-floating">
+                  <select class="form-select" id="verbleibTyp" required>
+                    <option value="" selected disabled>Bitte wählen…</option>
+                    <option value="beschäftigung">Beschäftigung / Arbeit</option>
+                    <option value="ausbildung">Ausbildung / Qualifizierung</option>
+                    <option value="weitermaßnahme">Anschlussmaßnahme</option>
+                    <option value="abbruch">Abbruch</option>
+                    <option value="sonstiges">Sonstiges</option>
+                  </select>
+                  <label for="verbleibTyp">Kategorie</label>
+                </div>
+              </div>
+
+              <div class="col-12">
+                <div class="form-floating">
+                  <textarea class="form-control" id="verbleibBeschreibung" placeholder="Beschreibung" style="height: 160px"></textarea>
+                  <label for="verbleibBeschreibung">Beschreibung (optional)</label>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="d-flex justify-content-end gap-2 mt-3">
+              <button type="reset" class="btn btn-outline-secondary btn-sm">
+                <i class="bi bi-x-circle me-1"></i> Zurücksetzen
+              </button>
+              <button type="submit" class="btn btn-primary btn-sm">
+                <i class="bi bi-save me-1"></i> Speichern
+              </button>
+            </div>
+          </form>
+
+          <hr class="my-4">
+
+          <!-- kleine Demo-Tabelle -->
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <div class="fw-semibold">Vorhandene Verbleibe (Demo)</div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table table-sm align-middle mb-0">
+              <thead class="table-light">
+                <tr>
+                  <th>Bezeichnung</th>
+                  <th>Kategorie</th>
+                  <th>Beschreibung</th>
+                  <th class="text-end">Aktion</th>
+                </tr>
+              </thead>
+              <tbody id="verTableBody">
+                <tr class="text-muted small">
+                  <td colspan="4">Noch keine Einträge – speichern Sie oben einen Datensatz.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Funktions-JS (Demo: lokal in-memory) -->
+<script>
+  // ====== Helpers
+  const esc = (s) => (s ?? "").toString()
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+
+  function setEmptyRow(tbody, colspan, text) {
+    tbody.innerHTML = `
+      <tr class="text-muted small">
+        <td colspan="${colspan}">${esc(text)}</td>
+      </tr>`;
+  }
+
+  // ====== Anwesenheit (in-memory)
+  const anwItems = [];
+
+  function renderAnw() {
+    const tbody = document.getElementById("anwTableBody");
+    if (!anwItems.length) {
+      setEmptyRow(tbody, 5, "Noch keine Einträge – speichern Sie oben einen Datensatz.");
+      return;
+    }
+
+    tbody.innerHTML = anwItems.map((it, idx) => {
+      const quotas = [];
+      if (it.qA) quotas.push(`<span class="badge bg-success-subtle text-success me-1">Anwesenheit</span>`);
+      if (it.qF) quotas.push(`<span class="badge bg-danger-subtle text-danger me-1">Fehlzeit</span>`);
+      if (it.qN) quotas.push(`<span class="badge bg-secondary-subtle text-secondary me-1">Neutral</span>`);
+
+      return `
+        <tr>
+          <td class="fw-semibold">${esc(it.code)}</td>
+          <td>${esc(it.name)}</td>
+          <td>${esc(it.catLabel)}</td>
+          <td>${quotas.join("") || `<span class="text-muted small">–</span>`}</td>
+          <td class="text-end">
+            <button type="button" class="btn btn-outline-danger btn-sm" onclick="deleteAnw(${idx})">
+              <i class="bi bi-trash"></i>
+            </button>
+          </td>
+        </tr>
+      `;
+    }).join("");
+  }
+
+  window.deleteAnw = function (idx) {
+    anwItems.splice(idx, 1);
+    renderAnw();
+  };
+
+  document.getElementById("formAnwesenheit").addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const code = document.getElementById("anwCode").value.trim().toUpperCase();
+    const name = document.getElementById("anwBezeichnung").value.trim();
+    const desc = document.getElementById("anwBeschreibung").value.trim();
+    const cat = document.getElementById("anwKategorie").value;
+
+    const catMap = {
+      anwesend: "Anwesend",
+      fehlzeit_entschuldigt: "Fehlzeit (entschuldigt)",
+      fehlzeit_unentschuldigt: "Fehlzeit (unentschuldigt)",
+      neutral: "Neutral / keine Quote"
+    };
+
+    const qA = document.getElementById("quoteAnwesenheit").checked;
+    const qF = document.getElementById("quoteFehlzeit").checked;
+    const qN = document.getElementById("quoteNeutral").checked;
+
+    // simple Plausibilität: Kürzel einzigartig
+    if (anwItems.some(x => x.code === code)) {
+      alert("Dieses Kürzel existiert bereits (Demo).");
+      return;
+    }
+
+    anwItems.push({
+      code,
+      name,
+      desc,
+      cat,
+      catLabel: catMap[cat] || cat,
+      qA, qF, qN
+    });
+
+    this.reset();
+    renderAnw();
+    alert("Anwesenheitseintrag gespeichert (Demo).");
+  });
+
+  // ====== Verbleib (in-memory)
+  const verItems = [];
+
+  function renderVer() {
+    const tbody = document.getElementById("verTableBody");
+    if (!verItems.length) {
+      setEmptyRow(tbody, 4, "Noch keine Einträge – speichern Sie oben einen Datensatz.");
+      return;
+    }
+
+    tbody.innerHTML = verItems.map((it, idx) => `
+      <tr>
+        <td class="fw-semibold">${esc(it.name)}</td>
+        <td>${esc(it.typeLabel)}</td>
+        <td class="text-truncate" style="max-width:420px;" title="${esc(it.desc)}">${esc(it.desc || "–")}</td>
+        <td class="text-end">
+          <button type="button" class="btn btn-outline-danger btn-sm" onclick="deleteVer(${idx})">
+            <i class="bi bi-trash"></i>
+          </button>
+        </td>
+      </tr>
+    `).join("");
+  }
+
+  window.deleteVer = function (idx) {
+    verItems.splice(idx, 1);
+    renderVer();
+  };
+
+  document.getElementById("formVerbleib").addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const name = document.getElementById("verbleibName").value.trim();
+    const type = document.getElementById("verbleibTyp").value;
+    const desc = document.getElementById("verbleibBeschreibung").value.trim();
+
+    const typeMap = {
+      "beschäftigung": "Beschäftigung / Arbeit",
+      "ausbildung": "Ausbildung / Qualifizierung",
+      "weitermaßnahme": "Anschlussmaßnahme",
+      "abbruch": "Abbruch",
+      "sonstiges": "Sonstiges"
+    };
+
+    verItems.push({
+      name,
+      type,
+      typeLabel: typeMap[type] || type,
+      desc
+    });
+
+    this.reset();
+    renderVer();
+    alert("Verbleib gespeichert (Demo).");
+  });
+
+  // initial render
+  renderAnw();
+  renderVer();
+</script>
+
+</body>
+</html>

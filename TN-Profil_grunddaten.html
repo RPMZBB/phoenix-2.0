@@ -1,0 +1,1780 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PHÖNIX Prototyp</title>
+
+  <!-- Bootstrap & Styles -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bs-stepper/dist/css/bs-stepper.min.css" rel="stylesheet" />
+  <link href="css/custom.css" rel="stylesheet" />
+</head>
+<body class="bg-light p-4 p-lg-5">
+
+
+
+<div class="card border-0 shadow-sm mb-3">
+  <div class="card-body py-3 px-4">
+
+    <!-- Kopfzeile -->
+    <div class="d-flex flex-wrap align-items-center gap-3">
+
+
+      <!-- Titel + Meta -->
+      <div class="flex-grow-1">
+
+        <!-- Titel -->
+        <div class="d-flex align-items-center gap-2">
+          <h2 class="fw-normal mb-0">Max Mustermann – Grunddaten</h2>
+
+          <!-- Info Toggle -->
+          <button
+            class="btn btn-sm p-0 text-muted"
+            data-bs-toggle="collapse"
+            data-bs-target="#hilfeGrunddaten"
+            aria-expanded="false"
+            aria-controls="hilfeGrunddaten"
+          >
+            <i class="bi bi-info-circle"></i>
+          </button>
+        </div>
+
+        <!-- Meta-Zeile: TN-ID & Kennung -->
+        <div class="d-flex flex-wrap gap-4 mt-1 small text-muted">
+          <div>
+            <span class="text-secondary">TN-ID:</span>
+            <span class="fw-semibold text-dark ms-1">12345</span>
+          </div>
+          <div>
+            <span class="text-secondary">Kennung:</span>
+            <span class="fw-semibold text-dark ms-1">555XV5974</span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Aufklappbarer Hilfetext -->
+    <div class="collapse mt-3" id="hilfeGrunddaten">
+      <div class="bg-body-tertiary rounded p-3 text-muted small">
+        Hier bearbeiten Sie die allgemeinen Stammdaten des Teilnehmers.
+        Diese Angaben sind <strong>nicht maßnahmenbezogen</strong> und gelten
+        unabhängig von der aktuellen oder vergangenen Maßnahme.
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+
+
+<!-- Teilnehmerprofil – GRUNDDATEN -->
+
+  <div class="">
+
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+
+<div class="col-lg-3 border-end mb-3 mb-lg-0">
+
+  <!-- ID / Kennung / Status -->
+  <div class="d-flex justify-content-between align-items-start mb-2 small text-muted">
+    <div>
+      <div>TN-ID: <strong>12345</strong></div>
+      <div>Kennung: <strong>555XV5974</strong></div>
+    </div>
+    <span class="badge rounded-pill bg-success">aktiv</span>
+  </div>
+
+  <!-- Avatar + Name -->
+  <div class="text-center mt-2 mb-3">
+<div
+  class="avatar-initials bg-secondary text-white mx-auto mb-2 d-flex align-items-center justify-content-center rounded-circle border border-4 border-success"
+  style="
+    width: 90px;
+    height: 90px;
+    font-size: 36px;
+    box-shadow: 
+      0 0 0 4px rgba(25,135,84,.35),
+      0 0 16px rgba(25,135,84,.8);
+  "
+>
+  MM
+</div>
+
+    <h4 class="mb-0">Max Mustermann</h4>
+  </div>
+
+  <!-- Grauer Bereich: Maßnahme / Betreuer / Bereich / JC -->
+  <div class="bg-body-secondary rounded-3 p-3">
+
+    <!-- Aktuelle Maßnahme -->
+    <div class="text-center mb-3">
+      <div class="text-muted small mb-1">Aktuelle Maßnahme</div>
+      <div class="h5 mb-1 text-primary fw-bold">Integra 2025</div>
+      <div class="small text-muted">01.01.2024 – 31.12.2024</div>
+    </div>
+
+    <!-- Drei Felder nebeneinander -->
+    <div class="row text-center small g-2">
+
+      <div class="col-4">
+        <div class="text-muted">Betreuer</div>
+        <div class="fw-semibold">D. Chu</div>
+      </div>
+
+      <div class="col-4">
+        <div class="text-muted">Bereich</div>
+        <div class="fw-semibold">Maler</div>
+      </div>
+
+      <div class="col-4">
+        <div class="text-muted">JC</div>
+        <div class="fw-semibold">F. Beispiel</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Button: TN in Maßnahme bearbeiten -->
+<a
+  href="TN-Profil_massnahme.html"
+  class="btn w-100 mt-3 fw-semibold"
+  style="
+    border: 2px solid #198754;
+    color: #198754;
+    background-color: transparent;
+    box-shadow:
+      0 0 0 2px rgba(25,135,84,.35),
+      0 0 12px rgba(25,135,84,.55);
+  "
+  onmouseover="this.style.backgroundColor='transparent'; this.style.color='#198754';"
+  onmouseout="this.style.backgroundColor='transparent'; this.style.color='#198754';"
+  onclick="event.preventDefault(); openTNMassnahmeProfil(this.href);"
+>
+  <i class="bi bi-pencil-square me-2"></i>
+  TN in Maßnahme bearbeiten
+</a>
+
+
+
+</div>
+
+
+
+
+
+          <!-- Rechte Spalte: Tabs Grunddaten -->
+          <div class="col-lg-9">
+
+            <!-- Tabs NUR Grunddaten -->
+            <ul class="nav nav-tabs flex-wrap" id="grunddatenTabs" role="tablist">
+              <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="tabDaten-tab" data-bs-toggle="tab" data-bs-target="#tabDaten" type="button" role="tab">
+                  Teilnehmerdaten
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" id="tabVerlauf-tab" data-bs-toggle="tab" data-bs-target="#tabVerlauf" type="button" role="tab">
+                  Maßnahmen
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" id="tabKinder-tab" data-bs-toggle="tab" data-bs-target="#tabKinder" type="button" role="tab">
+                  Kinder
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" id="tabStAMigration-tab" data-bs-toggle="tab" data-bs-target="#tabStAMigration" type="button" role="tab">
+                  StA
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" id="tabESF-tab" data-bs-toggle="tab" data-bs-target="#tabESF" type="button" role="tab">
+                  ESF
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" id="tabSchuleBeruf-tab" data-bs-toggle="tab" data-bs-target="#tabSchuleBeruf" type="button" role="tab">
+                  Schule/Beruf
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" id="tabBank-tab" data-bs-toggle="tab" data-bs-target="#tabBank" type="button" role="tab">
+                  Bank
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" id="tabNetzwerke-tab" data-bs-toggle="tab" data-bs-target="#tabNetzwerke" type="button" role="tab">
+                  Netzwerke
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" id="tabVermittlungshemmnisse-tab" data-bs-toggle="tab" data-bs-target="#tabVermittlungshemmnisse" type="button" role="tab">
+                  Vermittlung
+                </button>
+              </li>
+
+            </ul>
+
+            <!-- Inhalte Grunddaten-Tabs -->
+            <div class="tab-content mt-3">
+
+<div class="tab-pane fade show active" id="tabDaten" role="tabpanel">
+  
+  <!-- Abschnitt: Persönliche Daten -->
+
+  <form class="row g-3" id="profilForm">
+
+    <!-- Nachname -->
+    <div class="col-md-3">
+      <div class="form-floating">
+        <input class="form-control" id="nachname" value="Mustermann" readonly />
+        <label for="nachname">Nachname</label>
+      </div>
+    </div>
+
+    <!-- Vorname -->
+    <div class="col-md-3">
+      <div class="form-floating">
+        <input class="form-control" id="vorname" value="Max" readonly />
+        <label for="vorname">Vorname</label>
+      </div>
+    </div>
+
+    <!-- Geburtsdatum -->
+    <div class="col-md-3">
+      <div class="form-floating">
+        <input type="date" class="form-control" id="geburtsdatum" value="1990-01-01" readonly />
+        <label for="geburtsdatum">Geburtsdatum</label>
+      </div>
+    </div>
+
+    <!-- Geschlecht -->
+    <div class="col-md-3">
+      <div class="form-floating">
+        <select class="form-select" id="geschlecht" disabled>
+          <option selected>Männlich</option>
+          <option>Weiblich</option>
+          <option>Divers</option>
+        </select>
+        <label for="geschlecht">Geschlecht</label>
+      </div>
+    </div>
+
+
+    <!-- Abschnitt: Wohnort -->
+
+    <!-- PLZ -->
+    <div class="col-md-2">
+      <div class="form-floating">
+        <input class="form-control" id="plz" value="12345" readonly />
+        <label for="plz">PLZ</label>
+      </div>
+    </div>
+
+    <!-- Ort -->
+    <div class="col-md-4">
+      <div class="form-floating">
+        <input class="form-control" id="ort" value="Musterstadt" readonly />
+        <label for="ort">Ort</label>
+      </div>
+    </div>
+
+    <!-- Straße -->
+    <div class="col-md-4">
+      <div class="form-floating">
+        <input class="form-control" id="strasse" value="Musterstraße" readonly />
+        <label for="strasse">Straße</label>
+      </div>
+    </div>
+
+    <!-- Hausnummer -->
+    <div class="col-md-2">
+      <div class="form-floating">
+        <input class="form-control" id="hausnummer" value="12" readonly />
+        <label for="hausnummer">Nr.</label>
+      </div>
+    </div>
+
+
+    <!-- Abschnitt: Kontakt -->
+
+
+    <!-- Telefon -->
+    <div class="col-md-4">
+      <div class="form-floating">
+        <input type="tel" class="form-control" id="telefon" value="0123 456789" readonly />
+        <label for="telefon">Telefon</label>
+      </div>
+    </div>
+
+    <!-- Mobil -->
+    <div class="col-md-4">
+      <div class="form-floating">
+        <input type="tel" class="form-control" id="mobil" placeholder="Mobil" readonly />
+        <label for="mobil">Mobil</label>
+      </div>
+    </div>
+
+    <!-- E-Mail -->
+    <div class="col-md-4">
+      <div class="form-floating">
+        <input type="email" class="form-control" id="mail" value="max@example.com" readonly />
+        <label for="mail">E-Mail</label>
+      </div>
+    </div>
+
+  </form>
+
+    <!-- ERWEITERTE DATEN – zum Aufklappen -->
+    <div class="col-12 mt-3">
+      <hr>
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <span class="fw-semibold">Erweiterte Daten</span>
+          <span class="text-muted small ms-2">z. B. Wohnsituation, Krankenkasse, ÖPNV</span>
+        </div>
+        <button class="btn btn-sm btn-outline-secondary"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#erweiterteDaten"
+                aria-expanded="false"
+                aria-controls="erweiterteDaten">
+          <i class="bi bi-chevron-down me-1"></i> Anzeigen / ausblenden
+        </button>
+      </div>
+
+      <div class="collapse mt-3" id="erweiterteDaten">
+        <div class="row g-3">
+          <!-- Wohnsituation -->
+          <div class="col-md-4">
+            <div class="form-floating">
+              <select class="form-select" id="wohnSituation">
+                <option value="">Bitte wählen …</option>
+                <option>alleinstehend</option>
+                <option>mit Partner</option>
+                <option>bei Familie</option>
+                <option>Wohngruppe</option>
+                <option>Obdachlos / Unterkunft</option>
+              </select>
+              <label for="wohnSituation">Wohnsituation</label>
+            </div>
+          </div>
+
+          <!-- Krankenkasse -->
+          <div class="col-md-4">
+            <div class="form-floating">
+              <input type="text" class="form-control" id="krankenkasse" placeholder="Krankenkasse">
+              <label for="krankenkasse">Krankenkasse</label>
+            </div>
+          </div>
+
+          <!-- Sozialversicherungsnummer -->
+          <div class="col-md-4">
+            <div class="form-floating">
+              <input type="text" class="form-control" id="svNummer" placeholder="SV-Nummer">
+              <label for="svNummer">Sozialversicherungsnummer</label>
+            </div>
+          </div>
+
+          <!-- Familienstand -->
+          <div class="col-md-4">
+            <div class="form-floating">
+              <select class="form-select" id="familienstand">
+                <option value="">Bitte wählen …</option>
+                <option>ledig</option>
+                <option>verheiratet</option>
+                <option>geschieden</option>
+                <option>verwitwet</option>
+                <option>getrennt lebend</option>
+              </select>
+              <label for="familienstand">Familienstand</label>
+            </div>
+          </div>
+
+          <!-- BG-Nummer -->
+          <div class="col-md-4">
+            <div class="form-floating">
+              <input type="text" class="form-control" id="bgNummer" placeholder="BG-Nummer">
+              <label for="bgNummer">BG-Nummer</label>
+            </div>
+          </div>
+
+          <!-- ÖPNV Tarif-Stufe -->
+          <div class="col-md-4">
+            <div class="form-floating">
+              <input type="text" class="form-control" id="tarifStufe" placeholder="Tarifstufe">
+              <label for="tarifStufe">ÖPNV Tarif-Stufe</label>
+            </div>
+          </div>
+
+          <!-- Kundennummer ÖPNV -->
+          <div class="col-md-4">
+            <div class="form-floating">
+              <input type="text" class="form-control" id="oePnvKundenNr" placeholder="Kundennummer">
+              <label for="oePnvKundenNr">Kundennummer ÖPNV</label>
+            </div>
+          </div>
+
+          <!-- Entfernungs-KM PKW -->
+          <div class="col-md-4">
+            <div class="form-floating">
+              <input type="number" step="0.1" min="0" class="form-control" id="entfernungKm" placeholder="KM">
+              <label for="entfernungKm">Entfernungs-KM (PKW)</label>
+            </div>
+          </div>
+                    <div class="col-md-4">
+            <div class="form-floating">
+              <input type="number" step="0.1" min="0" class="form-control" id="entfernungKm" placeholder="KM">
+              <label for="entfernungKm">Geburtsname</label>
+            </div>
+          </div>
+
+          <!-- Einverständniserklärung Elternarbeit -->
+          <div class="col-12">
+            <div class="alert alert-info d-flex align-items-center gap-3 mb-0">
+              <input type="checkbox" id="einvElternarbeit" class="form-check-input" style="transform: scale(1.3);">
+              <label for="einvElternarbeit" class="form-check-label fw-semibold">
+                Einverständniserklärung zur Elternarbeit liegt vor
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <div class="d-flex justify-content-start gap-3 mt-4">
+    <button type="button" class="btn btn-primary" onclick="enableProfilEdit()">
+      <i class="bi bi-pencil me-2"></i>Bearbeiten
+    </button>
+    <button type="button" class="btn btn成功">
+      <i class="bi bi-save me-2"></i>Speichern
+    </button>
+  </div>
+</div>
+
+<!-- Maßnahmenverlauf -->
+<div class="tab-pane fade" id="tabVerlauf" role="tabpanel" aria-labelledby="tabVerlauf-tab">
+  <div class="timeline">
+    <ul class="list-unstyled position-relative ms-4 border-start border-2 border-dark">
+
+      <!-- Aktuelle Maßnahme -->
+      <li class="position-relative mb-4">
+        <div class="timeline-dot bg-success"></div>
+
+        <div class="ms-4 ps-3 py-3 px-3 bg-light rounded shadow-sm position-relative border border-success-subtle">
+          <div class="position-absolute top-0 end-0 m-2">
+            <button
+              type="button"
+              class="btn btn-sm btn-outline-secondary"
+              onclick="openMassnahmeProfil()"
+            >
+              <i class="bi bi-journal-text me-1"></i>
+              TN-Daten aus dieser Maßnahme öffnen
+            </button>
+          </div>
+
+          <!-- Zeitraum + Status -->
+          <div class="d-flex align-items-center gap-2 mb-1">
+            <small class="text-muted">01.01.2024 – 31.12.2024</small>
+            <span class="badge rounded-pill bg-success-subtle text-success">
+              laufend
+            </span>
+          </div>
+
+          <strong class="text-dark">
+            Aktuelle Maßnahme – Integra 2025
+          </strong>
+        </div>
+      </li>
+
+      <!-- Vergangene Maßnahme 1 -->
+      <li class="position-relative mb-4">
+        <div class="timeline-dot bg-danger-subtle"></div>
+
+        <div class="ms-4 ps-3 py-3 px-3 bg-light rounded shadow-sm position-relative border border-danger-subtle">
+          <div class="position-absolute top-0 end-0 m-2">
+            <button
+              type="button"
+              class="btn btn-sm btn-outline-secondary"
+              onclick="openMassnahmeProfil('TN-Profil_massnahme.html')"
+            >
+              <i class="bi bi-journal-text me-1"></i>
+              TN-Daten aus dieser Maßnahme öffnen
+            </button>
+          </div>
+
+          <!-- Zeitraum + Status -->
+          <div class="d-flex align-items-center gap-2 mb-1">
+            <small class="text-muted">01.03.2023 – 30.06.2023</small>
+            <span class="badge rounded-pill bg-danger-subtle text-danger">
+              beendet
+            </span>
+          </div>
+
+          <strong class="text-dark">
+            2023 – Kurs Aktivierung
+          </strong>
+        </div>
+      </li>
+
+    </ul>
+  </div>
+</div>
+
+
+              <!-- Kinder -->
+              <div class="tab-pane fade" id="tabKinder" role="tabpanel" aria-labelledby="tabKinder-tab">
+                <!-- Kopfzeile mit Aktionen -->
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <h5 class="mb-0">Kinderübersicht</h5>
+                  <div class="d-flex gap-2">
+                    <button type="button" class="btn btn-outline-secondary btn-sm" id="kinderBerichtBtn">
+                      <i class="bi bi-file-earmark-pdf me-1"></i> Bericht (PDF)
+                    </button>
+                    <button type="button" class="btn btn-primary btn-sm" id="kindNeuBtn"
+                            data-bs-toggle="modal" data-bs-target="#kinderModal">
+                      <i class="bi bi-plus-lg me-1"></i> Kind hinzufügen
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Tabelle: Übersicht aller Kinder -->
+
+<div class="mb-4">
+
+
+  <div class="row g-3" id="kinderListe">
+
+    <!-- Kind-Karte 1 -->
+    <div class="col-12 col-md-6 col-xl-4">
+      <div class="border rounded-3 p-3 h-100 small">
+
+        <!-- Kopf: Name + Geburtsdatum -->
+        <div class="d-flex justify-content-between align-items-start mb-2">
+          <div>
+            <div class="fw-semibold">Lea Mustermann</div>
+            <div class="text-muted">geb. 10.05.2015</div>
+          </div>
+          <span class="badge bg-secondary-subtle text-secondary-emphasis">
+            im Haushalt
+          </span>
+        </div>
+
+        <!-- Betreuungsstatus -->
+        <div class="mb-2 d-flex flex-wrap gap-1">
+          <span class="badge bg-success-subtle text-success-emphasis">Betreuung notwendig</span>
+          <span class="badge bg-success-subtle text-success-emphasis">Betreuung sichergestellt</span>
+        </div>
+
+        <!-- Einrichtung + Art + Zeit -->
+        <div class="mb-3">
+          <div><span class="text-muted">Einrichtung:</span> Kindertagesstätte</div>
+          <div><span class="text-muted">Art der Betreuung:</span> Ganztagsplatz</div>
+          <div><span class="text-muted">Betreuungszeit:</span> 08:00 – 16:00</div>
+        </div>
+
+        <!-- Aktionen -->
+        <div class="d-flex justify-content-between">
+          <button class="btn btn-sm btn-outline-secondary kind-edit-btn"
+                  data-bs-toggle="modal" data-bs-target="#kinderModal">
+            Bearbeiten
+          </button>
+          <button class="btn btn-sm btn-outline-danger">
+            Löschen
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Weitere Kinder einfach als weitere .col-12 col-md-6 col-xl-4 Blöcke einfügen -->
+
+  </div>
+</div>
+
+
+
+              </div>
+
+              <!-- StA Migration -->
+<!-- StA Migration -->
+<div class="tab-pane fade" id="tabStAMigration" role="tabpanel" aria-labelledby="tabStAMigration-tab">
+  <h5 class="mb-3">Staatsangehörigkeit & Migration</h5>
+
+  <form class="row g-3">
+
+    <!-- ESF-relevante Ja/Nein-Felder -->
+    <div class="col-md-4">
+      <div class="form-floating">
+        <select class="form-select" id="migDrittstaat">
+          <option value="">Bitte wählen …</option>
+          <option>Ja</option>
+          <option>Nein</option>
+        </select>
+        <label for="migDrittstaat">Drittstaatsangehörige/r</label>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="form-floating">
+        <select class="form-select" id="migGefluechtet">
+          <option value="">Bitte wählen …</option>
+          <option>Ja</option>
+          <option>Nein</option>
+        </select>
+        <label for="migGefluechtet">Teilnehmer/in ist geflüchtet</label>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="form-floating">
+        <select class="form-select" id="migAuslaendischeHerkunft">
+          <option value="">Bitte wählen …</option>
+          <option>Ja</option>
+          <option>Nein</option>
+        </select>
+        <label for="migAuslaendischeHerkunft">ausländische Herkunft</label>
+      </div>
+    </div>
+
+    <!-- Herkunft / Staatsangehörigkeit / Aufenthaltsstatus -->
+    <div class="col-md-4">
+      <div class="form-floating">
+        <input type="text" class="form-control" id="migHerkunftsland" placeholder="Herkunftsland">
+        <label for="migHerkunftsland">Herkunftsland</label>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="form-floating">
+        <input type="text" class="form-control" id="migStaatsangehoerigkeit" placeholder="Staatsangehörigkeit">
+        <label for="migStaatsangehoerigkeit">Staatsangehörigkeit</label>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="form-floating">
+        <input type="text" class="form-control" id="migAufenthaltsstatus" placeholder="Aufenthaltsstatus">
+        <label for="migAufenthaltsstatus">Aufenthaltsstatus</label>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="form-floating">
+        <input type="date" class="form-control" id="migAufenthaltBis" placeholder="Aufenthalt bis">
+        <label for="migAufenthaltBis">Aufenthaltsgenehmigung bis</label>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="form-floating">
+        <input type="text" class="form-control" id="migArbeitserlaubnis" placeholder="Arbeitserlaubnis">
+        <label for="migArbeitserlaubnis">Arbeitserlaubnis</label>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="form-floating">
+        <input type="text" class="form-control" id="migMuttersprache" placeholder="Muttersprache">
+        <label for="migMuttersprache">Muttersprache</label>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="form-floating">
+        <input type="date" class="form-control" id="migInBrdSeit" placeholder="in BRD seit">
+        <label for="migInBrdSeit">in BRD seit</label>
+      </div>
+    </div>
+
+    <!-- Sonstige Angaben -->
+    <div class="col-12">
+      <div class="form-floating">
+        <textarea class="form-control" id="migSonstiges" style="height: 100px;" placeholder="Weitere Angaben"></textarea>
+        <label for="migSonstiges">Weitere Angaben / Sonstiges</label>
+      </div>
+    </div>
+
+    <div class="col-12 d-flex justify-content-end gap-2 mt-2">
+      <button type="reset" class="btn btn-outline-secondary">Abbrechen</button>
+      <button type="submit" class="btn btn-success">StA-Migration speichern</button>
+    </div>
+  </form>
+</div>
+
+
+<!-- ESF-Angaben -->
+<div class="tab-pane fade" id="tabESF" role="tabpanel" aria-labelledby="tabESF-tab">
+  <h5 class="mb-3">ESF-Angaben</h5>
+
+  <form class="row g-3">
+
+    <!-- OBERER BLOCK: Übernommene Angaben aus anderen Tabs -->
+<div class="col-md-6">
+  <div class="form-floating">
+    <input type="date" class="form-control" id="esfEintrittsdatum" placeholder="Eintrittsdatum" readonly>
+    <label for="esfEintrittsdatum">Eintrittsdatum (übernommen)</label>
+  </div>
+</div>
+
+<div class="col-md-6">
+  <div class="form-floating">
+    <input type="text" class="form-control" id="esfDrittstaat" placeholder="Drittstaatsangehörige/r" readonly>
+    <label for="esfDrittstaat">Drittstaatsangehörige/r (StA Migration)</label>
+  </div>
+</div>
+
+<div class="col-md-6">
+  <div class="form-floating">
+    <input type="text" class="form-control" id="esfGefluechtet" placeholder="Geflüchtet" readonly>
+    <label for="esfGefluechtet">ist geflüchtet (StA Migration)</label>
+  </div>
+</div>
+
+<div class="col-md-6">
+  <div class="form-floating">
+    <input type="text" class="form-control" id="esfAuslaendischeHerkunft" placeholder="ausländische Herkunft" readonly>
+    <label for="esfAuslaendischeHerkunft">ausländische Herkunft (StA Migration)</label>
+  </div>
+</div>
+
+
+    <div class="col-12">
+      <hr class="mt-1 mb-3">
+    </div>
+
+    <!-- Hinweis Einverständnis -->
+    <div class="col-12">
+      <div class="alert alert-warning small" role="alert">
+        <strong>Wichtig:</strong> Einverständniserklärung liegt vor?  
+        Ohne Einverständniserklärung darf kein Teilnehmer-Stammblatt ausgefüllt werden!
+      </div>
+    </div>
+
+    <!-- Einverständniserklärung -->
+    <div class="col-md-4">
+      <div class="form-floating">
+        <select class="form-select" id="esfEinverstaendnis">
+          <option value="">Bitte wählen …</option>
+          <option>Ja</option>
+          <option>Nein</option>
+        </select>
+        <label for="esfEinverstaendnis">Einverständniserklärung liegt vor</label>
+      </div>
+    </div>
+
+    <!-- Leistungsbezug nach SGB -->
+    <div class="col-md-4">
+      <div class="form-floating">
+        <select class="form-select" id="esfSgbLeistung">
+          <option value="">Bitte wählen …</option>
+          <option>SGB II (Bürgergeld)</option>
+          <option>SGB III (Arbeitslosengeld I)</option>
+          <option>kein Leistungsbezug</option>
+        </select>
+        <label for="esfSgbLeistung">Leistungsbezug nach SGB (bei Eintritt)</label>
+      </div>
+    </div>
+
+    <!-- Höchster Schulabschluss -->
+    <div class="col-md-4">
+      <div class="form-floating">
+        <select class="form-select" id="esfSchulabschluss">
+          <option value="">Bitte wählen …</option>
+          <option>kein Schulabschluss</option>
+          <option>Haupt-/Mittelschulabschluss</option>
+          <option>Realschulabschluss</option>
+          <option>Fachhochschulreife/Abitur</option>
+        </select>
+        <label for="esfSchulabschluss">höchster erreichter Schulabschluss</label>
+      </div>
+    </div>
+
+    <!-- Höchster Berufsabschluss -->
+    <div class="col-md-4">
+      <div class="form-floating">
+        <select class="form-select" id="esfBerufsabschluss">
+          <option value="">Bitte wählen …</option>
+          <option>kein Berufsabschluss</option>
+          <option>anerkannte Berufsausbildung</option>
+          <option>Meister / Techniker</option>
+          <option>akademischer Abschluss</option>
+        </select>
+        <label for="esfBerufsabschluss">höchster erreichter Berufsabschluss</label>
+      </div>
+    </div>
+
+    <!-- Zielgruppe -->
+    <div class="col-md-4">
+      <div class="form-floating">
+        <select class="form-select" id="esfZielgruppe">
+          <option value="">Bitte wählen …</option>
+          <option>arbeitslos</option>
+          <option>langzeitarbeitslos</option>
+          <option>erwerbstätig, von Armut bedroht</option>
+        </select>
+        <label for="esfZielgruppe">Zielgruppe</label>
+      </div>
+    </div>
+
+    <!-- Fester Wohnsitz / Wohnungslosigkeit -->
+    <div class="col-md-4">
+      <div class="form-floating">
+        <select class="form-select" id="esfWohnsitz">
+          <option value="">Bitte wählen …</option>
+          <option>Ja</option>
+          <option>Nein</option>
+          <option>keine Angabe</option>
+        </select>
+        <label for="esfWohnsitz">
+          Fester Wohnsitz
+        </label>
+      </div>
+    </div>
+
+    <!-- Abschnitt "Beendet" -->
+    <div class="col-12 mt-3">
+      <hr>
+      <h6 class="text-muted">Beendet</h6>
+    </div>
+
+    <!-- Gründe für vorzeitigen Austritt -->
+    <div class="col-md-4">
+      <div class="form-floating">
+        <select class="form-select" id="esfAustrittsgrund">
+          <option value="">Bitte wählen …</option>
+          <option>regulär beendet</option>
+          <option>vorzeitig abgebrochen (Teilnehmer)</option>
+          <option>vorzeitig beendet (Träger/JC)</option>
+        </select>
+        <label for="esfAustrittsgrund">Gründe für vorzeitigen Austritt</label>
+      </div>
+    </div>
+
+    <!-- Erreichte Zertifizierung -->
+    <div class="col-md-4">
+      <div class="form-floating">
+        <select class="form-select" id="esfZertifizierung">
+          <option value="">Bitte wählen …</option>
+          <option>keine Zertifizierung</option>
+          <option>interne Teilnahmebescheinigung</option>
+          <option>anerkannte Qualifizierung / Zertifikat</option>
+        </select>
+        <label for="esfZertifizierung">erreichte Zertifizierung</label>
+      </div>
+    </div>
+
+    <!-- Verbleib nach Austritt -->
+    <div class="col-md-4">
+      <div class="form-floating">
+        <select class="form-select" id="esfVerbleib">
+          <option value="">Bitte wählen …</option>
+          <option>Beschäftigung aufgenommen</option>
+          <option>Ausbildung / Schule</option>
+          <option>weiter arbeitslos</option>
+          <option>sonstiger Verbleib</option>
+        </select>
+        <label for="esfVerbleib">Verbleib nach Austritt</label>
+      </div>
+    </div>
+
+    <div class="col-12 d-flex justify-content-end gap-2 mt-3">
+      <button type="reset" class="btn btn-outline-secondary">Abbrechen</button>
+      <button type="submit" class="btn btn-success">ESF-Angaben speichern</button>
+      <button type="submit" class="btn btn-danger">Stammblatt erzeugen</button>
+    </div>
+  </form>
+</div>
+
+
+              <!-- Schule / Beruf -->
+<!-- Schule / Beruf -->
+<div class="tab-pane fade" id="tabSchuleBeruf" role="tabpanel" aria-labelledby="tabSchuleBeruf-tab">
+  <h5 class="mb-3">Schule & Beruf</h5>
+
+  <form class="row g-3">
+
+    <!-- Höchster Schulabschluss -->
+    <div class="col-md-4">
+      <div class="form-floating">
+        <select class="form-select" id="schulabschluss">
+          <option value="">Bitte wählen …</option>
+          <option>kein Abschluss</option>
+          <option>Hauptschulabschluss</option>
+          <option>Realschulabschluss</option>
+          <option>Fachhochschulreife</option>
+          <option>Abitur</option>
+        </select>
+        <label for="schulabschluss">Höchster Schulabschluss</label>
+      </div>
+    </div>
+
+    <!-- Höchster Bildungsabschluss (ESF Bund) -->
+    <div class="col-md-4">
+      <div class="form-floating">
+        <select class="form-select" id="bildungsabschlussEsf">
+          <option value="">Bitte wählen …</option>
+          <option>Niveau 1</option>
+          <option>Niveau 2</option>
+          <option>Niveau 3</option>
+          <option>Niveau 4</option>
+          <option>Niveau 5+</option>
+        </select>
+        <label for="bildungsabschlussEsf">Höchster Bildungsabschluss (ESF Bund)</label>
+      </div>
+    </div>
+
+    <!-- Höchster Schulabschluss Detail -->
+    <div class="col-md-4">
+      <div class="form-floating">
+        <input type="text" class="form-control" id="schulabschlussDetail" placeholder="Detail">
+        <label for="schulabschlussDetail">Höchster Schulabschluss – Detail</label>
+      </div>
+    </div>
+
+    <!-- Schulabschluss erworben am -->
+    <div class="col-md-4">
+      <div class="form-floating">
+        <input type="date" class="form-control" id="schulabschlussDatum" placeholder="Datum">
+        <label for="schulabschlussDatum">Schulabschluss erworben am</label>
+      </div>
+    </div>
+
+    <!-- Zuletzt besuchte Schule -->
+    <div class="col-md-8">
+      <div class="form-floating">
+        <input type="text" class="form-control" id="schuleZuletzt" placeholder="Schule">
+        <label for="schuleZuletzt">Zuletzt besuchte Schule</label>
+      </div>
+    </div>
+
+    <!-- Abgangsklasse und -jahr -->
+    <div class="col-md-4">
+      <div class="form-floating">
+        <input type="text" class="form-control" id="abgangsklasse" placeholder="z. B. 10b / 2020">
+        <label for="abgangsklasse">Abgangsklasse und -jahr</label>
+      </div>
+    </div>
+
+    <!-- Note Deutsch -->
+    <div class="col-md-4">
+      <div class="form-floating">
+        <input type="number" class="form-control" id="noteDeutsch" placeholder="Note" min="1" max="6">
+        <label for="noteDeutsch">Note Deutsch</label>
+      </div>
+    </div>
+
+    <!-- Note Mathe -->
+    <div class="col-md-4">
+      <div class="form-floating">
+        <input type="number" class="form-control" id="noteMathe" placeholder="Note" min="1" max="6">
+        <label for="noteMathe">Note Mathe</label>
+      </div>
+    </div>
+
+    <!-- Berufsschule / im Rahmen von -->
+    <div class="col-md-6">
+      <div class="form-floating">
+        <input type="text" class="form-control" id="berufsschule" placeholder="Berufsschule">
+        <label for="berufsschule">Berufsschule / im Rahmen von</label>
+      </div>
+    </div>
+
+    <!-- Höchster Berufsabschluss -->
+    <div class="col-md-6">
+      <div class="form-floating">
+        <select class="form-select" id="berufsabschluss">
+          <option value="">Bitte wählen …</option>
+          <option>kein Berufsabschluss</option>
+          <option>anerkannte Ausbildung</option>
+          <option>Meister/Techniker</option>
+          <option>akademischer Abschluss</option>
+        </select>
+        <label for="berufsabschluss">Höchster Berufsabschluss</label>
+      </div>
+    </div>
+
+    <!-- Berufsdetails -->
+    <div class="col-md-6">
+      <div class="form-floating">
+        <input type="text" class="form-control" id="berufDetails" placeholder="Details">
+        <label for="berufDetails">Berufsdetails</label>
+      </div>
+    </div>
+
+    <!-- Höchster verwertbarer Berufsabschluss -->
+    <div class="col-md-6">
+      <div class="form-floating">
+        <input type="text" class="form-control" id="verwertbarerAbschluss" placeholder="z. B. Koch, Pflegekraft">
+        <label for="verwertbarerAbschluss">Höchster verwertbarer Berufsabschluss</label>
+      </div>
+    </div>
+
+    <!-- Berufsrückkehrer -->
+    <div class="col-md-4">
+      <div class="form-floating">
+        <select class="form-select" id="berufRueckkehrer">
+          <option value="">Bitte wählen …</option>
+          <option>Ja</option>
+          <option>Nein</option>
+        </select>
+        <label for="berufRueckkehrer">Berufsrückkehrer</label>
+      </div>
+    </div>
+
+    <!-- Speichern -->
+    <div class="col-12 d-flex justify-content-end gap-2 mt-2">
+      <button type="reset" class="btn btn-outline-secondary">Abbrechen</button>
+      <button type="submit" class="btn btn-success">Daten speichern</button>
+    </div>
+
+  </form>
+</div>
+
+
+              <!-- Bank -->
+<!-- Bankdaten -->
+<div class="tab-pane fade" id="tabBank" role="tabpanel" aria-labelledby="tabBank-tab">
+  <h5 class="mb-3">Bankdaten</h5>
+
+  <form class="row g-3">
+
+    <!-- Inhaber -->
+    <div class="col-md-4">
+      <div class="form-floating">
+        <input type="text" class="form-control" id="bankInhaber" placeholder="Inhaber">
+        <label for="bankInhaber">Kontoinhaber</label>
+      </div>
+    </div>
+
+    <!-- IBAN -->
+    <div class="col-md-4">
+      <div class="form-floating">
+        <input type="text" class="form-control" id="bankIban" placeholder="IBAN">
+        <label for="bankIban">IBAN</label>
+      </div>
+    </div>
+
+    <!-- BIC -->
+    <div class="col-md-4">
+      <div class="form-floating">
+        <input type="text" class="form-control" id="bankBic" placeholder="BIC">
+        <label for="bankBic">BIC</label>
+      </div>
+    </div>
+
+    <!-- BANK (automatisch ausgefüllt) -->
+    <div class="col-md-6">
+      <div class="form-floating">
+        <input type="text" class="form-control" id="bankName" placeholder="Bankname" readonly>
+        <label for="bankName">Bank (automatisch)</label>
+      </div>
+    </div>
+
+    <!-- gültig ab -->
+    <div class="col-md-6">
+      <div class="form-floating">
+        <input type="date" class="form-control" id="bankGueltigAb" placeholder="gültig ab">
+        <label for="bankGueltigAb">gültig ab</label>
+      </div>
+    </div>
+
+    <!-- Konto gesperrt – HERVORGEHOBEN -->
+    <div class="col-12">
+      <div class="alert alert-warning d-flex align-items-center gap-3">
+        <input type="checkbox" id="bankGesperrt" class="form-check-input" style="transform: scale(1.3);">
+        <label for="bankGesperrt" class="form-check-label fw-semibold">
+          Konto gesperrt
+        </label>
+      </div>
+    </div>
+
+    <div class="col-12 d-flex justify-content-end gap-2 mt-2">
+      <button type="reset" class="btn btn-outline-secondary">Abbrechen</button>
+      <button type="submit" class="btn btn-success">Bankdaten speichern</button>
+    </div>
+
+  </form>
+</div>
+
+
+              <!-- Netzwerke -->
+<!-- Netzwerke -->
+<div class="tab-pane fade" id="tabNetzwerke" role="tabpanel" aria-labelledby="tabNetzwerke-tab">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h5 class="mb-0">Netzwerke & Anbindungen</h5>
+    <span class="badge rounded-pill bg-secondary" id="netzwerkeCount">0 Netzwerke</span>
+  </div>
+
+  <p class="text-muted small mb-3">
+    Weisen Sie dem/der Teilnehmenden relevante Netzwerke zu
+    (z. B. Drogenberatung, Bewährungshilfe, Betreuungsverein).
+  </p>
+
+  <div class="row g-3">
+    <!-- Linke Seite: Netzwerk hinzufügen -->
+    <div class="col-lg-5">
+      <div class="card h-100">
+        <div class="card-header">
+          <strong>Netzwerk zuweisen</strong>
+        </div>
+        <div class="card-body">
+          <form id="netzwerkForm" class="row g-3">
+
+            <!-- Netzwerktype -->
+            <div class="col-12">
+              <div class="form-floating">
+                <select class="form-select" id="netzwerkTyp" required>
+                  <option value="">Bitte wählen …</option>
+                  <option>Angebote in anderen Einrichtungen</option>
+                  <option>Betreuungsverein / Amtsbetreuung</option>
+                  <option>Bewährungshilfe</option>
+                  <option>Drogenberatung</option>
+                  <option>Schuldnerberatung</option>
+                  <option>Sonstiges</option>
+                </select>
+                <label for="netzwerkTyp">Netzwerk / Angebot</label>
+              </div>
+            </div>
+
+            <!-- Institution / Träger -->
+            <div class="col-12">
+              <div class="form-floating">
+                <input type="text" class="form-control" id="netzwerkInstitution" placeholder="Institution / Träger">
+                <label for="netzwerkInstitution">Institution / Träger (optional)</label>
+              </div>
+            </div>
+
+            <!-- Ansprechperson -->
+            <div class="col-12">
+              <div class="form-floating">
+                <input type="text" class="form-control" id="netzwerkKontakt" placeholder="Ansprechperson / Kontakt">
+                <label for="netzwerkKontakt">Ansprechperson / Kontakt (optional)</label>
+              </div>
+            </div>
+
+            <!-- Kurzinfo -->
+            <div class="col-12">
+              <div class="form-floating">
+                <textarea class="form-control" id="netzwerkInfo" style="height: 90px;"
+                          placeholder="Kurzinfo / Rolle des Netzwerks"></textarea>
+                <label for="netzwerkInfo">Kurzinfo / Rolle des Netzwerks</label>
+              </div>
+            </div>
+
+            <div class="col-12 d-flex justify-content-end gap-2">
+              <button type="reset" class="btn btn-outline-secondary btn-sm">Zurücksetzen</button>
+              <button type="submit" class="btn btn-primary btn-sm">
+                <i class="bi bi-link-45deg me-1"></i> Netzwerk hinzufügen
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rechte Seite: Zugewiesene Netzwerke -->
+    <div class="col-lg-7">
+      <div class="card h-100">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <strong>Zugewiesene Netzwerke</strong>
+          <span class="text-muted small">Übersicht der aktuellen Anbindungen</span>
+        </div>
+        <div class="card-body">
+          <div id="netzwerkeListe" class="d-flex flex-column gap-2">
+            <p class="text-muted small mb-0" id="netzwerkeEmptyHint">
+              Noch keine Netzwerke zugewiesen. Fügen Sie oben ein Netzwerk hinzu.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+              <!-- Vermittlungshemmnisse -->
+<!-- Vermittlungshemmnisse -->
+<div class="tab-pane fade" id="tabVermittlungshemmnisse" role="tabpanel" aria-labelledby="tabVermittlungshemmnisse-tab">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h5 class="mb-0">Vermittlungshemmnisse</h5>
+    <span class="badge rounded-pill bg-secondary" id="hemmnisseCount">0 Einträge</span>
+  </div>
+
+  <p class="text-muted small mb-3">
+    Erfassen Sie Vermittlungshemmnisse des/der Teilnehmenden. Sie können mehrere Hemmnisse hinzufügen
+    und jeweils mit Datum und Bemerkung dokumentieren.
+  </p>
+
+  <div class="row g-3">
+    <!-- Linke Seite: Hemmnis hinzufügen -->
+    <div class="col-lg-5">
+      <div class="card h-100">
+        <div class="card-header">
+          <strong>Vermittlungshemmnis hinzufügen</strong>
+        </div>
+        <div class="card-body">
+          <form id="hemmnisForm" class="row g-3">
+
+            <!-- Hemmnis-Typ -->
+            <div class="col-12">
+              <div class="form-floating">
+                <select class="form-select" id="hemmnisTyp" required>
+                  <option value="">Bitte wählen …</option>
+                  <option>kein Führerschein</option>
+                  <option>Kinderbetreuung</option>
+                  <option>kognitive Defizite</option>
+                  <option>Schwangerschaft</option>
+                  <option>Suchtproblematik</option>
+                  <option>Migrationshintergrund</option>
+                  <option>unrealistische Selbsteinschätzung</option>
+                  <option>Sonstiges</option>
+                </select>
+                <label for="hemmnisTyp">Vermittlungshemmnis</label>
+              </div>
+            </div>
+
+            <!-- Datum (Feststellung / Dokumentation) -->
+            <div class="col-12">
+              <div class="form-floating">
+                <input type="date" class="form-control" id="hemmnisDatum" required>
+                <label for="hemmnisDatum">Datum (Feststellung / Dokumentation)</label>
+              </div>
+            </div>
+
+            <!-- Bemerkung -->
+            <div class="col-12">
+              <div class="form-floating">
+                <textarea class="form-control" id="hemmnisBemerkung" style="height: 90px;"
+                          placeholder="Bemerkung"></textarea>
+                <label for="hemmnisBemerkung">Bemerkung (optional)</label>
+              </div>
+            </div>
+
+            <div class="col-12 d-flex justify-content-end gap-2">
+              <button type="reset" class="btn btn-outline-secondary btn-sm">Zurücksetzen</button>
+              <button type="submit" class="btn btn-primary btn-sm">
+                <i class="bi bi-exclamation-circle me-1"></i> Hemmnis hinzufügen
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rechte Seite: Liste der Hemmnisse -->
+    <div class="col-lg-7">
+      <div class="card h-100">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <strong>Dokumentierte Vermittlungshemmnisse</strong>
+          <span class="text-muted small">Chronologische Übersicht</span>
+        </div>
+        <div class="card-body">
+          <div id="hemmnisseListe" class="d-flex flex-column gap-2">
+            <p class="text-muted small mb-0" id="hemmnisseEmptyHint">
+              Noch keine Vermittlungshemmnisse erfasst. Fügen Sie links ein Hemmnis hinzu.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+            </div> <!-- /.tab-content -->
+          </div> <!-- /.col-lg-9 -->
+        </div> <!-- /.row -->
+      </div> <!-- /.card-body -->
+    </div> <!-- /.card -->
+
+  </div> <!-- /.container-fluid -->
+
+
+<!-- KINDER – POPUP (Floating Form) -->
+<div class="modal fade" id="kinderModal" tabindex="-1" aria-labelledby="kinderModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title" id="kinderModalLabel">Kind bearbeiten / hinzufügen</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <form id="kinderFormModal" class="row g-3">
+
+          <!-- Vorname -->
+          <div class="col-md-4">
+            <div class="form-floating">
+              <input type="text" id="kindVorname" class="form-control">
+              <label for="kindVorname">Vorname</label>
+            </div>
+          </div>
+
+          <!-- Nachname -->
+          <div class="col-md-4">
+            <div class="form-floating">
+              <input type="text" id="kindNachname" class="form-control">
+              <label for="kindNachname">Nachname</label>
+            </div>
+          </div>
+
+          <!-- Geburtsdatum -->
+          <div class="col-md-4">
+            <div class="form-floating">
+              <input type="date" id="kindGeburtsdatum" class="form-control">
+              <label for="kindGeburtsdatum">Geburtsdatum</label>
+            </div>
+          </div>
+
+          <!-- lebt im Haushalt -->
+          <div class="col-md-4">
+            <div class="form-floating">
+              <select id="kindHaushalt" class="form-select">
+                <option value="">keine Angabe</option>
+                <option>Ja</option>
+                <option>Nein</option>
+              </select>
+              <label for="kindHaushalt">Lebt im Haushalt</label>
+            </div>
+          </div>
+
+          <!-- Betreuung notwendig -->
+          <div class="col-md-4">
+            <div class="form-floating">
+              <select id="kindBetreuungNotwendig" class="form-select">
+                <option value="">keine Angabe</option>
+                <option>Ja</option>
+                <option>Nein</option>
+              </select>
+              <label for="kindBetreuungNotwendig">Betreuung notwendig</label>
+            </div>
+          </div>
+
+          <!-- Betreuung sichergestellt -->
+          <div class="col-md-4">
+            <div class="form-floating">
+              <select id="kindBetreuungSicher" class="form-select">
+                <option value="">keine Angabe</option>
+                <option>Ja</option>
+                <option>Nein</option>
+              </select>
+              <label for="kindBetreuungSicher">Betreuung sichergestellt</label>
+            </div>
+          </div>
+
+          <!-- Betreuungseinrichtung -->
+          <div class="col-md-6">
+            <div class="form-floating">
+              <select id="kindEinrichtung" class="form-select">
+                <option value="">– bitte wählen –</option>
+                <option>Kindertagesstätte</option>
+                <option>Schule</option>
+                <option>Tagesmutter/-vater</option>
+              </select>
+              <label for="kindEinrichtung">Betreuungseinrichtung</label>
+            </div>
+          </div>
+
+          <!-- Art der Betreuung -->
+          <div class="col-md-6">
+            <div class="form-floating">
+              <select id="kindArtBetreuung" class="form-select">
+                <option value="">– bitte wählen –</option>
+                <option>Regelplatz</option>
+                <option>Ganztagsplatz</option>
+              </select>
+              <label for="kindArtBetreuung">Art der Betreuung</label>
+            </div>
+          </div>
+
+          <!-- Betreuungszeit -->
+          <div class="col-md-3">
+            <div class="form-floating">
+              <input type="time" id="kindZeitVon" class="form-control">
+              <label for="kindZeitVon">Zeit von</label>
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="form-floating">
+              <input type="time" id="kindZeitBis" class="form-control">
+              <label for="kindZeitBis">Zeit bis</label>
+            </div>
+          </div>
+
+          <!-- Entbindungstermin -->
+          <div class="col-md-3">
+            <div class="form-floating">
+              <input type="date" id="entbindungstermin" class="form-control">
+              <label for="entbindungstermin">Entbindungstermin</label>
+            </div>
+          </div>
+
+          <!-- Mutterschutz -->
+          <div class="col-md-3">
+            <div class="form-floating">
+              <input type="text" id="mutterschutz" class="form-control" readonly placeholder="berechnet automatisch">
+              <label for="mutterschutz">Mutterschutz</label>
+            </div>
+          </div>
+
+          <!-- Sonstiges -->
+          <div class="col-12">
+            <div class="form-floating">
+              <textarea id="kindSonstiges" class="form-control" style="height:100px"></textarea>
+              <label for="kindSonstiges">Sonstiges</label>
+            </div>
+          </div>
+
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Abbrechen</button>
+        <button type="button" class="btn btn-success" id="kindSpeichernBtn">Kind speichern</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- Bootstrap & Stepper Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bs-stepper/dist/js/bs-stepper.min.js"></script>
+
+<script>
+  let stepper;
+
+  document.addEventListener("DOMContentLoaded", function () {
+    // ================== STEPPER / BASIS-FUNKTIONEN ==================
+    const stepperElement = document.querySelector("#stepper");
+    if (stepperElement && window.Stepper) {
+      stepper = new window.Stepper(stepperElement);
+      showStep("logins-part");
+    }
+
+    const teilnehmerForm = document.getElementById("teilnehmerForm");
+    if (teilnehmerForm) {
+      teilnehmerForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+        alert("Teilnehmer erfolgreich erstellt!");
+        const modalElement = document.getElementById("teilnehmerModal");
+        if (modalElement) {
+          const modal = bootstrap.Modal.getInstance(modalElement);
+          if (modal) modal.hide();
+        }
+        this.reset();
+        if (stepper) stepper.to(1);
+        showStep("logins-part");
+      });
+    }
+
+    // ================== NETZWERKE ==================
+    const netzwerkForm = document.getElementById("netzwerkForm");
+    const netzwerkeListe = document.getElementById("netzwerkeListe");
+    const netzwerkeCount = document.getElementById("netzwerkeCount");
+    const netzwerkeEmptyHint = document.getElementById("netzwerkeEmptyHint");
+
+    function updateNetzwerkCounter() {
+      if (!netzwerkeListe || !netzwerkeCount || !netzwerkeEmptyHint) return;
+      const cards = netzwerkeListe.querySelectorAll(".netzwerk-card");
+      const count = cards.length;
+      netzwerkeCount.textContent = count === 1 ? "1 Netzwerk" : `${count} Netzwerke`;
+      netzwerkeEmptyHint.style.display = count === 0 ? "block" : "none";
+    }
+
+    if (netzwerkForm && netzwerkeListe) {
+      netzwerkForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const typ = document.getElementById("netzwerkTyp").value.trim();
+        const institution = document.getElementById("netzwerkInstitution").value.trim();
+        const kontakt = document.getElementById("netzwerkKontakt").value.trim();
+        const info = document.getElementById("netzwerkInfo").value.trim();
+
+        if (!typ) {
+          document.getElementById("netzwerkTyp").focus();
+          return;
+        }
+
+        const wrapper = document.createElement("div");
+        wrapper.className = "netzwerk-card border rounded p-2 px-3 d-flex justify-content-between align-items-start";
+
+        const left = document.createElement("div");
+        left.className = "me-2";
+
+        const title = document.createElement("div");
+        title.className = "fw-semibold";
+        title.innerHTML = `<i class="bi bi-people me-1"></i>${typ}`;
+
+        const meta = document.createElement("div");
+        meta.className = "small text-muted";
+        const metaParts = [];
+        if (institution) metaParts.push(institution);
+        if (kontakt) metaParts.push(kontakt);
+        meta.textContent = metaParts.join(" · ");
+
+        const text = document.createElement("div");
+        text.className = "small mt-1";
+        text.textContent = info;
+
+        left.appendChild(title);
+        if (metaParts.length > 0) left.appendChild(meta);
+        if (info) left.appendChild(text);
+
+        const actions = document.createElement("div");
+        actions.className = "d-flex flex-column align-items-end gap-1";
+
+        const badge = document.createElement("span");
+        badge.className = "badge bg-light text-muted border";
+        badge.textContent = "aktiv";
+
+        const delBtn = document.createElement("button");
+        delBtn.type = "button";
+        delBtn.className = "btn btn-sm btn-outline-danger";
+        delBtn.innerHTML = '<i class="bi bi-trash"></i>';
+        delBtn.addEventListener("click", function () {
+          wrapper.remove();
+          updateNetzwerkCounter();
+        });
+
+        actions.appendChild(badge);
+        actions.appendChild(delBtn);
+
+        wrapper.appendChild(left);
+        wrapper.appendChild(actions);
+
+        netzwerkeListe.appendChild(wrapper);
+        netzwerkForm.reset();
+
+        updateNetzwerkCounter();
+      });
+
+      updateNetzwerkCounter();
+    }
+
+    // ================== VERMITTLUNGSHEMMNISSE ==================
+    const hemmnisForm = document.getElementById("hemmnisForm");
+    const hemmnisseListe = document.getElementById("hemmnisseListe");
+    const hemmnisseCount = document.getElementById("hemmnisseCount");
+    const hemmnisseEmptyHint = document.getElementById("hemmnisseEmptyHint");
+
+    function updateHemmnisCounter() {
+      if (!hemmnisseListe || !hemmnisseCount || !hemmnisseEmptyHint) return;
+      const cards = hemmnisseListe.querySelectorAll(".hemmnis-card");
+      const count = cards.length;
+      hemmnisseCount.textContent = count === 1 ? "1 Eintrag" : `${count} Einträge`;
+      hemmnisseEmptyHint.style.display = count === 0 ? "block" : "none";
+    }
+
+    if (hemmnisForm && hemmnisseListe) {
+      hemmnisForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const typ = document.getElementById("hemmnisTyp").value.trim();
+        const datum = document.getElementById("hemmnisDatum").value;
+        const bemerkung = document.getElementById("hemmnisBemerkung").value.trim();
+
+        if (!typ || !datum) {
+          if (!typ) document.getElementById("hemmnisTyp").focus();
+          else document.getElementById("hemmnisDatum").focus();
+          return;
+        }
+
+        const wrapper = document.createElement("div");
+        wrapper.className = "hemmnis-card border rounded p-2 px-3 d-flex justify-content-between align-items-start";
+
+        const left = document.createElement("div");
+        left.className = "me-2";
+
+        const title = document.createElement("div");
+        title.className = "fw-semibold";
+        title.innerHTML = `<i class="bi bi-exclamation-triangle me-1"></i>${typ}`;
+
+        const meta = document.createElement("div");
+        meta.className = "small text-muted";
+        meta.textContent = `Dokumentiert am: ${datum}`;
+
+        const text = document.createElement("div");
+        text.className = "small mt-1";
+        text.textContent = bemerkung;
+
+        left.appendChild(title);
+        left.appendChild(meta);
+        if (bemerkung) left.appendChild(text);
+
+        const actions = document.createElement("div");
+        actions.className = "d-flex flex-column align-items-end gap-1";
+
+        const badge = document.createElement("span");
+        badge.className = "badge bg-light text-muted border";
+        badge.textContent = "aktiv";
+
+        const delBtn = document.createElement("button");
+        delBtn.type = "button";
+        delBtn.className = "btn btn-sm btn-outline-danger";
+        delBtn.innerHTML = '<i class="bi bi-trash"></i>';
+        delBtn.addEventListener("click", function () {
+          wrapper.remove();
+          updateHemmnisCounter();
+        });
+
+        actions.appendChild(badge);
+        actions.appendChild(delBtn);
+
+        wrapper.appendChild(left);
+        wrapper.appendChild(actions);
+
+        hemmnisseListe.appendChild(wrapper);
+        hemmnisForm.reset();
+
+        updateHemmnisCounter();
+      });
+
+      updateHemmnisCounter();
+    }
+
+    // ================== ACCORDION (falls auf Seite vorhanden) ==================
+    document.querySelectorAll('.accordion-button').forEach(button => {
+      button.addEventListener('click', function () {
+        const target = this.getAttribute('data-bs-target');
+        if (!target) return;
+        const collapse = document.querySelector(target);
+        if (collapse && collapse.classList.contains('show')) {
+          const bsCollapse = bootstrap.Collapse.getInstance(collapse);
+          if (bsCollapse) bsCollapse.hide();
+        }
+      });
+    });
+  });
+
+  // ============== HILFSFUNKTIONEN (unverändert) ==============
+  function showStep(id) {
+    document.querySelectorAll('.bs-stepper-content .content').forEach(step => {
+      step.classList.add('d-none');
+    });
+    const active = document.getElementById(id);
+    if (active) active.classList.remove('d-none');
+  }
+
+  function enableProfilEdit() {
+    const form = document.getElementById("profilForm");
+    if (!form) return;
+    form.querySelectorAll("input").forEach(input => input.removeAttribute("readonly"));
+    form.querySelectorAll("select").forEach(select => select.removeAttribute("disabled"));
+  }
+
+  function toggleDetails(button) {
+    const row = button.closest('tr');
+    const detailRow = row.nextElementSibling;
+    const allDetails = document.querySelectorAll('.detail-row');
+
+    allDetails.forEach(r => {
+      if (r !== detailRow) r.classList.add('d-none');
+    });
+
+    detailRow.classList.toggle('d-none');
+  }
+
+  function setAnwesend(button) {
+    setActive(button, 'bg-success');
+    const zeiten = document.getElementById('anwesenheit-zeiten');
+    const sonder = document.getElementById('sonderoptionen');
+    if (zeiten) zeiten.classList.remove('d-none');
+    if (sonder) sonder.classList.add('d-none');
+  }
+
+  function setActive(button, colorClass) {
+    const all = button.parentElement.querySelectorAll('button');
+    all.forEach(btn => {
+      btn.classList.remove('bg-success', 'bg-warning', 'bg-info', 'bg-danger', 'bg-primary', 'text-white', 'text-dark');
+      btn.classList.add('btn-outline-secondary');
+    });
+    button.classList.remove('btn-outline-secondary');
+    colorClass.split(' ').forEach(c => button.classList.add(c));
+  }
+
+  function setSpecial(button, type) {
+    const sonder = document.getElementById('sonderoptionen');
+    const au = document.getElementById('auBtn');
+    const urlaub = document.getElementById('urlaubFeld');
+    const grund = document.getElementById('grundFeld');
+    const zeiten = document.getElementById('anwesenheit-zeiten');
+
+    setActive(button,
+      type === 'krank' ? 'bg-warning text-dark'
+      : type === 'entschuldigt' ? 'bg-info text-white'
+      : type === 'unentschuldigt' ? 'bg-danger'
+      : 'bg-primary');
+
+    if (sonder) sonder.classList.remove('d-none');
+    if (zeiten) zeiten.classList.add('d-none');
+
+    if (au) au.style.display = (type === 'krank' || type === 'entschuldigt') ? 'inline-block' : 'none';
+    if (urlaub) urlaub.style.display = (type === 'urlaub') ? 'inline-block' : 'none';
+    if (grund) grund.style.display = (type === 'entschuldigt' || type === 'unentschuldigt') ? 'block' : 'none';
+  }
+
+  function showUebersicht() {
+    document.querySelectorAll('.content-page, .tab-pane').forEach(el => el.classList.add('d-none'));
+    const ueb = document.getElementById('anwesenheits-uebersicht');
+    if (ueb) ueb.classList.remove('d-none');
+  }
+
+  function openMassnahmeProfil() {
+    console.log("openMassnahmeProfil() wurde aufgerufen");
+
+    try {
+      // Versuche, das iframe in prototyp.html zu finden
+      const parentDoc = window.parent && window.parent.document ? window.parent.document : null;
+      const frame = parentDoc ? parentDoc.getElementById("mainFrame") : null;
+
+      if (frame) {
+        console.log("iframe #mainFrame gefunden – lade TN-Profil_massnahme.html");
+        frame.src = "TN-Profil_massnahme.html";
+      } else {
+        console.log("Kein iframe gefunden – lade Seite direkt");
+        window.location.href = "TN-Profil_massnahme.html";
+      }
+    } catch (e) {
+      console.error("Fehler in openMassnahmeProfil:", e);
+      // Fallback: direkt laden
+      window.location.href = "TN-Profil_massnahme.html";
+    }
+  }
+function openTNMassnahmeProfil(page) {
+  let frame = null;
+
+  try {
+    if (window.parent && window.parent !== window) {
+      frame = window.parent.document.getElementById("mainFrame");
+    }
+  } catch (e) {
+    frame = null;
+  }
+
+  if (frame) {
+    frame.src = page;
+  } else {
+    window.location.href = page;
+  }
+}
+  
+</script>
+
+</body>
+</html>

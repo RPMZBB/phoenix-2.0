@@ -1,0 +1,1375 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PHÖNIX Prototyp</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bs-stepper/dist/css/bs-stepper.min.css" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .topbar {
+      background: linear-gradient(to right, #2c2c2c, #181818);
+      color: white;
+      padding: 0.5rem 1rem;
+      display: flex;
+      align-items: center;
+      height: 50px;
+    }
+    .sidebar {
+      width: 220px;
+      background-color: #1e1e1e;
+      color: white;
+      height: calc(100vh - 50px);
+      overflow-y: auto;
+      flex-shrink: 0;
+      padding-top: 1rem;
+    }
+    .sidebar a {
+      color: white;
+      padding: 0.75rem 1rem;
+      display: block;
+      text-decoration: none;
+    }
+    .sidebar a:hover,
+    .sidebar .active {
+      background-color: #f97316;
+      color: white;
+    }
+    .accordion-button {
+      background-color: transparent;
+      color: white;
+      padding: 0.75rem 1rem;
+    }
+    .accordion-button::after {
+      filter: invert(1);
+    }
+    .accordion-item {
+      background-color: transparent;
+      border: none;
+    }
+    .accordion-collapse {
+      background-color: #2a2a2a;
+    }
+    .submenu-link {
+      padding-left: 2rem;
+      display: block;
+      color: white;
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+    }
+    .submenu-link:hover {
+      background-color: #f97316;
+      color: white;
+    }
+    .main {
+      flex-grow: 1;
+      background-color: #f8f9fa;
+      padding: 1rem;
+      overflow-y: auto;
+    }
+    .avatar-initials {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background-color: #d6bbfb;
+      color: #4c1d95;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      margin-right: 0.5rem;
+    }
+	.ps-4 {
+		padding: 0 !important;
+	}
+	
+	input[readonly],
+select[disabled],
+textarea[readonly] {
+  background-color: #e9ecef;
+  cursor: not-allowed;
+  opacity: 1; /* optional – verhindert zu starkes Ausgrauen */
+}
+
+.timeline ul {
+  padding-left: 1rem;
+  margin: 0;
+}
+.timeline li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.5rem;
+  width: 10px;
+  height: 10px;
+  background-color: #0d6efd;
+  border-radius: 50%;
+  border: 2px solid white;
+}
+.timeline ul {
+  margin: 0;
+  padding-left: 0;
+}
+
+.timeline-dot {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  position: absolute;
+  top: 0.35rem;
+  left: -13px;
+  z-index: 1;
+  border: 2px solid white;
+}
+
+  .hover-grow {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .hover-grow:hover {
+    transform: scale(1.007);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+	cursor:pointer;
+  }
+
+  </style>
+</head>
+<body>
+
+  <!-- Topbar -->
+  <header class="topbar">
+    <button class="btn btn-sm btn-outline-light me-3"><i class="bi bi-list"></i></button>
+    <div class="fw-bold">PHÖNIX</div>
+  </header>
+
+  <!-- Layout -->
+  <div class="d-flex flex-grow-1">
+    <!-- Sidebar -->
+    <nav class="sidebar">
+      <div class="accordion" id="sidebarAccordion">
+        <!-- Dashboard -->
+        <div class="accordion-item">
+          <h2 class="accordion-header" data-target="dashboard">
+            <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#collapseDashboard">
+              <i class="bi bi-scissors me-2"></i> Dashboard
+            </button>
+          </h2>
+  
+        </div>
+		        <!-- Teilnehmerdaten -->
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#collapseTeilnehmer">
+              <i class="bi bi-person-lines-fill me-2"></i> Teilnehmerdaten
+            </button>
+          </h2>
+          <div id="collapseTeilnehmer" class="accordion-collapse collapse">
+            <div class="accordion-body ps-4">
+              <a href="#" class="submenu-link" data-target="teilnehmer">Übersicht</a>
+              <a href="#" class="submenu-link" data-bs-toggle="modal" data-bs-target="#teilnehmerModal">Teilnehmer erstellen</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Maßnahme -->
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#collapseMassnahme">
+              <i class="bi bi-cpu me-2"></i> Maßnahme
+            </button>
+          </h2>
+          <div id="collapseMassnahme" class="accordion-collapse collapse">
+            <div class="accordion-body ps-4">
+              <a href="#" class="submenu-link" data-target="massnahme">Übersicht</a>
+              <a href="#" class="submenu-link">Neue Maßnahme</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Gruppen -->
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#collapseGruppen">
+              <i class="bi bi-people-fill me-2"></i> Gruppen
+            </button>
+          </h2>
+          <div id="collapseGruppen" class="accordion-collapse collapse">
+            <div class="accordion-body ps-4">
+              <a href="#" class="submenu-link">Gruppenübersicht</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dozenten -->
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#collapseDozenten">
+              <i class="bi bi-mortarboard-fill me-2"></i> Dozenten
+            </button>
+          </h2>
+          <div id="collapseDozenten" class="accordion-collapse collapse">
+            <div class="accordion-body ps-4">
+              <a href="#" class="submenu-link">Dozentenübersicht</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Parameter -->
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#collapseParameter">
+              <i class="bi bi-sliders me-2"></i> Parameter
+            </button>
+          </h2>
+          <div id="collapseParameter" class="accordion-collapse collapse">
+            <div class="accordion-body ps-4">
+              <a href="#" class="submenu-link">Aktennotizbausteine</a>
+              <a href="#" class="submenu-link">Anwesenheitseinträge</a>
+              <a href="#" class="submenu-link">Jobcenter-Mitarbeiter</a>
+              <a href="#" class="submenu-link">Standorte</a>
+              <a href="#" class="submenu-link">Textbausteine</a>
+              <a href="#" class="submenu-link">Verbleibsangaben</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main">
+	
+	
+
+
+	
+	
+	    <!-- Massnahme Detail -->
+<div id="massnahme-detail" class="content-page d-none">
+  <h2 class="mb-4">Integra 2025</h2>
+<div class="d-flex flex-wrap gap-3 mb-4 justify-content-between">
+
+  <div class="flex-fill bg-body-secondary text-dark rounded shadow-sm p-4 text-center">
+    <small class="d-block mb-1 text-muted">BELEGUNG</small>
+    <h2 class="fw-bold">50 %</h2>
+    <div>10 von 20</div>
+  </div>
+
+  <div class="flex-fill bg-body-secondary text-dark rounded shadow-sm p-4 text-center">
+    <small class="d-block mb-1 text-muted">ANWESENHEIT</small>
+    <h2 class="fw-bold">56 %</h2>
+  </div>
+
+  <div class="flex-fill bg-body-secondary text-dark rounded shadow-sm p-4 text-center">
+    <small class="d-block mb-1 text-muted">MODULE</small>
+    <h2 class="fw-bold">8</h2>
+  </div>
+
+  <div class="flex-fill bg-body-secondary text-dark rounded shadow-sm p-4 text-center">
+    <small class="d-block mb-1 text-muted">VERMITTLUNGEN</small>
+    <h2 class="fw-bold">2</h2>
+  </div>
+
+  <div class="flex-fill bg-body-secondary text-dark rounded shadow-sm p-4 text-center">
+    <small class="d-block mb-1 text-muted">Laufzeit</small>
+    <div>01.01.2024 – 31.06.2025</div>
+    <div>ESF +</div>
+  </div>
+
+</div>
+
+
+
+  <!-- Tabs -->
+  <ul class="nav nav-tabs mb-3">
+    <li class="nav-item">
+      <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-teilnehmer">Aktuelle Teilnehmer</button>
+    </li>
+    <li class="nav-item">
+      <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-anwesenheit">Anwesenheit</button>
+    </li>
+    <li class="nav-item">
+      <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-fahrkosten">Fahrkosten</button>
+    </li>
+    <li class="nav-item">
+      <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-arbeitsbereiche">Arbeitsbereiche</button>
+    </li>
+    <li class="nav-item">
+      <button class="nav-link disabled">…</button>
+    </li>
+  </ul>
+
+  <div class="tab-content">
+  
+  
+  <div class="tab-pane fade" id="tab-anwesenheit">
+  <div class="row g-2 mb-3">
+    <div class="col-md-6">
+      <select class="form-select">
+        <option selected>Betreuer</option>
+      </select>
+    </div>
+    <div class="col-md-6">
+      <select class="form-select">
+        <option selected>Arbeitsbereich</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="d-flex align-items-center gap-2 mb-3">
+    <button class="btn btn-outline-secondary">&#8592;</button>
+    <input type="date" class="form-control w-auto" value="2025-05-21">
+    <button class="btn btn-outline-secondary">&#8594;</button>
+    <button class="btn btn-outline-dark ms-2">Alle Anwesend</button>
+  </div>
+
+<table class="table table-bordered align-middle">
+  <thead class="table-secondary">
+    <tr>
+      <th>Teilnehmer</th>
+      <th>Anwesenheit</th>
+      <th>Aktion</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span class="avatar-initials bg-secondary text-white me-2">MM</span> Max Mustermann</td>
+      <td>
+        <button class="btn btn-outline-secondary btn-sm me-1" onclick="setAnwesend(this)">Anwesend</button>
+        <button class="btn btn-outline-secondary btn-sm me-1" onclick="setSpecial(this, 'krank')">Krank</button>
+        <button class="btn btn-outline-secondary btn-sm me-1" onclick="setSpecial(this, 'entschuldigt')">Entschuldigt</button>
+        <button class="btn btn-outline-secondary btn-sm me-1" onclick="setSpecial(this, 'unentschuldigt')">unentschuldigt</button>
+        <button class="btn btn-outline-secondary btn-sm" onclick="setSpecial(this, 'urlaub')">Urlaub</button>
+      </td>
+      <td>
+        <button class="btn btn-outline-dark btn-sm" onclick="toggleDetails(this)">✕ Detail</button>
+		<button class="btn btn-outline-dark btn-sm" onclick="showUebersicht()">+ Anwesenheitsübersicht</button>
+
+      </td>
+    </tr>
+
+    <tr class="d-none detail-row">
+      <td colspan="3" class="bg-light">
+        <!-- PRAKTISCH/THEORETISCH BLOCK -->
+        <div id="anwesenheit-zeiten" class="mb-3 d-none">
+          <div class="mb-2">
+            <strong>praxis</strong>
+            <input type="time" class="form-control d-inline-block w-auto ms-2 me-2" value="08:00">
+            <input type="time" class="form-control d-inline-block w-auto me-2" value="16:00">
+            <input type="text" class="form-control d-inline-block w-auto" value="8 Stunden" readonly>
+          </div>
+          <div class="mb-2">
+            <strong>theorie</strong>
+            <input type="time" class="form-control d-inline-block w-auto ms-2 me-2" value="08:00">
+            <input type="time" class="form-control d-inline-block w-auto me-2" value="16:00">
+            <input type="text" class="form-control d-inline-block w-auto" value="8 Stunden" readonly>
+          </div>
+        </div>
+
+        <!-- SONDEROPTIONEN -->
+        <div id="sonderoptionen" class="mt-3 d-none">
+          <div class="mb-2 d-flex align-items-center gap-2">
+            <label class="form-label mb-0">von:</label>
+            <input type="date" class="form-control w-auto">
+            <label class="form-label mb-0">bis:</label>
+            <input type="date" class="form-control w-auto">
+            <button class="btn btn-outline-primary btn-sm" id="auBtn" style="display: none;">
+              <i class="bi bi-upload me-1"></i> AU hochladen
+            </button>
+            <input type="text" class="form-control w-auto" id="urlaubFeld" placeholder="Urlaubsanspruch in Tagen" style="display: none;">
+          </div>
+          <div class="mb-2" id="grundFeld" style="display: none;">
+            <label for="grundInput" class="form-label">Grund</label>
+            <input type="text" class="form-control" id="grundInput" placeholder="z. B. Arzttermin, familiär ...">
+          </div>
+        </div>
+
+        <button class="btn btn-outline-primary btn-sm mt-2">
+          <i class="bi bi-pen me-1"></i> persönliche Arbeitszeit bearbeiten
+        </button>
+      </td>
+    </tr>
+	
+  </tbody>
+</table>
+
+</div>
+
+  
+  
+  
+    <!-- Teilnehmer-Tabelle -->
+    <div class="tab-pane fade show active" id="tab-teilnehmer">
+      <div class="row g-2 mb-3">
+        <div class="col-md-6">
+          <input type="text" class="form-control" placeholder="Search...">
+        </div>
+        <div class="col-md-3">
+          <select class="form-select">
+            <option>Betreuer</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <select class="form-select">
+            <option>Arbeitsbereich</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <div>
+          <button class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">Exportieren</button>
+        </div>
+        <div>
+          <span class="badge rounded-pill bg-warning text-dark fs-6">4</span>
+          <span class="ms-1">Anzahl der Teilnehmer</span>
+        </div>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table table-bordered align-middle">
+          <thead class="table-secondary">
+            <tr>
+              <th>Teilnehmer</th>
+              <th>Betreuer</th>
+              <th>Arbeitsbereich</th>
+              <th>Zuweisung</th>
+              <th>Massnahme</th>
+              <th>Betreuer</th>
+              <th>Aktionen</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="avatar-initials">MM</span> Max Mustermann</td>
+              <td>Daniel Chu</td>
+              <td>Maler</td>
+              <td>01.01.20 - 01.01.24</td>
+              <td>Integra 2025</td>
+              <td>Daniel Chu</td>
+              <td><button class="btn btn-sm btn-outline-secondary">Bearbeiten</button></td>
+            </tr>
+            <tr>
+              <td><span class="avatar-initials">CP</span> Claudia Peters</td>
+              <td>Daniel Chu</td>
+              <td>Maler</td>
+              <td>01.01.20 - 01.01.24</td>
+              <td>Integra 2025</td>
+              <td>Holger Irmak</td>
+              <td><button class="btn btn-sm btn-outline-secondary">Bearbeiten</button></td>
+            </tr>
+            <tr>
+              <td><span class="avatar-initials">MM</span> Max Mustermann</td>
+              <td>Daniel Chu</td>
+              <td>IT</td>
+              <td>01.01.20 - 01.01.24</td>
+              <td>Integra 2025</td>
+              <td>Daniel Chu</td>
+              <td><button class="btn btn-sm btn-outline-secondary">Bearbeiten</button></td>
+            </tr>
+            <tr>
+              <td><span class="avatar-initials">CP</span> Claudia Peters</td>
+              <td>Daniel Chu</td>
+              <td>Friseur</td>
+              <td>01.01.20 - 01.01.24</td>
+              <td>Integra 2025</td>
+              <td>Holger Irmak</td>
+              <td><button class="btn btn-sm btn-outline-secondary">Bearbeiten</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <!-- Weitere Tabs hier -->
+  </div>
+</div>
+	
+	
+	
+	
+	<div id="anwesenheits-uebersicht" class="d-none">
+  <button class="btn btn-outline-dark mb-4" onclick="closeUebersicht()">← Zurück</button>
+
+  <div class="row g-3 mb-4">
+    <div class="col-md-3">
+      <div class="bg-light rounded shadow-sm p-4 text-center">
+        <h2 class="fw-bold">56 %</h2>
+        <div class="text-muted">ANWESENHEITSQUOTE</div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="bg-light rounded shadow-sm p-4 text-center">
+        <div class="fw-semibold">Fehltage</div>
+        <h4>2</h4>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="bg-light rounded shadow-sm p-4 text-center">
+        <div class="fw-semibold">Quote AU</div>
+        <h4>90 %</h4>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="bg-light rounded shadow-sm p-4 text-center">
+        <div class="fw-semibold">Quote F</div>
+        <h4>10 %</h4>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="bg-light rounded shadow-sm p-4 text-center">
+        <div class="fw-semibold">Urlaub</div>
+        <h4>30</h4>
+      </div>
+    </div>
+  </div>
+
+  <!-- Kalender-Navigation -->
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <div class="d-flex gap-2">
+      <select class="form-select w-auto">
+        <option selected>2025</option>
+      </select>
+      <select class="form-select w-auto">
+        <option selected>Januar</option>
+      </select>
+      <div class="btn-group ms-2">
+        <button class="btn btn-outline-secondary btn-sm">Monat</button>
+        <button class="btn btn-primary btn-sm">Jahr</button>
+      </div>
+    </div>
+    <button class="btn btn-outline-primary btn-sm">Anwesenheit exportieren</button>
+  </div>
+
+  <!-- Kalender -->
+  <table class="table text-center border">
+    <thead class="text-muted">
+      <tr>
+        <th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th><th>Sun</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="badge bg-success">3</span></td>
+        <td><span class="badge bg-success">4</span></td>
+        <td><span class="badge bg-danger">5</span></td>
+        <td><span class="badge bg-danger">6</span></td>
+        <td><span class="badge bg-warning text-dark">7</span></td>
+        <td>8</td>
+        <td>9</td>
+      </tr>
+      <tr>
+        <td>10</td><td>11</td><td>12</td><td>13</td><td><span class="badge bg-primary">14</span></td><td>15</td><td>16</td>
+      </tr>
+      <tr>
+        <td>17</td><td>18</td><td>19</td><td>20</td><td>21</td><td>22</td><td>23</td>
+      </tr>
+      <tr>
+        <td>24</td><td>25</td><td>26</td><td>27</td><td>28</td><td>29</td><td>30</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+	
+	
+	
+<div id="massnahme" class="content-page d-none">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-normal">Massnahmen</h2>
+    <button class="btn btn-primary">Neuer Massnahme</button>
+  </div>
+
+  <div class="mb-4">
+    <select class="form-select w-100" style="max-width: 400px;">
+      <option selected>Massnahme</option>
+      <option value="1">Integra 2025</option>
+      <option value="2">Integra 2024</option>
+    </select>
+  </div>
+
+  <hr />
+
+  <!-- Laufende Maßnahmen -->
+  <h6 class="text-muted">Laufende Massnahmen</h6>
+  <a href="#" class="text-decoration-none text-dark"
+   data-target="massnahme-detail">
+  <div class="bg-body-secondary rounded p-3 mb-3 d-flex justify-content-between align-items-center shadow-sm hover-grow">
+    <div class="d-flex flex-column">
+      <div class="fw-semibold">Integra 2025</div>
+      <small class="text-muted">01.01.2024 bis 31.06.2025</small>
+    </div>
+    <div class="d-flex flex-column">
+      <span class="text-muted small">INFO</span>
+      <span>Aktivierung</span>
+    </div>
+    <div class="d-flex flex-column">
+      <span class="text-muted small">INFO</span>
+      <span>ESF +</span>
+    </div>
+    <div>
+      <button class="btn btn-outline-secondary rounded-circle">
+        <i class="bi bi-gear"></i>
+      </button>
+    </div>
+  </div>
+  </a>
+    <a href="#" class="text-decoration-none text-dark"
+   data-target="massnahme-detail">
+    <div class="bg-body-secondary rounded p-3 mb-3 d-flex justify-content-between align-items-center shadow-sm hover-grow">
+    <div class="d-flex flex-column">
+      <div class="fw-semibold">Massnahme 2</div>
+      <small class="text-muted">01.01.2024 bis 31.06.2025</small>
+    </div>
+    <div class="d-flex flex-column">
+      <span class="text-muted small">INFO</span>
+      <span>Aktivierung</span>
+    </div>
+    <div class="d-flex flex-column">
+      <span class="text-muted small">INFO</span>
+      <span>ESF +</span>
+    </div>
+    <div>
+      <button class="btn btn-outline-secondary rounded-circle">
+        <i class="bi bi-gear"></i>
+      </button>
+    </div>
+  </div>
+  </a>
+
+  <!-- Abgeschlossene Maßnahmen -->
+
+<button class="btn btn-sm btn-outline-secondary mb-3" data-bs-toggle="collapse" data-bs-target="#abgeschlosseneMassnahmen">
+  <i class="bi bi-chevron-down me-1"></i>Zeige abgeschlossene Massnahmen
+</button>
+<div class="collapse" id="abgeschlosseneMassnahmen">
+  <div class="bg-body-secondary rounded p-3 mb-3 d-flex justify-content-between align-items-center shadow-sm hover-grow">
+    <div class="d-flex flex-column">
+      <div class="fw-semibold">Integra 2024</div>
+      <small class="text-muted">01.01.2024 bis 31.06.2025</small>
+    </div>
+    <div class="d-flex flex-column">
+      <span class="text-muted small">INFO</span>
+      <span>AGH</span>
+    </div>
+    <div class="d-flex flex-column">
+      <span class="text-muted small">INFO</span>
+      <span>ESF +</span>
+    </div>
+    <div>
+      <button class="btn btn-outline-secondary rounded-circle">
+        <i class="bi bi-gear"></i>
+      </button>
+    </div>
+  </div>
+    <div class="bg-body-secondary rounded p-3 mb-3 d-flex justify-content-between align-items-center shadow-sm hover-grow">
+    <div class="d-flex flex-column">
+      <div class="fw-semibold">Integra 2023</div>
+      <small class="text-muted">01.01.2024 bis 31.06.2025</small>
+    </div>
+    <div class="d-flex flex-column">
+      <span class="text-muted small">INFO</span>
+      <span>Aktivierung</span>
+    </div>
+    <div class="d-flex flex-column">
+      <span class="text-muted small">INFO</span>
+      <span>ESF +</span>
+    </div>
+    <div>
+      <button class="btn btn-outline-secondary rounded-circle">
+        <i class="bi bi-gear"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Weitere Maßnahmen hier -->
+  
+  
+
+</div>
+
+
+
+</div>
+
+
+
+	
+      <!-- Dashboard-Seite -->
+      <div id="dashboard" class="content-page">
+        <h2>Dashboard</h2>
+        <p>Inhalt für das Dashboard…</p>
+      </div>
+
+      <!-- Teilnehmer-Seite -->
+      <div id="teilnehmer" class="content-page d-none">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h2>Alle Teilnehmer</h2>
+          <!-- Button: Neuer Teilnehmer -->
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#teilnehmerModal">
+            Neuer Teilnehmer
+          </button>
+        </div>
+		
+		       <div class="row g-2 mb-3">
+          <div class="col-md-4">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Search..." />
+              <button class="btn btn-outline-primary"><i class="bi bi-search"></i></button>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <select class="form-select">
+              <option>Maßnahme</option>
+            </select>
+          </div>
+          <div class="col-md-3">
+            <select class="form-select">
+              <option>Betreuer</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <div class="d-flex gap-2">
+            <button class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">Spalten anzeigen</button>
+            <button class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">Exportieren</button>
+          </div>
+          <div>
+            <span class="badge rounded-pill bg-warning text-dark fs-6">2</span>
+            <span class="ms-1">Anzahl der Teilnehmer</span>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table table-bordered align-middle">
+            <thead class="table-secondary">
+              <tr>
+                <th>Teilnehmer</th>
+                <th>Kundennummer</th>
+                <th>Geburtsdatum</th>
+                <th>Status</th>
+                <th>Zuweisung</th>
+                <th>Maßnahme</th>
+                <th>Betreuer</th>
+                <th>Aktionen</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="avatar-initials">MM</span> Max Mustermann</td>
+                <td>1234434</td>
+                <td>01.01.2000</td>
+                <td><span class="badge bg-success">Aktiv</span></td>
+                <td>01.01.25 - 01.01.26</td>
+                <td>Integra 2025</td>
+                <td>Daniel Chu</td>
+                <td><button class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#profileModal">Bearbeiten</button></td>
+              </tr>
+			 <tr>
+                <td><span class="avatar-initials">AC</span> Anton Christ</td>
+                <td>1234434</td>
+                <td>01.01.2000</td>
+                <td><span class="badge bg-danger">beendet</span></td>
+                <td>01.01.20 - 01.01.24</td>
+                <td>Integra 2024</td>
+                <td>Daniel Chu</td>
+                <td><button class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#profileModal">Bearbeiten</button></td>
+              </tr>
+  
+              <!-- Weitere Zeilen... -->
+            </tbody>
+          </table>
+		  
+		  
+
+		  
+<!-- Modal: Teilnehmerprofil -->
+<div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-fullscreen">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Teilnehmerprofil</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Schließen"></button>
+      </div>
+      <div class="modal-body">
+        <div class="card m-3">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-3 border-end text-center">
+                <div class="avatar-initials bg-secondary text-white mx-auto mb-3">MM</div>
+                <h4>Max Mustermann</h4>
+                <p class="text-muted">Aktuelle Maßnahme:</p>
+                <h5 class="text-primary fw-bold">Integra 2025</h5>
+                <button class="btn btn-outline-primary btn-sm mt-3">Personalbogen</button>
+              </div>
+
+              <div class="col-md-9">
+                <ul class="nav nav-tabs" id="profilTabs" role="tablist">
+                  <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tabDaten">Teilnehmerdaten</button></li>
+                  <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabVerlauf">Maßnahmenverlauf</button></li>
+                </ul>
+
+                <div class="tab-content mt-3">
+                  <!-- Teilnehmerdaten -->
+                  <div class="tab-pane fade show active" id="tabDaten">
+
+						<form class="row g-3" id="profilForm">
+						  <div class="col-md-4 mb-3">
+							<div class="form-floating">
+							  <input class="form-control" id="nachname" value="Mustermann" readonly />
+							  <label for="nachname">Nachname</label>
+							</div>
+						  </div>
+						  <div class="col-md-4 mb-3">
+							<div class="form-floating">
+							  <input class="form-control" id="vorname" value="Max" readonly />
+							  <label for="vorname">Vorname</label>
+							</div>
+						  </div>
+						  <div class="col-md-4 mb-3">
+							<div class="form-floating">
+							  <input class="form-control" id="geburtsname" value="Muster" readonly />
+							  <label for="geburtsname">Geburtsname</label>
+							</div>
+						  </div>
+						  <div class="col-md-4 mb-3">
+							<div class="form-floating">
+							  <select class="form-select" id="geschlecht" disabled>
+								<option selected>Männlich</option>
+								<option>Weiblich</option>
+								<option>Divers</option>
+							  </select>
+							  <label for="geschlecht">Geschlecht</label>
+							</div>
+						  </div>
+						  <div class="col-md-4 mb-3">
+							<div class="form-floating">
+							  <input class="form-control" id="strasse" value="Musterstraße" readonly />
+							  <label for="strasse">Straße</label>
+							</div>
+						  </div>
+						  <div class="col-md-4 mb-3">
+							<div class="form-floating">
+							  <input class="form-control" id="hausnummer" value="12" readonly />
+							  <label for="hausnummer">Hausnummer</label>
+							</div>
+						  </div>
+						  <div class="col-md-4 mb-3">
+							<div class="form-floating">
+							  <input class="form-control" id="plz" value="12345" readonly />
+							  <label for="plz">PLZ</label>
+							</div>
+						  </div>
+						  <div class="col-md-4 mb-3">
+							<div class="form-floating">
+							  <input class="form-control" id="ort" value="Musterstadt" readonly />
+							  <label for="ort">Ort</label>
+							</div>
+						  </div>
+						  <div class="col-md-4 mb-3">
+							<div class="form-floating">
+							  <input class="form-control" id="land" value="Deutschland" readonly />
+							  <label for="land">Land</label>
+							</div>
+						  </div>
+						  <div class="col-md-4 mb-3">
+							<div class="form-floating">
+							  <input type="date" class="form-control" id="geburtsdatum" value="1990-01-01" readonly />
+							  <label for="geburtsdatum">Geburtsdatum</label>
+							</div>
+						  </div>
+						  <div class="col-md-4 mb-3">
+							<div class="form-floating">
+							  <input type="tel" class="form-control" id="telefon" value="0123 456789" readonly />
+							  <label for="telefon">Telefon</label>
+							</div>
+						  </div>
+						  <div class="col-md-4 mb-3">
+							<div class="form-floating">
+							  <input type="email" class="form-control" id="mail" value="max@example.com" readonly />
+							  <label for="mail">E-Mail</label>
+							</div>
+						  </div>
+						</form>
+
+					<div class="d-flex justify-content-start gap-3 mt-4">
+					  <button type="button" class="btn btn-primary" onclick="enableProfilEdit()">
+							<i class="bi bi-pencil me-2"></i>Bearbeiten
+						</button>
+
+					  <button type="submit" class="btn btn-success">
+							<i class="bi bi-save me-2"></i>Speichern
+						</button>
+
+					</div>
+
+                  </div>
+
+                  <!-- Maßnahmenverlauf -->
+					<div class="tab-pane fade" id="tabVerlauf">
+					  <div class="timeline">
+						<ul class="list-unstyled position-relative ms-4 border-start border-2 border-primary">
+
+						  <!-- Aktuelle Maßnahme -->
+						  <li class="position-relative mb-4">
+							<div class="timeline-dot bg-primary"></div>
+							<div class="ms-4 ps-2 py-3 px-3 bg-light rounded shadow-sm">
+								<div class="position-absolute top-0 end-0 m-2">
+						  <button class="btn btn-sm btn-outline-secondary btn-lg">
+							<i class="bi bi-journal-text me-1"></i> Massnahmenverlauf aufrufen
+						  </button>
+						</div>
+							  <small class="text-muted">01.01.2024 – 31.12.2024</small><br>
+							  <strong class="text-primary">Aktuelle Maßnahme – Integra 2025</strong>
+							</div>
+						  </li>
+
+						  <!-- Vergangene Maßnahme 1 -->
+						  <li class="position-relative mb-4">
+							<div class="timeline-dot bg-primary"></div>
+							<div class="ms-4 ps-2 py-3 px-3 bg-light rounded shadow-sm">
+								<div class="position-absolute top-0 end-0 m-2">
+						  <button class="btn btn-sm btn-outline-secondary btn-lg">
+							<i class="bi bi-journal-text me-1"></i> Massnahmenverlauf aufrufen
+						  </button>
+						</div>
+							  <small class="text-muted">01.03.2023 – 30.06.2023</small><br>
+							  <strong>2023 – Kurs Aktivierung</strong>
+							</div>
+						  </li>
+
+						  <!-- Vergangene Maßnahme 2 -->
+						  <li class="position-relative mb-4">
+							<div class="timeline-dot bg-primary"></div>
+							<div class="ms-4 ps-2 py-3 px-3 bg-light rounded shadow-sm">
+								<div class="position-absolute top-0 end-0 m-2">
+						  <button class="btn btn-sm btn-outline-secondary btn-lg">
+							<i class="bi bi-journal-text me-1"></i> Massnahmenverlauf aufrufen
+						  </button>
+						</div>
+							  <small class="text-muted">01.09.2022 – 28.02.2023</small><br>
+							  <strong>2022 – Berufsvorbereitung</strong>
+							</div>
+						  </li>
+
+						</ul>
+					  </div>
+
+					  <!-- Button-Zeile unterhalb der Timeline -->
+					  <div class="d-flex justify-content-between align-items-center mt-4">
+						<button class="btn btn-outline-primary" onclick="document.getElementById('wechselForm').classList.remove('d-none')">
+						  <i class="bi bi-arrow-left-right me-2"></i>Maßnahmenwechsel
+						</button>
+
+
+					  </div>
+
+					  <!-- Eingabeformular für neue Maßnahme (initial versteckt) -->
+
+					  <form id="wechselForm" class="row g-3 mt-3 d-none">
+						<div class="col-md-4">
+						  <input class="form-control" type="date" placeholder="von" />
+						</div>
+						<div class="col-md-4">
+						  <input class="form-control" type="date" placeholder="bis" />
+						</div>
+						<div class="col-md-4">
+						  <select class="form-select">
+							<option selected>Neue Maßnahme wählen</option>
+							<option>Integra 2025</option>
+							<option>Sprungbrett</option>
+						  </select>
+						</div>
+						<div class="col-12 text-end">
+						  <button class="btn btn-success" type="submit">Speichern</button>
+						</div>
+					  </form>
+					</div>
+
+
+                    <form id="wechselForm" class="row g-3 mt-3 d-none">
+                      <div class="col-md-4"><input class="form-control" type="date" placeholder="von" /></div>
+                      <div class="col-md-4"><input class="form-control" type="date" placeholder="bis" /></div>
+                      <div class="col-md-4">
+                        <select class="form-select">
+                          <option>Neue Maßnahme wählen</option>
+                          <option>Integra 2025</option>
+                          <option>Sprungbrett</option>
+                        </select>
+                      </div>
+                      <div class="col-12 text-end">
+                        <button class="btn btn-success">Speichern</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div> <!-- card-body -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+		  
+        </div>
+		
+
+        <!-- Modal -->
+<!-- Modal: Neuer Teilnehmer -->
+<div class="modal fade" id="teilnehmerModal" tabindex="-1" aria-labelledby="teilnehmerModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="teilnehmerModalLabel">Neuer Teilnehmer</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="container mt-3">
+          <form id="teilnehmerForm">
+            <div class="card">
+              <div id="stepper" class="bs-stepper">
+                <div class="bs-stepper-header m-3" role="tablist">
+                  <div class="step" data-target="#logins-part">
+                    <button type="button" class="step-trigger" role="tab" aria-controls="logins-part" id="logins-part-trigger">
+                      <span class="bs-stepper-circle">1</span>
+                      <span>Grundinformationen</span>
+                    </button>
+                  </div>
+                  <div class="line"></div>
+                  <div class="step" data-target="#information-part">
+                    <button type="button" class="step-trigger" role="tab" aria-controls="information-part" id="information-part-trigger">
+                      <span class="bs-stepper-circle">2</span>
+                      <span>Maßnahme</span>
+                    </button>
+                  </div>
+                  <div class="line"></div>
+                  <div class="step" data-target="#confirmation-part">
+                    <button type="button" class="step-trigger" role="tab" aria-controls="confirmation-part" id="confirmation-part-trigger">
+                      <span class="bs-stepper-circle">3</span>
+                      <span>Sonstige Angaben</span>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="bs-stepper-content">
+                  <div id="logins-part" class="content d-none" role="tabpanel" aria-labelledby="logins-part-trigger">
+                    <div class="row">
+                      <div class="col-md-4 mb-3">
+                        <div class="form-floating">
+                          <input type="text" class="form-control" id="nachname" placeholder="Nachname" required minlength="2">
+                          <label for="nachname">Nachname</label>
+                        </div>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <div class="form-floating">
+                          <input type="text" class="form-control" id="vorname" placeholder="Vorname">
+                          <label for="vorname">Vorname</label>
+                        </div>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <div class="form-floating">
+                          <input type="text" class="form-control" id="geburtsname" placeholder="Geburtsname">
+                          <label for="geburtsname">Geburtsname</label>
+                        </div>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <div class="form-floating">
+                          <select class="form-select" id="geschlecht">
+                            <option selected>Wählen...</option>
+                            <option value="m">Männlich</option>
+                            <option value="w">Weiblich</option>
+                            <option value="d">Divers</option>
+                          </select>
+                          <label for="geschlecht">Geschlecht</label>
+                        </div>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <div class="form-floating">
+                          <input type="text" class="form-control" id="strasse" placeholder="Straße">
+                          <label for="strasse">Straße</label>
+                        </div>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <div class="form-floating">
+                          <input type="text" class="form-control" id="hausnummer" placeholder="Hausnummer">
+                          <label for="hausnummer">Hausnummer</label>
+                        </div>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <div class="form-floating">
+                          <input type="text" class="form-control" id="plz" placeholder="PLZ">
+                          <label for="plz">PLZ</label>
+                        </div>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <div class="form-floating">
+                          <input type="text" class="form-control" id="ort" placeholder="Ort">
+                          <label for="ort">Ort</label>
+                        </div>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <div class="form-floating">
+                          <input type="text" class="form-control" id="land" placeholder="Land">
+                          <label for="land">Land</label>
+                        </div>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <div class="form-floating">
+                          <input type="date" class="form-control" id="geburtsdatum">
+                          <label for="geburtsdatum">Geburtsdatum</label>
+                        </div>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <div class="form-floating">
+                          <input type="tel" class="form-control" id="telefon" placeholder="Telefon">
+                          <label for="telefon">Telefon</label>
+                        </div>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <div class="form-floating">
+                          <input type="tel" class="form-control" id="mobil" placeholder="Mobil">
+                          <label for="mobil">Mobil</label>
+                        </div>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <div class="form-floating">
+                          <input type="email" class="form-control" id="mail" placeholder="Mail">
+                          <label for="mail">Mail</label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="mt-3">
+                      <button type="button" class="btn btn-primary" onclick="stepper.next(); showStep('information-part')">Weiter</button>
+                    </div>
+                  </div>
+
+                  <div id="information-part" class="content d-none" role="tabpanel" aria-labelledby="information-part-trigger">
+                    <div class="row">
+                      <div class="col-md-4 mb-3">
+                        <div class="form-floating">
+                          <select class="form-select" id="massnahme">
+                            <option selected disabled value="">Maßnahme</option>
+                            <option>Option 1</option>
+                          </select>
+                          <label for="massnahme">Maßnahme</label>
+                        </div>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <div class="form-floating">
+                          <select class="form-select" id="betreuer">
+                            <option selected disabled value="">Betreuer</option>
+                            <option>Betreuer 1</option>
+                          </select>
+                          <label for="betreuer">Betreuer</label>
+                        </div>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <div class="form-floating">
+                          <input type="text" class="form-control" id="kennung" placeholder="Kennung">
+                          <label for="kennung">Kennung</label>
+                        </div>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <div class="form-floating">
+                          <input type="date" class="form-control" id="zuweisung_von">
+                          <label for="zuweisung_von">Zuweisung von:</label>
+                        </div>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <div class="form-floating">
+                          <input type="date" class="form-control" id="zuweisung_bis">
+                          <label for="zuweisung_bis">Zuweisung bis:</label>
+                        </div>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <div class="form-floating">
+                          <input type="date" class="form-control" id="eintritt">
+                          <label for="eintritt">Eintrittsdatum</label>
+                        </div>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <div class="form-floating">
+                          <select class="form-select" id="jc-team">
+                            <option selected disabled value="">Maßnahme</option>
+                            <option>Team A</option>
+                          </select>
+                          <label for="jc-team">JC-Team</label>
+                        </div>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <div class="form-floating">
+                          <select class="form-select" id="jc-mitarbeiter">
+                            <option selected>wählen...</option>
+                            <option value="m">Alessandro</option>
+                            <option value="w">Uwe</option>
+                          </select>
+                          <label for="jc-mitarbeiter">JC-Mitarbeiter</label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="mt-3">
+                      <button type="button" class="btn btn-secondary me-2" onclick="stepper.previous(); showStep('logins-part')">Zurück</button>
+                      <button type="button" class="btn btn-primary" onclick="stepper.next(); showStep('confirmation-part')">Weiter</button>
+                    </div>
+                  </div>
+
+                  <div id="confirmation-part" class="content d-none" role="tabpanel" aria-labelledby="confirmation-part-trigger">
+                    <p>Sonstige Angaben und Bestätigung.</p>
+                    <div class="mt-3">
+                      <button type="button" class="btn btn-secondary me-2" onclick="stepper.previous(); showStep('information-part')">Zurück</button>
+                      <button type="submit" class="btn btn-success">Teilnehmer erstellen</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      </div> <!-- Teilnehmer-Seite Ende -->
+ 
+	  
+    </main>
+  </div>
+
+  <!-- Bootstrap & Stepper Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bs-stepper/dist/js/bs-stepper.min.js"></script>
+
+  <script>
+    let stepper;
+
+    document.addEventListener("DOMContentLoaded", function () {
+      stepper = new window.Stepper(document.querySelector("#stepper"));
+      showStep("logins-part");
+
+      // Teilnehmerformular absenden
+      document.getElementById("teilnehmerForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+        alert("Teilnehmer erfolgreich erstellt!");
+        const modal = bootstrap.Modal.getInstance(document.getElementById("teilnehmerModal"));
+        modal.hide();
+        this.reset();
+        stepper.to(1);
+        showStep("logins-part");
+      });
+
+      // Navigation zu Seiten
+      const links = document.querySelectorAll('[data-target]');
+      const pages = document.querySelectorAll('.content-page');
+      links.forEach(link => {
+        link.addEventListener('click', e => {
+          e.preventDefault();
+          const target = link.getAttribute('data-target');
+          links.forEach(l => l.classList.remove('active'));
+          link.classList.add('active');
+          pages.forEach(p => p.classList.add('d-none'));
+          const page = document.getElementById(target);
+          if (page) page.classList.remove('d-none');
+        });
+      });
+
+      // Accordion Verhalten: beim erneuten Klick wieder zuklappen
+      document.querySelectorAll('.accordion-button').forEach(button => {
+        button.addEventListener('click', function () {
+          const collapse = document.querySelector(this.getAttribute('data-bs-target'));
+          if (collapse.classList.contains('show')) {
+            const bsCollapse = bootstrap.Collapse.getInstance(collapse);
+            bsCollapse.hide();
+          }
+        });
+      });
+    });
+
+    // Sichtbarer Step-Inhalt
+    function showStep(id) {
+      document.querySelectorAll('.bs-stepper-content .content').forEach(step => {
+        step.classList.add('d-none');
+      });
+      const active = document.getElementById(id);
+      if (active) active.classList.remove('d-none');
+    }
+	
+
+  function enableProfilEdit() {
+    const form = document.getElementById("profilForm");
+    form.querySelectorAll("input").forEach(input => input.removeAttribute("readonly"));
+    form.querySelectorAll("select").forEach(select => select.removeAttribute("disabled"));
+  }
+
+function toggleDetails(button) {
+  const row = button.closest('tr');
+  const detailRow = row.nextElementSibling;
+  const allDetails = document.querySelectorAll('.detail-row');
+
+  allDetails.forEach(r => {
+    if (r !== detailRow) r.classList.add('d-none');
+  });
+
+  detailRow.classList.toggle('d-none');
+}
+
+function setAnwesend(button) {
+  setActive(button, 'bg-success');
+  document.getElementById('anwesenheit-zeiten').classList.remove('d-none');
+  document.getElementById('sonderoptionen').classList.add('d-none');
+}
+
+function setActive(button, colorClass) {
+  const all = button.parentElement.querySelectorAll('button');
+  all.forEach(btn => {
+    btn.classList.remove('bg-success', 'bg-warning', 'bg-info', 'bg-danger', 'bg-primary', 'text-white', 'text-dark');
+    btn.classList.add('btn-outline-secondary');
+  });
+  button.classList.remove('btn-outline-secondary');
+  colorClass.split(' ').forEach(c => button.classList.add(c));
+}
+
+function setSpecial(button, type) {
+  const sonder = document.getElementById('sonderoptionen');
+  const au = document.getElementById('auBtn');
+  const urlaub = document.getElementById('urlaubFeld');
+  const grund = document.getElementById('grundFeld');
+  const zeiten = document.getElementById('anwesenheit-zeiten');
+
+  setActive(button,
+    type === 'krank' ? 'bg-warning text-dark'
+    : type === 'entschuldigt' ? 'bg-info text-white'
+    : type === 'unentschuldigt' ? 'bg-danger'
+    : 'bg-primary');
+
+  sonder.classList.remove('d-none');
+  zeiten.classList.add('d-none');
+
+  au.style.display = (type === 'krank' || type === 'entschuldigt') ? 'inline-block' : 'none';
+  urlaub.style.display = (type === 'urlaub') ? 'inline-block' : 'none';
+  grund.style.display = (type === 'entschuldigt' || type === 'unentschuldigt') ? 'block' : 'none';
+}
+
+
+  function showUebersicht() {
+    document.querySelectorAll('.content-page, .tab-pane').forEach(el => el.classList.add('d-none'));
+    document.getElementById('anwesenheits-uebersicht').classList.remove('d-none');
+  }
+
+  function closeUebersicht() {
+    document.getElementById('anwesenheits-uebersicht').classList.add('d-none');
+    // Option: Zeige ursprüngliche Ansicht wieder
+    document.getElementById('tab-anwesenheit').classList.remove('d-none');
+  }
+  </script>
+
+</body>
+</html>
+

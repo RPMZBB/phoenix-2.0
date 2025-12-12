@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PHÖNIX – Parameter & Stammdaten</title>
+
+  <!-- Bootstrap & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+
+</head>
+<body class="p-3">
+  <div class="container-fluid py-4">
+    <div class="page-wrapper">
+
+      <!-- Header -->
+      <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+        <div>
+          <h1 class="h3 mb-1">Parameter &amp; Stammdaten</h1>
+          <p class="text-muted mb-0">
+            Hier verwalten Sie alle zentralen Einstellungen: Textbausteine, Stammdaten, Jobcenter, Personal, ÖPNV-Tarife u.v.m.
+          </p>
+        </div>
+        <div class="mt-3 mt-md-0">
+          <span class="badge bg-secondary-subtle text-secondary border">
+            <i class="bi bi-gear me-1"></i> Administrationsbereich
+          </span>
+        </div>
+      </div>
+
+      <!-- Accordion Gesamtübersicht -->
+      <div class="accordion" id="parameterAccordion">
+
+        <!-- TEXTBAUSTEINE -->
+        <div class="accordion-item mb-3 border-0 card-settings">
+          <h2 class="accordion-header" id="headingTextbausteine">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTextbausteine" aria-expanded="true" aria-controls="collapseTextbausteine">
+              <span class="section-icon bg-primary text-white me-2">
+                <i class="bi bi-card-text"></i>
+              </span>
+              <span class="fw-semibold">Textbausteine</span>
+            </button>
+          </h2>
+          <div id="collapseTextbausteine" class="accordion-collapse collapse show" aria-labelledby="headingTextbausteine" data-bs-parent="#parameterAccordion">
+            <div class="accordion-body">
+              <div class="row g-4">
+
+                <!-- Aktennotizbausteine -->
+                <div class="col-lg-6">
+                  <div class="card card-settings h-100">
+                    <div class="card-header bg-white border-0 pb-0">
+                      <h3 class="h5 mb-1">Aktennotizbausteine</h3>
+                      <p class="text-muted small mb-0">
+                        Wiederkehrende Formulierungen für Aktennotizen anlegen und verwalten.
+                      </p>
+                    </div>
+                    <div class="card-body">
+                      <form>
+                        <div class="mb-3">
+                          <label for="aktenBausteinName" class="form-label required">Bausteinname</label>
+                          <input type="text" class="form-control" id="aktenBausteinName" placeholder="z. B. Gespräch mit Teilnehmer">
+                        </div>
+                        <div class="mb-3">
+                          <label for="aktenBausteinBetreff" class="form-label required">Betreff</label>
+                          <input type="text" class="form-control" id="aktenBausteinBetreff" placeholder="z. B. Gesprächsnotiz vom …">
+                        </div>
+                        <div class="mb-3">
+                          <label for="aktenBausteinInhalt" class="form-label required">Inhalt</label>
+                          <textarea class="form-control" id="aktenBausteinInhalt" rows="5" placeholder="Standardtext der Aktennotiz …"></textarea>
+                        </div>
+                        <div class="d-flex justify-content-end gap-2">
+                          <button type="reset" class="btn btn-outline-secondary btn-sm">
+                            <i class="bi bi-x-circle me-1"></i>Zurücksetzen
+                          </button>
+                          <button type="submit" class="btn btn-primary btn-sm">
+                            <i class="bi bi-save me-1"></i>Baustein speichern
+                          </button>
+                        </div>
+                      </form>
+                      <hr>
+                      <h6 class="fw-semibold mb-2">Vorhandene Aktennotizbausteine</h6>
+                      <div class="table-responsive">
+                        <table class="table table-sm align-middle mb-0">
+                          <thead class="table-light">
+                            <tr>
+                              <th>Bausteinname</th>
+                              <th>Betreff</th>
+                              <th class="text-end">Aktion</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>Gespräch mit Teilnehmer</td>
+                              <td>Gesprächsnotiz</td>
+                              <td class="text-end">
+                                <button class="btn btn-outline-secondary btn-sm me-1"><i class="bi bi-pencil"></i></button>
+                                <button class="btn btn-outline-danger btn-sm"><i class="bi bi-trash"></i></button>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td colspan="3" class="text-muted small">Weitere Bausteine …</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Briefbausteine -->
+                <div class="col-lg-6">
+                  <div class="card card-settings h-100">
+                    <div class="card-header bg-white border-0 pb-0">
+                      <h3 class="h5 mb-1">Briefbausteine</h3>
+                      <p class="text-muted small mb-0">
+                        Textbausteine für das Briefmodul (Anschreiben, Standardformulierungen, Grußformeln).
+                      </p>
+                    </div>
+                    <div class="card-body">
+                      <form>
+                        <div class="mb-3">
+                          <label for="briefBausteinName" class="form-label required">Bausteinname</label>
+                          <input type="text" class="form-control" id="briefBausteinName" placeholder="z. B. Einladung Erstgespräch">
+                        </div>
+                        <div class="mb-3">
+                          <label for="briefBetreff" class="form-label required">Betreff</label>
+                          <input type="text" class="form-control" id="briefBetreff" placeholder="z. B. Einladung zum Erstgespräch">
+                        </div>
+                        <div class="mb-3">
+                          <label for="briefBetreffZusatz" class="form-label">Betreffzusatz</label>
+                          <input type="text" class="form-control" id="briefBetreffZusatz" placeholder="z. B. Ihr Termin am …">
+                        </div>
+                        <div class="mb-3">
+                          <label for="briefInhalt" class="form-label required">Bausteininhalt</label>
+                          <textarea class="form-control" id="briefInhalt" rows="5" placeholder="Standardtext des Schreibens …"></textarea>
+                        </div>
+                        <div class="d-flex justify-content-end gap-2">
+                          <button type="reset" class="btn btn-outline-secondary btn-sm">
+                            <i class="bi bi-x-circle me-1"></i>Zurücksetzen
+                          </button>
+                          <button type="submit" class="btn btn-primary btn-sm">
+                            <i class="bi bi-save me-1"></i>Baustein speichern
+                          </button>
+                        </div>
+                      </form>
+                      <hr>
+                      <h6 class="fw-semibold mb-2">Vorhandene Briefbausteine</h6>
+                      <div class="table-responsive">
+                        <table class="table table-sm align-middle mb-0">
+                          <thead class="table-light">
+                            <tr>
+                              <th>Bausteinname</th>
+                              <th>Betreff</th>
+                              <th class="text-end">Aktion</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>Einladung Erstgespräch</td>
+                              <td>Einladung zum Erstgespräch</td>
+                              <td class="text-end">
+                                <button class="btn btn-outline-secondary btn-sm me-1"><i class="bi bi-pencil"></i></button>
+                                <button class="btn btn-outline-danger btn-sm"><i class="bi bi-trash"></i></button>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td colspan="3" class="text-muted small">Weitere Bausteine …</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div> <!-- row -->
+            </div>
+          </div>
+        </div>
+
+        <!-- ANWESENHEIT & VERBLEIB -->
+        <div class="accordion-item mb-3 border-0 card-settings">
+          <h2 class="accordion-header" id="headingAnwesenheit">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAnwesenheit" aria-expanded="false" aria-controls="collapseAnwesenheit">
+              <span class="section-icon bg-success text-white me-2">
+                <i class="bi bi-calendar-check"></i>
+              </span>
+              <span class="fw-semibold">Anwesenheit &amp; Verbleib</span>
+            </button>
+          </h2>
+          <div id="collapseAnwesenheit" class="accordion-collapse collapse" aria-labelledby="headingAnwesenheit" data-bs-parent="#parameterAccordion">
+            <div class="accordion-body">
+              <div class="row g-4">
+
+                <!-- Anwesenheitseinträge -->
+                <div class="col-lg-7">
+                  <div class="card card-settings h-100">
+                    <div class="card-header bg-white border-0 pb-0">
+                      <h3 class="h5 mb-1">Anwesenheitseinträge</h3>
+                      <p class="text-muted small mb-0">
+                        Kürzel (z. B. A, F, E) und deren Bedeutung sowie Relevanz für Quoten definieren.
+                      </p>
+                    </div>
+                    <div class="card-body">
+                      <form class="mb-3">
+                        <div class="row g-2">
+                          <div class="col-md-2">
+                            <label for="anwCode" class="form-label required">Kürzel</label>
+                            <input type="text" class="form-control" id="anwCode" maxlength="3" placeholder="A">
+                          </div>
+                          <div class="col-md-4">
+                            <label for="anwBezeichnung" class="form-label required">Bezeichnung</label>
+                            <input type="text" class="form-control" id="anwBezeichnung" placeholder="Anwesend">
+                          </div>
+                          <div class="col-md-6">
+                            <label for="anwBeschreibung" class="form-label">Beschreibung</label>
+                            <input type="text" class="form-control" id="anwBeschreibung" placeholder="z. B. gilt als voll anwesend">
+                          </div>
+                        </div>
+                        <div class="row g-2 mt-1">
+                          <div class="col-md-4">
+                            <label class="form-label required">Kategorie für Berichte</label>
+                            <select class="form-select" id="anwKategorie">
+                              <option value="anwesend">Anwesend</option>
+                              <option value="fehlzeit_entschuldigt">Fehlzeit (entschuldigt)</option>
+                              <option value="fehlzeit_unentschuldigt">Fehlzeit (unentschuldigt)</option>
+                              <option value="neutral">Neutral / keine Quote</option>
+                            </select>
+                          </div>
+                          <div class="col-md-8">
+                            <label class="form-label">Quotenrelevanz</label>
+                            <div class="d-flex flex-wrap gap-3">
+                              <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="quoteAnwesenheit">
+                                <label class="form-check-label" for="quoteAnwesenheit">
+                                  zählt zur Anwesenheitsquote
+                                </label>
+                              </div>
+                              <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="quoteFehlzeit">
+                                <label class="form-check-label" for="quoteFehlzeit">
+                                  zählt zur Fehlzeitquote
+                                </label>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="d-flex justify-content-end gap-2 mt-3">
+                          <button type="reset" class="btn btn-outline-secondary btn-sm">
+                            <i class="bi bi-x-circle me-1"></i>Zurücksetzen
+                          </button>
+                          <button type="submit" class="btn btn-success btn-sm">
+                            <i class="bi bi-save me-1"></i>Kürzel speichern
+                          </button>
+                        </div>
+                      </form>
+
+                      <div class="table-responsive">
+                        <table class="table table-sm align-middle mb-0">
+                          <thead class="table-light">
+                            <tr>
+                              <th>Kürzel</th>
+                              <th>Bezeichnung</th>
+                              <th>Kategorie</th>
+                              <th>Quoten</th>
+                              <th class="text-end">Aktion</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>A</td>
+                              <td>Anwesend</td>
+                              <td>Anwesend</td>
+                              <td><span class="badge bg-success-subtle text-success">Anwesenheit</span></td>
+                              <td class="text-end">
+                                <button class="btn btn-outline-secondary btn-sm me-1"><i class="bi bi-pencil"></i></button>
+                                <button class="btn btn-outline-danger btn-sm"><i class="bi bi-trash"></i></button>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>F</td>
+                              <td>Fehlend</td>
+                              <td>Fehlzeit (unentschuldigt)</td>
+                              <td><span class="badge bg-danger-subtle text-danger">Fehlzeit</span></td>
+                              <td class="text-end">
+                                <button class="btn btn-outline-secondary btn-sm me-1"><i class="bi bi-pencil"></i></button>
+                                <button class="btn btn-outline-danger btn-sm"><i class="bi bi-trash"></i></button>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td colspan="5" class="text-muted small">Weitere Anwesenheitscodes …</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Verbleibsangaben -->
+                <div class="col-lg-5">
+                  <div class="card card-settings h-100">
+                    <div class="card-header bg-white border-0 pb-0">
+                      <h3 class="h5 mb-1">Verbleibsangaben</h3>
+                      <p class="text-muted small mb-0">
+                        Mögliche Verbleibe beim Maßnahmeende festlegen (z. B. Beschäftigung, Ausbildung, Abbruch).
+                      </p>
+                    </div>
+                    <div class="card-body">
+                      <form class="mb-3">
+                        <div class="mb-2">
+                          <label for="verbleibName" class="form-label required">Bezeichnung</label>
+                          <input type="text" class="form-control" id="verbleibName" placeholder="z. B. Aufnahme einer Beschäftigung">
+                        </div>
+                        <div class="mb-2">
+                          <label for="verbleibBeschreibung" class="form-label">Beschreibung (optional)</label>
+                          <textarea class="form-control" id="verbleibBeschreibung" rows="2" placeholder="Detailbeschreibung für Berichte …"></textarea>
+                        </div>
+                        <div class="d-flex justify-content-end gap-2">
+                          <button type="reset" class="btn btn-outline-secondary btn-sm">
+                            <i class="bi bi-x-circle me-1"></i>Zurücksetzen
+                          </button>
+                          <button type="submit" class="btn btn-success btn-sm">
+                            <i class="bi bi-save me-1"></i>Verbleib speichern
+                          </button>
+                        </div>
+                      </form>
+                      <div class="table-responsive">
+                        <table class="table table-sm mb-0">
+                          <thead class="table-light">
+                            <tr>
+                              <th>Bezeichnung</th>
+                              <th class="text-end">Aktion</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>Aufnahme einer sozialversicherungspflichtigen Beschäftigung</td>
+                              <td class="text-end">
+                                <button class="btn btn-outline-secondary btn-sm me-1"><i class="bi bi-pencil"></i></button>
+                                <button class="btn btn-outline-danger btn-sm"><i class="bi bi-trash"></i></button>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>Abbruch ohne Anschlussmaßnahme</td>
+                              <td class="text-end">
+                                <button class="btn btn-outline-secondary btn-sm me-1"><i class="bi bi-pencil"></i></button>
+                                <button class="btn btn-outline-danger btn-sm"><i class="bi bi-trash"></i></button>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td colspan="2" class="text-muted small">Weitere Verbleibsangaben …</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div> <!-- row -->
+            </div>
+          </div>
+        </div>
+
+        <!-- ORGANISATION: ARGE-TEAMS, JOBCENTER, ARBEITSBEREICHE -->
+        <div class="accordion-item mb-3 border-0 card-settings">
+          <h2 class="accordion-header" id="headingOrganisation">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOrganisation" aria-expanded="false" aria-controls="collapseOrganisation">
+              <span class="section-icon bg-warning text-dark me-2">
+                <i class="bi bi-diagram-3"></i>
+              </span>
+              <span class="fw-semibold">Organisation: Jobcenter, Teams &amp; Arbeitsbereiche</span>
+            </button>
+          </h2>
+          <div id="collapseOrganisation" class="accordion-collapse collapse" aria-labelledby="headingOrganisation" data-bs-parent="#parameterAccordion">
+            <div class="accordion-body">
+              <div class="row g-4">
+
+                <!-- Arge-Teams -->
+                <div class="col-xl-4">
+                  <div class="card card-settings h-100">
+                    <div class="card-header bg-white border-0 pb-0">
+                      <h3 class="h5 mb-1">ARGE-Teams (Jobcenter)</h3>
+                      <p class="text-muted small mb-0">
+                        Teams in Jobcentern zur Zuordnung von Ansprechpartnern und Teilnehmern.
+                      </p>
+                    </div>
+                    <div class="card-body">
+                      <form class="mb-3">
+                        <div class="mb-2">
+                          <label for="teamName" class="form-label required">Teamname</label>
+                          <input type="text" class="form-control" id="teamName" placeholder="z. B. Team U25">
+                        </div>
+                        <div class="mb-2">
+                          <label for="teamSonstiges" class="form-label">Sonstiges / Beschreibung</label>
+                          <textarea class="form-control" id="teamSonstiges" rows="3" placeholder="z. B. Zuständigkeit, Besonderheiten …"></textarea>
+                        </div>
+                        <div class="d-flex justify-content-end gap-2">
+                          <button type="reset" class="btn btn-outline-secondary btn-sm">Zurücksetzen</button>
+                          <button type="submit" class="btn btn-warning btn-sm">
+                            <i class="bi bi-save me-1"></i>Team speichern
+                          </button>
+                        </div>
+                      </form>
+                      <div class="table-responsive">
+                        <table class="table table-sm mb-0">
+                          <thead class="table-light">
+                            <tr>
+                              <th>Teamname</th>
+                              <th class="text-end">Aktion</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>Team U25</td>
+                              <td class="text-end">
+                                <button class="btn btn-outline-secondary btn-sm me-1"><i class="bi bi-pencil"></i></button>
+                                <button class="btn btn-outline-danger btn-sm"><i class="bi bi-trash"></i></button>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td colspan="2" class="text-muted small">Weitere Teams …</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Jobcenter & Mitarbeiter -->
+                <div class="col-xl-5">
+                  <div class="card card-settings h-100">
+                    <div class="card-header bg-white border-0 pb-0">
+                      <h3 class="h5 mb-1">Jobcenter &amp; Ansprechpartner</h3>
+                      <p class="text-muted small mb-0">
+                        Jobcenter-Stammdaten und zugehörige Mitarbeiter mit Teamzuordnung pflegen.
+                      </p>
+                    </div>
+                    <div class="card-body">
+                      <form class="mb-3">
+                        <div class="row g-2">
+                          <div class="col-md-6">
+                            <label class="form-label required" for="jcName">Firmenname (Jobcenter)</label>
+                            <input type="text" class="form-control" id="jcName" placeholder="z. B. Jobcenter Saarbrücken">
+                          </div>
+                          <div class="col-md-6">
+                            <label class="form-label" for="jcNameZusatz">Firmenname-Zusatz</label>
+                            <input type="text" class="form-control" id="jcNameZusatz" placeholder="z. B. Kommunales Jobcenter">
+                          </div>
+                        </div>
+                        <div class="row g-2 mt-1">
+                          <div class="col-md-6">
+                            <label class="form-label" for="jcArt">Firmenart</label>
+                            <input type="text" class="form-control" id="jcArt" placeholder="z. B. Jobcenter">
+                          </div>
+                          <div class="col-md-6">
+                            <label class="form-label" for="jcStrasse">Straße</label>
+                            <input type="text" class="form-control" id="jcStrasse" placeholder="Musterstraße 1">
+                          </div>
+                        </div>
+                        <div class="row g-2 mt-1">
+                          <div class="col-md-3">
+                            <label class="form-label" for="jcPlz">PLZ</label>
+                            <input type="text" class="form-control" id="jcPlz" placeholder="66111">
+                          </div>
+                          <div class="col-md-5">
+                            <label class="form-label" for="jcOrt">Ort</label>
+                            <input type="text" class="form-control" id="jcOrt" placeholder="Saarbrücken">
+                          </div>
+                          <div class="col-md-4">
+                            <label class="form-label" for="jcTelefon">Telefon</label>
+                            <input type="text" class="form-control" id="jcTelefon" placeholder="0681 / …">
+                          </div>
+                        </div>
+                        <div class="row g-2 mt-1">
+                          <div class="col-md-6">
+                            <label class="form-label" for="jcMail">E-Mail</label>
+                            <input type="email" class="form-control" id="jcMail" placeholder="jobcenter@example.de">
+                          </div>
+                          <div class="col-md-6">
+                            <label class="form-label" for="jcWeb">Webseite</label>
+                            <input type="url" class="form-control" id="jcWeb" placeholder="https://…">
+                          </div>
+                        </div>
+                        <div class="d-flex justify-content-end gap-2 mt-3">
+                          <button type="reset" class="btn btn-outline-secondary btn-sm">Zurücksetzen</button>
+                          <button type="submit" class="btn btn-warning btn-sm">
+                            <i class="bi bi-save me-1"></i>Jobcenter speichern
+                          </button>
+                        </div>
+                      </form>
+
+                      <hr class="my-3">
+
+                      <h6 class="fw-semibold mb-2">Mitarbeiter dieses Jobcenters</h6>
+                      <form class="mb-2">
+                        <div class="row g-2">
+                          <div class="col-md-3">
+                            <label class="form-label required" for="jcMaVorname">Vorname</label>
+                            <input type="text" class="form-control" id="jcMaVorname">
+                          </div>
+                          <div class="col-md-3">
+                            <label class="form-label required" for="jcMaNachname">Nachname</label>
+                            <input type="text" class="form-control" id="jcMaNachname">
+                          </div>
+                          <div class="col-md-2">
+                            <label class="form-label" for="jcMaGeschlecht">Geschlecht</label>
+                            <select id="jcMaGeschlecht" class="form-select">
+                              <option value="">–</option>
+                              <option>m</option>
+                              <option>w</option>
+                              <option>divers</option>
+                            </select>
+                          </div>
+                          <div class="col-md-4">
+                            <label class="form-label" for="jcMaFunktion">Position / Funktion</label>
+                            <input type="text" class="form-control" id="jcMaFunktion" placeholder="z. B. Integrationsfachkraft">
+                          </div>
+                        </div>
+                        <div class="row g-2 mt-1">
+                          <div class="col-md-4">
+                            <label class="form-label" for="jcMaTelefon">Telefon</label>
+                            <input type="text" class="form-control" id="jcMaTelefon">
+                          </div>
+                          <div class="col-md-4">
+                            <label class="form-label" for="jcMaMail">E-Mail</label>
+                            <input type="email" class="form-control" id="jcMaMail">
+                          </div>
+                          <div class="col-md-4">
+                            <label class="form-label" for="jcMaHandy">Handy</label>
+                            <input type="text" class="form-control" id="jcMaHandy">
+                          </div>
+                        </div>
+                        <div class="row g-2 mt-1">
+                          <div class="col-md-6">
+                            <label class="form-label" for="jcMaTeam">Team (ARGE-Team)</label>
+                            <select id="jcMaTeam" class="form-select">
+                              <option>– bitte wählen –</option>
+                              <option>Team U25</option>
+                              <option>Team Markt & Integration</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="d-flex justify-content-end gap-2 mt-3">
+                          <button type="reset" class="btn btn-outline-secondary btn-sm">Zurücksetzen</button>
+                          <button type="submit" class="btn btn-warning btn-sm">
+                            <i class="bi bi-person-plus me-1"></i>Mitarbeiter hinzufügen
+                          </button>
+                        </div>
+                      </form>
+
+                      <div class="table-responsive">
+                        <table class="table table-sm mb-0 align-middle">
+                          <thead class="table-light">
+                            <tr>
+                              <th>Name</th>
+                              <th>Funktion</th>
+                              <th>Team</th>
+                              <th class="text-end">Aktion</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>Max Mustermann</td>
+                              <td>Integrationsfachkraft</td>
+                              <td>Team U25</td>
+                              <td class="text-end">
+                                <button class="btn btn-outline-secondary btn-sm me-1"><i class="bi bi-pencil"></i></button>
+                                <button class="btn btn-outline-danger btn-sm"><i class="bi bi-trash"></i></button>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td colspan="4" class="text-muted small">Weitere Ansprechpartner …</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Arbeitsbereiche -->
+                <div class="col-xl-3">
+                  <div class="card card-settings h-100">
+                    <div class="card-header bg-white border-0 pb-0">
+                      <h3 class="h5 mb-1">Arbeitsbereiche</h3>
+                      <p class="text-muted small mb-0">
+                        Arbeitsbereiche des Bildungsträgers inkl. Text für Berichte definieren.
+                      </p>
+                    </div>
+                    <div class="card-body">
+                      <form class="mb-3">
+                        <div class="mb-2">
+                          <label class="form-label required" for="arbeitsbereichName">Bezeichnung</label>
+                          <input type="text" class="form-control" id="arbeitsbereichName" placeholder="z. B. Holzwerkstatt">
+                        </div>
+                        <div class="mb-2">
+                          <label class="form-label" for="arbeitsbereichText">
+                            Standardtext für Berichte
+                          </label>
+                          <textarea class="form-control" id="arbeitsbereichText" rows="5" placeholder="Standardbeschreibung, die in Berichten verwendet wird …"></textarea>
+                        </div>
+                        <div class="d-flex justify-content-end gap-2">
+                          <button type="reset" class="btn btn-outline-secondary btn-sm">Zurücksetzen</button>
+                          <button type="submit" class="btn btn-warning btn-sm">
+                            <i class="bi bi-save me-1"></i>Arbeitsbereich speichern
+                          </button>
+                        </div>
+                      </form>
+
+                      <div class="table-responsive">
+                        <table class="table table-sm mb-0">
+                          <thead class="table-light">
+                            <tr>
+                              <th>Bezeichnung</th>
+                              <th class="text-end">Aktion</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>Holzwerkstatt</td>
+                              <td class="text-end">
+                                <button class="btn btn-outline-secondary btn-sm me-1"><i class="bi bi-pencil"></i></button>
+                                <button class="btn btn-outline-danger btn-sm"><i class="bi bi-trash"></i></button>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td colspan="2" class="text-muted small">Weitere Arbeitsbereiche …</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+
+              </div> <!-- row -->
+            </div>
+          </div>
+        </div>
+
+        <!-- STAMMDATEN: STANDORTE, EIGENE FIRMA, BANKEN, PERSONAL, ÖPNV -->
+        <div class="accordion-item mb-3 border-0 card-settings">
+          <h2 class="accordion-header" id="headingStammdaten">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseStammdaten" aria-expanded="false" aria-controls="collapseStammdaten">
+              <span class="section-icon bg-info text-white me-2">
+                <i class="bi bi-building"></i>
+              </span>
+              <span class="fw-semibold">Stammdaten: Standorte, eigene Firma, Banken, Personal &amp; ÖPNV</span>
+            </button>
+          </h2>
+          <div id="collapseStammdaten" class="accordion-collapse collapse" aria-labelledby="headingStammdaten" data-bs-parent="#parameterAccordion">
+            <div class="accordion-body">
+              <div class="row g-4">
+
+                <!-- Eigene Firma -->
+                <div class="col-lg-6">
+                  <div class="card card-settings h-100">
+                    <div class="card-header bg-white border-0 pb-0">
+                      <h3 class="h5 mb-1">Eigene Firma (Bildungsträger)</h3>
+                      <p class="text-muted small mb-0">
+                        Stammdaten des Bildungsträgers für Briefköpfe, Berichte und Dokumente.
+                      </p>
+                    </div>
+                    <div class="card-body">
+                      <form>
+                        <div class="row g-2">
+                          <div class="col-md-6">
+                            <label class="form-label required" for="firmaName">Firmenname</label>
+                            <input type="text" class="form-control" id="firmaName">
+                          </div>
+                          <div class="col-md-6">
+                            <label class="form-label" for="firmaNameZusatz">Firmenname-Zusatz</label>
+                            <input type="text" class="form-control" id="firmaNameZusatz">
+                          </div>
+                        </div>
+                        <div class="row g-2 mt-1">
+                          <div class="col-md-8">
+                            <label class="form-label" for="firmaStrasse">Straße</label>
+                            <input type="text" class="form-control" id="firmaStrasse">
+                          </div>
+                          <div class="col-md-4">
+                            <label class="form-label" for="firmaPlzOrt">PLZ / Ort</label>
+                            <input type="text" class="form-control" id="firmaPlzOrt" placeholder="66111 Saarbrücken">
+                          </div>
+                        </div>
+                        <div class="row g-2 mt-1">
+                          <div class="col-md-4">
+                            <label class="form-label" for="firmaTelefon">Telefon</label>
+                            <input type="text" class="form-control" id="firmaTelefon">
+                          </div>
+                          <div class="col-md-4">
+                            <label class="form-label" for="firmaMail">E-Mail</label>
+                            <input type="email" class="form-control" id="firmaMail">
+                          </div>
+                          <div class="col-md-4">
+                            <label class="form-label" for="firmaWeb">Webseite</label>
+                            <input type="url" class="form-control" id="firmaWeb">
+                          </div>
+                        </div>
+                        <div class="mt-2">
+                          <label class="form-label" for="firmaSonstiges">Sonstige Angaben (HRB, Steuernummer etc.)</label>
+                          <textarea class="form-control" id="firmaSonstiges" rows="3"></textarea>
+                        </div>
+                        <div class="d-flex justify-content-end gap-2 mt-3">
+                          <button type="reset" class="btn btn-outline-secondary btn-sm">Zurücksetzen</button>
+                          <button type="submit" class="btn btn-info btn-sm text-white">
+                            <i class="bi bi-save me-1"></i>Stammdaten speichern
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Standorte -->
+                <div class="col-lg-6">
+                  <div class="card card-settings h-100">
+                    <div class="card-header bg-white border-0 pb-0">
+                      <h3 class="h5 mb-1">Standorte</h3>
+                      <p class="text-muted small mb-0">
+                        Standorte für Briefköpfe, Berichte und Standortauswahl verwalten.
+                      </p>
+                    </div>
+                    <div class="card-body">
+                      <form class="mb-3">
+                        <div class="row g-2">
+                          <div class="col-md-6">
+                            <label class="form-label required" for="standortName">Standortname</label>
+                            <input type="text" class="form-control" id="standortName" placeholder="z. B. Standort Saarbrücken">
+                          </div>
+                          <div class="col-md-6">
+                            <label class="form-label" for="standortKuerzel">Kürzel</label>
+                            <input type="text" class="form-control" id="standortKuerzel" placeholder="SB">
+                          </div>
+                        </div>
+                        <div class="row g-2 mt-1">
+                          <div class="col-md-8">
+                            <label class="form-label" for="standortStrasse">Straße</label>
+                            <input type="text" class="form-control" id="standortStrasse">
+                          </div>
+                          <div class="col-md-4">
+                            <label class="form-label" for="standortPlzOrt">PLZ / Ort</label>
+                            <input type="text" class="form-control" id="standortPlzOrt">
+                          </div>
+                        </div>
+                        <div class="row g-2 mt-1">
+                          <div class="col-md-4">
+                            <label class="form-label" for="standortTelefon">Telefon</label>
+                            <input type="text" class="form-control" id="standortTelefon">
+                          </div>
+                          <div class="col-md-4">
+                            <label class="form-label" for="standortMail">E-Mail</label>
+                            <input type="email" class="form-control" id="standortMail">
+                          </div>
+                          <div class="col-md-4">
+                            <label class="form-label" for="standortLeitung">Leitung / Ansprechpartner</label>
+                            <input type="text" class="form-control" id="standortLeitung">
+                          </div>
+                        </div>
+                        <div class="d-flex justify-content-end gap-2 mt-3">
+                          <button type="reset" class="btn btn-outline-secondary btn-sm">Zurücksetzen</button>
+                          <button type="submit" class="btn btn-info btn-sm text-white">
+                            <i class="bi bi-save me-1"></i>Standort speichern
+                          </button>
+                        </div>
+                      </form>
+
+                      <div class="table-responsive">
+                        <table class="table table-sm mb-0">
+                          <thead class="table-light">
+                            <tr>
+                              <th>Standort</th>
+                              <th>Kürzel</th>
+                              <th class="text-end">Aktion</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>Standort Saarbrücken</td>
+                              <td>SB</td>
+                              <td class="text-end">
+                                <button class="btn btn-outline-secondary btn-sm me-1"><i class="bi bi-pencil"></i></button>
+                                <button class="btn btn-outline-danger btn-sm"><i class="bi bi-trash"></i></button>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td colspan="3" class="text-muted small">Weitere Standorte …</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+              <hr class="my-4">
+
+              <div class="row g-4">
+
+                <!-- Banken -->
+                <div class="col-xl-4">
+                  <div class="card card-settings h-100">
+                    <div class="card-header bg-white border-0 pb-0">
+                      <h3 class="h5 mb-1">Banken</h3>
+                      <p class="text-muted small mb-0">
+                        Bankverbindungen mit Name der Bank und Bankleitzahl hinterlegen.
+                      </p>
+                    </div>
+                    <div class="card-body">
+                      <form class="mb-3">
+                        <div class="mb-2">
+                          <label class="form-label required" for="bankName">Bankname</label>
+                          <input type="text" class="form-control" id="bankName">
+                        </div>
+                        <div class="mb-2">
+                          <label class="form-label required" for="bankBlz">Bankleitzahl (BLZ / BIC)</label>
+                          <input type="text" class="form-control" id="bankBlz">
+                        </div>
+                        <div class="d-flex justify-content-end gap-2">
+                          <button type="reset" class="btn btn-outline-secondary btn-sm">Zurücksetzen</button>
+                          <button type="submit" class="btn btn-info btn-sm text-white">
+                            <i class="bi bi-save me-1"></i>Bank speichern
+                          </button>
+                        </div>
+                      </form>
+                      <div class="table-responsive">
+                        <table class="table table-sm mb-0">
+                          <thead class="table-light">
+                            <tr>
+                              <th>Bankname</th>
+                              <th>BLZ</th>
+                              <th class="text-end">Aktion</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>Musterbank</td>
+                              <td>59050000</td>
+                              <td class="text-end">
+                                <button class="btn btn-outline-secondary btn-sm me-1"><i class="bi bi-pencil"></i></button>
+                                <button class="btn btn-outline-danger btn-sm"><i class="bi bi-trash"></i></button>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td colspan="3" class="text-muted small">Weitere Banken …</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Personal -->
+                <div class="col-xl-4">
+                  <div class="card card-settings h-100">
+                    <div class="card-header bg-white border-0 pb-0">
+                      <h3 class="h5 mb-1">Personal (Mitarbeiter Bildungsträger)</h3>
+                      <p class="text-muted small mb-0">
+                        Mitarbeiter des Bildungsträgers mit Kontaktdaten und Funktion verwalten.
+                      </p>
+                    </div>
+                    <div class="card-body">
+                      <form class="mb-3">
+                        <div class="row g-2">
+                          <div class="col-md-4">
+                            <label class="form-label required" for="persVorname">Vorname</label>
+                            <input type="text" class="form-control" id="persVorname">
+                          </div>
+                          <div class="col-md-4">
+                            <label class="form-label required" for="persNachname">Nachname</label>
+                            <input type="text" class="form-control" id="persNachname">
+                          </div>
+                          <div class="col-md-4">
+                            <label class="form-label" for="persFunktion">Funktion</label>
+                            <input type="text" class="form-control" id="persFunktion" placeholder="z. B. Sozialpädagogin">
+                          </div>
+                        </div>
+                        <div class="row g-2 mt-1">
+                          <div class="col-md-4">
+                            <label class="form-label" for="persTelefon">Telefon</label>
+                            <input type="text" class="form-control" id="persTelefon">
+                          </div>
+                          <div class="col-md-4">
+                            <label class="form-label" for="persMail">E-Mail</label>
+                            <input type="email" class="form-control" id="persMail">
+                          </div>
+                          <div class="col-md-4">
+                            <label class="form-label" for="persStandort">Standort</label>
+                            <select id="persStandort" class="form-select">
+                              <option>– bitte wählen –</option>
+                              <option>Standort Saarbrücken</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="d-flex justify-content-end gap-2 mt-3">
+                          <button type="reset" class="btn btn-outline-secondary btn-sm">Zurücksetzen</button>
+                          <button type="submit" class="btn btn-info btn-sm text-white">
+                            <i class="bi bi-save me-1"></i>Mitarbeiter speichern
+                          </button>
+                        </div>
+                      </form>
+
+                      <div class="table-responsive">
+                        <table class="table table-sm mb-0">
+                          <thead class="table-light">
+                            <tr>
+                              <th>Name</th>
+                              <th>Funktion</th>
+                              <th>Standort</th>
+                              <th class="text-end">Aktion</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>Anna Beispiel</td>
+                              <td>Sozialpädagogin</td>
+                              <td>SB</td>
+                              <td class="text-end">
+                                <button class="btn btn-outline-secondary btn-sm me-1"><i class="bi bi-pencil"></i></button>
+                                <button class="btn btn-outline-danger btn-sm"><i class="bi bi-trash"></i></button>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td colspan="4" class="text-muted small">Weitere Mitarbeiter …</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- ÖPNV Tarife -->
+                <div class="col-xl-4">
+                  <div class="card card-settings h-100">
+                    <div class="card-header bg-white border-0 pb-0">
+                      <h3 class="h5 mb-1">ÖPNV-Tarife</h3>
+                      <p class="text-muted small mb-0">
+                        Ticketarten und Preise für Fahrtkosten (z. B. Monatskarten) definieren.
+                      </p>
+                    </div>
+                    <div class="card-body">
+                      <form class="mb-3">
+                        <div class="mb-2">
+                          <label class="form-label required" for="tarifName">Tarifname</label>
+                          <input type="text" class="form-control" id="tarifName" placeholder="z. B. Monatskarte Preisstufe 2">
+                        </div>
+                        <div class="mb-2">
+                          <label class="form-label" for="tarifArt">Ticketart</label>
+                          <input type="text" class="form-control" id="tarifArt" placeholder="z. B. Monatskarte, Wochenkarte">
+                        </div>
+                        <div class="mb-2">
+                          <label class="form-label required" for="tarifPreis">Preis</label>
+                          <div class="input-group">
+                            <input type="number" step="0.01" class="form-control" id="tarifPreis" placeholder="0,00">
+                            <span class="input-group-text">€</span>
+                          </div>
+                        </div>
+                        <div class="d-flex justify-content-end gap-2">
+                          <button type="reset" class="btn btn-outline-secondary btn-sm">Zurücksetzen</button>
+                          <button type="submit" class="btn btn-info btn-sm text-white">
+                            <i class="bi bi-save me-1"></i>Tarif speichern
+                          </button>
+                        </div>
+                      </form>
+
+                      <div class="table-responsive">
+                        <table class="table table-sm mb-0">
+                          <thead class="table-light">
+                            <tr>
+                              <th>Tarif</th>
+                              <th>Art</th>
+                              <th>Preis</th>
+                              <th class="text-end">Aktion</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>Monatskarte PS2</td>
+                              <td>Monatskarte</td>
+                              <td>79,00 €</td>
+                              <td class="text-end">
+                                <button class="btn btn-outline-secondary btn-sm me-1"><i class="bi bi-pencil"></i></button>
+                                <button class="btn btn-outline-danger btn-sm"><i class="bi bi-trash"></i></button>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td colspan="4" class="text-muted small">Weitere Tarife …</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+
+              </div> <!-- row -->
+
+            </div>
+          </div>
+        </div>
+
+      </div> <!-- accordion -->
+
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

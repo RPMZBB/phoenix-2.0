@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Management Oberfläche</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body class="bg-light p-4">
+
+<div class="container">
+  <!-- Nutzerverwaltung -->
+  <h2 class="mb-4">Nutzerverwaltung</h2>
+  <div class="card mb-4">
+    <div class="card-body">
+      <div class="d-flex justify-content-between mb-3">
+        <div class="d-flex gap-2 w-50">
+          <input class="form-control" placeholder="Schnellsuche nach Namen" />
+          <select class="form-select">
+            <option>Neueste</option>
+            <option>Alphabetisch</option>
+          </select>
+        </div>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal">Nutzer anlegen</button>
+      </div>
+
+      <table class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Berechtigungen</th>
+            <th>Erstellt am</th>
+            <th>Aktion</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Max Mustermann</td>
+            <td>
+              2 Berechtigungen<br />
+              <a href="#collapseMax" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseMax">
+                Details anzeigen
+              </a>
+              <div class="collapse mt-2" id="collapseMax">
+                <ul class="list-unstyled mb-0">
+                  <li>Projekt A <button class="btn btn-sm btn-outline-secondary ms-2">Bearbeiten</button></li>
+                  <li>Projekt B <button class="btn btn-sm btn-outline-secondary ms-2">Bearbeiten</button></li>
+                </ul>
+              </div>
+            </td>
+            <td>08.05.2025</td>
+            <td><button class="btn btn-sm btn-danger">Löschen</button></td>
+          </tr>
+          <tr>
+            <td>Erika Beispiel</td>
+            <td>
+              1 Berechtigung<br />
+              <a href="#collapseErika" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseErika">
+                Details anzeigen
+              </a>
+              <div class="collapse mt-2" id="collapseErika">
+                <ul class="list-unstyled mb-0">
+                  <li>Projekt C <button class="btn btn-sm btn-outline-secondary ms-2">Bearbeiten</button></li>
+                </ul>
+              </div>
+            </td>
+            <td>05.05.2025</td>
+            <td><button class="btn btn-sm btn-danger">Löschen</button></td>
+          </tr>
+          <tr>
+            <td>Ali Admin</td>
+            <td>
+              3 Berechtigungen<br />
+              <a href="#collapseAli" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseAli">
+                Details anzeigen
+              </a>
+              <div class="collapse mt-2" id="collapseAli">
+                <ul class="list-unstyled mb-0">
+                  <li>Projekt A <button class="btn btn-sm btn-outline-secondary ms-2">Bearbeiten</button></li>
+                  <li>Projekt C <button class="btn btn-sm btn-outline-secondary ms-2">Bearbeiten</button></li>
+                  <li>Projekt D <button class="btn btn-sm btn-outline-secondary ms-2">Bearbeiten</button></li>
+                </ul>
+              </div>
+            </td>
+            <td>02.05.2025</td>
+            <td><button class="btn btn-sm btn-danger">Löschen</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Projektverwaltung -->
+  <h2 class="mb-4">Projektverwaltung</h2>
+  <div class="card mb-4">
+    <div class="card-body">
+      <div class="d-flex justify-content-between mb-3">
+        <div class="d-flex gap-2 w-50">
+          <input class="form-control" placeholder="Projektsuche" />
+          <select class="form-select">
+            <option>Neueste</option>
+            <option>Alphabetisch</option>
+          </select>
+        </div>
+        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addProjectModal">Neues Projekt anlegen</button>
+      </div>
+
+      <table class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <th>Projektname</th>
+            <th>Standort</th>
+            <th>Erstellt am</th>
+            <th>Aktion</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Projekt Alpha</td>
+            <td>Berlin</td>
+            <td>01.05.2025</td>
+            <td><button class="btn btn-sm btn-danger">Löschen</button></td>
+          </tr>
+          <tr>
+            <td>Projekt Beta</td>
+            <td>Hamburg</td>
+            <td>03.05.2025</td>
+            <td><button class="btn btn-sm btn-danger">Löschen</button></td>
+          </tr>
+          <tr>
+            <td>Projekt Gamma</td>
+            <td>München</td>
+            <td>06.05.2025</td>
+            <td><button class="btn btn-sm btn-danger">Löschen</button></td>
+          </tr>
+          <tr>
+            <td>Projekt Delta</td>
+            <td>Köln</td>
+            <td>08.05.2025</td>
+            <td><button class="btn btn-sm btn-danger">Löschen</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Nutzer anlegen -->
+<div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form>
+        <div class="modal-header">
+          <h5 class="modal-title" id="addUserModalLabel">Neuen Nutzer anlegen</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Schließen"></button>
+        </div>
+        <div class="modal-body">
+          <input class="form-control mb-2" placeholder="Vorname" />
+          <input class="form-control mb-2" placeholder="Nachname" />
+          <input type="password" class="form-control mb-2" placeholder="Kennwort" />
+          <label class="form-label mt-2">Berechtigungen:</label>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="projectA" />
+            <label class="form-check-label" for="projectA">Projekt A</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="projectB" />
+            <label class="form-check-label" for="projectB">Projekt B</label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
+          <button type="submit" class="btn btn-primary">Anlegen</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Projekt anlegen -->
+<div class="modal fade" id="addProjectModal" tabindex="-1" aria-labelledby="addProjectModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form>
+        <div class="modal-header">
+          <h5 class="modal-title" id="addProjectModalLabel">Neues Projekt anlegen</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Schließen"></button>
+        </div>
+        <div class="modal-body">
+          <input class="form-control mb-3" placeholder="Projektname" />
+          <input class="form-control mb-3" placeholder="Standort" />
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
+          <button type="submit" class="btn btn-success">Anlegen</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js">
+
+    // Navigation Umschalten
+    const links = document.querySelectorAll('.sidebar a');
+    const views = {
+      nutzerView: document.getElementById('nutzerView'),
+      projektView: document.getElementById('projektView')
+    };
+
+    links.forEach(link => {
+      link.addEventListener('click', e => {
+        e.preventDefault();
+
+        // Aktive Klasse umschalten
+        links.forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+
+        // Sichtbarkeit der Bereiche
+        const target = link.getAttribute('data-target');
+        for (const key in views) {
+          views[key].classList.toggle('hidden', key !== target);
+        }
+      });
+    });
+
+
+</script>
+</body>
+</html>

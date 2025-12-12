@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PHÖNIX Prototyp</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bs-stepper/dist/css/bs-stepper.min.css" rel="stylesheet" />
+
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .topbar {
+      background: linear-gradient(to right, #2c2c2c, #181818);
+      color: white;
+      padding: 0.5rem 1rem;
+      display: flex;
+      align-items: center;
+      height: 50px;
+    }
+
+    .sidebar {
+      width: 220px;
+      background-color: #1e1e1e;
+      color: white;
+      height: calc(100vh - 50px);
+      overflow-y: auto;
+      flex-shrink: 0;
+      padding-top: 1rem;
+    }
+
+    .sidebar a {
+      color: white;
+      padding: 0.75rem 1rem;
+      display: block;
+      text-decoration: none;
+    }
+
+    .sidebar a:hover,
+    .sidebar .active {
+      background-color: #f97316;
+      color: white;
+    }
+
+    .accordion-button {
+      background-color: transparent;
+      color: white;
+      padding: 0.75rem 1rem;
+    }
+
+    .accordion-button::after {
+      filter: invert(1);
+    }
+
+    .accordion-item {
+      background-color: transparent;
+      border: none;
+    }
+
+    .accordion-collapse {
+      background-color: #2a2a2a;
+    }
+
+    .submenu-link {
+      padding-left: 2rem;
+      display: block;
+      color: white;
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+    }
+
+    .submenu-link:hover {
+      background-color: #f97316;
+      color: white;
+    }
+
+    .main {
+      flex-grow: 1;
+      background-color: #f8f9fa;
+      padding: 1rem;
+      overflow-y: auto;
+    }
+
+    .avatar-initials {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background-color: #d6bbfb;
+      color: #4c1d95;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      margin-right: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Topbar -->
+  <header class="topbar">
+    <button class="btn btn-sm btn-outline-light me-3"><i class="bi bi-list"></i></button>
+    <div class="fw-bold">PHÖNIX</div>
+  </header>
+
+  <!-- Layout -->
+  <div class="d-flex flex-grow-1">
+    <!-- Sidebar -->
+    <nav class="sidebar">
+      <div class="accordion" id="sidebarAccordion">
+        <div class="accordion-item">
+          <a href="#" class="nav-link active" data-target="dashboard"><i class="bi bi-scissors"></i> Dashboard</a>
+        </div>
+
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#tnCollapse">
+              <i class="bi bi-person-lines-fill"></i> Teilnehmerdaten
+            </button>
+          </h2>
+          <div id="tnCollapse" class="accordion-collapse collapse show">
+            <div class="accordion-body p-0">
+              <a href="#" class="submenu-link" data-target="teilnehmer">Übersicht</a>
+              <a href="#" class="submenu-link">Teilnehmer erstellen</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#massCollapse">
+              <i class="bi bi-cpu"></i> Maßnahme
+            </button>
+          </h2>
+          <div id="massCollapse" class="accordion-collapse collapse">
+            <div class="accordion-body p-0">
+              <a href="#" class="submenu-link">Übersicht</a>
+              <a href="#" class="submenu-link">Neue Maßnahme</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <a href="#" class="nav-link" data-target="gruppen"><i class="bi bi-people-fill"></i> Gruppen</a>
+        </div>
+
+        <div class="accordion-item">
+          <a href="#" class="nav-link" data-target="dozenten"><i class="bi bi-mortarboard-fill"></i> Dozenten</a>
+        </div>
+
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#paramCollapse">
+              <i class="bi bi-sliders"></i> Parameter
+            </button>
+          </h2>
+          <div id="paramCollapse" class="accordion-collapse collapse">
+            <div class="accordion-body p-0">
+              <a href="#" class="submenu-link">Aktennotizbausteine</a>
+              <a href="#" class="submenu-link">Anwesenheitseinträge</a>
+              <a href="#" class="submenu-link">Arge Team</a>
+              <a href="#" class="submenu-link">Jobcenter-Mitarbeiter</a>
+              <a href="#" class="submenu-link">Banken</a>
+              <a href="#" class="submenu-link">Briefbausteine</a>
+              <a href="#" class="submenu-link">Standorte</a>
+              <a href="#" class="submenu-link">Eigene Firma</a>
+              <a href="#" class="submenu-link">Personal</a>
+              <a href="#" class="submenu-link">ÖPNV Tarife</a>
+              <a href="#" class="submenu-link">Textbausteine</a>
+              <a href="#" class="submenu-link">Verbleibsangaben</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main">
+      <!-- Dashboard-Seite -->
+      <div id="dashboard" class="content-page">
+        <h2>Dashboard</h2>
+        <p>Inhalt für das Dashboard...</p>
+      </div>
+
+      <!-- Teilnehmer-Seite -->
+      <div id="teilnehmer" class="content-page d-none">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h2>Alle Teilnehmer</h2>
+
+<!-- Button zum Öffnen des Modals -->
+<button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#teilnehmerModal">
+  Neuer Teilnehmer
+</button>
+
+<!-- Modal: Neuer Teilnehmer -->
+<div class="modal fade" id="teilnehmerModal" tabindex="-1" aria-labelledby="teilnehmerModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="teilnehmerModalLabel">Neuer Teilnehmer</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="container mt-3">
+          <form id="teilnehmerForm">
+            <div class="card">
+              <div id="stepper" class="bs-stepper">
+                <div class="bs-stepper-header m-3" role="tablist">
+                  <div class="step" data-target="#logins-part">
+                    <button type="button" class="step-trigger" role="tab" aria-controls="logins-part" id="logins-part-trigger">
+                      <span class="bs-stepper-circle">1</span>
+                      <span>Grundinformationen</span>
+                    </button>
+                  </div>
+                  <div class="line"></div>
+                  <div class="step" data-target="#information-part">
+                    <button type="button" class="step-trigger" role="tab" aria-controls="information-part" id="information-part-trigger">
+                      <span class="bs-stepper-circle">2</span>
+                      <span>Maßnahme</span>
+                    </button>
+                  </div>
+                  <div class="line"></div>
+                  <div class="step" data-target="#confirmation-part">
+                    <button type="button" class="step-trigger" role="tab" aria-controls="confirmation-part" id="confirmation-part-trigger">
+                      <span class="bs-stepper-circle">3</span>
+                      <span>Sonstige Angaben</span>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="bs-stepper-content">
+                  <div id="logins-part" class="content d-none" role="tabpanel" aria-labelledby="logins-part-trigger">
+                    <div class="row">
+                      <div class="col-md-4 mb-3">
+                        <div class="form-floating">
+                          <input type="text" class="form-control" id="nachname" placeholder="Nachname" required minlength="2">
+                          <label for="nachname">Nachname</label>
+                        </div>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <div class="form-floating">
+                          <input type="text" class="form-control" id="vorname" placeholder="Vorname">
+                          <label for="vorname">Vorname</label>
+                        </div>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <div class="form-floating">
+                          <input type="text" class="form-control" id="geburtsname" placeholder="Geburtsname">
+                          <label for="geburtsname">Geburtsname</label>
+                        </div>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <div class="form-floating">
+                          <select class="form-select" id="geschlecht">
+                            <option selected>Wählen...</option>
+                            <option value="m">Männlich</option>
+                            <option value="w">Weiblich</option>
+                            <option value="d">Divers</option>
+                          </select>
+                          <label for="geschlecht">Geschlecht</label>
+                        </div>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <div class="form-floating">
+                          <input type="text" class="form-control" id="strasse" placeholder="Straße">
+                          <label for="strasse">Straße</label>
+                        </div>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <div class="form-floating">
+                          <input type="text" class="form-control" id="hausnummer" placeholder="Hausnummer">
+                          <label for="hausnummer">Hausnummer</label>
+                        </div>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <div class="form-floating">
+                          <input type="text" class="form-control" id="plz" placeholder="PLZ">
+                          <label for="plz">PLZ</label>
+                        </div>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <div class="form-floating">
+                          <input type="text" class="form-control" id="ort" placeholder="Ort">
+                          <label for="ort">Ort</label>
+                        </div>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <div class="form-floating">
+                          <input type="text" class="form-control" id="land" placeholder="Land">
+                          <label for="land">Land</label>
+                        </div>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <div class="form-floating">
+                          <input type="date" class="form-control" id="geburtsdatum">
+                          <label for="geburtsdatum">Geburtsdatum</label>
+                        </div>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <div class="form-floating">
+                          <input type="tel" class="form-control" id="telefon" placeholder="Telefon">
+                          <label for="telefon">Telefon</label>
+                        </div>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <div class="form-floating">
+                          <input type="tel" class="form-control" id="mobil" placeholder="Mobil">
+                          <label for="mobil">Mobil</label>
+                        </div>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <div class="form-floating">
+                          <input type="email" class="form-control" id="mail" placeholder="Mail">
+                          <label for="mail">Mail</label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="mt-3">
+                      <button type="button" class="btn btn-primary" onclick="stepper.next(); showStep('information-part')">Weiter</button>
+                    </div>
+                  </div>
+
+                  <div id="information-part" class="content d-none" role="tabpanel" aria-labelledby="information-part-trigger">
+                    <div class="row">
+                      <div class="col-md-4 mb-3">
+                        <div class="form-floating">
+                          <select class="form-select" id="massnahme">
+                            <option selected disabled value="">Maßnahme</option>
+                            <option>Option 1</option>
+                          </select>
+                          <label for="massnahme">Maßnahme</label>
+                        </div>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <div class="form-floating">
+                          <select class="form-select" id="betreuer">
+                            <option selected disabled value="">Betreuer</option>
+                            <option>Betreuer 1</option>
+                          </select>
+                          <label for="betreuer">Betreuer</label>
+                        </div>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <div class="form-floating">
+                          <input type="text" class="form-control" id="kennung" placeholder="Kennung">
+                          <label for="kennung">Kennung</label>
+                        </div>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <div class="form-floating">
+                          <input type="date" class="form-control" id="zuweisung_von">
+                          <label for="zuweisung_von">Zuweisung von:</label>
+                        </div>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <div class="form-floating">
+                          <input type="date" class="form-control" id="zuweisung_bis">
+                          <label for="zuweisung_bis">Zuweisung bis:</label>
+                        </div>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <div class="form-floating">
+                          <input type="date" class="form-control" id="eintritt">
+                          <label for="eintritt">Eintrittsdatum</label>
+                        </div>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <div class="form-floating">
+                          <select class="form-select" id="jc-team">
+                            <option selected disabled value="">Maßnahme</option>
+                            <option>Team A</option>
+                          </select>
+                          <label for="jc-team">JC-Team</label>
+                        </div>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <div class="form-floating">
+                          <select class="form-select" id="jc-mitarbeiter">
+                            <option selected>wählen...</option>
+                            <option value="m">Alessandro</option>
+                            <option value="w">Uwe</option>
+                          </select>
+                          <label for="jc-mitarbeiter">JC-Mitarbeiter</label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="mt-3">
+                      <button type="button" class="btn btn-secondary me-2" onclick="stepper.previous(); showStep('logins-part')">Zurück</button>
+                      <button type="button" class="btn btn-primary" onclick="stepper.next(); showStep('confirmation-part')">Weiter</button>
+                    </div>
+                  </div>
+
+                  <div id="confirmation-part" class="content d-none" role="tabpanel" aria-labelledby="confirmation-part-trigger">
+                    <p>Sonstige Angaben und Bestätigung.</p>
+                    <div class="mt-3">
+                      <button type="button" class="btn btn-secondary me-2" onclick="stepper.previous(); showStep('information-part')">Zurück</button>
+                      <button type="submit" class="btn btn-success">Teilnehmer erstellen</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bs-stepper/dist/js/bs-stepper.min.js"></script>
+<script>
+  let stepper;
+  document.addEventListener("DOMContentLoaded", function () {
+    stepper = new window.Stepper(document.querySelector("#stepper"));
+    showStep("logins-part");
+
+    document.getElementById("teilnehmerForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      alert("Teilnehmer erfolgreich erstellt!");
+      const modal = bootstrap.Modal.getInstance(document.getElementById("teilnehmerModal"));
+      modal.hide();
+      this.reset();
+      stepper.to(1);
+      showStep("logins-part");
+    });
+  });
+
+  function showStep(id) {
+    const steps = document.querySelectorAll('.bs-stepper-content .content');
+    steps.forEach(step => step.classList.add('d-none'));
+    const active = document.getElementById(id);
+    if (active) active.classList.remove('d-none');
+  }
+</script>
+
+
+
+        </div>
+
+        <div class="row g-2 mb-3">
+          <div class="col-md-4">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Search..." />
+              <button class="btn btn-outline-primary"><i class="bi bi-search"></i></button>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <select class="form-select">
+              <option>Maßnahme</option>
+            </select>
+          </div>
+          <div class="col-md-3">
+            <select class="form-select">
+              <option>Betreuer</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <div class="d-flex gap-2">
+            <button class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">Spalten anzeigen</button>
+            <button class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">Exportieren</button>
+          </div>
+          <div>
+            <span class="badge rounded-pill bg-warning text-dark fs-6">3</span>
+            <span class="ms-1">Anzahl der Teilnehmer</span>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table table-bordered align-middle">
+            <thead class="table-secondary">
+              <tr>
+                <th>Teilnehmer</th>
+                <th>Kundennummer</th>
+                <th>Geburtsdatum</th>
+                <th>Status</th>
+                <th>Zuweisung</th>
+                <th>Maßnahme</th>
+                <th>Betreuer</th>
+                <th>Aktionen</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="avatar-initials">MM</span> Max Mustermann</td>
+                <td>1234434</td>
+                <td>01.01.2000</td>
+                <td><span class="badge bg-success">Aktiv</span></td>
+                <td>01.01.20 - 01.01.24</td>
+                <td>Integra 2025</td>
+                <td>Daniel Chu</td>
+                <td><button class="btn btn-sm btn-outline-secondary">Bearbeiten</button></td>
+              </tr>
+			                <tr>
+                <td><span class="avatar-initials">MM</span> Max Mustermann</td>
+                <td>1234434</td>
+                <td>01.01.2000</td>
+                <td><span class="badge bg-success">Aktiv</span></td>
+                <td>01.01.20 - 01.01.24</td>
+                <td>Integra 2025</td>
+                <td>Daniel Chu</td>
+                <td><button class="btn btn-sm btn-outline-secondary">Bearbeiten</button></td>
+              </tr>
+			  
+			  
+              <!-- Weitere Zeilen... -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Navigation aktivieren / umschalten
+    const links = document.querySelectorAll('[data-target]');
+    const pages = document.querySelectorAll('.content-page');
+
+    links.forEach(link => {
+      link.addEventListener('click', e => {
+        e.preventDefault();
+
+        const target = link.getAttribute('data-target');
+
+        links.forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+
+        pages.forEach(p => p.classList.add('d-none'));
+        const page = document.getElementById(target);
+        if (page) page.classList.remove('d-none');
+      });
+    });
+  </script>
+</body>
+</html>

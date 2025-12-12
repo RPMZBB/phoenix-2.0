@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PHÖNIX – Maßnahme Detail</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="css/custom.css">
+</head>
+
+<body class="bg-light p-4 p-lg-5">
+
+<div class="xx">
+
+  <!-- CARD: Titel + KPIs -->
+  <div class="card border-0 shadow mb-3">
+    <div class="card-body p-4">
+
+      <div class="d-flex flex-wrap justify-content-between align-items-start gap-3 mb-3">
+        <div>
+          <div class="text-secondary small">Maßnahme</div>
+          <h2 class="fw-normal mb-0">Integra 2025</h2>
+          <div class="text-secondary mt-2" style="font-size:.95rem;">
+            Dashboard & Verwaltung
+          </div>
+        </div>
+
+        <div class="d-flex gap-2">
+          <button class="btn btn-outline-secondary">
+            <i class="bi bi-gear me-1"></i> Verwalten
+          </button>
+          <button class="btn btn-primary" onclick="document.querySelector('[data-bs-target=&quot;#tab-berichte&quot;]')?.click()">
+            <i class="bi bi-file-earmark-text me-1"></i> Berichte
+          </button>
+        </div>
+      </div>
+
+      <hr class="my-3">
+
+      <div class="row g-3">
+        <div class="col-md-3">
+          <div class="card border-0 bg-body-tertiary h-100">
+            <div class="card-body p-3">
+              <div class="text-secondary small text-uppercase">Belegung</div>
+              <div class="display-6 fw-bold mt-2">50<span class="">%</span></div>
+              <div class="text-secondary">10 von 20</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="card border-0 bg-body-tertiary h-100">
+            <div class="card-body p-3">
+              <div class="text-secondary small text-uppercase">Anwesenheit</div>
+              <div class="display-6 fw-bold mt-2">56<span class="">%</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-2">
+          <div class="card border-0 bg-body-tertiary h-100">
+            <div class="card-body p-3">
+              <div class="text-secondary small text-uppercase">Module</div>
+              <div class="display-6 fw-bold mt-2">8</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-2">
+          <div class="card border-0 bg-body-tertiary h-100">
+            <div class="card-body p-3">
+              <div class="text-secondary small text-uppercase">Vermittlungen</div>
+              <div class="display-6 fw-bold mt-2 text-success">2</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-2">
+          <div class="card border-0 bg-body-tertiary h-100">
+            <div class="card-body p-3">
+              <div class="text-secondary small text-uppercase">Laufzeit</div>
+              <div class="fw-semibold mt-2">01.01.2024</div>
+              <div class="text-secondary">– 31.06.2025</div>
+              <span class="badge text-bg-primary mt-2">ESF +</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- CARD: Tabs + Inhalte -->
+  <div class="card border-0 shadow">
+    <div class="card-body p-0">
+
+      <!-- Tabs -->
+      <div class="px-3 px-lg-4 pt-3 pt-lg-4 border-bottom">
+        <ul class="nav nav-tabs">
+          <li class="nav-item">
+            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-teilnehmer">
+              <i class="bi bi-people me-1"></i> Aktuelle Teilnehmer
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-anwesenheit">
+              <i class="bi bi-calendar-check me-1"></i> Anwesenheiten erfassen
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-fahrkosten">
+              <i class="bi bi-car-front me-1"></i> Fahrtkosten
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-arbeitsbereiche">
+              <i class="bi bi-diagram-3 me-1"></i> Arbeitsbereiche
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-berichte">
+              <i class="bi bi-file-earmark-text me-1"></i> Berichte & Auswertungen
+            </button>
+          </li>
+        </ul>
+      </div>
+
+      <div class="tab-content p-3 p-lg-4">
+
+        <!-- TAB: TEILNEHMER -->
+        <div class="tab-pane fade show active" id="tab-teilnehmer">
+
+          <div class="text-secondary mb-3" style="font-size: 0.95rem;">
+            Hier sehen Sie alle aktuell dieser Maßnahme zugewiesenen Teilnehmer.
+            Bereits aus dieser Maßnahme ausgeschiedene Teilnehmer müssen über den Bereich
+            <strong>„Teilnehmer“</strong> im Hauptmenü aufgerufen werden, um dort Daten zu erfassen
+            oder Berichte zu erzeugen.
+          </div>
+
+<div class="card border-0 bg-body-tertiary mb-3">
+  <div class="card-body p-3">
+
+    <div class="text-secondary small mb-2">Filtern / Suchen</div>
+
+    <div class="row g-2 align-items-center">
+
+      <!-- Suche -->
+      <div class="col-lg-3">
+        <div class="input-group">
+          <span class="input-group-text bg-white">
+            <i class="bi bi-search"></i>
+          </span>
+          <input type="text" class="form-control" placeholder="Name, Kennung, …">
+        </div>
+      </div>
+
+      <!-- Betreuer -->
+      <div class="col-lg-2">
+        <select class="form-select">
+          <option selected>Betreuer</option>
+          <option>Daniel Chu</option>
+          <option>Holger Irmak</option>
+        </select>
+      </div>
+
+      <!-- Arbeitsbereich -->
+      <div class="col-lg-2">
+        <select class="form-select">
+          <option selected>Arbeitsbereich</option>
+          <option>Maler</option>
+          <option>Gärtnerei</option>
+        </select>
+      </div>
+
+      <!-- Teilnehmerliste (PDF/Word) -->
+      <div class="col-lg-2 d-flex">
+        <div class="dropdown w-100">
+          <button
+            class="btn btn-outline-secondary w-100 text-nowrap dropdown-toggle"
+            type="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <i class="bi bi-list-ul me-2"></i> Teilnehmerliste
+          </button>
+          <ul class="dropdown-menu w-100">
+            <li>
+              <button class="dropdown-item" type="button">
+                <i class="bi bi-filetype-pdf me-2"></i> PDF
+              </button>
+            </li>
+            <li>
+              <button class="dropdown-item" type="button">
+                <i class="bi bi-filetype-docx me-2"></i> Word
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Unterschriftenliste (PDF/Word) -->
+      <div class="col-lg-3 d-flex">
+        <div class="dropdown w-100">
+          <button
+            class="btn btn-outline-secondary w-100 text-nowrap dropdown-toggle"
+            type="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <i class="bi bi-pen me-2"></i> Unterschriftenliste
+          </button>
+          <ul class="dropdown-menu w-100">
+            <li>
+              <button class="dropdown-item" type="button">
+                <i class="bi bi-filetype-pdf me-2"></i> PDF
+              </button>
+            </li>
+            <li>
+              <button class="dropdown-item" type="button">
+                <i class="bi bi-filetype-docx me-2"></i> Word
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+
+
+          <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+              <thead class="table-light">
+                <tr>
+                  <th>Teilnehmer</th>
+                  <th>Betreuer</th>
+                  <th>Arbeitsbereich</th>
+                  <th>Zuweisung</th>
+                  <th>Maßnahme</th>
+                  <th>JC-Betreuer</th>
+                  <th class="text-end">Aktionen</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="massnahme-tn-row" data-page="TN-Profil_massnahme.html" style="cursor:pointer;">
+                  <td class="fw-semibold"><span class="badge text-bg-secondary me-2">MM</span> Max Mustermann</td>
+                  <td>Daniel Chu</td>
+                  <td>Maler</td>
+                  <td>01.01.20 - 01.01.24</td>
+                  <td>Integra 2025</td>
+                  <td>Daniel Chu</td>
+                  <td class="text-end">
+                    <button class="btn btn-sm btn-outline-secondary" onclick="event.stopPropagation();">
+                      <i class="bi bi-pencil me-1"></i> Bearbeiten
+                    </button>
+                  </td>
+                </tr>
+
+                <tr class="massnahme-tn-row" data-page="TN-Profil_massnahme.html" style="cursor:pointer;">
+                  <td class="fw-semibold"><span class="badge text-bg-secondary me-2">CP</span> Claudia Peters</td>
+                  <td>Daniel Chu</td>
+                  <td>Maler</td>
+                  <td>01.01.20 - 01.01.24</td>
+                  <td>Integra 2025</td>
+                  <td>Holger Irmak</td>
+                  <td class="text-end">
+                    <button class="btn btn-sm btn-outline-secondary" onclick="event.stopPropagation();">
+                      <i class="bi bi-pencil me-1"></i> Bearbeiten
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+
+        <!-- TAB: ANWESENHEIT -->
+        <div class="tab-pane fade" id="tab-anwesenheit">
+
+          <div class="card border-0 bg-body-tertiary mb-3">
+            <div class="card-body p-3">
+              <div class="row g-2">
+                <div class="col-md-6">
+                  <select class="form-select">
+                    <option selected>Betreuer</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <select class="form-select">
+                    <option selected>Arbeitsbereich</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="d-flex flex-wrap align-items-center gap-2 mt-3">
+                <button class="btn btn-outline-secondary"><i class="bi bi-chevron-left"></i></button>
+                <input type="date" class="form-control w-auto" value="2025-05-21">
+                <button class="btn btn-outline-secondary"><i class="bi bi-chevron-right"></i></button>
+                <button class="btn btn-outline-dark ms-lg-2">Alle Anwesend</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table table-hover align-middle">
+              <thead class="table-light">
+                <tr>
+                  <th>Teilnehmer</th>
+                  <th>Anwesenheit</th>
+                  <th class="text-end">Aktion</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="badge text-bg-secondary me-2">MM</span> Max Mustermann</td>
+                  <td>
+                    <div class="d-flex flex-wrap gap-1">
+                      <button class="btn btn-outline-secondary btn-sm" onclick="setAnwesend(this)">Anwesend</button>
+                      <button class="btn btn-outline-secondary btn-sm" onclick="setSpecial(this, 'krank')">Krank</button>
+                      <button class="btn btn-outline-secondary btn-sm" onclick="setSpecial(this, 'entschuldigt')">Entschuldigt</button>
+                      <button class="btn btn-outline-secondary btn-sm" onclick="setSpecial(this, 'unentschuldigt')">Unentschuldigt</button>
+                      <button class="btn btn-outline-secondary btn-sm" onclick="setSpecial(this, 'urlaub')">Urlaub</button>
+                    </div>
+                  </td>
+                  <td class="text-end">
+                    <button class="btn btn-outline-dark btn-sm" onclick="toggleDetails(this)">Detail</button>
+                  </td>
+                </tr>
+
+                <tr class="d-none detail-row">
+                  <td colspan="3" class="bg-light">
+
+                    <div id="anwesenheit-zeiten" class="mb-3 d-none">
+                      <div class="mb-2">
+                        <strong>Praxis</strong>
+                        <input type="time" class="form-control d-inline-block w-auto ms-2 me-2" value="08:00">
+                        <input type="time" class="form-control d-inline-block w-auto me-2" value="16:00">
+                        <input type="text" class="form-control d-inline-block w-auto" value="8 Stunden" readonly>
+                      </div>
+                      <div class="mb-2">
+                        <strong>Theorie</strong>
+                        <input type="time" class="form-control d-inline-block w-auto ms-2 me-2" value="08:00">
+                        <input type="time" class="form-control d-inline-block w-auto me-2" value="16:00">
+                        <input type="text" class="form-control d-inline-block w-auto" value="8 Stunden" readonly>
+                      </div>
+                    </div>
+
+                    <div id="sonderoptionen" class="mt-3 d-none">
+                      <div class="mb-2 d-flex flex-wrap align-items-center gap-2">
+                        <label class="form-label mb-0">von:</label>
+                        <input type="date" class="form-control w-auto">
+                        <label class="form-label mb-0">bis:</label>
+                        <input type="date" class="form-control w-auto">
+
+                        <button class="btn btn-outline-primary btn-sm" id="auBtn" style="display:none;">
+                          <i class="bi bi-upload me-1"></i> AU hochladen
+                        </button>
+
+                        <input type="text" class="form-control w-auto" id="urlaubFeld" placeholder="Urlaubsanspruch" style="display:none;">
+                      </div>
+
+                      <div class="mb-2" id="grundFeld" style="display:none;">
+                        <label for="grundInput" class="form-label">Grund</label>
+                        <input type="text" class="form-control" id="grundInput" placeholder="z. B. Arzttermin">
+                      </div>
+                    </div>
+
+                    <button class="btn btn-outline-primary btn-sm mt-2">
+                      <i class="bi bi-pen me-1"></i> persönliche Arbeitszeit bearbeiten
+                    </button>
+                  </td>
+                </tr>
+
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+
+        <!-- TAB: FAHRKOSTEN (Platzhalter) -->
+        <div class="tab-pane fade" id="tab-fahrkosten">
+          <div class="text-secondary">Fahrkosten für die gesamte Maßhname nach Monaten</div>
+        </div>
+
+        <!-- TAB: ARBEITSBEREICHE (Platzhalter) -->
+        <div class="tab-pane fade" id="tab-arbeitsbereiche">
+          <div class="text-secondary">Platzhalter: Arbeitsbereiche-Inhalte folgen.</div>
+        </div>
+
+<!-- TAB: BERICHTE & AUSWERTUNGEN -->
+<div class="tab-pane fade" id="tab-berichte">
+
+  <div class="card border-0 bg-body">
+    <div class="card-body p-4">
+
+      <!-- Kopf -->
+      <div class="d-flex flex-wrap justify-content-between align-items-start gap-2 mb-3">
+        <div>
+          <div class="text-secondary small">Erzeugen / Export</div>
+          <h5 class="mb-0">Berichte & Abrechnungen</h5>
+          <div class="text-secondary mt-2" style="font-size:.95rem;">
+            Wählen Sie eine Kategorie und erzeugen Sie die gewünschte Auswertung (PDF / Excel).
+          </div>
+        </div>
+        <div class="d-flex gap-2">
+          <button class="btn btn-outline-secondary btn-sm">
+            <i class="bi bi-funnel me-1"></i> Filter
+          </button>
+          <button class="btn btn-outline-secondary btn-sm">
+            <i class="bi bi-download me-1"></i> Export-Center
+          </button>
+        </div>
+      </div>
+
+      <hr class="my-3">
+
+      <!-- Accordion -->
+      <div class="accordion accordion-flush" id="reportsAccordion">
+
+        <!-- Fahrtkosten -->
+        <div class="accordion-item border-0">
+          <h2 class="accordion-header">
+            <button
+              class="accordion-button collapsed bg-body text-dark fw-semibold shadow-none"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#cFahrt"
+              style="background-color: var(--bs-body-bg);"
+            >
+              <i class="bi bi-car-front me-2"></i> Fahrtkosten
+            </button>
+          </h2>
+          <div id="cFahrt" class="accordion-collapse collapse">
+            <div class="accordion-body bg-body text-dark pt-2">
+              <div class="d-grid gap-2">
+                <button class="btn btn-outline-secondary text-start">
+                  <i class="bi bi-receipt me-2"></i> Fahrtkostenabrechnung
+                </button>
+                <button class="btn btn-outline-secondary text-start">
+                  <i class="bi bi-calculator me-2"></i> Fahrtkostenkalkulation
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ESF / Abrechnung -->
+        <div class="accordion-item border-0">
+          <h2 class="accordion-header">
+            <button
+              class="accordion-button collapsed bg-body text-dark fw-semibold shadow-none"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#cEsf"
+              style="background-color: var(--bs-body-bg);"
+            >
+              <i class="bi bi-file-earmark-check me-2"></i> ESF / Abrechnung
+            </button>
+          </h2>
+          <div id="cEsf" class="accordion-collapse collapse">
+            <div class="accordion-body bg-body text-dark pt-2">
+              <div class="d-grid gap-2">
+                <button class="btn btn-outline-secondary text-start">
+                  <i class="bi bi-people me-2"></i> Teilnehmer mit ESF Abrechnung
+                </button>
+                <button class="btn btn-outline-secondary text-start">
+                  <i class="bi bi-people me-2"></i> Teilnehmer ohne ESF Abrechnung
+                </button>
+                <button class="btn btn-outline-secondary text-start">
+                  <i class="bi bi-folder2-open me-2"></i> ESF-Stammblätter erzeugen
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Listen & Unterlagen -->
+        <div class="accordion-item border-0">
+          <h2 class="accordion-header">
+            <button
+              class="accordion-button collapsed bg-body text-dark fw-semibold shadow-none"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#cListen"
+              style="background-color: var(--bs-body-bg);"
+            >
+              <i class="bi bi-card-list me-2"></i> Listen & Unterlagen
+            </button>
+          </h2>
+          <div id="cListen" class="accordion-collapse collapse">
+            <div class="accordion-body bg-body text-dark pt-2">
+              <div class="d-grid gap-2">
+                <button class="btn btn-outline-secondary text-start">
+                  <i class="bi bi-bar-chart me-2"></i> Belegungszahlen
+                </button>
+                <button class="btn btn-outline-secondary text-start">
+                  <i class="bi bi-building me-2"></i> Liste Jobcenter – Anlage 2
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /accordion -->
+
+    </div>
+  </div>
+
+</div>
+
+
+
+
+    
+  </div>
+
+</div><!-- /container -->
+
+<!-- Bootstrap Script -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+function toggleDetails(button) {
+  const row = button.closest("tr");
+  const detailRow = row.nextElementSibling;
+  document.querySelectorAll(".detail-row").forEach(r => {
+    if (r !== detailRow) r.classList.add("d-none");
+  });
+  detailRow.classList.toggle("d-none");
+}
+
+function setAnwesend(button) {
+  setActive(button, "bg-success");
+  document.getElementById("anwesenheit-zeiten").classList.remove("d-none");
+  document.getElementById("sonderoptionen").classList.add("d-none");
+}
+
+function setActive(button, colorClass) {
+  const group = button.parentElement.querySelectorAll("button");
+  group.forEach(btn => {
+    btn.classList.remove("bg-success", "bg-warning", "bg-info", "bg-danger", "bg-primary", "text-white", "text-dark");
+    btn.classList.add("btn-outline-secondary");
+  });
+  button.classList.remove("btn-outline-secondary");
+  colorClass.split(" ").forEach(c => button.classList.add(c));
+}
+
+function setSpecial(button, type) {
+  const sonder = document.getElementById("sonderoptionen");
+  const au = document.getElementById("auBtn");
+  const urlaub = document.getElementById("urlaubFeld");
+  const grund = document.getElementById("grundFeld");
+  const zeiten = document.getElementById("anwesenheit-zeiten");
+
+  setActive(button,
+    type === "krank"         ? "bg-warning text-dark" :
+    type === "entschuldigt"  ? "bg-info text-white"   :
+    type === "unentschuldigt"? "bg-danger text-white" :
+                                "bg-primary text-white"
+  );
+
+  sonder.classList.remove("d-none");
+  zeiten.classList.add("d-none");
+
+  au.style.display     = (type === "krank" || type === "entschuldigt") ? "inline-block" : "none";
+  urlaub.style.display = (type === "urlaub") ? "inline-block" : "none";
+  grund.style.display  = (type === "entschuldigt" || type === "unentschuldigt") ? "block" : "none";
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  document.querySelectorAll(".massnahme-tn-row").forEach(row => {
+    row.addEventListener("click", function () {
+      const target = this.getAttribute("data-page");
+      if (!target) return;
+
+      let frame = null;
+      try {
+        if (window.parent && window.parent !== window) {
+          frame = window.parent.document.getElementById("mainFrame");
+        }
+      } catch (e) {}
+
+      if (frame) frame.src = target;
+      else window.location.href = target;
+    });
+  });
+});
+</script>
+
+</body>
+</html>

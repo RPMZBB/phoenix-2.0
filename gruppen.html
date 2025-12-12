@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gruppenverwaltung</title>
+
+  <!-- Bootstrap & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+</head>
+
+<body class="bg-light p-4 p-lg-5">
+
+
+    <!-- Header -->
+<!-- CARD: Gruppenverwaltung – Header -->
+<div class="card border-0 shadow mb-3">
+  <div class="card-body p-4">
+
+    <div class="d-flex flex-wrap justify-content-between align-items-start gap-3">
+      
+      <!-- Titel + Info -->
+      <div>
+        <div class="d-flex align-items-center gap-2">
+          <h2 class="fw-normal mb-0">Gruppenverwaltung</h2>
+
+          <!-- Info Toggle -->
+          <button
+            class="btn btn-sm p-0 text-muted"
+            data-bs-toggle="collapse"
+            data-bs-target="#hilfeGruppen"
+            aria-expanded="false"
+            aria-controls="hilfeGruppen"
+          >
+            <i class="bi bi-info-circle"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Action -->
+      <button
+        class="btn btn-primary d-flex align-items-center"
+        data-bs-toggle="modal"
+        data-bs-target="#gruppeModal"
+      >
+        <i class="bi bi-plus-lg me-2"></i>
+        Neue Gruppe
+      </button>
+
+    </div>
+
+    <!-- Aufklappbarer Hilfetext -->
+    <div class="collapse mt-3" id="hilfeGruppen">
+      <div class="bg-body-tertiary rounded p-3 text-muted small">
+        In der Gruppenverwaltung legen Sie Arbeitsgruppen an und verwalten deren
+        Zuordnung zu Arbeitsbereichen, Standorten, Anleitern und betreuenden
+        Mitarbeitenden.
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+    <div class="row g-4">
+
+      <!-- Sidebar: Alle Gruppen -->
+      <div class="col-md-4 col-lg-3">
+        <div class="card border-0 shadow h-100">
+          <div class="card-body">
+
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h6 class="card-title mb-0">Alle Gruppen</h6>
+              <span class="badge text-bg-light border">
+                <i class="bi bi-collection me-1"></i> 5
+              </span>
+            </div>
+
+            <div class="input-group input-group-sm mb-3">
+              <span class="input-group-text bg-white border-end-0">
+                <i class="bi bi-search"></i>
+              </span>
+              <input type="search" class="form-control border-start-0" placeholder="Schnellsuche" />
+            </div>
+
+            <div class="list-group">
+              <button class="list-group-item list-group-item-action active d-flex justify-content-between align-items-center">
+                Gruppe A
+                <span class="badge text-bg-light">5</span>
+              </button>
+              <button class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                Gruppe Adams
+                <span class="badge text-bg-light border">3</span>
+              </button>
+              <button class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                Gruppe 3 Chu
+                <span class="badge text-bg-light border">8</span>
+              </button>
+              <button class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                Gruppe Ritter
+                <span class="badge text-bg-light border">2</span>
+              </button>
+              <button class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                Gruppe 4
+                <span class="badge text-bg-light border">1</span>
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Detailbereich -->
+      <div class="col-md-8 col-lg-9">
+
+        <!-- Titel + kleine Actions -->
+        <div class="card border-0 shadow mb-3">
+          <div class="card-body d-flex flex-wrap justify-content-between align-items-center gap-2">
+            <div>
+              <div class="text-secondary small">Ausgewählte Gruppe</div>
+              <h3 class="h4 mb-0">Gruppe A</h3>
+            </div>
+
+            <div class="d-flex gap-2">
+              <button class="btn btn-outline-secondary btn-sm">
+                <i class="bi bi-clipboard-data me-1"></i> Übersicht
+              </button>
+              <button class="btn btn-outline-secondary btn-sm">
+                <i class="bi bi-people me-1"></i> Teilnehmer
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- KPI / Infos -->
+        <div class="row g-3">
+
+          <!-- TN in Gruppe -->
+          <div class="col-md-4">
+            <div class="card border-0 shadow h-100">
+              <div class="card-body p-4 d-flex flex-column">
+                <div class="d-flex justify-content-between align-items-start">
+                  <div class="text-secondary small text-uppercase">TN in Gruppe</div>
+                  <span class="badge text-bg-light border">
+                    <i class="bi bi-people"></i>
+                  </span>
+                </div>
+                <div class="display-5 fw-bold mt-3">5</div>
+                <div class="text-secondary small">Aktiv zugeordnet</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Wochenarbeitszeit -->
+          <div class="col-md-4">
+            <div class="card border-0 shadow h-100">
+              <div class="card-body p-4 d-flex flex-column">
+                <div class="d-flex justify-content-between align-items-start">
+                  <div class="text-secondary small text-uppercase">Wochenarbeitszeit</div>
+                  <span class="badge text-bg-light border">
+                    <i class="bi bi-clock"></i>
+                  </span>
+                </div>
+                <div class="display-5 fw-bold mt-3">30</div>
+                <div class="text-secondary small">Stunden/Woche</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Standort -->
+          <div class="col-md-4">
+            <div class="card border-0 shadow h-100">
+              <div class="card-body p-4 d-flex flex-column">
+                <div class="d-flex justify-content-between align-items-start">
+                  <div class="text-secondary small text-uppercase">Standort</div>
+                  <span class="badge text-bg-light border">
+                    <i class="bi bi-geo-alt"></i>
+                  </span>
+                </div>
+                <div class="h3 fw-semibold mt-3 mb-0">Rodenhof</div>
+                <div class="text-secondary small">zugewiesen</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Soz. Betreuer -->
+          <div class="col-md-4">
+            <div class="card border-0 shadow h-100">
+              <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-start">
+                  <div class="text-secondary small text-uppercase">Soz. Betreuer</div>
+                  <span class="badge text-bg-light border">
+                    <i class="bi bi-person-badge"></i>
+                  </span>
+                </div>
+                <div class="h5 fw-semibold mt-3 mb-0">C. Adams</div>
+                <div class="text-secondary small">Ansprechpartner</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Arbeitsbereich -->
+          <div class="col-md-4">
+            <div class="card border-0 shadow h-100">
+              <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-start">
+                  <div class="text-secondary small text-uppercase">Arbeitsbereich</div>
+                  <span class="badge text-bg-light border">
+                    <i class="bi bi-diagram-3"></i>
+                  </span>
+                </div>
+                <div class="h5 fw-semibold mt-3 mb-0">Gärtner</div>
+                <div class="text-secondary small">Einsatzbereich</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Anleiter -->
+          <div class="col-md-4">
+            <div class="card border-0 shadow h-100">
+              <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-start">
+                  <div class="text-secondary small text-uppercase">Anleiter</div>
+                  <span class="badge text-bg-light border">
+                    <i class="bi bi-person-workspace"></i>
+                  </span>
+                </div>
+                <div class="h5 fw-semibold mt-3 mb-0">A. Schuff</div>
+                <div class="text-secondary small">Verantwortlich</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Aktionen -->
+        <div class="card border-0 shadow mt-3">
+          <div class="card-body d-flex flex-wrap justify-content-end gap-2">
+            <button class="btn btn-outline-secondary">
+              <i class="bi bi-pencil me-1"></i> Bearbeiten
+            </button>
+            <button class="btn btn-danger">
+              <i class="bi bi-trash me-1"></i> Gruppe löschen
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+
+  <!-- Modal: Neue Gruppe -->
+  <div class="modal fade" id="gruppeModal" tabindex="-1" aria-labelledby="gruppeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content border-0 shadow">
+        <div class="modal-header">
+          <h5 class="modal-title" id="gruppeModalLabel">
+            <i class="bi bi-plus-lg me-2"></i> Neue Gruppe
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Schließen"></button>
+        </div>
+
+        <form>
+          <div class="modal-body">
+
+            <!-- Stammdaten -->
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <h6 class="mb-0">Stammdaten</h6>
+              <span class="badge text-bg-light border">
+                <i class="bi bi-card-text me-1"></i> Pflichtfelder
+              </span>
+            </div>
+
+            <div class="row g-3 mb-4">
+              <div class="col-md-6">
+                <label for="gruppenName" class="form-label">Name</label>
+                <input type="text" class="form-control" id="gruppenName" placeholder="Gruppenname" />
+              </div>
+
+              <div class="col-md-6">
+                <label for="arbeitsbereich" class="form-label">Arbeitsbereich</label>
+                <select id="arbeitsbereich" class="form-select">
+                  <option selected disabled>Bitte wählen...</option>
+                  <option>Gärtnerei</option>
+                  <option>Holzwerkstatt</option>
+                  <option>Küche</option>
+                </select>
+              </div>
+
+              <div class="col-md-6">
+                <label for="anleiter" class="form-label">Anleiter</label>
+                <select id="anleiter" class="form-select">
+                  <option selected disabled>Bitte wählen...</option>
+                  <option>A. Schuff</option>
+                  <option>M. Müller</option>
+                </select>
+              </div>
+
+              <div class="col-md-6">
+                <label for="sozialpaed" class="form-label">Sozialpädagoge</label>
+                <select id="sozialpaed" class="form-select">
+                  <option selected disabled>Bitte wählen...</option>
+                  <option>C. Adams</option>
+                  <option>S. Schmidt</option>
+                </select>
+              </div>
+
+              <div class="col-md-6">
+                <label for="standort" class="form-label">Standort</label>
+                <select id="standort" class="form-select">
+                  <option selected disabled>Bitte wählen...</option>
+                  <option>Rodenhof</option>
+                  <option>Innenstadt</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Wochenarbeitszeit -->
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <h6 class="mb-0">Wochenarbeitszeit</h6>
+              <span class="text-secondary small">
+                <i class="bi bi-clock me-1"></i> Zeiten & Pausen
+              </span>
+            </div>
+
+            <div class="table-responsive">
+              <table class="table align-middle small">
+                <thead class="table-light">
+                  <tr>
+                    <th style="width: 18%;">Tag</th>
+                    <th style="width: 22%;">von</th>
+                    <th style="width: 22%;">bis</th>
+                    <th style="width: 22%;">Pause (Min)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Montag</td>
+                    <td><input type="time" class="form-control form-control-sm" value="08:00" /></td>
+                    <td><input type="time" class="form-control form-control-sm" value="16:00" /></td>
+                    <td><input type="text" class="form-control form-control-sm" value="00:30" /></td>
+                  </tr>
+                  <tr>
+                    <td>Dienstag</td>
+                    <td><input type="time" class="form-control form-control-sm" value="08:00" /></td>
+                    <td><input type="time" class="form-control form-control-sm" value="16:00" /></td>
+                    <td><input type="text" class="form-control form-control-sm" value="00:30" /></td>
+                  </tr>
+                  <tr>
+                    <td>Mittwoch</td>
+                    <td><input type="time" class="form-control form-control-sm" value="08:00" /></td>
+                    <td><input type="time" class="form-control form-control-sm" value="16:00" /></td>
+                    <td><input type="text" class="form-control form-control-sm" value="00:30" /></td>
+                  </tr>
+                  <tr>
+                    <td>Donnerstag</td>
+                    <td><input type="time" class="form-control form-control-sm" value="08:00" /></td>
+                    <td><input type="time" class="form-control form-control-sm" value="16:00" /></td>
+                    <td><input type="text" class="form-control form-control-sm" value="00:30" /></td>
+                  </tr>
+                  <tr>
+                    <td>Freitag</td>
+                    <td><input type="time" class="form-control form-control-sm" value="08:00" /></td>
+                    <td><input type="time" class="form-control form-control-sm" value="14:00" /></td>
+                    <td><input type="text" class="form-control form-control-sm" value="00:30" /></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="d-flex justify-content-end align-items-center mt-2 gap-2">
+              <span class="text-secondary small">Wochenarbeitszeit (STD)</span>
+              <input type="number" class="form-control form-control-sm" style="width: 90px;" value="36" />
+            </div>
+
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Abbrechen</button>
+            <button type="submit" class="btn btn-primary">
+              <i class="bi bi-check-lg me-1"></i> Speichern
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

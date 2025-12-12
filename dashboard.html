@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Dein globales Stylesheet (bleibt, aber wir nutzen hier kein Extra-CSS) -->
+  <link rel="stylesheet" href="css/custom.css">
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+
+  <title>Dashboard</title>
+</head>
+
+<body class="bg-light p-4 p-lg-5">
+
+
+<!-- Card: Header + Maßnahme-Auswahl -->
+<div class="card border-0 shadow mb-3">
+  <div class="card-body p-4">
+
+    <!-- Header -->
+    <div class="d-flex flex-wrap justify-content-between align-items-start gap-3 mb-3">
+      <div>
+        <h2 class="fw-normal mb-0">Dashboard</h2>
+      </div>
+    </div>
+
+    <hr class="my-3">
+
+    <!-- Kopfzeile -->
+    <div class="d-flex flex-wrap gap-2 align-items-center">
+      <select class="form-select" style="max-width: 280px;">
+        <option selected>Maßnahme</option>
+        <option>Integra 2025</option>
+        <option>Integra 2024</option>
+      </select>
+
+      <button id="btnOpenMassnahme" class="btn btn-primary">
+        <i class="bi bi-briefcase me-1"></i> Öffnen in Maßnahme Verwalten
+      </button>
+    </div>
+
+  </div>
+</div>
+
+
+    <!-- KPI Cards -->
+    <div class="row g-3 mb-4">
+
+<!-- Belegung -->
+<div class="col-lg-3 col-md-6">
+  <div class="card border-0 shadow h-100">
+    <div class="card-body p-4 d-flex flex-column">
+
+      <!-- HEADER -->
+      <div class="d-flex justify-content-between align-items-start mb-3">
+        <div class="text-uppercase small text-secondary">
+          Belegung
+        </div>
+        <span class="badge text-bg-light border">
+          <i class="bi bi-people-fill"></i>
+        </span>
+      </div>
+
+      <!-- ZENTRUM: Donut -->
+      <div class="flex-grow-1 d-flex align-items-center justify-content-center">
+        <svg width="120" height="120" viewBox="0 0 36 36">
+
+          <!-- Hintergrund -->
+          <path
+            d="M18 2.0845
+               a 15.9155 15.9155 0 0 1 0 31.831
+               a 15.9155 15.9155 0 0 1 0 -31.831"
+            fill="none"
+            stroke="#e9ecef"
+            stroke-width="3"
+          />
+
+          <!-- Fortschritt (50 %) -->
+          <path
+            d="M18 2.0845
+               a 15.9155 15.9155 0 0 1 0 31.831
+               a 15.9155 15.9155 0 0 1 0 -31.831"
+            fill="none"
+            stroke="#0d6efd"
+            stroke-width="3"
+            stroke-dasharray="50, 100"
+            stroke-linecap="round"
+          />
+
+          <!-- Prozent -->
+          <text
+            x="18"
+            y="20.5"
+            text-anchor="middle"
+            class="fw-bold"
+            font-size="8"
+            fill="#212529"
+          >
+            50%
+          </text>
+        </svg>
+      </div>
+
+      <!-- FOOTER -->
+      <div class="text-center text-secondary small mt-2">
+        10 von 20 belegt
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+      <!-- Info -->
+<div class="col-lg-3 col-md-6">
+  <div class="card border-0 shadow h-100">
+    <div class="card-body p-4">
+
+      <!-- Kopf -->
+      <div class="d-flex justify-content-between align-items-start mb-2">
+        <div>
+          <div class="text-uppercase small text-secondary">Info</div>
+          <div class="text-secondary small mt-2">Laufzeit</div>
+          <div class="fw-semibold">01.01.2024 – 31.06.2025</div>
+        </div>
+        <span class="badge text-bg-light border">
+          <i class="bi bi-info-circle"></i>
+        </span>
+      </div>
+
+      <hr class="my-3">
+
+      <!-- Metadaten -->
+      <div class="vstack gap-2 small">
+
+        <div class="d-flex justify-content-between">
+          <span class="text-secondary">Kurzbezeichnung</span>
+          <span class="fw-semibold text-dark">Inteqra 2023/24</span>
+        </div>
+
+        <div class="d-flex justify-content-between">
+          <span class="text-secondary">Kategorie</span>
+          <span class="fw-semibold text-dark">Aktivierung</span>
+        </div>
+
+        <div class="d-flex justify-content-between">
+          <span class="text-secondary">Kostenstelle</span>
+          <span class="fw-semibold text-dark">1446</span>
+        </div>
+
+        <div class="d-flex justify-content-between">
+          <span class="text-secondary">Projekt-Nr.</span>
+          <span class="fw-semibold text-dark">555 / 3034 / 25</span>
+        </div>
+
+      </div>
+
+      <hr class="my-3">
+
+      <!-- Förderung -->
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="text-secondary small">Förderung</div>
+        <span class="badge text-bg-primary">ESF&nbsp;+</span>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+      <!-- Erfolgreiche Vermittlungen -->
+<div class="col-lg-2 col-md-4">
+  <div class="card border-0 shadow h-100">
+    <div class="card-body p-4 d-flex flex-column">
+
+      <!-- Zone 1: Header -->
+      <div class="d-flex justify-content-between align-items-start mb-2">
+        <div class="small text-secondary">
+          <div class="text-uppercase fw-semibold">
+            Erfolgreiche Vermittlungen
+          </div>
+          <div class="text-muted">
+            in dieser Maßnahme
+          </div>
+        </div>
+        <span class="badge text-bg-light border">
+          <i class="bi bi-check-circle text-success"></i>
+        </span>
+      </div>
+
+      <!-- Zone 2: Wert -->
+      <div class="flex-grow-1 d-flex flex-column justify-content-center text-center">
+        <div class="display-3 fw-bold text-success">
+          2
+        </div>
+        <div class="text-muted small">
+          aktueller Stand
+        </div>
+      </div>
+
+      <!-- Zone 3: Aktion -->
+      <div class="pt-3">
+        <button
+          class="btn btn-sm btn-outline-secondary w-100"
+          data-bs-toggle="modal"
+          data-bs-target="#modalVermittlungen"
+        >
+          <i class="bi bi-list-check me-1"></i>
+          Details anzeigen
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- Anwesenheitsquote -->
+<div class="col-lg-2 col-md-4">
+  <div class="card border-0 shadow h-100">
+    <div class="card-body p-4 d-flex flex-column">
+
+      <!-- Zone 1: Header -->
+      <div class="d-flex justify-content-between align-items-start mb-2">
+        <div class="small text-secondary">
+          <div class="text-uppercase fw-semibold">
+            Anwesenheitsquote
+          </div>
+          <div class="text-muted">
+            Ø dieser Maßnahme
+          </div>
+        </div>
+        <span class="badge text-bg-light border">
+          <i class="bi bi-calendar-check"></i>
+        </span>
+      </div>
+
+      <!-- Zone 2: Wert -->
+      <div class="flex-grow-1 d-flex flex-column justify-content-center text-center">
+        <div class="display-3 fw-bold">
+          56<span class="fs-4">%</span>
+        </div>
+      </div>
+
+      <!-- Zone 3: Aktion -->
+      <div class="pt-3">
+        <a
+          class="btn btn-sm btn-outline-primary w-100"
+          href="massnahme-detail.html"
+        >
+          <i class="bi bi-eye me-1"></i>
+          Details anzeigen
+        </a>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- Module -->
+<div class="col-lg-2 col-md-4">
+  <div class="card border-0 shadow h-100">
+    <div class="card-body p-4 d-flex flex-column">
+
+      <!-- Zone 1: Header -->
+      <div class="d-flex justify-content-between align-items-start mb-2">
+        <div class="small text-secondary">
+          <div class="text-uppercase fw-semibold">
+            Module
+          </div>
+          <div class="text-muted">
+            aktuell
+          </div>
+        </div>
+        <span class="badge text-bg-light border">
+          <i class="bi bi-grid"></i>
+        </span>
+      </div>
+
+      <!-- Zone 2: Wert -->
+      <div class="flex-grow-1 d-flex flex-column justify-content-center text-center">
+        <div class="display-3 fw-bold">
+          8
+        </div>
+      </div>
+
+      <!-- Zone 3: Aktion -->
+      <div class="pt-3">
+        <button
+          class="btn btn-sm btn-outline-secondary w-100"
+          type="button"
+        >
+          <i class="bi bi-eye me-1"></i>
+          Anzeigen
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+    </div>
+
+    <!-- Mitarbeiter + Termine -->
+    <div class="row g-3 mb-3">
+
+      <!-- Mitarbeiter -->
+      <div class="col-lg-6">
+        <div class="card border-0 shadow h-100">
+          <div class="card-body p-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 class="mb-0">Mitarbeiter</h5>
+              <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalNeuerMitarbeiter">
+                <i class="bi bi-person-plus me-1"></i> Neuer Mitarbeiter
+              </button>
+            </div>
+
+            <div class="list-group list-group-flush">
+              <div class="list-group-item px-0 py-3 d-flex align-items-center border-bottom">
+                <div class="bg-secondary text-white d-flex align-items-center justify-content-center me-3"
+                     style="width:38px;height:38px;">
+                  CA
+                </div>
+                <div>
+                  <div class="fw-semibold">Corinna Adams</div>
+                  <div class="text-secondary small">SozPäd</div>
+                </div>
+              </div>
+
+              <div class="list-group-item px-0 py-3 d-flex align-items-center border-bottom">
+                <div class="bg-secondary text-white d-flex align-items-center justify-content-center me-3"
+                     style="width:38px;height:38px;">
+                  HP
+                </div>
+                <div>
+                  <div class="fw-semibold">Helmut Peter</div>
+                  <div class="text-secondary small">Lehrkraft</div>
+                </div>
+              </div>
+
+              <div class="list-group-item px-0 py-3 d-flex align-items-center">
+                <div class="bg-secondary text-white d-flex align-items-center justify-content-center me-3"
+                     style="width:38px;height:38px;">
+                  RP
+                </div>
+                <div>
+                  <div class="fw-semibold">Rafael Piechowiak</div>
+                  <div class="text-secondary small">Anleiter</div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Termine -->
+      <div class="col-lg-6">
+        <div class="card border-0 shadow h-100">
+          <div class="card-body p-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 class="mb-0">Termine</h5>
+
+              <div class="d-flex gap-2">
+                <div class="btn-group btn-group-sm" role="group" aria-label="Termine Ansicht">
+                  <button class="btn btn-outline-secondary active" type="button">heute</button>
+                  <button class="btn btn-outline-secondary" type="button">Kalender</button>
+                </div>
+
+                <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalNeuerTermin">
+                  <i class="bi bi-plus-circle me-1"></i> Manueller Termin
+                </button>
+              </div>
+            </div>
+
+            <div class="list-group list-group-flush">
+              <div class="list-group-item px-0 py-3 border-bottom">
+                <div class="d-flex justify-content-between align-items-start">
+                  <div>
+                    <div class="text-secondary small">14:00</div>
+                    <div class="fw-semibold">Erstgespräch</div>
+                    <div class="text-secondary small">C. Adams · Herr Conrad</div>
+                  </div>
+                  <span class="badge text-bg-light border">Heute</span>
+                </div>
+              </div>
+
+              <div class="list-group-item px-0 py-3 border-bottom">
+                <div class="text-secondary small">Im Anschluss</div>
+                <div class="fw-semibold">Eingangstest</div>
+                <div class="text-secondary small">C. Hoffmann</div>
+              </div>
+
+              <div class="list-group-item px-0 py-3">
+                <div class="text-secondary small">Später</div>
+                <div class="fw-semibold">Abmeldung</div>
+                <div class="text-secondary small">M. Mustermann</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Accordion: Statistiken (leer) -->
+    <div class="accordion" id="accordionStatistiken">
+      <div class="accordion-item border-0 shadow">
+        <h2 class="accordion-header" id="headingStats">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseStats" aria-expanded="false" aria-controls="collapseStats">
+            Statistiken
+          </button>
+        </h2>
+        <div id="collapseStats" class="accordion-collapse collapse" aria-labelledby="headingStats" data-bs-parent="#accordionStatistiken">
+          <div class="accordion-body">
+            <!-- bewusst leer -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+  <!-- Modal: Vermittlungen -->
+  <div class="modal fade" id="modalVermittlungen" tabindex="-1" aria-labelledby="modalVermittlungenLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalVermittlungenLabel">Erfolgreiche Vermittlungen</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Schließen"></button>
+        </div>
+        <div class="modal-body">
+
+          <div class="d-flex flex-wrap gap-2 align-items-center mb-3">
+            <div class="form-floating" style="min-width:220px;">
+              <select class="form-select" id="filterVermittlungen">
+                <option value="gesamt" selected>Gesamt</option>
+                <option value="2025-01">Januar 2025</option>
+                <option value="2025-02">Februar 2025</option>
+                <option value="2025-03">März 2025</option>
+                <option value="2025-04">April 2025</option>
+              </select>
+              <label for="filterVermittlungen">Filter</label>
+            </div>
+
+            <div class="ms-auto text-secondary small" id="vermittlungenCount">2 Einträge</div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table table-hover align-middle">
+              <thead class="table-light">
+                <tr>
+                  <th>Datum</th>
+                  <th>Teilnehmer</th>
+                  <th>Art</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="vermittlungenTbody">
+                <tr data-month="2025-03">
+                  <td>12.03.2025</td>
+                  <td>Max Mustermann</td>
+                  <td>Sozialversicherungspflichtig</td>
+                  <td><span class="badge text-bg-success">Erfolgreich</span></td>
+                </tr>
+                <tr data-month="2025-04">
+                  <td>03.04.2025</td>
+                  <td>Maria Musterfrau</td>
+                  <td>Ausbildung</td>
+                  <td><span class="badge text-bg-success">Erfolgreich</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Schließen</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Neuer Mitarbeiter -->
+  <div class="modal fade" id="modalNeuerMitarbeiter" tabindex="-1" aria-labelledby="modalNeuerMitarbeiterLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalNeuerMitarbeiterLabel">Neuen Mitarbeiter hinzufügen</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Schließen"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row g-2">
+            <div class="col-6">
+              <div class="form-floating">
+                <input type="text" class="form-control" id="mitVorname" placeholder="Vorname">
+                <label for="mitVorname">Vorname</label>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="form-floating">
+                <input type="text" class="form-control" id="mitNachname" placeholder="Nachname">
+                <label for="mitNachname">Nachname</label>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="form-floating">
+                <select class="form-select" id="mitRolle">
+                  <option selected>SozPäd</option>
+                  <option>Lehrkraft</option>
+                  <option>Anleiter</option>
+                  <option>Verwaltung</option>
+                </select>
+                <label for="mitRolle">Rolle</label>
+              </div>
+            </div>
+          </div>
+          <div class="text-secondary small mt-2">(Demo) Speichern fügt noch keinen Eintrag in die Liste ein.</div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Abbrechen</button>
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Speichern</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Neuer Termin -->
+  <div class="modal fade" id="modalNeuerTermin" tabindex="-1" aria-labelledby="modalNeuerTerminLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalNeuerTerminLabel">Manuellen Termin einfügen</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Schließen"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row g-2">
+            <div class="col-6">
+              <div class="form-floating">
+                <input type="date" class="form-control" id="terminDatum" placeholder="Datum">
+                <label for="terminDatum">Datum</label>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="form-floating">
+                <input type="time" class="form-control" id="terminUhrzeit" placeholder="Uhrzeit">
+                <label for="terminUhrzeit">Uhrzeit</label>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="form-floating">
+                <input type="text" class="form-control" id="terminTitel" placeholder="Titel">
+                <label for="terminTitel">Titel</label>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="form-floating">
+                <input type="text" class="form-control" id="terminPerson" placeholder="Person/Notiz">
+                <label for="terminPerson">Person/Notiz</label>
+              </div>
+            </div>
+          </div>
+          <div class="text-secondary small mt-2">(Demo) Speichern erstellt noch keinen echten Kalendereintrag.</div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Abbrechen</button>
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Speichern</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    // Öffnen in Maßnahme Verwalten -> massnahme-detail.html
+    document.getElementById("btnOpenMassnahme")?.addEventListener("click", function () {
+      window.location.href = "massnahme-detail.html";
+    });
+
+    // Vermittlungen: Filter nach Monat / Gesamt
+    const filter = document.getElementById("filterVermittlungen");
+    const tbody = document.getElementById("vermittlungenTbody");
+    const countEl = document.getElementById("vermittlungenCount");
+
+    function updateVermittlungen() {
+      if (!filter || !tbody) return;
+
+      const val = filter.value; // "gesamt" oder "YYYY-MM"
+      const rows = Array.from(tbody.querySelectorAll("tr"));
+
+      let visible = 0;
+      rows.forEach(r => {
+        const m = r.getAttribute("data-month");
+        const show = (val === "gesamt") || (m === val);
+        r.style.display = show ? "" : "none";
+        if (show) visible++;
+      });
+
+      if (countEl) {
+        countEl.textContent = visible + (visible === 1 ? " Eintrag" : " Einträge");
+      }
+    }
+
+    filter?.addEventListener("change", updateVermittlungen);
+    document.getElementById("modalVermittlungen")?.addEventListener("shown.bs.modal", updateVermittlungen);
+  </script>
+
+</body>
+</html>

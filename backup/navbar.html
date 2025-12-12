@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PHÖNIX Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .topbar {
+      background: linear-gradient(to right, #2c2c2c, #181818);
+      color: white;
+      padding: 0.5rem 1rem;
+      display: flex;
+      align-items: center;
+      height: 50px;
+    }
+
+    .sidebar {
+      width: 220px;
+      background-color: #1e1e1e;
+      color: white;
+      height: calc(100vh - 50px);
+      overflow-y: auto;
+      flex-shrink: 0;
+      padding-top: 1rem;
+    }
+
+    .sidebar a {
+      color: white;
+      padding: 0.75rem 1rem;
+      display: block;
+      text-decoration: none;
+    }
+
+    .sidebar a:hover,
+    .sidebar .active {
+      background-color: #f97316;
+      color: white;
+    }
+
+    .main {
+      flex-grow: 1;
+      background-color: #f8f9fa;
+      padding: 1rem;
+      overflow-y: auto;
+    }
+
+    .accordion-button {
+      background-color: transparent;
+      color: white;
+      padding: 0.75rem 1rem;
+    }
+
+    .accordion-button::after {
+      filter: invert(1);
+    }
+
+    .accordion-item {
+      background-color: transparent;
+      border: none;
+    }
+
+    .accordion-collapse {
+      background-color: #2a2a2a;
+    }
+
+    .submenu-link {
+      padding-left: 2rem;
+    }
+
+    .card-kpi {
+      min-height: 120px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+      background-color: #e9ecef;
+    }
+
+    .card-dark {
+      background-color: #212529;
+      color: white;
+    }
+
+    .avatar-initials {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background-color: #d6bbfb;
+      color: #4c1d95;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      margin-right: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Topbar -->
+  <header class="topbar">
+    <button class="btn btn-sm btn-outline-light me-3"><i class="bi bi-list"></i></button>
+    <div class="fw-bold">PHÖNIX</div>
+  </header>
+
+  <!-- Layout -->
+  <div class="d-flex flex-grow-1">
+    <!-- Sidebar -->
+    <nav class="sidebar">
+      <div class="accordion" id="sidebarAccordion">
+
+        <div class="accordion-item">
+          <a href="#" class="active"><i class="bi bi-scissors"></i> Dashboard</a>
+        </div>
+
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#tnCollapse">
+              <i class="bi bi-person-lines-fill"></i> Teilnehmerdaten
+            </button>
+          </h2>
+          <div id="tnCollapse" class="accordion-collapse collapse">
+            <div class="accordion-body p-0">
+              <a href="#" class="submenu-link d-block py-2 px-3">Übersicht</a>
+              <a href="#" class="submenu-link d-block py-2 px-3">Teilnehmer erstellen</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#measureCollapse">
+              <i class="bi bi-cpu"></i> Maßnahme
+            </button>
+          </h2>
+          <div id="measureCollapse" class="accordion-collapse collapse">
+            <div class="accordion-body p-0">
+              <a href="#" class="submenu-link d-block py-2 px-3">Übersicht</a>
+              <a href="#" class="submenu-link d-block py-2 px-3">Neue Maßnahme</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <a href="#"><i class="bi bi-people-fill"></i> Gruppen</a>
+        </div>
+
+        <div class="accordion-item">
+          <a href="#"><i class="bi bi-mortarboard-fill"></i> Dozenten</a>
+        </div>
+
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#paramCollapse">
+              <i class="bi bi-sliders"></i> Parameter
+            </button>
+          </h2>
+          <div id="paramCollapse" class="accordion-collapse collapse">
+            <div class="accordion-body p-0">
+              <a href="#" class="submenu-link d-block py-2 px-3">Banken</a>
+              <a href="#" class="submenu-link d-block py-2 px-3">Textbausteine</a>
+              <!-- weitere ... -->
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Dashboard</h2>
+        <div>
+          <select class="form-select d-inline w-auto me-2">
+            <option>Maßnahme</option>
+          </select>
+          <button class="btn btn-outline-dark"><i class="bi bi-calendar-event"></i> Verwalten</button>
+        </div>
+      </div>
+
+      <div class="row g-3 mb-4">
+        <div class="col-md-3">
+          <div class="card card-dark text-center p-3">
+            <h4>BELEGUNG</h4>
+            <h1>50%</h1>
+            <p>10 von 20</p>
+            <i class="bi bi-pie-chart-fill" style="font-size: 2rem;"></i>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card card-kpi">
+            <div><strong>INFO</strong></div>
+            <div>Laufzeit<br>01.01.2024 bis 31.06.2025</div>
+            <div>ESF *</div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card card-kpi">
+            <div class="d-flex justify-content-between px-3">
+              <div><strong>2</strong></div>
+              <div>
+                <select class="form-select form-select-sm w-auto">
+                  <option>gesamt</option>
+                </select>
+              </div>
+            </div>
+            <div class="text-center">Vermittlungen</div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card card-kpi">
+            <div class="text-center"><strong>56 %</strong></div>
+            <div class="text-center">ANWESENHEITSQUOTE</div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card card-kpi">
+            <div class="text-center"><strong>8</strong></div>
+            <div class="text-center">MODULE</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-3">
+        <div class="col-md-6">
+          <div class="card p-3">
+            <h5>Mitarbeiter</h5>
+            <div class="d-flex align-items-center py-1">
+              <div class="avatar-initials">CA</div>
+              <span>Corinna Adams - SozPäd</span>
+            </div>
+            <div class="d-flex align-items-center py-1">
+              <div class="avatar-initials">HP</div>
+              <span>Helmut Peter - Lehrkraft</span>
+            </div>
+            <div class="d-flex align-items-center py-1">
+              <div class="avatar-initials">RP</div>
+              <span>Rafael Piechowiak - Anleiter</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card p-3">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <h5 class="mb-0">Termine</h5>
+              <div>
+                <button class="btn btn-sm btn-outline-secondary">heute</button>
+                <button class="btn btn-sm btn-outline-secondary">Kalender</button>
+              </div>
+            </div>
+            <ul class="list-unstyled mb-0">
+              <li>14:00 Erstgespräch - C. Adams Herr Conrad</li>
+              <li>Eingangstest - C. Hoffmann</li>
+              <li>Abmeldung - M. Mustermann</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

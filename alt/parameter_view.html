@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PHÖNIX Prototyp</title>
+
+  <!-- Bootstrap & Styles -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bs-stepper/dist/css/bs-stepper.min.css" rel="stylesheet" />
+  <link href="css/custom.css" rel="stylesheet" />
+</head>
+<body>
+<!-- Teilnehmer – Maßnahme-spezifische Ansicht -->
+<div class="container-fluid py-3">
+
+  <div class="card">
+    <div class="card-body">
+
+      <div class="row">
+
+        <!-- Linke Seitenleiste (Profil + Maßnahme-Info) -->
+        <div class="col-lg-3 border-end mb-4 mb-lg-0">
+
+          <!-- ID / Kennung / Status -->
+          <div class="d-flex justify-content-between align-items-start mb-2 small text-muted">
+            <div>
+              <div>TN-ID: <strong>12345</strong></div>
+              <div>Kennung: <strong>555XV5974</strong></div>
+            </div>
+            <span class="badge rounded-pill bg-success">aktiv</span>
+          </div>
+
+          <!-- Avatar + Name -->
+          <div class="text-center mt-2 mb-3">
+            <div class="avatar-initials bg-secondary text-white mx-auto mb-2 d-flex align-items-center justify-content-center"
+                style="width: 90px; height: 90px; border-radius: 50%; font-size: 36px;">
+              MM
+            </div>
+            <h4 class="mb-0">Max Mustermann</h4>
+          </div>
+
+          <!-- Maßnahme-Block -->
+          <div class="bg-body-secondary rounded-3 p-3 mb-3">
+            <div class="text-center mb-3">
+              <div class="text-muted small mb-1">Zugewiesene Maßnahme</div>
+              <div class="h5 mb-1 text-primary fw-bold">Integra 2025</div>
+              <div class="small text-muted">01.01.2024 – 31.12.2024</div>
+            </div>
+
+            <div class="row text-center small g-2">
+              <div class="col-4">
+                <div class="text-muted">Betreuer</div>
+                <div class="fw-semibold">D. Chu</div>
+              </div>
+              <div class="col-4">
+                <div class="text-muted">Bereich</div>
+                <div class="fw-semibold">Maler</div>
+              </div>
+              <div class="col-4">
+                <div class="text-muted">JC</div>
+                <div class="fw-semibold">F. Beispiel</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+
+        <!-- Rechte Seite: Maßnahme-spezifische Tabs -->
+        <div class="col-lg-9">
+
+          <ul class="nav nav-tabs flex-wrap" id="massnahmeTabs" role="tablist">
+
+            <li class="nav-item">
+              <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tabInterventionen" type="button" role="tab">
+                Interventionen
+              </button>
+            </li>
+
+            <li class="nav-item">
+              <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabBriefe" type="button" role="tab">
+                Briefe
+              </button>
+            </li>
+
+            <li class="nav-item">
+              <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabAktennotizen" type="button" role="tab">
+                Aktennotizen
+              </button>
+            </li>
+
+            <li class="nav-item">
+              <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabNotizen" type="button" role="tab">
+                Notizen
+              </button>
+            </li>
+
+            <li class="nav-item">
+              <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabGruppen" type="button" role="tab">
+                Gruppen
+              </button>
+            </li>
+
+            <li class="nav-item">
+              <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabArbeitszeit" type="button" role="tab">
+                Pers. Arbeitszeit
+              </button>
+            </li>
+
+            <li class="nav-item">
+              <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabUrlaub" type="button" role="tab">
+                Urlaub
+              </button>
+            </li>
+
+            <li class="nav-item">
+              <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabPraktika" type="button" role="tab">
+                Praktika
+              </button>
+            </li>
+
+          </ul>
+
+
+          <!-- TAB CONTENT -->
+          <div class="tab-content mt-3">
+
+            <!-- Interventionen -->
+            <div class="tab-pane fade show active" id="tabInterventionen" role="tabpanel">
+              <p class="text-muted">Interventionen werden hier dokumentiert …</p>
+            </div>
+
+            <!-- Briefe -->
+            <div class="tab-pane fade" id="tabBriefe" role="tabpanel">
+              <p class="text-muted">Hier können Briefe erzeugt, gespeichert und gedruckt werden …</p>
+            </div>
+
+            <!-- Aktennotizen -->
+            <div class="tab-pane fade" id="tabAktennotizen" role="tabpanel">
+              <p class="text-muted">Aktennotizen zum Teilnehmer werden hier angezeigt …</p>
+            </div>
+
+            <!-- Notizen -->
+            <div class="tab-pane fade" id="tabNotizen" role="tabpanel">
+              <p class="text-muted">Freie Notizen / Gesprächsverläufe …</p>
+            </div>
+
+            <!-- Gruppen -->
+            <div class="tab-pane fade" id="tabGruppen" role="tabpanel">
+              <p class="text-muted">Gruppenzuordnungen & Teilnahmeverläufe …</p>
+            </div>
+
+            <!-- Arbeitszeit -->
+            <div class="tab-pane fade" id="tabArbeitszeit" role="tabpanel">
+              <p class="text-muted">Persönliche Arbeitszeiten können hier eingetragen werden …</p>
+            </div>
+
+            <!-- Urlaub -->
+            <div class="tab-pane fade" id="tabUrlaub" role="tabpanel">
+              <p class="text-muted">Urlaube, AU & Fehlzeiten …</p>
+            </div>
+
+            <!-- Praktika -->
+            <div class="tab-pane fade" id="tabPraktika" role="tabpanel">
+              <p class="text-muted">Hier werden Praktika-Daten gepflegt …</p>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+<!-- Bootstrap JS (falls nicht schon eingebunden) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  // ALLE Bootstrap Tabs aktivierbar machen
+  document.querySelectorAll('button[data-bs-toggle="tab"], a[data-bs-toggle="tab"]')
+    .forEach(function (tabTriggerEl) {
+
+      // Bootstrap Tab Instanz
+      const tab = new bootstrap.Tab(tabTriggerEl);
+
+      // Klickaktivierung
+      tabTriggerEl.addEventListener("click", function (event) {
+        event.preventDefault();
+        tab.show();
+      });
+    });
+
+});
+</script>
+
+
+</body>

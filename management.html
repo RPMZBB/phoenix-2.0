@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Management Oberfläche</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .topbar {
+      background: linear-gradient(to right, #2c2c2c, #181818);
+      color: white;
+      padding: 0.5rem 1rem;
+      display: flex;
+      align-items: center;
+      height: 50px;
+    }
+    .sidebar {
+      width: 220px;
+      background-color: #1e1e1e;
+      color: white;
+      height: calc(100vh - 50px);
+      overflow-y: auto;
+      flex-shrink: 0;
+      padding-top: 1rem;
+    }
+    .sidebar a {
+      color: white;
+      padding: 0.75rem 1rem;
+      display: block;
+      text-decoration: none;
+    }
+    .sidebar a:hover,
+    .sidebar a.active {
+      background-color: #f97316;
+      color: white;
+    }
+    .main {
+      flex-grow: 1;
+      background-color: #f8f9fa;
+      padding: 2rem;
+      overflow-y: auto;
+    }
+    .content-wrapper {
+      display: flex;
+      flex-grow: 1;
+    }
+    .hidden {
+      display: none;
+    }
+	
+	.card:hover {
+  box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.2) !important;
+  transition: box-shadow 0.2s ease-in-out;
+  cursor:pointer;
+}
+
+  </style>
+</head>
+<body>
+
+  <!-- Topbar -->
+  <header class="topbar">
+    <div class="fw-bold">Management Oberfläche</div>
+  </header>
+
+  <!-- Layout -->
+  <div class="content-wrapper">
+    <!-- Sidebar -->
+		<nav class="sidebar">
+		  <a href="#" class="nav-link active" data-target="dashboardView"><i class="bi bi-speedometer2 me-2"></i>Dashboard</a>
+		  <a href="#" class="nav-link" data-target="nutzerView"><i class="bi bi-people me-2"></i>Nutzerverwaltung</a>
+		  <a href="#" class="nav-link" data-target="projektView"><i class="bi bi-diagram-3 me-2"></i>Datenbanken</a>
+		  <a href="#" class="nav-link" data-target="projekteView"><i class="bi bi-folder2-open me-2"></i>Massnahmen</a>
+		</nav>
+
+
+    <!-- Main Content -->
+    <main class="main">
+	
+	
+	<!-- Beispiel: Detail-View für ein Projekt (z. B. Rodenhof) -->
+<div id="projektDetailView" class="hidden">
+  <div class="d-flex justify-content-between align-items-start mb-4">
+    <div>
+      <h2 class="fw-bold">Rodenhof Massnahmen</h2>
+      <p class="mb-1">
+        <i class="bi bi-building me-2 text-muted"></i><strong>Abteilung:</strong> Arbeiten und Lernen
+      </p>
+      <p class="mb-1">
+        <i class="bi bi-diagram-3 me-2 text-muted"></i><strong>Kategorie:</strong> AGH
+      </p>
+    </div>
+    <div>
+      <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#addProjectModal">
+        <i class="bi bi-plus-circle me-1"></i> Neue Maßnahme erstellen
+      </button>
+    </div>
+  </div>
+
+  <hr />
+
+  <!-- Laufende Maßnahmen -->
+  
+  <h5 class="mt-4">Laufende Maßnahmen</h5>
+<div class="card mb-3 shadow-sm">
+  <div class="card-body d-flex justify-content-between align-items-center">
+    <div>
+      <h6 class="fw-semibold mb-1">Sauberkeit in Saarbrücken 2025</h6>
+      <p class="mb-0 text-muted">01.01.2025 – 31.12.2025</p>
+    </div>
+    <div class="btn-group btn-group-sm" role="group">
+      <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#addProjectModal">
+        <i class="bi bi-gear"></i> Bearbeiten
+      </button>
+      <button class="btn btn-outline-secondary">
+        <i class="bi bi-bar-chart"></i> Auswertung
+      </button>
+      <button class="btn btn-outline-secondary">
+        <i class="bi bi-receipt"></i> Abrechnung
+      </button>
+    </div>
+  </div>
+</div>
+
+
+<div class="card mb-3 shadow-sm">
+  <div class="card-body d-flex justify-content-between align-items-center">
+    <div>
+      <h6 class="fw-semibold mb-1">Taskforce Grün</h6>
+      <p class="mb-0 text-muted">01.01.2025 – 31.12.2025</p>
+    </div>
+    <div class="btn-group btn-group-sm" role="group">
+      <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#addProjectModal">
+        <i class="bi bi-gear"></i> Bearbeiten
+      </button>
+      <button class="btn btn-outline-secondary">
+        <i class="bi bi-bar-chart"></i> Auswertung
+      </button>
+      <button class="btn btn-outline-secondary">
+        <i class="bi bi-receipt"></i> Abrechnung
+      </button>
+    </div>
+  </div>
+</div>
+
+
+
+  <!-- Abgeschlossene Maßnahmen -->
+  <h5 class="mt-5">Abgeschlossene Maßnahmen</h5>
+<div class="card mb-3 bg-light border shadow-sm">
+  <div class="card-body d-flex justify-content-between align-items-center">
+    <div>
+      <h6 class="fw-semibold mb-1">Sauberkeit in Saarbrücken 2023/24</h6>
+      <p class="mb-0 text-muted">01.01.2024 – 31.12.2024</p>
+    </div>
+    <div class="btn-group btn-group-sm" role="group">
+      <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#addProjectModal">
+        <i class="bi bi-gear"></i> Bearbeiten
+      </button>
+      <button class="btn btn-outline-secondary">
+        <i class="bi bi-bar-chart"></i> Auswertung
+      </button>
+      <button class="btn btn-outline-secondary">
+        <i class="bi bi-receipt"></i> Abrechnung
+      </button>
+    </div>
+  </div>
+</div>
+
+</div>
+	
+	
+			<!-- Massnahmen verwalten -->
+			<div id="projekteView" class="hidden">
+			  <h2>Massnahmen</h2>
+
+			    <!-- Filterbereich -->
+			  <div class="card mb-4 p-3">
+				<div class="row g-3">
+				  <div class="col-md-4">
+					<div class="form-floating">
+					  <input type="text" class="form-control" id="filterProjektname" placeholder="Projektname">
+					  <label for="filterProjektname">Projektname</label>
+					</div>
+				  </div>
+				  <div class="col-md-4">
+					<div class="form-floating">
+					  <input type="text" class="form-control" id="filterAbteilung" placeholder="Abteilung">
+					  <label for="filterAbteilung">Abteilung</label>
+					</div>
+				  </div>
+				  <div class="col-md-4">
+					<div class="form-floating">
+					  <select class="form-select" id="filterKategorie">
+						<option selected>Alle Kategorien</option>
+						<option>Bildung</option>
+						<option>Integration</option>
+						<option>Qualifizierung</option>
+					  </select>
+					  <label for="filterKategorie">Maßnahmenkategorie</label>
+					</div>
+				  </div>
+				</div>
+			  </div>
+
+  <!-- Projektergebnisse als Karten -->
+<div class="row g-4" id="projektKarten">
+  <!-- Karte: Rodenhof -->
+  <div class="col-md-6 projekt-karte" data-id="rodenhof">
+    <div class="card bg-light border-0 shadow-lg">
+      <div class="card-body">
+        <h4 class="card-title text-dark fw-bold mb-3">Rodenhof</h4>
+
+        <p class="mb-1">
+          <i class="bi bi-building text-muted me-2"></i>
+          <strong>Abteilung:</strong> Arbeiten und Lernen
+        </p>
+        <p class="mb-3">
+          <i class="bi bi-diagram-3 text-muted me-2"></i>
+          <strong>Kategorie:</strong> AGH
+        </p>
+
+        <div class="d-flex flex-wrap gap-2 mb-3">
+          <span class="badge bg-primary rounded-pill px-3 py-2 fs-6">
+            <i class="bi bi-play-circle me-1"></i> 3 laufend
+          </span>
+          <span class="badge bg-secondary rounded-pill px-3 py-2 fs-6">
+            <i class="bi bi-check-circle me-1"></i> 1 abgeschlossen
+          </span>
+        </div>
+
+        <div class="text-end">
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Karte: INTEQRA -->
+  <div class="col-md-6 projekt-karte" data-id="rodenhof">
+    <div class="card bg-light border-0 shadow-lg">
+      <div class="card-body">
+        <h4 class="card-title text-dark fw-bold mb-3">INTEQRA</h4>
+
+        <p class="mb-1">
+          <i class="bi bi-building text-muted me-2"></i>
+          <strong>Abteilung:</strong> Übergang Schule Beruf
+        </p>
+        <p class="mb-3">
+          <i class="bi bi-diagram-3 text-muted me-2"></i>
+          <strong>Kategorie:</strong> Aktivierung
+        </p>
+
+        <div class="d-flex flex-wrap gap-2 mb-3">
+          <span class="badge bg-primary rounded-pill px-3 py-2 fs-6">
+            <i class="bi bi-play-circle me-1"></i> 1 laufend
+          </span>
+          <span class="badge bg-secondary rounded-pill px-3 py-2 fs-6">
+            <i class="bi bi-check-circle me-1"></i> 2 abgeschlossen
+          </span>
+        </div>
+
+        <div class="text-end">
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+			</div>
+	
+      <!-- Dashboard -->
+      <div id="dashboardView">
+			<div id="dashboardView">
+			  <h2 class="mb-4">Admin Dashboard</h2>
+
+			  <!-- Kennzahlen-Widgets -->
+			  <div class="row g-4 mb-4">
+				<div class="col-md-3">
+				  <div class="card text-bg-primary shadow-sm">
+					<div class="card-body">
+					  <h6 class="card-title">Gesamtanzahl Nutzer</h6>
+					  <h3 class="fw-bold">34</h3>
+					  <p class="mb-0 small">inkl. Admins, Betreuer, Lehrkräfte</p>
+					</div>
+				  </div>
+				</div>
+				<div class="col-md-3">
+				  <div class="card text-bg-success shadow-sm">
+					<div class="card-body">
+					  <h6 class="card-title">Laufende Maßnahmen</h6>
+					  <h3 class="fw-bold">7</h3>
+					  <p class="mb-0 small">in 4 Datenbanken aktiv</p>
+					</div>
+				  </div>
+				</div>
+				<div class="col-md-3">
+				  <div class="card text-bg-secondary shadow-sm">
+					<div class="card-body">
+					  <h6 class="card-title">Abgeschlossene Maßnahmen</h6>
+					  <h3 class="fw-bold">5</h3>
+					  <p class="mb-0 small">seit 01.01.2024</p>
+					</div>
+				  </div>
+				</div>
+				<div class="col-md-3">
+				  <div class="card text-bg-warning shadow-sm">
+					<div class="card-body">
+					  <h6 class="card-title">Datenbanken</h6>
+					  <h3 class="fw-bold">4</h3>
+					  <p class="mb-0 small">z. B. Rodenhof, Inteqra</p>
+					</div>
+				  </div>
+				</div>
+			  </div>
+
+			  <!-- Letzte Aktivitäten oder Systemhinweise -->
+			  <div class="card mb-4 shadow-sm">
+				<div class="card-body">
+				  <h5 class="card-title">Letzte Aktivitäten</h5>
+				  <ul class="list-group list-group-flush">
+					<li class="list-group-item">
+					  <i class="bi bi-person-plus me-2 text-success"></i>
+					  Nutzer <strong>Ali Admin</strong> wurde hinzugefügt.
+					  <span class="text-muted float-end small">08.05.2025</span>
+					</li>
+					<li class="list-group-item">
+					  <i class="bi bi-folder-plus me-2 text-primary"></i>
+					  Datenbank <strong>INTEQRA</strong> erstellt.
+					  <span class="text-muted float-end small">07.05.2025</span>
+					</li>
+					<li class="list-group-item">
+					  <i class="bi bi-check2-circle me-2 text-secondary"></i>
+					  Maßnahme <strong>Sauberkeit 23/24</strong> abgeschlossen.
+					  <span class="text-muted float-end small">01.05.2025</span>
+					</li>
+				  </ul>
+				</div>
+			  </div>
+			</div>
+
+      </div>
+	  
+	  
+      <!-- Nutzerverwaltung -->
+      <div id="nutzerView" class="hidden">
+        <h2>Nutzerverwaltung</h2>
+          <div class="card mb-4">
+    <div class="card-body">
+      <div class="d-flex justify-content-between mb-3">
+        <div class="d-flex gap-2 w-50">
+          <input class="form-control" placeholder="Schnellsuche nach Namen" />
+          <select class="form-select">
+            <option>Neueste</option>
+            <option>Alphabetisch</option>
+          </select>
+        </div>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal">Nutzer anlegen</button>
+      </div>
+
+      <table class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Berechtigungen</th>
+            <th>Erstellt am</th>
+            <th>Aktion</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Max Mustermann</td>
+				<td>
+				  3 Berechtigungen<br />
+				  <a href="#collapseMax" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseMax">
+					Details anzeigen
+				  </a>
+				  <div class="collapse mt-2" id="collapseMax">
+					<div class="d-flex flex-column gap-2">
+
+					  <div class="d-flex justify-content-between align-items-center flex-wrap">
+						<div>
+						  <strong>INTEQRA</strong> <span class="text-muted small">(Soz-Päd)</span>
+						</div>
+						<button class="btn btn-sm btn-outline-secondary mt-1 mt-sm-0">Bearbeiten</button>
+					  </div>
+					  <div class="d-flex justify-content-between align-items-center flex-wrap">
+						<div>
+						  <strong>INTEQRA</strong> <span class="text-muted small">(Anleiter)</span>
+						</div>
+						<button class="btn btn-sm btn-outline-secondary mt-1 mt-sm-0">Bearbeiten</button>
+					  </div>
+					  <div class="d-flex justify-content-between align-items-center flex-wrap">
+						<div>
+						  <strong>INTEQRA</strong> <span class="text-muted small">(Lehrkraft)</span>
+						</div>
+						<button class="btn btn-sm btn-outline-secondary mt-1 mt-sm-0">Bearbeiten</button>
+					  </div>
+					</div>
+				  </div>
+				</td>
+
+
+
+            <td>08.05.2025</td>
+            <td><button class="btn btn-sm btn-danger">Löschen</button></td>
+          </tr>
+          <tr>
+            <td>Erika Beispiel</td>
+            <td>
+              1 Berechtigung<br />
+              <a href="#collapseErika" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseErika">
+                Details anzeigen
+              </a>
+              <div class="collapse mt-2" id="collapseErika">
+                <ul class="list-unstyled mb-0">
+                  <li>Projekt C <button class="btn btn-sm btn-outline-secondary ms-2">Bearbeiten</button></li>
+                </ul>
+              </div>
+            </td>
+            <td>05.05.2025</td>
+            <td><button class="btn btn-sm btn-danger">Löschen</button></td>
+          </tr>
+          <tr>
+            <td>Ali Admin</td>
+            <td>
+              3 Berechtigungen<br />
+              <a href="#collapseAli" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseAli">
+                Details anzeigen
+              </a>
+              <div class="collapse mt-2" id="collapseAli">
+                <ul class="list-unstyled mb-0">
+                  <li>Projekt A <button class="btn btn-sm btn-outline-secondary ms-2">Bearbeiten</button></li>
+                  <li>Projekt C <button class="btn btn-sm btn-outline-secondary ms-2">Bearbeiten</button></li>
+                  <li>Projekt D <button class="btn btn-sm btn-outline-secondary ms-2">Bearbeiten</button></li>
+                </ul>
+              </div>
+            </td>
+            <td>02.05.2025</td>
+            <td><button class="btn btn-sm btn-danger">Löschen</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+      </div>
+
+      <!-- Projektverwaltung -->
+      <div id="projektView" class="hidden">
+        <h2>Datenbanken</h2>
+		<p>Datenbanken anlegen</p>
+          <div class="card mb-4">
+    <div class="card-body">
+      <div class="d-flex justify-content-between mb-3">
+        <div class="d-flex gap-2 w-50">
+          <input class="form-control" placeholder="Projektsuche" />
+          <select class="form-select">
+            <option>Neueste</option>
+            <option>Alphabetisch</option>
+          </select>
+        </div>
+        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addDatabaseModal">Neue Datenbank</button>
+      </div>
+
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <th>Projektname</th>
+      <th>Standort</th>
+      <th>Erstellt am</th>
+      <th>Abteilung</th>
+      <th>Maßnahmenkategorie</th>
+      <th>Laufende Maßnahmen</th>
+      <th>Abgeschlossene Maßnahmen</th>
+      <th>Aktion</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Rodenhof</td>
+      <td>Saarbrücken</td>
+      <td>01.05.2025</td>
+      <td>Arbeiten und Lernen</td>
+      <td>AGH</td>
+      <td>3</td>
+      <td>1</td>
+      <td>
+	  <button class="btn btn-sm btn-outline-primary me-1 open-project projekt-karte" data-id="rodenhof"> 
+      <i class="bi bi-folder2-open"></i> Übersicht öffnen
+    </button>
+	  <button class="btn btn-sm btn-danger">Löschen</button></td>
+    </tr>
+    <tr>
+      <td>INTQRA</td>
+      <td>Saarbrpcken</td>
+      <td>03.05.2025</td>
+      <td>Übergang Schule Beruf</td>
+      <td>Aktivierung ESF +</td>
+      <td>1</td>
+      <td>2</td>
+      <td>
+	  	  <button class="btn btn-sm btn-outline-primary me-1 open-project projekt-karte" data-id="rodenhof"> 
+      <i class="bi bi-folder2-open"></i> Übersicht öffnen
+    </button>
+	  <button class="btn btn-sm btn-danger">Löschen</button></td>
+    </tr>
+    <tr>
+      <td>Projekt Gamma</td>
+      <td>XX</td>
+      <td>06.05.2025</td>
+      <td>Abt. 3</td>
+      <td>Qualifizierung</td>
+      <td>1</td>
+      <td>2</td>
+      <td>
+	  	  <button class="btn btn-sm btn-outline-primary me-1 open-project projekt-karte" data-id="rodenhof"> 
+      <i class="bi bi-folder2-open"></i> Übersicht öffnen
+    </button>
+	  <button class="btn btn-sm btn-danger">Löschen</button></td>
+    </tr>
+    <tr>
+      <td>Projekt Delta</td>
+      <td>XX</td>
+      <td>08.05.2025</td>
+      <td>Abt. 1</td>
+      <td>Bildung</td>
+      <td>0</td>
+      <td>0</td>
+      <td>
+	  	  <button class="btn btn-sm btn-outline-primary me-1 open-project projekt-karte" data-id="rodenhof"> 
+      <i class="bi bi-folder2-open"></i> Übersicht öffnen
+    </button>
+	  <button class="btn btn-sm btn-danger">Löschen</button></td>
+    </tr>
+  </tbody>
+</table>
+
+
+    </div>
+  </div>
+      </div>
+    </main>
+  </div>
+ 
+
+<!-- Modal: Neue Datenbank -->
+<div class="modal fade" id="addDatabaseModal" tabindex="-1" aria-labelledby="addDatabaseModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <form>
+        <div class="modal-header">
+          <h5 class="modal-title" id="addDatabaseModalLabel">Neue Datenbank anlegen</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Schließen"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row g-3">
+            <div class="col-12">
+              <div class="form-floating">
+                <input type="text" class="form-control" id="dbProjektname" placeholder="Projektname" required>
+                <label for="dbProjektname">Projektname</label>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="form-floating">
+                <input type="text" class="form-control" id="dbStandort" placeholder="Standort">
+                <label for="dbStandort">Standort</label>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="form-floating">
+                <input type="text" class="form-control" id="dbAbteilung" placeholder="Abteilung">
+                <label for="dbAbteilung">Abteilung</label>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="form-floating">
+                <select class="form-select" id="dbKategorie">
+                  <option selected disabled>Bitte wählen</option>
+                  <option>Bildung</option>
+                  <option>Integration</option>
+                  <option>Qualifizierung</option>
+                </select>
+                <label for="dbKategorie">Maßnahmenkategorie</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
+          <button type="submit" class="btn btn-success">Anlegen</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+ 
+  <!-- Modal: Nutzer anlegen -->
+<div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form>
+        <div class="modal-header">
+          <h5 class="modal-title" id="addUserModalLabel">Neuen Nutzer anlegen</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Schließen"></button>
+        </div>
+        <div class="modal-body">
+          <input class="form-control mb-2" placeholder="Vorname" />
+          <input class="form-control mb-2" placeholder="Nachname" />
+
+          <!-- Neues Select-Feld -->
+          <div class="form-floating mb-2">
+            <select class="form-select" id="userRole" aria-label="Rolle wählen">
+              <option selected disabled>Rolle wählen</option>
+              <option>SozPäd</option>
+              <option>Anleiter</option>
+              <option>Lehrkraft</option>
+            </select>
+            <label for="userRole">Rolle</label>
+          </div>
+
+          <input type="password" class="form-control mb-2" placeholder="Kennwort" />
+          <label class="form-label mt-2">Berechtigungen:</label>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="projectA" />
+            <label class="form-check-label" for="projectA">Rodenhof</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="projectB" />
+            <label class="form-check-label" for="projectB">Inteqra</label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
+          <button type="submit" class="btn btn-primary">Anlegen</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal: Projekt anlegen -->
+<!-- Modal: Projekt anlegen -->
+<div class="modal fade" id="addProjectModal" tabindex="-1" aria-labelledby="addProjectModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <form>
+        <div class="modal-header">
+          <h5 class="modal-title" id="addProjectModalLabel">Neue Massnahme</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Schließen"></button>
+        </div>
+        <div class="modal-body">
+          
+          <!-- Abschnitt: Allgemein -->
+          <h6 class="mb-3 text-secondary">Allgemeine Angaben</h6>
+          <div class="row g-3 mb-4">
+            <div class="col-md-4">
+              <div class="form-floating">
+                <input type="text" class="form-control" id="prnr" placeholder="Pr.-Nr." required>
+                <label for="prnr">Pr.-Nr. der Arbeitsagentur</label>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-floating">
+                <input type="text" class="form-control" id="kurzbezeichnung" placeholder="Kurzbezeichnung" required>
+                <label for="kurzbezeichnung">Kurzbezeichnung</label>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-floating">
+                <select class="form-select" id="masskategorie" aria-label="Maßnahmekategorie">
+                  <option selected>Bitte wählen</option>
+                </select>
+                <label for="masskategorie">Maßnahmekategorie</label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Abschnitt: Laufzeit -->
+          <h6 class="mb-3 text-secondary">Laufzeit</h6>
+          <div class="row g-3 mb-4">
+            <div class="col-md-3">
+              <div class="form-floating">
+                <input type="date" class="form-control" id="von" placeholder="Von">
+                <label for="von">Von</label>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-floating">
+                <input type="date" class="form-control" id="bis" placeholder="Bis">
+                <label for="bis">Bis</label>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-floating">
+                <input type="text" class="form-control" id="massMehraufwand" placeholder="Mehraufwand">
+                <label for="massMehraufwand">Maß-Mehraufwand</label>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-floating">
+                <input type="number" class="form-control" id="plaetze" placeholder="Plätze">
+                <label for="plaetze">Anzahl der Plätze</label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Abschnitt: Organisation -->
+          <h6 class="mb-3 text-secondary">Organisation & Finanzen</h6>
+          <div class="row g-3 mb-4">
+            <div class="col-md-3">
+              <div class="form-floating">
+                <select class="form-select" id="esf">
+                  <option value="Ja">Ja</option>
+                  <option value="Nein">Nein</option>
+                </select>
+                <label for="esf">ESF</label>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-floating">
+                <input type="number" class="form-control" id="urlaub" placeholder="Urlaubstage">
+                <label for="urlaub">Urlaubstage pro Jahr</label>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-floating">
+                <input type="text" class="form-control" id="fortbildung" placeholder="Fortbildung">
+                <label for="fortbildung">Mehraufwand Fortbildung</label>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-floating">
+                <input type="text" class="form-control" id="arbeitszeit" placeholder="Arbeitszeit">
+                <label for="arbeitszeit">Wöchentliche Arbeitszeit</label>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-floating">
+                <input type="text" class="form-control" id="kostenstelle" placeholder="Kostenstelle">
+                <label for="kostenstelle">Kostenstelle</label>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-floating">
+                <input type="text" class="form-control" id="pauschale" placeholder="Kostenpauschale">
+                <label for="pauschale">Kostenpauschale</label>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-floating">
+                <input type="text" class="form-control" id="pauschaleFortb" placeholder="Kostenpauschale Fortbildung">
+                <label for="pauschaleFortb">Kostenpauschale Fortbildung</label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Abschnitt: Texte -->
+          <h6 class="mb-3 text-secondary">Weitere Angaben</h6>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="form-floating">
+                <textarea class="form-control" placeholder="Ansprechpartner" id="ansprechpartner" style="height: 100px"></textarea>
+                <label for="ansprechpartner">Ansprechpartner</label>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-floating">
+                <textarea class="form-control" placeholder="Sonstiges" id="sonstiges" style="height: 100px"></textarea>
+                <label for="sonstiges">Sonstiges</label>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-floating">
+                <textarea class="form-control" placeholder="Tätigkeit" id="taetigkeit" style="height: 100px"></textarea>
+                <label for="taetigkeit">Tätigkeit</label>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-floating">
+                <textarea class="form-control" placeholder="Arbeitsverteilung" id="verteilung" style="height: 100px"></textarea>
+                <label for="verteilung">Arbeitsverteilung</label>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
+          <button type="submit" class="btn btn-success">Anlegen</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+<!-- Navigation-Umschaltung -->
+ <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const links = document.querySelectorAll('.sidebar a');
+    const views = {
+      dashboardView: document.getElementById('dashboardView'),
+      nutzerView: document.getElementById('nutzerView'),
+      projektView: document.getElementById('projektView'),
+      projekteView: document.getElementById('projekteView'),
+      projektDetailView: document.getElementById('projektDetailView') // <- Detailansicht für Projekt
+    };
+
+    // Sidebar Navigation
+    links.forEach(link => {
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        links.forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+        const target = link.getAttribute('data-target');
+        for (const key in views) {
+          views[key].classList.toggle('hidden', key !== target);
+        }
+      });
+    });
+
+    // Klick auf Projektkarte öffnet Detailansicht
+    document.querySelectorAll('.projekt-karte').forEach(card => {
+      card.addEventListener('click', () => {
+        for (const key in views) {
+          views[key].classList.add('hidden');
+        }
+        views.projektDetailView.classList.remove('hidden');
+      });
+    });
+
+    // Optional: Zurück-Button in Detailansicht (wenn eingebaut)
+    const backBtn = document.getElementById('backToProjects');
+    if (backBtn) {
+      backBtn.addEventListener('click', () => {
+        for (const key in views) {
+          views[key].classList.add('hidden');
+        }
+        views.projekteView.classList.remove('hidden');
+      });
+    }
+  });
+</script>
+
+
+
+</body>
+</html>
