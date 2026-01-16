@@ -193,6 +193,9 @@
             <!-- SEKTION: DOKUMENTATION -->
             <div class="tab-pane fade show active" id="sektionDok" role="tabpanel" aria-labelledby="sektionDok-tab">
 
+
+
+                
               <ul class="nav nav-pills mb-3" id="dokTabs" role="tablist">
                 <li class="nav-item" role="presentation">
                   <button class="nav-link active"
@@ -249,6 +252,21 @@
                     Fahrtkosten
                   </button>
                 </li>
+
+            <li class="nav-item" role="presentation">
+            <button class="nav-link"
+                    id="dokErstunterlagen-tab"
+                    data-bs-toggle="tab"
+                    data-bs-target="#dokErstunterlagen"
+                    type="button" role="tab"
+                    aria-controls="dokErstunterlagen"
+                    aria-selected="false">
+                Unterlagen
+            </button>
+            </li>
+
+
+
               </ul>
 
               <div class="tab-content">
@@ -830,6 +848,66 @@
   </div>
 
 </div><!-- /dokFahrkosten -->
+
+
+<!-- DOK: ERSTUNTERLAGEN / VERTRÄGE -->
+<!-- =========================
+     TAB: ERSTUNTERLAGEN / VERTRÄGE
+     ========================= -->
+<div class="tab-pane fade" id="dokErstunterlagen" role="tabpanel" aria-labelledby="dokErstunterlagen-tab">
+
+  <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-3">
+    <div>
+      <h5 class="mb-0">Erstunterlagen, Verträge und Vereinbarungen </h5>
+      <small class="text-muted">Bereits erzeugte Unterlagen dieser Maßnahme:</small>
+    </div>
+
+    <button class="btn btn-outline-primary btn-sm"
+            data-bs-toggle="modal"
+            data-bs-target="#erstunterlagenCreateModal">
+      <i class="bi bi-plus-lg me-1"></i> Unterlagen erstellen
+    </button>
+  </div>
+
+  <!-- Kachelansicht -->
+  <div class="row g-3" id="erstunterlagenGrid"></div>
+
+  <div class="text-muted small mt-3" id="erstEmptyHint" style="display:none;">
+    Noch keine Unterlagen erzeugt.
+  </div>
+
+  <!-- =========================
+       MODAL: Unterlagen erzeugen
+       ========================= -->
+  <div class="modal fade" id="erstunterlagenCreateModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+      <div class="modal-content">
+        <form id="erstunterlagenCreateForm">
+
+          <div class="modal-header">
+            <h5 class="modal-title">Unterlagen erzeugen</h5>
+            <button class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+
+          <div class="modal-body">
+            <div class="row g-2" id="erstunterlagenChecklist"></div>
+
+          </div>
+
+          <div class="modal-footer">
+            <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Abbrechen</button>
+            <button class="btn btn-primary" type="submit">
+              <i class="bi bi-file-earmark-plus me-1"></i> Erzeugen
+            </button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+
+</div>
+
 
                 
               </div>
@@ -2439,6 +2517,209 @@
     if (document.getElementById("dokFahrkosten")) bindFahrkosten();
   });
 </script>
+
+<script>
+(function () {
+
+  /* =========================
+     7 Standard-Erstunterlagen (stehen IMMER in der Übersicht)
+     ========================= */
+  const STANDARD_DOCS = [
+    { key: "agh",         label: "Vereinbarung AGH",                 icon: "file-earmark-text" },
+    { key: "aktivierung", label: "Vereinbarung Aktivierung",         icon: "file-earmark-text" },
+    { key: "kursordnung", label: "Kursordnung",                      icon: "journal-text" },
+    { key: "datenschutz", label: "Datenschutzrechtliche Hinweise",   icon: "shield-lock" },
+    { key: "info",        label: "Info- und Einverständnis",         icon: "info-circle" },
+    { key: "fahrtkosten", label: "Fahrtkostenbestätigung",           icon: "cash-coin" },
+    { key: "personalbogen", label:"Personalbogen",                   icon: "person-lines-fill" }
+  ];
+
+  /* =========================
+     Modal zeigt 10 (7 Standard + 3 weitere)
+     ========================= */
+  const ALL_MODAL_DOCS = [
+    ...STANDARD_DOCS,
+    { key: "hausordnung", label: "Hausordnung", icon: "house" },
+    { key: "datenerhebung", label: "Zusatzbogen Datenerhebung", icon: "clipboard-data" },
+    { key: "einverstaendnis_foto", label: "Einverständnis Foto", icon: "camera" }
+  ];
+
+  /* =========================
+     Store: erzeugte Docs in der Übersicht
+     - Start: Standard sind schon "da"
+     ========================= */
+  const createdDocs = new Map();
+  const createdAtInit = new Date().toISOString();
+
+  STANDARD_DOCS.forEach(t => {
+    createdDocs.set(t.key, {
+      id: "doc-" + t.key + "-" + Date.now(),
+      key: t.key,
+      label: t.label,
+      icon: t.icon,
+      createdAt: createdAtInit,
+      version: 1
+    });
+  });
+
+  /* =========================
+     Rendering: Kacheln
+     ========================= */
+  function renderGrid() {
+    const grid = document.getElementById("erstunterlagenGrid");
+    const emptyHint = document.getElementById("erstEmptyHint");
+
+    if (!grid) return;
+
+    const docs = Array.from(createdDocs.values());
+
+    if (emptyHint) emptyHint.style.display = docs.length ? "none" : "block";
+
+    grid.innerHTML = docs.map(doc => `
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="border rounded-3 p-3 h-100">
+          <div class="d-flex align-items-center gap-2 mb-1">
+            <i class="bi bi-${doc.icon}"></i>
+            <span class="fw-semibold">${doc.label}</span>
+          </div>
+
+          <div class="small text-muted mb-3">
+            Erstellt am ${formatDate(doc.createdAt)} · v${doc.version}
+          </div>
+
+          <div class="d-flex gap-2">
+            <button class="btn btn-outline-secondary btn-sm" type="button"
+                    onclick="openDoc('${doc.id}')">
+              <i class="bi bi-eye me-1"></i> Öffnen
+            </button>
+            <button class="btn btn-outline-secondary btn-sm" type="button"
+                    onclick="printDoc('${doc.id}')">
+              <i class="bi bi-printer me-1"></i> Drucken
+            </button>
+          </div>
+        </div>
+      </div>
+    `).join("");
+  }
+
+  function formatDate(iso) {
+    return new Date(iso).toLocaleString("de-DE", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit"
+    });
+  }
+
+  /* =========================
+     Rendering: Modal-Checklist (alle 10)
+     ========================= */
+  function renderChecklist() {
+    const list = document.getElementById("erstunterlagenChecklist");
+    if (!list) return;
+
+    list.innerHTML = ALL_MODAL_DOCS.map(d => {
+      const exists = createdDocs.has(d.key);
+      return `
+        <div class="col-12 col-md-6">
+          <div class="border rounded-3 p-2">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="chk_${d.key}" value="${d.key}">
+              <label class="form-check-label" for="chk_${d.key}">
+                <i class="bi bi-${d.icon} me-1"></i>${d.label}
+                ${exists ? '<span class="text-muted small"> (bereits vorhanden)</span>' : ""}
+              </label>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join("");
+  }
+
+  /* =========================
+     Modal Submit: erzeugen / neu erzeugen
+     - existiert -> confirm (wie gehabt)
+     - nicht vorhanden -> erstellen + in Übersicht hinzufügen
+     ========================= */
+  function bindCreateModal() {
+    const form = document.getElementById("erstunterlagenCreateForm");
+    const modalEl = document.getElementById("erstunterlagenCreateModal");
+    if (!form || !modalEl) return;
+
+    // jedes Öffnen: Checklist neu rendern (damit "bereits vorhanden" stimmt)
+    modalEl.addEventListener("show.bs.modal", () => {
+      renderChecklist();
+    });
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const selected = [];
+      ALL_MODAL_DOCS.forEach(d => {
+        const cb = document.getElementById("chk_" + d.key);
+        if (cb && cb.checked) selected.push(d);
+      });
+
+      if (selected.length === 0) {
+        alert("Bitte mindestens eine Unterlage auswählen.");
+        return;
+      }
+
+      for (const d of selected) {
+        if (createdDocs.has(d.key)) {
+          const existing = createdDocs.get(d.key);
+
+          const ok = confirm(`"${existing.label}" ist bereits in der Übersicht vorhanden.\nSoll das Dokument neu erzeugt werden?`);
+          if (!ok) continue;
+
+          // neu erzeugen (Version hoch)
+          createdDocs.set(d.key, {
+            ...existing,
+            id: "doc-" + d.key + "-" + Date.now(),
+            createdAt: new Date().toISOString(),
+            version: (existing.version || 1) + 1
+          });
+
+        } else {
+          // neu hinzufügen
+          createdDocs.set(d.key, {
+            id: "doc-" + d.key + "-" + Date.now(),
+            key: d.key,
+            label: d.label,
+            icon: d.icon,
+            createdAt: new Date().toISOString(),
+            version: 1
+          });
+        }
+      }
+
+      renderGrid();
+      bootstrap.Modal.getInstance(modalEl)?.hide();
+      form.reset();
+    });
+  }
+
+  /* =========================
+     Aktionen (Demo)
+     ========================= */
+  window.openDoc = (id) => alert("Dokument öffnen\nID: " + id);
+  window.printDoc = (id) => alert("Dokument drucken\nID: " + id);
+
+  /* =========================
+     Init
+     ========================= */
+  document.addEventListener("DOMContentLoaded", () => {
+    renderGrid();
+    renderChecklist();
+    bindCreateModal();
+  });
+
+})();
+</script>
+
+
+
 
 
 </body>
