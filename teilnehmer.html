@@ -9,1004 +9,844 @@
   <link rel="stylesheet" href="css/custom.css" />
   <link href="https://cdn.jsdelivr.net/npm/bs-stepper/dist/css/bs-stepper.min.css" rel="stylesheet" />
 
-
   <!-- Bootstrap & Icons -->
-  <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-    rel="stylesheet"
-  />
-  <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
-    rel="stylesheet"
-  />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
 </head>
+
 <body class="bg-light p-4 p-lg-5">
 
-
-    <!-- CARD 1: Heading + Filter -->
-    <div class="card border-0 shadow mb-3">
-      <div class="card-body p-4">
-
-        <!-- Überschrift + Button -->
-        <div class="d-flex flex-wrap justify-content-between align-items-start gap-3 mb-3">
-          <div>
-            <h2 class="fw-normal mb-2">Alle Teilnehmer</h2>
-            <div class="text-secondary" style="font-size: 0.95rem; max-width: 900px;">
-              Übersicht aller aktuell erfassten Teilnehmer. Klicken Sie auf eine Zeile, um das Profil aufzurufen.<br>
-              Oder nutzen Sie den Filter, um den Datensatz zu finden.
-            </div>
-          </div>
-
-          <div class="d-flex align-items-center gap-2">
-            <button
-              type="button"
-              class="btn btn-primary"
-              data-bs-toggle="modal"
-              data-bs-target="#teilnehmerModal"
-            >
-              <i class="bi bi-person-plus me-1"></i> Neuer Teilnehmer
-            </button>
+  <!-- CARD 1: Heading + Filter -->
+  <div class="card border-0 shadow mb-3">
+    <div class="card-body p-4">
+      <div class="d-flex flex-wrap justify-content-between align-items-start gap-3 mb-3">
+        <div>
+          <h2 class="fw-normal mb-2">Alle Teilnehmer</h2>
+          <div class="text-secondary" style="font-size: 0.95rem; max-width: 900px;">
+            Übersicht aller aktuell erfassten Teilnehmer. Klicken Sie auf eine Zeile, um das Profil aufzurufen.<br>
+            Oder nutzen Sie den Filter, um den Datensatz zu finden.
           </div>
         </div>
 
-        <hr class="my-3">
+        <div class="d-flex align-items-center gap-2">
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#teilnehmerModal">
+            <i class="bi bi-person-plus me-1"></i> Neuer Teilnehmer
+          </button>
+        </div>
+      </div>
 
-        <!-- Filterzeile -->
-        <div class="row g-2 align-items-end">
-          <div class="col-md-4">
-            <label class="form-label text-secondary small mb-1">Suche</label>
-            <div class="input-group">
-              <span class="input-group-text bg-white">
-                <i class="bi bi-search"></i>
-              </span>
-              <input type="text" class="form-control" placeholder="Name, Kundennummer, …" />
-              <button class="btn btn-outline-primary">Suchen</button>
-            </div>
-          </div>
+      <hr class="my-3">
 
-          <div class="col-md-3">
-            <label class="form-label text-secondary small mb-1">Maßnahme</label>
-            <select class="form-select">
-              <option selected>Alle Maßnahmen</option>
-              <option>Integra 2025</option>
-              <option>Integra 2024</option>
-            </select>
-          </div>
-
-          <div class="col-md-3">
-            <label class="form-label text-secondary small mb-1">Betreuer</label>
-            <select class="form-select">
-              <option selected>Alle Betreuer</option>
-              <option>Daniel Chu</option>
-              <option>Corinna Adams</option>
-            </select>
-          </div>
-
-          <div class="col-md-2">
-
+      <div class="row g-2 align-items-end">
+        <div class="col-md-4">
+          <label class="form-label text-secondary small mb-1">Suche</label>
+          <div class="input-group">
+            <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+            <input type="text" class="form-control" placeholder="Name, Kundennummer, …" />
+            <button class="btn btn-outline-primary">Suchen</button>
           </div>
         </div>
 
+        <div class="col-md-3">
+          <label class="form-label text-secondary small mb-1">Maßnahme</label>
+          <select class="form-select">
+            <option selected>Alle Maßnahmen</option>
+            <option>Integra 2025</option>
+            <option>Integra 2024</option>
+          </select>
+        </div>
+
+        <div class="col-md-3">
+          <label class="form-label text-secondary small mb-1">Betreuer</label>
+          <select class="form-select">
+            <option selected>Alle Betreuer</option>
+            <option>Daniel Chu</option>
+            <option>Corinna Adams</option>
+          </select>
+        </div>
+
+        <div class="col-md-2"></div>
       </div>
     </div>
+  </div>
 
-    <!-- CARD 2: Toolbar + Tabelle -->
-    <div class="card border-0 shadow">
-      <div class="card-body p-0">
+  <!-- CARD 2: Toolbar + Tabelle -->
+  <div class="card border-0 shadow">
+    <div class="card-body p-0">
 
-        <!-- Toolbar -->
-        <div class="p-3 p-lg-4 border-bottom d-flex flex-wrap justify-content-between align-items-center gap-2">
-          <div class="d-flex flex-wrap gap-2">
-            <div class="dropdown">
-              <button class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">
-                <i class="bi bi-layout-three-columns me-1"></i> Spalten anzeigen
-              </button>
-              <div class="dropdown-menu p-3" style="min-width: 260px;">
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" checked id="colKundennr">
-                  <label class="form-check-label" for="colKundennr">Kundennummer</label>
-                </div>
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" checked id="colGeb">
-                  <label class="form-check-label" for="colGeb">Geburtsdatum</label>
-                </div>
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" checked id="colStatus">
-                  <label class="form-check-label" for="colStatus">Status</label>
-                </div>
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" checked id="colZuweisung">
-                  <label class="form-check-label" for="colZuweisung">Zuweisung</label>
-                </div>
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" checked id="colMassnahme">
-                  <label class="form-check-label" for="colMassnahme">Maßnahme</label>
-                </div>
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" checked id="colBetreuer">
-                  <label class="form-check-label" for="colBetreuer">Betreuer</label>
-                </div>
+      <div class="p-3 p-lg-4 border-bottom d-flex flex-wrap justify-content-between align-items-center gap-2">
+        <div class="d-flex flex-wrap gap-2">
+          <div class="dropdown">
+            <button class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">
+              <i class="bi bi-layout-three-columns me-1"></i> Spalten anzeigen
+            </button>
+            <div class="dropdown-menu p-3" style="min-width: 260px;">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" checked id="colKundennr">
+                <label class="form-check-label" for="colKundennr">Kundennummer</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" checked id="colGeb">
+                <label class="form-check-label" for="colGeb">Geburtsdatum</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" checked id="colStatus">
+                <label class="form-check-label" for="colStatus">Status</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" checked id="colZuweisung">
+                <label class="form-check-label" for="colZuweisung">Zuweisung</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" checked id="colMassnahme">
+                <label class="form-check-label" for="colMassnahme">Maßnahme</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" checked id="colBetreuer">
+                <label class="form-check-label" for="colBetreuer">Betreuer</label>
               </div>
             </div>
-
-            <div class="dropdown">
-              <button class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">
-                <i class="bi bi-download me-1"></i> Exportieren
-              </button>
-              <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#"><i class="bi bi-filetype-csv me-2"></i>CSV</a></li>
-                <li><a class="dropdown-item" href="#"><i class="bi bi-file-earmark-excel me-2"></i>Excel</a></li>
-                <li><a class="dropdown-item" href="#"><i class="bi bi-file-earmark-pdf me-2"></i>PDF</a></li>
-              </ul>
-            </div>
           </div>
 
-          <div class="d-flex align-items-center gap-2">
-            <span class="badge rounded-pill bg-warning text-dark fs-6">2</span>
-            <span class="text-secondary">Anzahl der Teilnehmer</span>
+          <div class="dropdown">
+            <button class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">
+              <i class="bi bi-download me-1"></i> Exportieren
+            </button>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#"><i class="bi bi-filetype-csv me-2"></i>CSV</a></li>
+              <li><a class="dropdown-item" href="#"><i class="bi bi-file-earmark-excel me-2"></i>Excel</a></li>
+              <li><a class="dropdown-item" href="#"><i class="bi bi-file-earmark-pdf me-2"></i>PDF</a></li>
+            </ul>
           </div>
         </div>
 
-        <!-- Tabelle -->
-        <div class="table-responsive">
-          <table class="table table-hover align-middle mb-0">
-            <thead class="table-light">
-              <tr>
-                <th>Teilnehmer</th>
-                <th>Kundennummer</th>
-                <th>Geburtsdatum</th>
-                <th>Status</th>
-                <th>Zuweisung</th>
-                <th>Maßnahme</th>
-                <th>Betreuer</th>
-                <th class="text-end">Aktionen</th>
-              </tr>
-            </thead>
-
-            <tbody>
-
-              <tr
-                class="row-click"
-                data-row-click="TN-Profil_grunddaten.html"
-                data-bs-toggle="tooltip"
-                title="Profil aufrufen"
-                style="cursor:pointer;"
-              >
-                <td class="fw-semibold">
-                  <span class="badge text-bg-secondary me-2">MM</span> Max Mustermann
-                </td>
-                <td>1234434</td>
-                <td>01.01.2000</td>
-                <td><span class="badge bg-success">Aktiv</span></td>
-                <td>01.01.25 - 01.01.26</td>
-                <td>Integra 2025</td>
-                <td>Daniel Chu</td>
-                <td class="text-end">
-                  <div class="btn-group btn-group-sm" role="group" aria-label="Aktionen">
-                    <button class="btn btn-outline-secondary" title="Profil" onclick="event.stopPropagation()">
-                      <i class="bi bi-person-vcard"></i>
-                    </button>
-                    <button class="btn btn-outline-secondary" title="Notiz" onclick="event.stopPropagation()">
-                      <i class="bi bi-journal-text"></i>
-                    </button>
-                    <button class="btn btn-outline-secondary" title="Mehr" onclick="event.stopPropagation()">
-                      <i class="bi bi-three-dots"></i>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-
-              <tr
-                class="row-click"
-                data-row-click="TN-Profil_grunddaten.html"
-                data-bs-toggle="tooltip"
-                title="Profil aufrufen"
-                style="cursor:pointer;"
-              >
-                <td class="fw-semibold">
-                  <span class="badge text-bg-secondary me-2">PP</span> Pax Pustermann
-                </td>
-                <td>1234434</td>
-                <td>01.01.2000</td>
-                <td><span class="badge bg-success">Aktiv</span></td>
-                <td>01.01.25 - 01.01.26</td>
-                <td>Integra 2025</td>
-                <td>Daniel Chu</td>
-                <td class="text-end">
-                  <div class="btn-group btn-group-sm" role="group" aria-label="Aktionen">
-                    <button class="btn btn-outline-secondary" title="Profil" onclick="event.stopPropagation()">
-                      <i class="bi bi-person-vcard"></i>
-                    </button>
-                    <button class="btn btn-outline-secondary" title="Notiz" onclick="event.stopPropagation()">
-                      <i class="bi bi-journal-text"></i>
-                    </button>
-                    <button class="btn btn-outline-secondary" title="Mehr" onclick="event.stopPropagation()">
-                      <i class="bi bi-three-dots"></i>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-
-              <!-- Weitere Zeilen ... -->
-
-            </tbody>
-          </table>
+        <div class="d-flex align-items-center gap-2">
+          <span class="badge rounded-pill bg-warning text-dark fs-6">2</span>
+          <span class="text-secondary">Anzahl der Teilnehmer</span>
         </div>
-
       </div>
+
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+          <thead class="table-light">
+            <tr>
+              <th>Teilnehmer</th>
+              <th>Kundennummer</th>
+              <th>Geburtsdatum</th>
+              <th>Status</th>
+              <th>Zuweisung</th>
+              <th>Maßnahme</th>
+              <th>Betreuer</th>
+              <th class="text-end">Aktionen</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="row-click" data-row-click="TN-Profil_grunddaten.html" data-bs-toggle="tooltip" title="Profil aufrufen" style="cursor:pointer;">
+              <td class="fw-semibold"><span class="badge text-bg-secondary me-2">MM</span> Max Mustermann</td>
+              <td>1234434</td>
+              <td>01.01.2000</td>
+              <td><span class="badge bg-success">Aktiv</span></td>
+              <td>01.01.25 - 01.01.26</td>
+              <td>Integra 2025</td>
+              <td>Daniel Chu</td>
+              <td class="text-end">
+                <div class="btn-group btn-group-sm" role="group" aria-label="Aktionen">
+                  <button class="btn btn-outline-secondary" title="Profil" onclick="event.stopPropagation()"><i class="bi bi-person-vcard"></i></button>
+                  <button class="btn btn-outline-secondary" title="Notiz" onclick="event.stopPropagation()"><i class="bi bi-journal-text"></i></button>
+                  <button class="btn btn-outline-secondary" title="Mehr" onclick="event.stopPropagation()"><i class="bi bi-three-dots"></i></button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
     </div>
+  </div>
 
-
-
-
-  <!-- Modal: Teilnehmerprofil -->
-  <div
-    class="modal fade"
-    id="profileModal"
-    tabindex="-1"
-    aria-labelledby="profileModalLabel"
-    aria-hidden="true"
-  >
+  <!-- =========================================
+       MODAL: Neuer Teilnehmer + Stepper (4 Steps)
+  ========================================== -->
+  <div class="modal fade" id="teilnehmerModal" tabindex="-1" aria-labelledby="teilnehmerModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-fullscreen">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Teilnehmerprofil</h5>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Schließen"
-          ></button>
+          <div>
+            <h5 class="modal-title" id="teilnehmerModalLabel">Neuer Teilnehmer</h5>
+            <div class="text-secondary small">
+              Teilnehmer ist bereits vom Jobcenter einer Maßnahme zugewiesen. Beim Termin werden Unterlagen unterschrieben.
+            </div>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Schließen"></button>
         </div>
+
         <div class="modal-body">
-          <div class="card m-3">
-            <div class="card-body">
-              <div class="row">
-                <!-- Linke Spalte: Avatar + Maßnahme -->
-                <div class="col-md-3 border-end text-center">
-                  <div class="avatar-initials bg-secondary text-white mx-auto mb-3">MM</div>
-                  <h4>Max Mustermann</h4>
-                  <p class="text-muted">Aktuelle Maßnahme:</p>
-                  <h5 class="text-primary fw-bold">Integra 2025</h5>
-                  <button class="btn btn-outline-primary btn-sm mt-3">Personalbogen</button>
-                </div>
+          <div class="container mt-3">
 
-                <!-- Rechte Spalte: Tabs -->
-                <div class="col-md-9">
-                  <ul class="nav nav-tabs" id="profilTabs" role="tablist">
-                    <li class="nav-item">
-                      <button
-                        class="nav-link active"
-                        data-bs-toggle="tab"
-                        data-bs-target="#tabDaten"
-                      >
-                        Teilnehmerdaten
+            <form id="teilnehmerForm">
+              <div class="card border-0 shadow-sm">
+                <div id="stepper" class="bs-stepper">
+
+                  <div class="bs-stepper-header m-3" role="tablist">
+                    <div class="step" data-target="#step1">
+                      <button type="button" class="step-trigger" role="tab" aria-controls="step1" id="step1-trigger">
+                        <span class="bs-stepper-circle">1</span>
+                        <span>Grundinfos</span>
                       </button>
-                    </li>
-                    <li class="nav-item">
-                      <button
-                        class="nav-link"
-                        data-bs-toggle="tab"
-                        data-bs-target="#tabVerlauf"
-                      >
-                        Maßnahmenverlauf
+                    </div>
+                    <div class="line"></div>
+
+                    <div class="step" data-target="#step2">
+                      <button type="button" class="step-trigger" role="tab" aria-controls="step2" id="step2-trigger">
+                        <span class="bs-stepper-circle">2</span>
+                        <span>Maßnahme</span>
                       </button>
-                    </li>
-                  </ul>
+                    </div>
+                    <div class="line"></div>
 
-                  <div class="tab-content mt-3">
-                    <!-- TAB 1: Teilnehmerdaten -->
-                    <div class="tab-pane fade show active" id="tabDaten">
-                      <form class="row g-3" id="profilForm">
+                    <div class="step" data-target="#step3">
+                      <button type="button" class="step-trigger" role="tab" aria-controls="step3" id="step3-trigger">
+                        <span class="bs-stepper-circle">3</span>
+                        <span>Sonstiges</span>
+                      </button>
+                    </div>
+                    <div class="line"></div>
+
+                    <div class="step" data-target="#step4">
+                      <button type="button" class="step-trigger" role="tab" aria-controls="step4" id="step4-trigger">
+                        <span class="bs-stepper-circle">4</span>
+                        <span>Abschluss</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="bs-stepper-content p-3 p-lg-4">
+
+                    <!-- STEP 1 -->
+                    <div id="step1" class="content d-none" role="tabpanel" aria-labelledby="step1-trigger">
+                      <div class="row">
                         <div class="col-md-4 mb-3">
                           <div class="form-floating">
-                            <input
-                              class="form-control"
-                              id="nachname"
-                              value="Mustermann"
-                              readonly
-                            />
-                            <label for="nachname">Nachname</label>
+                            <input type="text" class="form-control" id="tn_nachname" placeholder="Nachname" required minlength="2" />
+                            <label for="tn_nachname">Nachname *</label>
                           </div>
                         </div>
                         <div class="col-md-4 mb-3">
                           <div class="form-floating">
-                            <input class="form-control" id="vorname" value="Max" readonly />
-                            <label for="vorname">Vorname</label>
+                            <input type="text" class="form-control" id="tn_vorname" placeholder="Vorname" />
+                            <label for="tn_vorname">Vorname</label>
                           </div>
                         </div>
                         <div class="col-md-4 mb-3">
                           <div class="form-floating">
-                            <input
-                              class="form-control"
-                              id="geburtsname"
-                              value="Muster"
-                              readonly
-                            />
-                            <label for="geburtsname">Geburtsname</label>
+                            <input type="text" class="form-control" id="tn_geburtsname" placeholder="Geburtsname" />
+                            <label for="tn_geburtsname">Geburtsname</label>
                           </div>
                         </div>
 
                         <div class="col-md-4 mb-3">
                           <div class="form-floating">
-                            <select class="form-select" id="geschlecht" disabled>
-                              <option selected>Männlich</option>
-                              <option>Weiblich</option>
-                              <option>Divers</option>
+                            <select class="form-select" id="tn_geschlecht">
+                              <option selected value="">Wählen...</option>
+                              <option value="m">Männlich</option>
+                              <option value="w">Weiblich</option>
+                              <option value="d">Divers</option>
                             </select>
-                            <label for="geschlecht">Geschlecht</label>
+                            <label for="tn_geschlecht">Geschlecht</label>
                           </div>
                         </div>
 
                         <div class="col-md-4 mb-3">
                           <div class="form-floating">
-                            <input
-                              class="form-control"
-                              id="strasse"
-                              value="Musterstraße"
-                              readonly
-                            />
-                            <label for="strasse">Straße</label>
+                            <input type="text" class="form-control" id="tn_strasse" placeholder="Straße" />
+                            <label for="tn_strasse">Straße</label>
                           </div>
                         </div>
                         <div class="col-md-4 mb-3">
                           <div class="form-floating">
-                            <input class="form-control" id="hausnummer" value="12" readonly />
-                            <label for="hausnummer">Hausnummer</label>
+                            <input type="text" class="form-control" id="tn_hausnummer" placeholder="Hausnummer" />
+                            <label for="tn_hausnummer">Hausnummer</label>
                           </div>
                         </div>
 
                         <div class="col-md-4 mb-3">
                           <div class="form-floating">
-                            <input class="form-control" id="plz" value="12345" readonly />
-                            <label for="plz">PLZ</label>
+                            <input type="text" class="form-control" id="tn_plz" placeholder="PLZ" />
+                            <label for="tn_plz">PLZ</label>
                           </div>
                         </div>
                         <div class="col-md-4 mb-3">
                           <div class="form-floating">
-                            <input class="form-control" id="ort" value="Musterstadt" readonly />
-                            <label for="ort">Ort</label>
+                            <input type="text" class="form-control" id="tn_ort" placeholder="Ort" />
+                            <label for="tn_ort">Ort</label>
                           </div>
                         </div>
                         <div class="col-md-4 mb-3">
                           <div class="form-floating">
-                            <input
-                              class="form-control"
-                              id="land"
-                              value="Deutschland"
-                              readonly
-                            />
-                            <label for="land">Land</label>
+                            <input type="text" class="form-control" id="tn_land" placeholder="Land" />
+                            <label for="tn_land">Land</label>
                           </div>
                         </div>
 
                         <div class="col-md-4 mb-3">
                           <div class="form-floating">
-                            <input
-                              type="date"
-                              class="form-control"
-                              id="geburtsdatum"
-                              value="1990-01-01"
-                              readonly
-                            />
-                            <label for="geburtsdatum">Geburtsdatum</label>
+                            <input type="date" class="form-control" id="tn_geburtsdatum" />
+                            <label for="tn_geburtsdatum">Geburtsdatum</label>
                           </div>
                         </div>
                         <div class="col-md-4 mb-3">
                           <div class="form-floating">
-                            <input
-                              type="tel"
-                              class="form-control"
-                              id="telefon"
-                              value="0123 456789"
-                              readonly
-                            />
-                            <label for="telefon">Telefon</label>
+                            <input type="tel" class="form-control" id="tn_telefon" placeholder="Telefon" />
+                            <label for="tn_telefon">Telefon</label>
                           </div>
                         </div>
                         <div class="col-md-4 mb-3">
                           <div class="form-floating">
-                            <input
-                              type="email"
-                              class="form-control"
-                              id="mail"
-                              value="max@example.com"
-                              readonly
-                            />
-                            <label for="mail">E-Mail</label>
+                            <input type="tel" class="form-control" id="tn_mobil" placeholder="Mobil" />
+                            <label for="tn_mobil">Mobil</label>
                           </div>
                         </div>
-                      </form>
+                        <div class="col-md-4 mb-3">
+                          <div class="form-floating">
+                            <input type="email" class="form-control" id="tn_mail" placeholder="Mail" />
+                            <label for="tn_mail">Mail</label>
+                          </div>
+                        </div>
+                      </div>
 
-                      <div class="d-flex justify-content-start gap-3 mt-4">
-                        <button
-                          type="button"
-                          class="btn btn-primary"
-                          onclick="enableProfilEdit()"
-                        >
-                          <i class="bi bi-pencil me-2"></i>Bearbeiten
-                        </button>
-
-                        <button type="button" class="btn btn-success">
-                          <i class="bi bi-save me-2"></i>Speichern
+                      <div class="d-flex justify-content-between mt-3">
+                        <div></div>
+                        <button type="button" class="btn btn-primary" id="btnNext1">
+                          Weiter <i class="bi bi-arrow-right ms-1"></i>
                         </button>
                       </div>
                     </div>
 
-                    <!-- TAB 2: Maßnahmenverlauf (verkürzt beibehalten) -->
-                    <div class="tab-pane fade" id="tabVerlauf">
-                      <div class="timeline">
-                        <ul
-                          class="list-unstyled position-relative ms-4 border-start border-2 border-primary"
-                        >
-<li class="position-relative mb-4">
-  <div class="timeline-dot bg-primary"></div>
+                    <!-- STEP 2 -->
+                    <div id="step2" class="content d-none" role="tabpanel" aria-labelledby="step2-trigger">
+                      <div class="row">
+                        <div class="col-md-4 mb-3">
+                          <div class="form-floating">
+                            <select class="form-select" id="tn_massnahme" required>
+                              <option selected disabled value="">Maßnahme wählen *</option>
+                              <option>Integra 2025</option>
+                              <option>Integra 2024</option>
+                            </select>
+                            <label for="tn_massnahme">Maßnahme *</label>
+                          </div>
+                        </div>
 
-  <div 
-    class="ms-4 ps-2 py-3 px-3 bg-light rounded shadow-sm massnahme-klick"
-    data-page="TN-Profil_massnahme.html"
-  >
-    <div class="position-absolute top-0 end-0 m-2">
-      <button 
-        class="btn btn-sm btn-outline-secondary btn-lg"
-        onclick="event.stopPropagation()"
-      >
-        <i class="bi bi-journal-text me-1"></i> Maßnahmenverlauf aufrufen
-      </button>
-    </div>
+                        <div class="col-md-4 mb-3">
+                          <div class="form-floating">
+                            <select class="form-select" id="tn_betreuer" required>
+                              <option selected disabled value="">Betreuer wählen *</option>
+                              <option>Daniel Chu</option>
+                              <option>Corinna Adams</option>
+                            </select>
+                            <label for="tn_betreuer">Betreuer *</label>
+                          </div>
+                        </div>
 
-    <small class="text-muted">01.01.2024 – 31.12.2024</small><br />
-    <strong class="text-primary">Aktuelle Maßnahme – Integra 2025</strong>
-  </div>
-</li>
+                        <div class="col-md-4 mb-3">
+                          <div class="form-floating">
+                            <input type="text" class="form-control" id="tn_kennung" placeholder="Kennung" />
+                            <label for="tn_kennung">Kennung</label>
+                          </div>
+                        </div>
 
-                          <li class="position-relative mb-4">
-                            <div class="timeline-dot bg-primary"></div>
-                            <div class="ms-4 ps-2 py-3 px-3 bg-light rounded shadow-sm">
-                              <div class="position-absolute top-0 end-0 m-2">
-                                <button class="btn btn-sm btn-outline-secondary btn-lg">
-                                  <i class="bi bi-journal-text me-1"></i> Massnahmenverlauf
-                                  aufrufen
+                        <div class="col-md-4 mb-3">
+                          <div class="form-floating">
+                            <input type="date" class="form-control" id="tn_zuweisung_von" required />
+                            <label for="tn_zuweisung_von">Zuweisung von *</label>
+                          </div>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                          <div class="form-floating">
+                            <input type="date" class="form-control" id="tn_zuweisung_bis" required />
+                            <label for="tn_zuweisung_bis">Zuweisung bis *</label>
+                          </div>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                          <div class="form-floating">
+                            <input type="date" class="form-control" id="tn_eintritt" />
+                            <label for="tn_eintritt">Eintrittsdatum</label>
+                          </div>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                          <div class="form-floating">
+                            <select class="form-select" id="tn_jc_team" required>
+                              <option selected disabled value="">JC-Team *</option>
+                              <option>Team A</option>
+                              <option>Team B</option>
+                              <option>Team C</option>
+                            </select>
+                            <label for="tn_jc_team">JC-Team *</label>
+                          </div>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                          <div class="form-floating">
+                            <select class="form-select" id="tn_jc_mitarbeiter" required>
+                              <option selected disabled value="">JC-Mitarbeiter *</option>
+                              <option>Alessandro</option>
+                              <option>Uwe</option>
+                              <option>Maria</option>
+                            </select>
+                            <label for="tn_jc_mitarbeiter">JC-Mitarbeiter *</label>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="d-flex justify-content-between mt-3">
+                        <button type="button" class="btn btn-outline-secondary" id="btnBack2">
+                          <i class="bi bi-arrow-left me-1"></i> Zurück
+                        </button>
+                        <button type="button" class="btn btn-primary" id="btnNext2">
+                          Weiter <i class="bi bi-arrow-right ms-1"></i>
+                        </button>
+                      </div>
+                    </div>
+
+                    <!-- STEP 3 -->
+                    <div id="step3" class="content d-none" role="tabpanel" aria-labelledby="step3-trigger">
+                      <div class="row">
+                        <div class="col-lg-8 mb-3">
+                          <div class="form-floating">
+                            <textarea class="form-control" id="tn_notizen" placeholder="Notizen" style="height: 180px;"></textarea>
+                            <label for="tn_notizen">Notizen</label>
+                          </div>
+                        </div>
+                        <div class="col-lg-4 mb-3">
+                          <div class="alert alert-light border h-100 mb-0 d-flex gap-2">
+                            <i class="bi bi-info-circle text-secondary mt-1"></i>
+                            <div class="small text-secondary">
+                              Im letzten Schritt sehen Sie eine kompakte Übersicht und wählen die Unterlagen zur Unterschrift aus.
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="d-flex justify-content-between mt-3">
+                        <button type="button" class="btn btn-outline-secondary" id="btnBack3">
+                          <i class="bi bi-arrow-left me-1"></i> Zurück
+                        </button>
+                        <button type="button" class="btn btn-primary" id="btnNext3">
+                          Weiter <i class="bi bi-arrow-right ms-1"></i>
+                        </button>
+                      </div>
+                    </div>
+
+                    <!-- STEP 4 -->
+                    <div id="step4" class="content d-none" role="tabpanel" aria-labelledby="step4-trigger">
+
+                      <div class="row g-3">
+
+                        <!-- LINKS: Übersicht kompakt -->
+                        <div class="col-lg-6">
+                          <div class="card border-0 shadow-sm">
+                            <div class="card-body">
+                              <div class="fw-semibold mb-2">
+                                <i class="bi bi-card-checklist me-2"></i>Übersicht Eingaben
+                              </div>
+
+                              <div class="small">
+                                <div class="d-flex justify-content-between border-bottom py-1">
+                                  <span class="text-secondary">Name</span>
+                                  <span class="fw-semibold text-end" id="sum_name">—</span>
+                                </div>
+                                <div class="d-flex justify-content-between border-bottom py-1">
+                                  <span class="text-secondary">Geburt</span>
+                                  <span class="fw-semibold text-end" id="sum_geb">—</span>
+                                </div>
+                                <div class="d-flex justify-content-between border-bottom py-1">
+                                  <span class="text-secondary">Kontakt</span>
+                                  <span class="fw-semibold text-end" id="sum_tel">—</span>
+                                </div>
+                                <div class="d-flex justify-content-between border-bottom py-1">
+                                  <span class="text-secondary">Adresse</span>
+                                  <span class="fw-semibold text-end" id="sum_addr">—</span>
+                                </div>
+                                <div class="d-flex justify-content-between border-bottom py-1">
+                                  <span class="text-secondary">Maßnahme</span>
+                                  <span class="fw-semibold text-end" id="sum_massnahme">—</span>
+                                </div>
+                                <div class="d-flex justify-content-between border-bottom py-1">
+                                  <span class="text-secondary">Betreuer</span>
+                                  <span class="fw-semibold text-end" id="sum_betreuer">—</span>
+                                </div>
+                                <div class="d-flex justify-content-between border-bottom py-1">
+                                  <span class="text-secondary">Zuweisung</span>
+                                  <span class="fw-semibold text-end" id="sum_zuweisung">—</span>
+                                </div>
+                                <div class="d-flex justify-content-between border-bottom py-1">
+                                  <span class="text-secondary">JC-Team</span>
+                                  <span class="fw-semibold text-end" id="sum_jc_team">—</span>
+                                </div>
+                                <div class="d-flex justify-content-between py-1">
+                                  <span class="text-secondary">JC-MA</span>
+                                  <span class="fw-semibold text-end" id="sum_jc_mitarbeiter">—</span>
+                                </div>
+                              </div>
+
+                              <hr class="my-3">
+
+                              <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" role="switch" id="chkPrintAfterSave" checked>
+                                <label class="form-check-label" for="chkPrintAfterSave">
+                                  Erstunterlagen nach dem Speichern drucken
+                                </label>
+                              </div>
+
+                              <div class="alert alert-light border small mt-2 mb-0 d-flex gap-2">
+                                <i class="bi bi-info-circle text-secondary mt-1"></i>
+                                <div class="text-secondary">
+                                  Hinweis: Wenn aktiv, werden nach dem Speichern die ausgewählten Unterlagen direkt gedruckt.
+                                  (Später auch an anderer Stelle möglich.)
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- RECHTS: Erstunterlagen -->
+                        <div class="col-lg-6">
+                          <div class="card border-0 shadow-sm">
+                            <div class="card-body">
+                              <div class="fw-semibold mb-2">
+                                <i class="bi bi-file-earmark-text me-2"></i>Erstunterlagen
+                              </div>
+                              <div class="text-secondary small mb-3">
+                                Unterlagen auswählen, die beim Termin zur Unterschrift ausgedruckt werden.
+                              </div>
+
+                              <div class="border rounded-3 p-3 bg-light mb-3">
+                                <div class="fw-semibold mb-2">Art der Beförderung</div>
+                                <div class="form-check">
+                                  <input class="form-check-input" type="radio" name="befoerderung" id="befOepnv" value="ÖPNV" checked>
+                                  <label class="form-check-label" for="befOepnv">ÖPNV</label>
+                                </div>
+                                <div class="form-check">
+                                  <input class="form-check-input" type="radio" name="befoerderung" id="befPkw" value="PKW">
+                                  <label class="form-check-label" for="befPkw">PKW</label>
+                                </div>
+                              </div>
+
+                              <div class="row g-1">
+                                <div class="col-sm-6">
+                                  <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="docAgh" checked>
+                                    <label class="form-check-label" for="docAgh">Vereinbarung AGH</label>
+                                  </div>
+                                  <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="docAktivierung" checked>
+                                    <label class="form-check-label" for="docAktivierung">Vereinbarung Aktivierung</label>
+                                  </div>
+                                  <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="docKursordnung" checked>
+                                    <label class="form-check-label" for="docKursordnung">Kursordnung</label>
+                                  </div>
+                                  <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="docDatenschutz" checked>
+                                    <label class="form-check-label" for="docDatenschutz">Datenschutzrechtliche Hinweise</label>
+                                  </div>
+                                  <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="docInfoEinv" checked>
+                                    <label class="form-check-label" for="docInfoEinv">Info- und Einverständnis</label>
+                                  </div>
+                                </div>
+
+                                <div class="col-sm-6">
+                                  <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="docFahrtkosten" checked>
+                                    <label class="form-check-label" for="docFahrtkosten">Bestätigung Fahrtkosten</label>
+                                  </div>
+                                  <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="docRegelungFahrtkosten" checked>
+                                    <label class="form-check-label" for="docRegelungFahrtkosten">Regelung Fahrtkosten (Aktivierung)</label>
+                                  </div>
+                                  <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="docPersonalbogen" checked>
+                                    <label class="form-check-label" for="docPersonalbogen">Personalbogen</label>
+                                  </div>
+                                  <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="docEltern" checked>
+                                    <label class="form-check-label" for="docEltern">Einverständnis Elternarbeit</label>
+                                  </div>
+                                  <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="docFoto" checked>
+                                    <label class="form-check-label" for="docFoto">Einverständnis Foto</label>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <hr class="my-3">
+
+                              <div class="d-flex flex-wrap gap-2">
+                                <button type="button" class="btn btn-outline-secondary btn-sm" id="btnDocsAll">
+                                  <i class="bi bi-check2-square me-1"></i>Alle auswählen
+                                </button>
+                                <button type="button" class="btn btn-outline-secondary btn-sm" id="btnDocsNone">
+                                  <i class="bi bi-square me-1"></i>Alle abwählen
                                 </button>
                               </div>
-                              <small class="text-muted">01.03.2023 – 30.06.2023</small><br />
-                              <strong>2023 – Kurs Aktivierung</strong>
+
                             </div>
-                          </li>
-                        </ul>
+                          </div>
+                        </div>
+
                       </div>
 
-                      <div class="d-flex justify-content-between align-items-center mt-4">
-                        <button
-                          class="btn btn-outline-primary"
-                          onclick="document.getElementById('wechselForm').classList.remove('d-none')"
-                        >
-                          <i class="bi bi-arrow-left-right me-2"></i>Maßnahmenwechsel
+                      <div class="d-flex justify-content-between mt-4">
+                        <button type="button" class="btn btn-outline-secondary" id="btnBack4">
+                          <i class="bi bi-arrow-left me-1"></i> Zurück
+                        </button>
+
+                        <button type="submit" class="btn btn-success" id="btnSaveTeilnehmer">
+                          <i class="bi bi-save me-1"></i> Teilnehmer speichern
                         </button>
                       </div>
 
-                      <form id="wechselForm" class="row g-3 mt-3 d-none">
-                        <div class="col-md-4">
-                          <input class="form-control" type="date" placeholder="von" />
-                        </div>
-                        <div class="col-md-4">
-                          <input class="form-control" type="date" placeholder="bis" />
-                        </div>
-                        <div class="col-md-4">
-                          <select class="form-select">
-                            <option selected>Neue Maßnahme wählen</option>
-                            <option>Integra 2025</option>
-                            <option>Sprungbrett</option>
-                          </select>
-                        </div>
-                        <div class="col-12 text-end">
-                          <button class="btn btn-success" type="submit">Speichern</button>
-                        </div>
-                      </form>
                     </div>
-                    <!-- Ende tabVerlauf -->
-                  </div>
-                </div>
-                <!-- Ende rechte Spalte -->
-              </div>
-            </div>
+                  </div><!-- /bs-stepper-content -->
+                </div><!-- /bs-stepper -->
+              </div><!-- /card -->
+            </form>
+
           </div>
         </div>
-        <!-- modal-body -->
       </div>
     </div>
   </div>
 
-  <!-- Optional: Modal "Neuer Teilnehmer" (Platzhalter, kannst du später füllen oder löschen) -->
-  <div
-    class="modal fade"
-    id="teilnehmerModal"
-    tabindex="-1"
-    aria-labelledby="teilnehmerModalLabel"
-    aria-hidden="true"
-  >
-    <div class="modal-dialog modal-fullscreen">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="teilnehmerModalLabel">Neuer Teilnehmer</h5>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Schließen"
-          ></button>
-        </div>
-<div class="modal-body">
-  <div class="container mt-3">
-    <form id="teilnehmerForm">
-      <div class="card">
-        <div id="stepper" class="bs-stepper">
-          <div class="bs-stepper-header m-3" role="tablist">
-            <div class="step" data-target="#logins-part">
-              <button
-                type="button"
-                class="step-trigger"
-                role="tab"
-                aria-controls="logins-part"
-                id="logins-part-trigger"
-              >
-                <span class="bs-stepper-circle">1</span>
-                <span>Grundinformationen</span>
-              </button>
-            </div>
-            <div class="line"></div>
-            <div class="step" data-target="#information-part">
-              <button
-                type="button"
-                class="step-trigger"
-                role="tab"
-                aria-controls="information-part"
-                id="information-part-trigger"
-              >
-                <span class="bs-stepper-circle">2</span>
-                <span>Maßnahme</span>
-              </button>
-            </div>
-            <div class="line"></div>
-            <div class="step" data-target="#confirmation-part">
-              <button
-                type="button"
-                class="step-trigger"
-                role="tab"
-                aria-controls="confirmation-part"
-                id="confirmation-part-trigger"
-              >
-                <span class="bs-stepper-circle">3</span>
-                <span>Sonstige Angaben</span>
-              </button>
-            </div>
-          </div>
+  <!-- JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bs-stepper/dist/js/bs-stepper.min.js"></script>
 
-          <div class="bs-stepper-content">
-            <!-- STEP 1 -->
-            <div
-              id="logins-part"
-              class="content d-none"
-              role="tabpanel"
-              aria-labelledby="logins-part-trigger"
-            >
-              <div class="row">
-                <div class="col-md-4 mb-3">
-                  <div class="form-floating">
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="nachname"
-                      placeholder="Nachname"
-                      required
-                      minlength="2"
-                    />
-                    <label for="nachname">Nachname</label>
-                  </div>
-                </div>
-                <div class="col-md-4 mb-3">
-                  <div class="form-floating">
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="vorname"
-                      placeholder="Vorname"
-                    />
-                    <label for="vorname">Vorname</label>
-                  </div>
-                </div>
-                <div class="col-md-4 mb-3">
-                  <div class="form-floating">
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="geburtsname"
-                      placeholder="Geburtsname"
-                    />
-                    <label for="geburtsname">Geburtsname</label>
-                  </div>
-                </div>
+  <script>
+    let stepper;
 
-                <div class="col-md-4 mb-3">
-                  <div class="form-floating">
-                    <select class="form-select" id="geschlecht">
-                      <option selected>Wählen...</option>
-                      <option value="m">Männlich</option>
-                      <option value="w">Weiblich</option>
-                      <option value="d">Divers</option>
-                    </select>
-                    <label for="geschlecht">Geschlecht</label>
-                  </div>
-                </div>
+    document.addEventListener("DOMContentLoaded", function () {
+      // Tooltips
+      const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+      tooltipTriggerList.map(el => new bootstrap.Tooltip(el));
 
-                <div class="col-md-4 mb-3">
-                  <div class="form-floating">
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="strasse"
-                      placeholder="Straße"
-                    />
-                    <label for="strasse">Straße</label>
-                  </div>
-                </div>
-                <div class="col-md-4 mb-3">
-                  <div class="form-floating">
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="hausnummer"
-                      placeholder="Hausnummer"
-                    />
-                    <label for="hausnummer">Hausnummer</label>
-                  </div>
-                </div>
-
-                <div class="col-md-4 mb-3">
-                  <div class="form-floating">
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="plz"
-                      placeholder="PLZ"
-                    />
-                    <label for="plz">PLZ</label>
-                  </div>
-                </div>
-                <div class="col-md-4 mb-3">
-                  <div class="form-floating">
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="ort"
-                      placeholder="Ort"
-                    />
-                    <label for="ort">Ort</label>
-                  </div>
-                </div>
-                <div class="col-md-4 mb-3">
-                  <div class="form-floating">
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="land"
-                      placeholder="Land"
-                    />
-                    <label for="land">Land</label>
-                  </div>
-                </div>
-
-                <div class="col-md-4 mb-3">
-                  <div class="form-floating">
-                    <input
-                      type="date"
-                      class="form-control"
-                      id="geburtsdatum"
-                    />
-                    <label for="geburtsdatum">Geburtsdatum</label>
-                  </div>
-                </div>
-                <div class="col-md-4 mb-3">
-                  <div class="form-floating">
-                    <input
-                      type="tel"
-                      class="form-control"
-                      id="telefon"
-                      placeholder="Telefon"
-                    />
-                    <label for="telefon">Telefon</label>
-                  </div>
-                </div>
-                <div class="col-md-4 mb-3">
-                  <div class="form-floating">
-                    <input
-                      type="tel"
-                      class="form-control"
-                      id="mobil"
-                      placeholder="Mobil"
-                    />
-                    <label for="mobil">Mobil</label>
-                  </div>
-                </div>
-                <div class="col-md-4 mb-3">
-                  <div class="form-floating">
-                    <input
-                      type="email"
-                      class="form-control"
-                      id="mail"
-                      placeholder="Mail"
-                    />
-                    <label for="mail">Mail</label>
-                  </div>
-                </div>
-              </div>
-
-              <div class="mt-3">
-                <button
-                  type="button"
-                  class="btn btn-primary"
-                  onclick="stepper.next(); showStep('information-part')"
-                >
-                  Weiter
-                </button>
-              </div>
-            </div>
-
-            <!-- STEP 2 -->
-            <div
-              id="information-part"
-              class="content d-none"
-              role="tabpanel"
-              aria-labelledby="information-part-trigger"
-            >
-              <div class="row">
-                <div class="col-md-4 mb-3">
-                  <div class="form-floating">
-                    <select class="form-select" id="massnahme">
-                      <option selected disabled value="">Maßnahme</option>
-                      <option>Option 1</option>
-                    </select>
-                    <label for="massnahme">Maßnahme</label>
-                  </div>
-                </div>
-                <div class="col-md-4 mb-3">
-                  <div class="form-floating">
-                    <select class="form-select" id="betreuer">
-                      <option selected disabled value="">Betreuer</option>
-                      <option>Betreuer 1</option>
-                    </select>
-                    <label for="betreuer">Betreuer</label>
-                  </div>
-                </div>
-                <div class="col-md-4 mb-3">
-                  <div class="form-floating">
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="kennung"
-                      placeholder="Kennung"
-                    />
-                    <label for="kennung">Kennung</label>
-                  </div>
-                </div>
-
-                <div class="col-md-4 mb-3">
-                  <div class="form-floating">
-                    <input
-                      type="date"
-                      class="form-control"
-                      id="zuweisung_von"
-                    />
-                    <label for="zuweisung_von">Zuweisung von:</label>
-                  </div>
-                </div>
-                <div class="col-md-4 mb-3">
-                  <div class="form-floating">
-                    <input
-                      type="date"
-                      class="form-control"
-                      id="zuweisung_bis"
-                    />
-                    <label for="zuweisung_bis">Zuweisung bis:</label>
-                  </div>
-                </div>
-                <div class="col-md-4 mb-3">
-                  <div class="form-floating">
-                    <input
-                      type="date"
-                      class="form-control"
-                      id="eintritt"
-                    />
-                    <label for="eintritt">Eintrittsdatum</label>
-                  </div>
-                </div>
-
-                <div class="col-md-4 mb-3">
-                  <div class="form-floating">
-                    <select class="form-select" id="jc-team">
-                      <option selected disabled value="">Maßnahme</option>
-                      <option>Team A</option>
-                    </select>
-                    <label for="jc-team">JC-Team</label>
-                  </div>
-                </div>
-                <div class="col-md-4 mb-3">
-                  <div class="form-floating">
-                    <select class="form-select" id="jc-mitarbeiter">
-                      <option selected>wählen...</option>
-                      <option value="m">Alessandro</option>
-                      <option value="w">Uwe</option>
-                    </select>
-                    <label for="jc-mitarbeiter">JC-Mitarbeiter</label>
-                  </div>
-                </div>
-              </div>
-
-              <div class="mt-3">
-                <button
-                  type="button"
-                  class="btn btn-secondary me-2"
-                  onclick="stepper.previous(); showStep('logins-part')"
-                >
-                  Zurück
-                </button>
-                <button
-                  type="button"
-                  class="btn btn-primary"
-                  onclick="stepper.next(); showStep('confirmation-part')"
-                >
-                  Weiter
-                </button>
-              </div>
-            </div>
-
-            <!-- STEP 3 -->
-            <div
-              id="confirmation-part"
-              class="content d-none"
-              role="tabpanel"
-              aria-labelledby="confirmation-part-trigger"
-            >
-              <p>Sonstige Angaben und Bestätigung.</p>
-              <div class="mt-3">
-                <button
-                  type="button"
-                  class="btn btn-secondary me-2"
-                  onclick="stepper.previous(); showStep('information-part')"
-                >
-                  Zurück
-                </button>
-                <button type="submit" class="btn btn-success">
-                  Teilnehmer erstellen
-                </button>
-              </div>
-            </div>
-          </div>
-          <!-- bs-stepper-content -->
-        </div>
-        <!-- bs-stepper -->
-      </div>
-      <!-- card -->
-    </form>
-  </div>
-</div>
-
-      </div>
-    </div>
-  </div>
-
-<!-- JS: Bootstrap + Stepper -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bs-stepper/dist/js/bs-stepper.min.js"></script>
-
-<script>
-  let stepper;
-
-  document.addEventListener("DOMContentLoaded", function () {
-    console.log("teilnehmer.html DOMContentLoaded");
-
-    // ===== Profil bearbeiten (Button im Profil-Modal) =====
-    function enableProfilEdit() {
-      const form = document.getElementById("profilForm");
-      if (!form) return;
-
-      form.querySelectorAll("input").forEach((input) => input.removeAttribute("readonly"));
-      form.querySelectorAll("select").forEach((select) => select.removeAttribute("disabled"));
-    }
-    // global machen, damit das onclick im HTML funktioniert
-    window.enableProfilEdit = enableProfilEdit;
-
-    // ===== Stepper im „Neuer Teilnehmer“-Fullscreen-Modal =====
-    const stepperElement = document.querySelector("#stepper");
-    if (stepperElement) {
-      stepper = new window.Stepper(stepperElement);
-      showStep("logins-part");
-
-      const formEl = document.getElementById("teilnehmerForm");
-      if (formEl) {
-        formEl.addEventListener("submit", function (e) {
-          e.preventDefault();
-          alert("Teilnehmer erfolgreich erstellt!");
-
-          const modalEl = document.getElementById("teilnehmerModal");
-          if (modalEl) {
-            let modal = bootstrap.Modal.getInstance(modalEl);
-            if (!modal) {
-              modal = new bootstrap.Modal(modalEl);
-            }
-            modal.hide();
-          }
-
-          this.reset();
-          stepper.to(1);
-          showStep("logins-part");
+      // Row click -> iframe / navigation
+      document.querySelectorAll("[data-row-click]").forEach(row => {
+        row.addEventListener("click", function () {
+          const targetPage = this.getAttribute("data-row-click");
+          let frame = null;
+          try { frame = parent.document.getElementById("mainFrame"); } catch (e) {}
+          if (frame && targetPage) frame.src = targetPage;
+          else if (targetPage) window.location.href = targetPage;
         });
+      });
+
+      // Stepper init
+      const stepperElement = document.querySelector("#stepper");
+      if (stepperElement) {
+        stepper = new window.Stepper(stepperElement);
+        showStep("step1");
       }
-    }
 
-    function showStep(id) {
-      document
-        .querySelectorAll(".bs-stepper-content .content")
-        .forEach((step) => step.classList.add("d-none"));
-      const active = document.getElementById(id);
-      if (active) active.classList.remove("d-none");
-    }
-    window.showStep = showStep;
+      // Step navigation
+      document.getElementById("btnNext1")?.addEventListener("click", () => {
+        const nachname = document.getElementById("tn_nachname");
+        if (nachname && !nachname.value.trim()) {
+          nachname.focus();
+          nachname.classList.add("is-invalid");
+          return;
+        }
+        nachname?.classList.remove("is-invalid");
+        stepper.next(); showStep("step2");
+      });
 
-    // ===== Zeilen-Klick: Profilseite im iframe laden =====
-    document.querySelectorAll("[data-row-click]").forEach(row => {
-      row.style.cursor = "pointer";
+      document.getElementById("btnBack2")?.addEventListener("click", () => { stepper.previous(); showStep("step1"); });
 
-      row.addEventListener("click", function () {
-        const targetPage = this.getAttribute("data-row-click");
-        console.log("Zeile geklickt, Zielseite:", targetPage);
+      document.getElementById("btnNext2")?.addEventListener("click", () => {
+        const requiredIds = ["tn_massnahme","tn_betreuer","tn_zuweisung_von","tn_zuweisung_bis","tn_jc_team","tn_jc_mitarbeiter"];
+        let ok = true;
+        requiredIds.forEach(id => {
+          const el = document.getElementById(id);
+          if (el && !String(el.value || "").trim()) { el.classList.add("is-invalid"); ok = false; }
+          else el?.classList.remove("is-invalid");
+        });
+        if (!ok) return;
 
-        let frame = null;
-        try {
-          // Wenn teilnehmer.html im iframe von prototyp.html läuft:
-          frame = parent.document.getElementById("mainFrame");
-        } catch (e) {
-          console.error("Zugriff auf parent.document nicht möglich:", e);
+        stepper.next(); showStep("step3");
+      });
+
+      document.getElementById("btnBack3")?.addEventListener("click", () => { stepper.previous(); showStep("step2"); });
+      document.getElementById("btnNext3")?.addEventListener("click", () => {
+        stepper.next(); showStep("step4");
+        updateSummary();
+      });
+      document.getElementById("btnBack4")?.addEventListener("click", () => { stepper.previous(); showStep("step3"); });
+
+      // Live Summary Update
+      const liveIds = [
+        "tn_nachname","tn_vorname","tn_geburtsdatum","tn_telefon","tn_mobil",
+        "tn_strasse","tn_hausnummer","tn_plz","tn_ort","tn_land",
+        "tn_massnahme","tn_betreuer","tn_zuweisung_von","tn_zuweisung_bis",
+        "tn_jc_team","tn_jc_mitarbeiter"
+      ];
+      liveIds.forEach(id => document.getElementById(id)?.addEventListener("input", updateSummary));
+      liveIds.forEach(id => document.getElementById(id)?.addEventListener("change", updateSummary));
+
+      // Docs quick actions
+      document.getElementById("btnDocsAll")?.addEventListener("click", () => {
+        getDocIds().forEach(id => { const el = document.getElementById(id); if (el) el.checked = true; });
+      });
+      document.getElementById("btnDocsNone")?.addEventListener("click", () => {
+        getDocIds().forEach(id => { const el = document.getElementById(id); if (el) el.checked = false; });
+      });
+
+      // Submit -> Teilnehmer speichern -> ggf. drucken (Demo)
+      document.getElementById("teilnehmerForm")?.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const requiredIds = ["tn_nachname","tn_massnahme","tn_betreuer","tn_zuweisung_von","tn_zuweisung_bis","tn_jc_team","tn_jc_mitarbeiter"];
+        let ok = true;
+        requiredIds.forEach(id => {
+          const el = document.getElementById(id);
+          if (el && !String(el.value || "").trim()) { el.classList.add("is-invalid"); ok = false; }
+          else el?.classList.remove("is-invalid");
+        });
+        if (!ok) {
+          if (!document.getElementById("tn_nachname")?.value.trim()) { stepper.to(1); showStep("step1"); }
+          else { stepper.to(2); showStep("step2"); }
+          return;
         }
 
-        if (frame && targetPage) {
-          console.log("Seite im iframe laden:", targetPage);
-          frame.src = targetPage;
-        } else if (targetPage) {
-          console.warn("Kein iframe gefunden, lade Seite direkt:", targetPage);
-          // Fallback: wenn teilnehmer.html direkt geöffnet ist
-          window.location.href = targetPage;
+        const payload = collectTeilnehmerPayload();
+        console.log("SAVE Teilnehmer (Demo)", payload);
+
+        // Modal schließen
+        const modalEl = document.getElementById("teilnehmerModal");
+        if (modalEl) {
+          let modal = bootstrap.Modal.getInstance(modalEl);
+          if (!modal) modal = new bootstrap.Modal(modalEl);
+          modal.hide();
+        }
+
+        // Wenn Schalter aktiv: direkt drucken (DEMO)
+        const printEnabled = document.getElementById("chkPrintAfterSave")?.checked;
+        if (printEnabled) {
+          const docs = getSelectedDocs();
+          alert(
+            "Drucken (Demo)\n\n" +
+            "Teilnehmer: " + [payload.vorname, payload.nachname].filter(Boolean).join(" ") + "\n" +
+            "Maßnahme: " + payload.massnahme + "\n" +
+            "Beförderung: " + payload.befoerderung + "\n\n" +
+            "Unterlagen:\n- " + (docs.length ? docs.join("\n- ") : "(keine)")
+          );
         } else {
-          console.warn("Keine Zielseite in data-row-click gesetzt.");
+          alert("Teilnehmer gespeichert (Demo).");
         }
       });
+
+      // Reset when modal closes
+      const modalEl = document.getElementById("teilnehmerModal");
+      modalEl?.addEventListener("hidden.bs.modal", () => {
+        document.getElementById("teilnehmerForm")?.reset();
+        stepper?.to(1);
+        showStep("step1");
+        ["tn_nachname","tn_massnahme","tn_betreuer","tn_zuweisung_von","tn_zuweisung_bis","tn_jc_team","tn_jc_mitarbeiter"]
+          .forEach(id => document.getElementById(id)?.classList.remove("is-invalid"));
+      });
+
+      function showStep(id) {
+        document.querySelectorAll(".bs-stepper-content .content").forEach(s => s.classList.add("d-none"));
+        document.getElementById(id)?.classList.remove("d-none");
+      }
+
+      function getDocIds() {
+        return [
+          "docAgh","docAktivierung","docKursordnung","docDatenschutz","docInfoEinv",
+          "docFahrtkosten","docRegelungFahrtkosten","docPersonalbogen","docEltern","docFoto"
+        ];
+      }
+
+      function getSelectedDocs() {
+        const labels = {
+          docAgh: "Vereinbarung AGH",
+          docAktivierung: "Vereinbarung Aktivierung",
+          docKursordnung: "Kursordnung",
+          docDatenschutz: "Datenschutzrechtliche Hinweise",
+          docInfoEinv: "Info- und Einverständnis",
+          docFahrtkosten: "Bestätigung Fahrtkosten",
+          docRegelungFahrtkosten: "Regelung Fahrtkosten (Aktivierung)",
+          docPersonalbogen: "Personalbogen",
+          docEltern: "Einverständnis Elternarbeit",
+          docFoto: "Einverständnis Foto"
+        };
+        const selected = [];
+        getDocIds().forEach(id => {
+          const el = document.getElementById(id);
+          if (el && el.checked) selected.push(labels[id] || id);
+        });
+        return selected;
+      }
+
+      function collectTeilnehmerPayload() {
+        const befoerderung = document.querySelector('input[name="befoerderung"]:checked')?.value || "ÖPNV";
+        return {
+          nachname: (document.getElementById("tn_nachname")?.value || "").trim(),
+          vorname: (document.getElementById("tn_vorname")?.value || "").trim(),
+          geburtsdatum: document.getElementById("tn_geburtsdatum")?.value || "",
+          strasse: (document.getElementById("tn_strasse")?.value || "").trim(),
+          hausnummer: (document.getElementById("tn_hausnummer")?.value || "").trim(),
+          plz: (document.getElementById("tn_plz")?.value || "").trim(),
+          ort: (document.getElementById("tn_ort")?.value || "").trim(),
+          land: (document.getElementById("tn_land")?.value || "").trim(),
+          telefon: (document.getElementById("tn_telefon")?.value || "").trim(),
+          mobil: (document.getElementById("tn_mobil")?.value || "").trim(),
+          mail: (document.getElementById("tn_mail")?.value || "").trim(),
+          massnahme: document.getElementById("tn_massnahme")?.value || "",
+          betreuer: document.getElementById("tn_betreuer")?.value || "",
+          zuweisung_von: document.getElementById("tn_zuweisung_von")?.value || "",
+          zuweisung_bis: document.getElementById("tn_zuweisung_bis")?.value || "",
+          jc_team: document.getElementById("tn_jc_team")?.value || "",
+          jc_mitarbeiter: document.getElementById("tn_jc_mitarbeiter")?.value || "",
+          befoerderung,
+          docs: getSelectedDocs()
+        };
+      }
+
+      function setText(id, text) {
+        const el = document.getElementById(id);
+        if (el) el.textContent = text;
+      }
+
+      function updateSummary() {
+        const p = collectTeilnehmerPayload();
+
+        const fullName = [p.vorname, p.nachname].filter(Boolean).join(" ").trim() || "—";
+        setText("sum_name", fullName);
+        setText("sum_geb", p.geburtsdatum || "—");
+
+        const tel = [p.telefon, p.mobil].filter(Boolean).join(" / ");
+        setText("sum_tel", tel || "—");
+
+        const addrLine1 = [p.strasse, p.hausnummer].filter(Boolean).join(" ").trim();
+        const addrLine2 = [p.plz, p.ort].filter(Boolean).join(" ").trim();
+        const addrLine3 = p.land || "";
+        const addr = [addrLine1, addrLine2, addrLine3].filter(Boolean).join(", ") || "—";
+        setText("sum_addr", addr);
+
+        setText("sum_massnahme", p.massnahme || "—");
+        setText("sum_betreuer", p.betreuer || "—");
+
+        const zuw = (p.zuweisung_von || p.zuweisung_bis) ? `${p.zuweisung_von || "—"} bis ${p.zuweisung_bis || "—"}` : "—";
+        setText("sum_zuweisung", zuw);
+
+        setText("sum_jc_team", p.jc_team || "—");
+        setText("sum_jc_mitarbeiter", p.jc_mitarbeiter || "—");
+      }
     });
-
-    // ===== Bootstrap-Tooltips für Zeilen =====
-    const tooltipTriggerList = [].slice.call(
-      document.querySelectorAll('[data-bs-toggle="tooltip"]')
-    );
-    tooltipTriggerList.map(el => new bootstrap.Tooltip(el));
-  });
-
-  function openMassnahmeProfil(page) {
-    // im Prototyp-Layout das iframe finden
-    const frame = parent.document.getElementById("mainFrame");
-
-    if (frame && page) {
-      frame.src = page;
-    }
-  }
-  
-  
-
-  
-
-
-</script>
-
-
-
+  </script>
 
 </body>
 </html>
