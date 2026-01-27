@@ -1187,17 +1187,71 @@
 
 
 
-              <div class="mb-3">
-                <div class="border rounded-3 p-3">
-                  <div class="d-flex justify-content-between align-items-center mb-2">
-                    <h6 class="mb-0">Persönliche Arbeitszeit des TN</h6>
-                    <button class="btn btn-outline-secondary btn-sm" type="button">
-                      <i class="bi bi-clock me-1"></i> Zeiten bearbeiten
-                    </button>
-                  </div>
-                  <p class="text-muted small mb-1">Hinterlegte individuelle Arbeits- bzw. Anwesenheitszeiten.</p>
-                </div>
-              </div>
+<div class="mb-3">
+  <div class="border rounded-3 p-3">
+    <div class="d-flex justify-content-between align-items-center mb-2">
+      <h6 class="mb-0">Persönliche Arbeitszeit des TN</h6>
+      <button class="btn btn-outline-secondary btn-sm"
+              data-bs-toggle="modal" data-bs-target="#modalArbeitszeit">
+        <i class="bi bi-clock me-1"></i> Zeiten bearbeiten
+      </button>
+    </div>
+    <p class="text-muted small mb-1">Individuelle Praxiszeiten (Montag–Freitag).</p>
+  </div>
+</div>
+
+<!-- =========================
+     MODAL: Arbeitszeit bearbeiten
+     ========================= -->
+<div class="modal fade" id="modalArbeitszeit" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+
+      <div class="modal-header py-2">
+        <h6 class="modal-title mb-0">
+          <i class="bi bi-clock-history me-2"></i> Persönliche Zeiten bearbeiten (Mo–Fr)
+        </h6>
+        <button class="btn-close" data-bs-dismiss="modal" aria-label="Schließen"></button>
+      </div>
+
+      <div class="modal-body py-2">
+
+        <!-- Kopfzeile kompakt -->
+        <div class="row g-2 align-items-end mb-2">
+          <div class="col-12 col-md-6">
+            <div class="form-floating">
+              <input type="number" class="form-control" id="sollstundenWoche" step="0.25" value="0">
+              <label for="sollstundenWoche">Sollstunden pro Woche</label>
+            </div>
+          </div>
+          <div class="col-12 col-md-6 d-flex gap-2 justify-content-md-end">
+            <button type="button" class="btn btn-outline-primary btn-sm" id="btnUebernehmen">
+              <i class="bi bi-magic me-1"></i> aus Zeiten übernehmen
+            </button>
+            <div class="text-end">
+              <div class="small text-muted">Wochensumme</div>
+              <div class="fw-semibold" id="wochenSumme">0,00 Std.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tage: JE TAG 1 ZEILE (Floating Forms) -->
+        <div id="praxisZeiten" class="d-flex flex-column gap-2">
+          <!-- Wird per JS gefüllt -->
+        </div>
+
+      </div>
+
+      <div class="modal-footer py-2">
+        <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Abbrechen</button>
+        <button type="button" class="btn btn-primary btn-sm" id="btnSpeichern">
+          <i class="bi bi-check2-circle me-1"></i> Speichern
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
 
             </div>
 
@@ -2718,7 +2772,115 @@
 })();
 </script>
 
+<script>
+(function () {
+  const tage = [
+    { key: 'mo', label: 'Montag' },
+    { key: 'di', label: 'Dienstag' },
+    { key: 'mi', label: 'Mittwoch' },
+    { key: 'do', label: 'Donnerstag' },
+    { key: 'fr', label: 'Freitag' }
+  ];
 
+  const container = document.getElementById('praxisZeiten');
+  const wochenSummeEl = document.getElementById('wochenSumme');
+  const sollInput = document.getElementById('sollstundenWoche');
+  const btnUebernehmen = document.getElementById('btnUebernehmen');
+  const btnSpeichern = document.getElementById('btnSpeichern');
+  const modalEl = document.getElementById('modalArbeitszeit');
+
+  // Render: pro Tag 1 Zeile
+  container.innerHTML = tage.map(t => `
+    <div class="row g-2 align-items-center" data-day="${t.key}">
+      <div class="col-12 col-md-3">
+        <strong>${t.label}</strong>
+      </div>
+
+      <div class="col-6 col-md-3">
+        <div class="form-floating">
+          <input type="time" class="form-control" id="${t.key}-start" data-role="start" value="08:00">
+          <label for="${t.key}-start">Von</label>
+        </div>
+      </div>
+
+      <div class="col-6 col-md-3">
+        <div class="form-floating">
+          <input type="time" class="form-control" id="${t.key}-end" data-role="end" value="16:00">
+          <label for="${t.key}-end">Bis</label>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-3 text-md-end">
+        <span class="badge bg-light text-dark fs-6" data-role="sum">0,00 Std.</span>
+      </div>
+    </div>
+  `).join('');
+
+  function parseTime(t) {
+    if (!t || !/^\d{2}:\d{2}$/.test(t)) return null;
+    const [h, m] = t.split(':').map(Number);
+    return h * 60 + m;
+  }
+
+  function formatHours(h) {
+    return h.toFixed(2).replace('.', ',') + ' Std.';
+  }
+
+  function calcRow(row) {
+    const s = parseTime(row.querySelector('[data-role="start"]').value);
+    const e = parseTime(row.querySelector('[data-role="end"]').value);
+
+    let min = 0;
+    if (s !== null && e !== null) {
+      min = e - s;
+      if (min < 0) min += 1440; // über Mitternacht
+    }
+
+    const hours = min / 60;
+    row.querySelector('[data-role="sum"]').textContent = formatHours(hours);
+    return hours;
+  }
+
+  function recalcAll() {
+    let sum = 0;
+    container.querySelectorAll('[data-day]').forEach(row => sum += calcRow(row));
+    wochenSummeEl.textContent = formatHours(sum);
+    return sum;
+  }
+
+  // Recalc bei Zeit-Änderung
+  container.addEventListener('input', (e) => {
+    if (e.target.type === 'time') recalcAll();
+  });
+
+  // initial wenn Modal öffnet
+  modalEl.addEventListener('shown.bs.modal', () => recalcAll());
+
+  // Sollstunden übernehmen
+  btnUebernehmen.addEventListener('click', () => {
+    sollInput.value = recalcAll().toFixed(2);
+  });
+
+  // Speichern (Demo)
+  btnSpeichern.addEventListener('click', () => {
+    const weekSum = recalcAll();
+    const payload = {
+      sollstundenWoche: Number(sollInput.value || 0),
+      wochenSummeAusZeiten: weekSum,
+      tage: Array.from(container.querySelectorAll('[data-day]')).map(row => ({
+        tag: row.getAttribute('data-day'),
+        von: row.querySelector('[data-role="start"]').value,
+        bis: row.querySelector('[data-role="end"]').value,
+        sum: row.querySelector('[data-role="sum"]').textContent
+      }))
+    };
+
+    console.log('Arbeitszeit speichern payload:', payload);
+    bootstrap.Modal.getOrCreateInstance(modalEl).hide();
+  });
+
+})();
+</script>
 
 
 
