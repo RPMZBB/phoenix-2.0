@@ -133,7 +133,7 @@
       border: none;
     }
     .accordion-collapse {
-      background-color: #2a2a2a;
+      background-color: #d8dce4;
     }
     .submenu-link {
       padding-left: 2rem;
@@ -214,4 +214,5 @@ textarea[readonly] {
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
 	cursor:pointer;
   }
+
 
