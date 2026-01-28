@@ -404,7 +404,7 @@
                   <div class="d-flex justify-content-between align-items-center mb-3">
                     <div>
                       <h5 class="mb-0">Aktennotizen</h5>
-                      <small class="text-muted">Formale Notizen zum Vorgang</small>
+                      <small class="text-muted">Formale Notizen</small>
                     </div>
 
                     <div class="d-flex gap-2">
@@ -416,11 +416,93 @@
                       </button>
 
                       <button class="btn btn-outline-primary btn-sm" type="button" id="btnAktenExport">
-                        <i class="bi bi-journal-text me-1"></i> Export
+                        <i class="bi bi-journal-text me-1"></i> herunterladen
                       </button>
                     </div>
                   </div>
 
+
+<!-- =========================
+     FILTER: AKTENNOTIZEN (eingeklappt)
+     ========================= -->
+<div class="accordion mb-3" id="aktenFilterAccordion">
+
+  <div class="accordion-item border rounded-3 bg-white">
+    <h2 class="accordion-header" id="aktenFilterHeading">
+      <button class="accordion-button collapsed py-2 bg-white"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#aktenFilterCollapse"
+              aria-expanded="false"
+              aria-controls="aktenFilterCollapse">
+        <i class="bi bi-funnel me-2"></i>
+        Filter
+        <span class="ms-2 small text-muted" id="aktenFilterSummary">
+          (keine Filter aktiv)
+        </span>
+      </button>
+    </h2>
+
+    <div id="aktenFilterCollapse"
+         class="accordion-collapse collapse"
+         aria-labelledby="aktenFilterHeading"
+         data-bs-parent="#aktenFilterAccordion">
+
+      <div class="accordion-body pt-3">
+
+        <!-- ALLE FILTER IN EINER ZEILE -->
+        <div class="row g-2 align-items-end">
+
+          <div class="col-12 col-md-2">
+            <div class="form-floating">
+              <input type="date" class="form-control form-control-sm" id="aktenFilterVon" placeholder=" ">
+              <label for="aktenFilterVon">Datum von</label>
+            </div>
+          </div>
+
+          <div class="col-12 col-md-2">
+            <div class="form-floating">
+              <input type="date" class="form-control form-control-sm" id="aktenFilterBis" placeholder=" ">
+              <label for="aktenFilterBis">Datum bis</label>
+            </div>
+          </div>
+
+          <div class="col-12 col-md-2">
+            <div class="form-floating">
+              <select class="form-select form-select-sm" id="aktenFilterTyp">
+                <option value="" selected>Alle</option>
+              </select>
+              <label for="aktenFilterTyp">Typ</label>
+            </div>
+          </div>
+
+          <div class="col-12 col-md-4">
+            <div class="form-floating">
+              <input type="text"
+                     class="form-control form-control-sm"
+                     id="aktenFilterTypText"
+                     placeholder=" ">
+              <label for="aktenFilterTypText">Typ enthält …</label>
+            </div>
+          </div>
+
+          <div class="col-12 col-md-2 d-flex justify-content-md-end">
+            <button class="btn btn-outline-secondary btn-sm w-100 w-md-auto"
+                    type="button"
+                    id="btnAktenFilterReset">
+              <i class="bi bi-arrow-counterclockwise me-1"></i> Filter löschen
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+                  
                   <div class="list-group small" id="aktennotizenList"></div>
                 </div>
 
@@ -1572,17 +1654,29 @@
                 </div>
               </div>
 
-              <div class="col-md-6">
-                <div class="form-floating">
-                  <select class="form-select" id="aktenTyp" aria-label="Typ">
-                    <option value="Aktennotiz" selected>Aktennotiz</option>
-                    <option value="Telefonat">Telefonat</option>
-                    <option value="Gespräch">Gespräch</option>
-                    <option value="E-Mail">E-Mail</option>
-                  </select>
-                  <label for="aktenTyp">Typ</label>
-                </div>
-              </div>
+<div class="col-md-6">
+  <div class="form-floating">
+    <select class="form-select" id="aktenTyp" aria-label="Typ">
+      <option value="Aktennotiz" selected>Aktennotiz</option>
+      <option value="Telefonat">Telefonat</option>
+      <option value="Gespräch">Gespräch</option>
+      <option value="E-Mail">E-Mail</option>
+      <option value="__custom__">Eigener Typ…</option>
+    </select>
+    <label for="aktenTyp">Typ</label>
+  </div>
+</div>
+
+<div class="col-md-6 d-none" id="aktenTypCustomWrap">
+  <div class="form-floating">
+    <input type="text" class="form-control" id="aktenTypCustom" placeholder=" " maxlength="60">
+    <label for="aktenTypCustom">Eigener Typ</label>
+  </div>
+  <div class="form-text">Wird gespeichert und in der Liste als Typ angezeigt.</div>
+</div>
+
+
+              
             </div>
 
           </div>
@@ -1914,204 +2008,337 @@
 
       renderTable();
     });
+ // ===================== AKTENNOTIZEN (mit Custom-Typ + Filter) =====================
+  (function () {
+    const STORAGE_KEY = "aktennotizen_demo";
 
-    // ===================== AKTENNOTIZEN (voll funktionsfähig) =====================
-    (function () {
-      const STORAGE_KEY = "aktennotizen_demo";
+    const listEl = document.getElementById("aktennotizenList");
+    const modalEl = document.getElementById("modalAktennotiz");
 
-      const listEl = document.getElementById("aktennotizenList");
-      const modalEl = document.getElementById("modalAktennotiz");
+    const form = document.getElementById("aktennotizForm");
+    const editIndexEl = document.getElementById("aktenEditIndex");
+    const titleEl = document.getElementById("aktenTitel");
+    const dateEl = document.getElementById("aktenDatum");
+    const textEl = document.getElementById("aktenText");
+    const authorEl = document.getElementById("aktenAutor");
+    const typeEl = document.getElementById("aktenTyp");
 
-      const form = document.getElementById("aktennotizForm");
-      const editIndexEl = document.getElementById("aktenEditIndex");
-      const titleEl = document.getElementById("aktenTitel");
-      const dateEl = document.getElementById("aktenDatum");
-      const textEl = document.getElementById("aktenText");
-      const authorEl = document.getElementById("aktenAutor");
-      const typeEl = document.getElementById("aktenTyp");
+    // Custom type
+    const typeCustomWrap = document.getElementById("aktenTypCustomWrap");
+    const typeCustomEl = document.getElementById("aktenTypCustom");
 
-      const modalTitleEl = document.getElementById("aktenModalTitle");
-      const btnDelete = document.getElementById("btnAktenDelete");
-      const btnExport = document.getElementById("btnAktenExport");
+    // Filter
+    const filterVonEl = document.getElementById("aktenFilterVon");
+    const filterBisEl = document.getElementById("aktenFilterBis");
+    const filterTypEl = document.getElementById("aktenFilterTyp");
+    const filterTypTextEl = document.getElementById("aktenFilterTypText");
+    const btnFilterReset = document.getElementById("btnAktenFilterReset");
 
-      function esc(s) {
-        return String(s ?? "")
-          .replaceAll("&", "&amp;")
-          .replaceAll("<", "&lt;")
-          .replaceAll(">", "&gt;")
-          .replaceAll('"', "&quot;")
-          .replaceAll("'", "&#039;");
+    const modalTitleEl = document.getElementById("aktenModalTitle");
+    const btnDelete = document.getElementById("btnAktenDelete");
+    const btnExport = document.getElementById("btnAktenExport");
+
+    function esc(s) {
+      return String(s ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function load() {
+      try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"); }
+      catch { return []; }
+    }
+    function save(arr) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
+    }
+
+    function formatDateDE(iso) {
+      if (!iso) return "";
+      const [y,m,d] = iso.split("-");
+      if (!y || !m || !d) return iso;
+      return `${d}.${m}.${y}`;
+    }
+
+    function isoInRange(iso, von, bis) {
+      // iso, von, bis are YYYY-MM-DD (lexicographically comparable)
+      if (!iso) return false;
+      if (von && iso < von) return false;
+      if (bis && iso > bis) return false;
+      return true;
+    }
+
+    function getEffectiveTypeFromForm() {
+      const sel = typeEl.value;
+      if (sel === "__custom__") {
+        return (typeCustomEl.value || "").trim();
       }
+      return (sel || "").trim();
+    }
 
-      function load() {
-        try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"); }
-        catch { return []; }
+    function syncCustomTypeUI() {
+      const isCustom = (typeEl.value === "__custom__");
+      if (typeCustomWrap) typeCustomWrap.classList.toggle("d-none", !isCustom);
+      if (isCustom) {
+        setTimeout(() => typeCustomEl?.focus(), 50);
+      } else {
+        if (typeCustomEl) typeCustomEl.value = "";
       }
-      function save(arr) {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
-      }
+    }
 
-      function formatDateDE(iso) {
-        if (!iso) return "";
-        const [y,m,d] = iso.split("-");
-        if (!y || !m || !d) return iso;
-        return `${d}.${m}.${y}`;
-      }
+    function collectAllTypes(data) {
+      const set = new Set();
+      data.forEach(x => {
+        const t = (x.typ || "").trim();
+        if (t) set.add(t);
+      });
+      return Array.from(set).sort((a,b) => a.localeCompare(b, "de"));
+    }
 
-      function render() {
-        const data = load();
-        if (!listEl) return;
+    function renderFilterTypeOptions(data) {
+      if (!filterTypEl) return;
+      const current = filterTypEl.value || "";
+      const types = collectAllTypes(data);
 
-        if (data.length === 0) {
-          listEl.innerHTML = `
-            <div class="border rounded bg-white p-3 text-muted small">
-              Noch keine Aktennotizen vorhanden.
-            </div>`;
-          return;
+      const opts = [
+        `<option value="">Alle Typen</option>`,
+        ...types.map(t => `<option value="${esc(t)}">${esc(t)}</option>`)
+      ].join("");
+
+      filterTypEl.innerHTML = opts;
+
+      // restore selection if still exists
+      const exists = types.includes(current);
+      filterTypEl.value = exists ? current : "";
+    }
+
+    function applyFilters(data) {
+      const von = filterVonEl?.value || "";
+      const bis = filterBisEl?.value || "";
+      const typ = (filterTypEl?.value || "").trim();
+      const typText = (filterTypTextEl?.value || "").trim().toLowerCase();
+
+      return data.filter(x => {
+        // Date range
+        if (von || bis) {
+          if (!isoInRange(x.datum, von, bis)) return false;
         }
 
-        const sorted = data
-          .map((x, i) => ({...x, _i: i}))
-          .sort((a,b) => (b.datum || "").localeCompare(a.datum || ""));
+        // Exact type dropdown
+        if (typ && (String(x.typ || "").trim() !== typ)) return false;
 
-        listEl.innerHTML = sorted.map(item => `
-          <a href="#" class="list-group-item list-group-item-action" data-edit="${item._i}">
-            <div class="d-flex w-100 justify-content-between align-items-start gap-3">
-              <div class="flex-grow-1">
-                <div class="d-flex align-items-center gap-2">
-                  <h6 class="mb-1">${esc(item.titel)}</h6>
-                  <span class="badge text-bg-light border">${esc(item.typ || "Aktennotiz")}</span>
-                </div>
-                <p class="mb-1">${esc(item.text)}</p>
-                <small class="text-muted">angelegt von: ${esc(item.autor || "-")}</small>
+        // Free text type contains
+        if (typText) {
+          const t = String(x.typ || "").toLowerCase();
+          if (!t.includes(typText)) return false;
+        }
+
+        return true;
+      });
+    }
+
+    function render() {
+      const data = load();
+      if (!listEl) return;
+
+      renderFilterTypeOptions(data);
+
+      const filtered = applyFilters(data);
+
+      if (filtered.length === 0) {
+        listEl.innerHTML = `
+          <div class="border rounded bg-white p-3 text-muted small">
+            Keine Aktennotizen für die aktuellen Filter.
+          </div>`;
+        return;
+      }
+
+      const sorted = filtered
+        .map((x, i) => ({...x, _i: i}))
+        .sort((a,b) => (b.datum || "").localeCompare(a.datum || ""));
+
+      listEl.innerHTML = sorted.map(item => `
+        <a href="#" class="list-group-item list-group-item-action" data-edit="${item._i}">
+          <div class="d-flex w-100 justify-content-between align-items-start gap-3">
+            <div class="flex-grow-1">
+              <div class="d-flex align-items-center gap-2">
+                <h6 class="mb-1">${esc(item.titel)}</h6>
+                <span class="badge text-bg-light border">${esc(item.typ || "Aktennotiz")}</span>
               </div>
-              <small class="text-muted flex-shrink-0">${esc(formatDateDE(item.datum))}</small>
+              <p class="mb-1">${esc(item.text)}</p>
+              <small class="text-muted">angelegt von: ${esc(item.autor || "-")}</small>
             </div>
-          </a>
-        `).join("");
+            <small class="text-muted flex-shrink-0">${esc(formatDateDE(item.datum))}</small>
+          </div>
+        </a>
+      `).join("");
 
-        listEl.querySelectorAll("[data-edit]").forEach(a => {
-          a.addEventListener("click", (e) => {
-            e.preventDefault();
-            const idx = Number(a.getAttribute("data-edit"));
-            openEdit(idx);
-          });
-        });
-      }
-
-      function resetModalForNew() {
-        if (!modalTitleEl) return;
-        modalTitleEl.innerHTML = `<i class="bi bi-journal-plus me-2"></i> Neue Aktennotiz`;
-        editIndexEl.value = "";
-        btnDelete.classList.add("d-none");
-
-        form.reset();
-
-        const today = new Date();
-        const yyyy = String(today.getFullYear());
-        const mm = String(today.getMonth() + 1).padStart(2, "0");
-        const dd = String(today.getDate()).padStart(2, "0");
-        dateEl.value = `${yyyy}-${mm}-${dd}`;
-
-        if (!authorEl.value) authorEl.value = "D. Chu";
-        typeEl.value = "Aktennotiz";
-      }
-
-      function openEdit(idx) {
-        const data = load();
-        const item = data[idx];
-        if (!item) return;
-
-        modalTitleEl.innerHTML = `<i class="bi bi-pencil-square me-2"></i> Aktennotiz bearbeiten`;
-        editIndexEl.value = String(idx);
-        btnDelete.classList.remove("d-none");
-
-        titleEl.value = item.titel || "";
-        dateEl.value = item.datum || "";
-        textEl.value = item.text || "";
-        authorEl.value = item.autor || "";
-        typeEl.value = item.typ || "Aktennotiz";
-
-        bootstrap.Modal.getOrCreateInstance(modalEl).show();
-      }
-
-      if (modalEl) {
-        modalEl.addEventListener("show.bs.modal", () => {
-          if (!editIndexEl.value) resetModalForNew();
-        });
-
-        modalEl.addEventListener("hidden.bs.modal", () => {
-          editIndexEl.value = "";
-          btnDelete.classList.add("d-none");
-        });
-      }
-
-      if (form) {
-        form.addEventListener("submit", (e) => {
+      listEl.querySelectorAll("[data-edit]").forEach(a => {
+        a.addEventListener("click", (e) => {
           e.preventDefault();
-
-          const obj = {
-            titel: titleEl.value.trim(),
-            datum: dateEl.value,
-            text: textEl.value.trim(),
-            autor: authorEl.value.trim(),
-            typ: typeEl.value
-          };
-
-          if (!obj.titel || !obj.datum || !obj.text) return;
-
-          const data = load();
-          const idx = editIndexEl.value === "" ? -1 : Number(editIndexEl.value);
-
-          if (idx >= 0 && data[idx]) data[idx] = obj;
-          else data.push(obj);
-
-          save(data);
-          render();
-          bootstrap.Modal.getOrCreateInstance(modalEl).hide();
+          const idx = Number(a.getAttribute("data-edit"));
+          openEdit(idx);
         });
+      });
+    }
+
+    function resetModalForNew() {
+      if (modalTitleEl) {
+        modalTitleEl.innerHTML = `<i class="bi bi-journal-plus me-2"></i> Neue Aktennotiz`;
       }
+      editIndexEl.value = "";
+      btnDelete?.classList.add("d-none");
 
-      if (btnDelete) {
-        btnDelete.addEventListener("click", () => {
-          const idx = editIndexEl.value === "" ? -1 : Number(editIndexEl.value);
-          if (idx < 0) return;
+      form.reset();
 
-          const data = load();
-          data.splice(idx, 1);
-          save(data);
-          render();
-          bootstrap.Modal.getOrCreateInstance(modalEl).hide();
-        });
+      const today = new Date();
+      const yyyy = String(today.getFullYear());
+      const mm = String(today.getMonth() + 1).padStart(2, "0");
+      const dd = String(today.getDate()).padStart(2, "0");
+      dateEl.value = `${yyyy}-${mm}-${dd}`;
+
+      if (!authorEl.value) authorEl.value = "D. Chu";
+      typeEl.value = "Aktennotiz";
+      if (typeCustomEl) typeCustomEl.value = "";
+      syncCustomTypeUI();
+    }
+
+    function openEdit(idx) {
+      const data = load();
+      const item = data[idx];
+      if (!item) return;
+
+      if (modalTitleEl) {
+        modalTitleEl.innerHTML = `<i class="bi bi-pencil-square me-2"></i> Aktennotiz bearbeiten`;
       }
+      editIndexEl.value = String(idx);
+      btnDelete?.classList.remove("d-none");
 
-      if (btnExport) {
-        btnExport.addEventListener("click", () => {
-          const data = load();
-          const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
-          const url = URL.createObjectURL(blob);
-          const a = document.createElement("a");
-          a.href = url;
-          a.download = "aktennotizen.json";
-          document.body.appendChild(a);
-          a.click();
-          a.remove();
-          URL.revokeObjectURL(url);
-        });
+      titleEl.value = item.titel || "";
+      dateEl.value = item.datum || "";
+      textEl.value = item.text || "";
+      authorEl.value = item.autor || "";
+
+      // Typ: wenn nicht in Dropdown (Standard), schalte auf custom
+      const knownValues = Array.from(typeEl.options).map(o => o.value);
+      const t = (item.typ || "").trim();
+
+      if (t && knownValues.includes(t)) {
+        typeEl.value = t;
+        if (typeCustomEl) typeCustomEl.value = "";
+      } else {
+        typeEl.value = "__custom__";
+        if (typeCustomEl) typeCustomEl.value = t;
       }
+      syncCustomTypeUI();
 
-      // Demo seed
-      const existing = load();
-      if (existing.length === 0) {
-        save([
-          { titel: "Telefonat mit JC", datum: "2025-11-10", text: "Rückmeldung zur Anwesenheit und Leistungsstand besprochen.", autor: "D. Chu", typ: "Telefonat" },
-          { titel: "Gespräch mit Teilnehmer", datum: "2025-11-03", text: "Motivation und Ziele im weiteren Verlauf dokumentiert.", autor: "D. Chu", typ: "Gespräch" }
-        ]);
-      }
+      bootstrap.Modal.getOrCreateInstance(modalEl).show();
+    }
 
+    // Modal lifecycle
+    if (modalEl) {
+      modalEl.addEventListener("show.bs.modal", () => {
+        if (!editIndexEl.value) resetModalForNew();
+      });
+
+      modalEl.addEventListener("hidden.bs.modal", () => {
+        editIndexEl.value = "";
+        btnDelete?.classList.add("d-none");
+      });
+    }
+
+    // Typ UI
+    typeEl?.addEventListener("change", syncCustomTypeUI);
+
+    // Filter events
+    function bindFilter() {
+      [filterVonEl, filterBisEl, filterTypEl].forEach(x => x?.addEventListener("change", render));
+      filterTypTextEl?.addEventListener("input", render);
+
+      btnFilterReset?.addEventListener("click", () => {
+        if (filterVonEl) filterVonEl.value = "";
+        if (filterBisEl) filterBisEl.value = "";
+        if (filterTypEl) filterTypEl.value = "";
+        if (filterTypTextEl) filterTypTextEl.value = "";
+        render();
+      });
+    }
+
+    // Save
+    if (form) {
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const effectiveType = getEffectiveTypeFromForm();
+        const obj = {
+          titel: titleEl.value.trim(),
+          datum: dateEl.value,
+          text: textEl.value.trim(),
+          autor: authorEl.value.trim(),
+          typ: effectiveType || "Aktennotiz"
+        };
+
+        if (!obj.titel || !obj.datum || !obj.text) return;
+
+        const data = load();
+        const idx = editIndexEl.value === "" ? -1 : Number(editIndexEl.value);
+
+        if (idx >= 0 && data[idx]) data[idx] = obj;
+        else data.push(obj);
+
+        save(data);
+        render();
+        bootstrap.Modal.getOrCreateInstance(modalEl).hide();
+      });
+    }
+
+    // Delete
+    btnDelete?.addEventListener("click", () => {
+      const idx = editIndexEl.value === "" ? -1 : Number(editIndexEl.value);
+      if (idx < 0) return;
+
+      const ok = confirm("Aktennotiz wirklich löschen?");
+      if (!ok) return;
+
+      const data = load();
+      data.splice(idx, 1);
+      save(data);
       render();
-    })();
-  </script>
+      bootstrap.Modal.getOrCreateInstance(modalEl).hide();
+    });
+
+    // Export JSON
+    btnExport?.addEventListener("click", () => {
+      const data = load();
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "aktennotizen.json";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    });
+
+    // Demo seed
+    const existing = load();
+    if (existing.length === 0) {
+      save([
+        { titel: "Telefonat mit JC", datum: "2025-11-10", text: "Rückmeldung zur Anwesenheit und Leistungsstand besprochen.", autor: "D. Chu", typ: "Telefonat" },
+        { titel: "Gespräch mit Teilnehmer", datum: "2025-11-03", text: "Motivation und Ziele im weiteren Verlauf dokumentiert.", autor: "D. Chu", typ: "Gespräch" },
+        { titel: "Rücksprache Hausordnung", datum: "2025-11-06", text: "Hinweis auf Regeln wiederholt, TN einverstanden.", autor: "D. Chu", typ: "Hausordnung" } // Beispiel: Custom-Typ
+      ]);
+    }
+
+    bindFilter();
+    render();
+    syncCustomTypeUI();
+  })();
+</script>
+
 
 <script>
   // ===============================
