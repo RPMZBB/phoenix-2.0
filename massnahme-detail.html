@@ -112,11 +112,10 @@
                 aria-controls="massnahmeDetailsCollapse">
           <i class="bi bi-chevron-down me-1"></i> Zeige alle Maßnahmendetails
         </button>
-     </div>
+      </div>
 
       <div class="collapse" id="massnahmeDetailsCollapse">
         <div class="border rounded-3 p-3 bg-white">
-
           <div class="row g-3">
 
             <!-- BLOCK: Grunddaten -->
@@ -273,7 +272,7 @@
               </div>
             </div>
 
-            <!-- BLOCK: Ansprechpartner (als 4. Block nebeneinander) -->
+            <!-- BLOCK: Ansprechpartner -->
             <div class="col-12 col-lg-3">
               <div class="border rounded-3 p-3 h-100" data-edit-block="ansprechpartner">
                 <div class="d-flex justify-content-between align-items-start mb-2">
@@ -356,7 +355,7 @@
 
         <!-- TAB: TEILNEHMER -->
         <div class="tab-pane fade show active" id="tab-teilnehmer">
-
+          <!-- ... unverändert ... -->
           <div class="text-secondary mb-3" style="font-size: 0.95rem;">
             Hier sehen Sie alle aktuell dieser Maßnahme zugewiesenen Teilnehmer.
             Bereits aus dieser Maßnahme ausgeschiedene Teilnehmer müssen über den Bereich
@@ -366,22 +365,14 @@
 
           <div class="card border-0 bg-body-tertiary mb-3">
             <div class="card-body p-3">
-
               <div class="text-secondary small mb-2">Filtern / Suchen</div>
-
               <div class="row g-2 align-items-center">
-
-                <!-- Suche -->
                 <div class="col-lg-3">
                   <div class="input-group">
-                    <span class="input-group-text bg-white">
-                      <i class="bi bi-search"></i>
-                    </span>
+                    <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
                     <input type="text" class="form-control" placeholder="Name, Kennung, …">
                   </div>
                 </div>
-
-                <!-- Betreuer -->
                 <div class="col-lg-2">
                   <select class="form-select">
                     <option selected>Betreuer</option>
@@ -389,8 +380,6 @@
                     <option>Holger Irmak</option>
                   </select>
                 </div>
-
-                <!-- Arbeitsbereich -->
                 <div class="col-lg-2">
                   <select class="form-select">
                     <option selected>Arbeitsbereich</option>
@@ -399,128 +388,76 @@
                   </select>
                 </div>
 
-                <!-- Teilnehmerliste (PDF/Word) -->
                 <div class="col-lg-2 d-flex">
                   <div class="dropdown w-100">
-                    <button
-                      class="btn btn-outline-secondary w-100 text-nowrap dropdown-toggle"
-                      type="button"
-                      data-bs-toggle="dropdown"
-                      aria-expanded="false"
-                    >
+                    <button class="btn btn-outline-secondary w-100 text-nowrap dropdown-toggle"
+                      type="button" data-bs-toggle="dropdown" aria-expanded="false">
                       <i class="bi bi-list-ul me-2"></i> Teilnehmerliste
                     </button>
                     <ul class="dropdown-menu w-100">
-                      <li>
-                        <button class="dropdown-item" type="button">
-                          <i class="bi bi-filetype-pdf me-2"></i> PDF
-                        </button>
-                      </li>
-                      <li>
-                        <button class="dropdown-item" type="button">
-                          <i class="bi bi-filetype-docx me-2"></i> Word
-                        </button>
-                      </li>
+                      <li><button class="dropdown-item" type="button"><i class="bi bi-filetype-pdf me-2"></i> PDF</button></li>
+                      <li><button class="dropdown-item" type="button"><i class="bi bi-filetype-docx me-2"></i> Word</button></li>
                     </ul>
                   </div>
                 </div>
 
-                <!-- Unterschriftenliste (PDF/Word) -->
                 <div class="col-lg-3 d-flex">
                   <div class="dropdown w-100">
-                    <button
-                      class="btn btn-outline-secondary w-100 text-nowrap dropdown-toggle"
-                      type="button"
-                      data-bs-toggle="dropdown"
-                      aria-expanded="false"
-                    >
+                    <button class="btn btn-outline-secondary w-100 text-nowrap dropdown-toggle"
+                      type="button" data-bs-toggle="dropdown" aria-expanded="false">
                       <i class="bi bi-pen me-2"></i> Unterschriftenliste
                     </button>
                     <ul class="dropdown-menu w-100">
-                      <li>
-                        <button class="dropdown-item" type="button">
-                          <i class="bi bi-filetype-pdf me-2"></i> PDF
-                        </button>
-                      </li>
-                      <li>
-                        <button class="dropdown-item" type="button">
-                          <i class="bi bi-filetype-docx me-2"></i> Word
-                        </button>
-                      </li>
+                      <li><button class="dropdown-item" type="button"><i class="bi bi-filetype-pdf me-2"></i> PDF</button></li>
+                      <li><button class="dropdown-item" type="button"><i class="bi bi-filetype-docx me-2"></i> Word</button></li>
                     </ul>
                   </div>
                 </div>
 
               </div>
-
             </div>
           </div>
 
           <div class="table-responsive">
             <table class="table table-hover align-middle mb-0">
               <thead class="table-light">
-                <tr>
-                  <th>Teilnehmer</th>
-                  <th>Betreuer</th>
-                  <th>Arbeitsbereich</th>
-                  <th>Zuweisung</th>
-                  <th>Maßnahme</th>
-                  <th>JC-Betreuer</th>
-                  <th class="text-end">Aktionen</th>
-                </tr>
+              <tr>
+                <th>Teilnehmer</th><th>Betreuer</th><th>Arbeitsbereich</th><th>Zuweisung</th><th>Maßnahme</th><th>JC-Betreuer</th><th class="text-end">Aktionen</th>
+              </tr>
               </thead>
               <tbody>
-                <tr class="massnahme-tn-row" data-page="TN-Profil_massnahme.html" style="cursor:pointer;">
-                  <td class="fw-semibold"><span class="badge text-bg-secondary me-2">MM</span> Max Mustermann</td>
-                  <td>Daniel Chu</td>
-                  <td>Maler</td>
-                  <td>01.01.20 - 01.01.24</td>
-                  <td>Integra 2025</td>
-                  <td>Daniel Chu</td>
-                  <td class="text-end">
-                    <button class="btn btn-sm btn-outline-secondary" onclick="event.stopPropagation();">
-                      <i class="bi bi-pencil me-1"></i> Bearbeiten
-                    </button>
-                  </td>
-                </tr>
-
-                <tr class="massnahme-tn-row" data-page="TN-Profil_massnahme.html" style="cursor:pointer;">
-                  <td class="fw-semibold"><span class="badge text-bg-secondary me-2">CP</span> Claudia Peters</td>
-                  <td>Daniel Chu</td>
-                  <td>Maler</td>
-                  <td>01.01.20 - 01.01.24</td>
-                  <td>Integra 2025</td>
-                  <td>Holger Irmak</td>
-                  <td class="text-end">
-                    <button class="btn btn-sm btn-outline-secondary" onclick="event.stopPropagation();">
-                      <i class="bi bi-pencil me-1"></i> Bearbeiten
-                    </button>
-                  </td>
-                </tr>
+              <tr class="massnahme-tn-row" data-page="TN-Profil_massnahme.html" style="cursor:pointer;">
+                <td class="fw-semibold"><span class="badge text-bg-secondary me-2">MM</span> Max Mustermann</td>
+                <td>Daniel Chu</td><td>Maler</td><td>01.01.20 - 01.01.24</td><td>Integra 2025</td><td>Daniel Chu</td>
+                <td class="text-end">
+                  <button class="btn btn-sm btn-outline-secondary" onclick="event.stopPropagation();">
+                    <i class="bi bi-pencil me-1"></i> Bearbeiten
+                  </button>
+                </td>
+              </tr>
+              <tr class="massnahme-tn-row" data-page="TN-Profil_massnahme.html" style="cursor:pointer;">
+                <td class="fw-semibold"><span class="badge text-bg-secondary me-2">CP</span> Claudia Peters</td>
+                <td>Daniel Chu</td><td>Maler</td><td>01.01.20 - 01.01.24</td><td>Integra 2025</td><td>Holger Irmak</td>
+                <td class="text-end">
+                  <button class="btn btn-sm btn-outline-secondary" onclick="event.stopPropagation();">
+                    <i class="bi bi-pencil me-1"></i> Bearbeiten
+                  </button>
+                </td>
+              </tr>
               </tbody>
             </table>
           </div>
-
         </div>
 
         <!-- TAB: ANWESENHEIT -->
         <div class="tab-pane fade" id="tab-anwesenheit">
-
+          <!-- ... unverändert ... -->
           <div class="card border-0 bg-body-tertiary mb-3">
             <div class="card-body p-3">
               <div class="row g-2">
-                <div class="col-md-6">
-                  <select class="form-select">
-                    <option selected>Betreuer</option>
-                  </select>
-                </div>
-                <div class="col-md-6">
-                  <select class="form-select">
-                    <option selected>Arbeitsbereich</option>
-                  </select>
-                </div>
+                <div class="col-md-6"><select class="form-select"><option selected>Betreuer</option></select></div>
+                <div class="col-md-6"><select class="form-select"><option selected>Arbeitsbereich</option></select></div>
               </div>
-
               <div class="d-flex flex-wrap align-items-center gap-2 mt-3">
                 <button class="btn btn-outline-secondary"><i class="bi bi-chevron-left"></i></button>
                 <input type="date" class="form-control w-auto" value="2025-05-21">
@@ -533,85 +470,79 @@
           <div class="table-responsive">
             <table class="table table-hover align-middle">
               <thead class="table-light">
-                <tr>
-                  <th>Teilnehmer</th>
-                  <th>Anwesenheit</th>
-                  <th class="text-end">Aktion</th>
-                </tr>
+              <tr><th>Teilnehmer</th><th>Anwesenheit</th><th class="text-end">Aktion</th></tr>
               </thead>
               <tbody>
-                <tr>
-                  <td><span class="badge text-bg-secondary me-2">MM</span> Max Mustermann</td>
-                  <td>
-                    <div class="d-flex flex-wrap gap-1">
-                      <button class="btn btn-outline-secondary btn-sm" onclick="setAnwesend(this)">Anwesend</button>
-                      <button class="btn btn-outline-secondary btn-sm" onclick="setSpecial(this, 'krank')">Krank</button>
-                      <button class="btn btn-outline-secondary btn-sm" onclick="setSpecial(this, 'entschuldigt')">Entschuldigt</button>
-                      <button class="btn btn-outline-secondary btn-sm" onclick="setSpecial(this, 'unentschuldigt')">Unentschuldigt</button>
-                      <button class="btn btn-outline-secondary btn-sm" onclick="setSpecial(this, 'urlaub')">Urlaub</button>
+              <tr>
+                <td><span class="badge text-bg-secondary me-2">MM</span> Max Mustermann</td>
+                <td>
+                  <div class="d-flex flex-wrap gap-1">
+                    <button class="btn btn-outline-secondary btn-sm" onclick="setAnwesend(this)">Anwesend</button>
+                    <button class="btn btn-outline-secondary btn-sm" onclick="setSpecial(this, 'krank')">Krank</button>
+                    <button class="btn btn-outline-secondary btn-sm" onclick="setSpecial(this, 'entschuldigt')">Entschuldigt</button>
+                    <button class="btn btn-outline-secondary btn-sm" onclick="setSpecial(this, 'unentschuldigt')">Unentschuldigt</button>
+                    <button class="btn btn-outline-secondary btn-sm" onclick="setSpecial(this, 'urlaub')">Urlaub</button>
+                  </div>
+                </td>
+                <td class="text-end">
+                  <button class="btn btn-outline-dark btn-sm" onclick="toggleDetails(this)">Detail</button>
+                </td>
+              </tr>
+
+              <tr class="d-none detail-row">
+                <td colspan="3" class="bg-light">
+                  <div id="anwesenheit-zeiten" class="mb-3 d-none">
+                    <div class="mb-2">
+                      <strong>Praxis</strong>
+                      <input type="time" class="form-control d-inline-block w-auto ms-2 me-2" value="08:00">
+                      <input type="time" class="form-control d-inline-block w-auto me-2" value="16:00">
+                      <input type="text" class="form-control d-inline-block w-auto" value="8 Stunden" readonly>
                     </div>
-                  </td>
-                  <td class="text-end">
-                    <button class="btn btn-outline-dark btn-sm" onclick="toggleDetails(this)">Detail</button>
-                  </td>
-                </tr>
-
-                <tr class="d-none detail-row">
-                  <td colspan="3" class="bg-light">
-
-                    <div id="anwesenheit-zeiten" class="mb-3 d-none">
-                      <div class="mb-2">
-                        <strong>Praxis</strong>
-                        <input type="time" class="form-control d-inline-block w-auto ms-2 me-2" value="08:00">
-                        <input type="time" class="form-control d-inline-block w-auto me-2" value="16:00">
-                        <input type="text" class="form-control d-inline-block w-auto" value="8 Stunden" readonly>
-                      </div>
-                      <div class="mb-2">
-                        <strong>Theorie</strong>
-                        <input type="time" class="form-control d-inline-block w-auto ms-2 me-2" value="08:00">
-                        <input type="time" class="form-control d-inline-block w-auto me-2" value="16:00">
-                        <input type="text" class="form-control d-inline-block w-auto" value="8 Stunden" readonly>
-                      </div>
+                    <div class="mb-2">
+                      <strong>Theorie</strong>
+                      <input type="time" class="form-control d-inline-block w-auto ms-2 me-2" value="08:00">
+                      <input type="time" class="form-control d-inline-block w-auto me-2" value="16:00">
+                      <input type="text" class="form-control d-inline-block w-auto" value="8 Stunden" readonly>
                     </div>
+                  </div>
 
-                    <div id="sonderoptionen" class="mt-3 d-none">
-                      <div class="mb-2 d-flex flex-wrap align-items-center gap-2">
-                        <label class="form-label mb-0">von:</label>
-                        <input type="date" class="form-control w-auto">
-                        <label class="form-label mb-0">bis:</label>
-                        <input type="date" class="form-control w-auto">
+                  <div id="sonderoptionen" class="mt-3 d-none">
+                    <div class="mb-2 d-flex flex-wrap align-items-center gap-2">
+                      <label class="form-label mb-0">von:</label>
+                      <input type="date" class="form-control w-auto">
+                      <label class="form-label mb-0">bis:</label>
+                      <input type="date" class="form-control w-auto">
 
-                        <button class="btn btn-outline-primary btn-sm" id="auBtn" style="display:none;">
-                          <i class="bi bi-upload me-1"></i> AU hochladen
-                        </button>
+                      <button class="btn btn-outline-primary btn-sm" id="auBtn" style="display:none;">
+                        <i class="bi bi-upload me-1"></i> AU hochladen
+                      </button>
 
-                        <input type="text" class="form-control w-auto" id="urlaubFeld" placeholder="Urlaubsanspruch" style="display:none;">
-                      </div>
-
-                      <div class="mb-2" id="grundFeld" style="display:none;">
-                        <label for="grundInput" class="form-label">Grund</label>
-                        <input type="text" class="form-control" id="grundInput" placeholder="z. B. Arzttermin">
-                      </div>
+                      <input type="text" class="form-control w-auto" id="urlaubFeld" placeholder="Urlaubsanspruch" style="display:none;">
                     </div>
 
-                    <button class="btn btn-outline-primary btn-sm mt-2">
-                      <i class="bi bi-pen me-1"></i> persönliche Arbeitszeit bearbeiten
-                    </button>
-                  </td>
-                </tr>
+                    <div class="mb-2" id="grundFeld" style="display:none;">
+                      <label for="grundInput" class="form-label">Grund</label>
+                      <input type="text" class="form-control" id="grundInput" placeholder="z. B. Arzttermin">
+                    </div>
+                  </div>
+
+                  <button class="btn btn-outline-primary btn-sm mt-2">
+                    <i class="bi bi-pen me-1"></i> persönliche Arbeitszeit bearbeiten
+                  </button>
+                </td>
+              </tr>
 
               </tbody>
             </table>
           </div>
-
         </div>
 
-        <!-- TAB: FAHRKOSTEN (Platzhalter) -->
+        <!-- TAB: FAHRKOSTEN -->
         <div class="tab-pane fade" id="tab-fahrkosten">
           <div class="text-secondary">Fahrkosten für die gesamte Maßhname nach Monaten</div>
         </div>
 
-        <!-- TAB: ARBEITSBEREICHE (Platzhalter) -->
+        <!-- TAB: ARBEITSBEREICHE -->
         <div class="tab-pane fade" id="tab-arbeitsbereiche">
           <div class="text-secondary">Platzhalter: Arbeitsbereiche-Inhalte folgen.</div>
         </div>
@@ -619,130 +550,346 @@
         <!-- TAB: BERICHTE & AUSWERTUNGEN -->
         <div class="tab-pane fade" id="tab-berichte">
 
-          <div class="card border-0 bg-body">
-            <div class="card-body p-4">
+          <!-- === SCREEN A: Start (Accordion) === -->
+          <div id="reportsHome">
+            <div class="card border-0 bg-body">
+              <div class="card-body p-4">
 
-              <!-- Kopf -->
-              <div class="d-flex flex-wrap justify-content-between align-items-start gap-2 mb-3">
-                <div>
-                  <div class="text-secondary small">Erzeugen / Export</div>
-                  <h5 class="mb-0">Berichte & Abrechnungen</h5>
-                  <div class="text-secondary mt-2" style="font-size:.95rem;">
-                    Wählen Sie eine Kategorie und erzeugen Sie die gewünschte Auswertung (PDF / Excel).
+                <div class="d-flex flex-wrap justify-content-between align-items-start gap-2 mb-3">
+                  <div>
+                    <div class="text-secondary small">Erzeugen / Export</div>
+                    <h5 class="mb-0">Berichte & Abrechnungen</h5>
+                    <div class="text-secondary mt-2" style="font-size:.95rem;">
+                      Wählen Sie eine Kategorie und erzeugen Sie die gewünschte Auswertung (PDF / Excel).
+                    </div>
+                  </div>
+                  <div class="d-flex gap-2">
+                    <button class="btn btn-outline-secondary btn-sm">
+                      <i class="bi bi-funnel me-1"></i> Filter
+                    </button>
+                    <button class="btn btn-outline-secondary btn-sm">
+                      <i class="bi bi-download me-1"></i> Export-Center
+                    </button>
                   </div>
                 </div>
-                <div class="d-flex gap-2">
-                  <button class="btn btn-outline-secondary btn-sm">
-                    <i class="bi bi-funnel me-1"></i> Filter
-                  </button>
-                  <button class="btn btn-outline-secondary btn-sm">
-                    <i class="bi bi-download me-1"></i> Export-Center
-                  </button>
-                </div>
+
+                <hr class="my-3">
+
+                <div class="accordion accordion-flush" id="reportsAccordion">
+
+                  <div class="accordion-item border-0">
+                    <h2 class="accordion-header">
+                      <button class="accordion-button collapsed bg-body text-dark fw-semibold shadow-none"
+                        type="button" data-bs-toggle="collapse" data-bs-target="#cFahrt">
+                        <i class="bi bi-car-front me-2"></i> Fahrtkosten
+                      </button>
+                    </h2>
+                    <div id="cFahrt" class="accordion-collapse collapse">
+                      <div class="accordion-body bg-body text-dark pt-2">
+                        <div class="d-grid gap-2">
+                          <button class="btn btn-outline-secondary text-start">
+                            <i class="bi bi-receipt me-2"></i> Fahrtkostenabrechnung
+                          </button>
+                          <button class="btn btn-outline-secondary text-start">
+                            <i class="bi bi-calculator me-2"></i> Fahrtkostenkalkulation
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="accordion-item border-0">
+                    <h2 class="accordion-header">
+                      <button class="accordion-button collapsed bg-body text-dark fw-semibold shadow-none"
+                        type="button" data-bs-toggle="collapse" data-bs-target="#cEsf">
+                        <i class="bi bi-file-earmark-check me-2"></i> ESF / Abrechnung
+                      </button>
+                    </h2>
+                    <div id="cEsf" class="accordion-collapse collapse">
+                      <div class="accordion-body bg-body text-dark pt-2">
+                        <div class="d-grid gap-2">
+                          <!-- HIER: Button bekommt ID -->
+                          <button class="btn btn-outline-secondary text-start" id="btnEsfMitAbrechnung">
+                            <i class="bi bi-people me-2"></i> Teilnehmer mit ESF Abrechnung
+                          </button>
+                          <button class="btn btn-outline-secondary text-start">
+                            <i class="bi bi-people me-2"></i> Teilnehmer ohne ESF Abrechnung
+                          </button>
+                          <button class="btn btn-outline-secondary text-start">
+                            <i class="bi bi-folder2-open me-2"></i> ESF-Stammblätter erzeugen
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="accordion-item border-0">
+                    <h2 class="accordion-header">
+                      <button class="accordion-button collapsed bg-body text-dark fw-semibold shadow-none"
+                        type="button" data-bs-toggle="collapse" data-bs-target="#cListen">
+                        <i class="bi bi-card-list me-2"></i> Listen & Unterlagen
+                      </button>
+                    </h2>
+                    <div id="cListen" class="accordion-collapse collapse">
+                      <div class="accordion-body bg-body text-dark pt-2">
+                        <div class="d-grid gap-2">
+                          <button class="btn btn-outline-secondary text-start">
+                            <i class="bi bi-bar-chart me-2"></i> Belegungszahlen
+                          </button>
+                          <button class="btn btn-outline-secondary text-start">
+                            <i class="bi bi-building me-2"></i> Liste Jobcenter – Anlage 2
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div><!-- /accordion -->
               </div>
-
-              <hr class="my-3">
-
-              <!-- Accordion -->
-              <div class="accordion accordion-flush" id="reportsAccordion">
-
-                <!-- Fahrtkosten -->
-                <div class="accordion-item border-0">
-                  <h2 class="accordion-header">
-                    <button
-                      class="accordion-button collapsed bg-body text-dark fw-semibold shadow-none"
-                      type="button"
-                      data-bs-toggle="collapse"
-                      data-bs-target="#cFahrt"
-                      style="background-color: var(--bs-body-bg);"
-                    >
-                      <i class="bi bi-car-front me-2"></i> Fahrtkosten
-                    </button>
-                  </h2>
-                  <div id="cFahrt" class="accordion-collapse collapse">
-                    <div class="accordion-body bg-body text-dark pt-2">
-                      <div class="d-grid gap-2">
-                        <button class="btn btn-outline-secondary text-start">
-                          <i class="bi bi-receipt me-2"></i> Fahrtkostenabrechnung
-                        </button>
-                        <button class="btn btn-outline-secondary text-start">
-                          <i class="bi bi-calculator me-2"></i> Fahrtkostenkalkulation
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- ESF / Abrechnung -->
-                <div class="accordion-item border-0">
-                  <h2 class="accordion-header">
-                    <button
-                      class="accordion-button collapsed bg-body text-dark fw-semibold shadow-none"
-                      type="button"
-                      data-bs-toggle="collapse"
-                      data-bs-target="#cEsf"
-                      style="background-color: var(--bs-body-bg);"
-                    >
-                      <i class="bi bi-file-earmark-check me-2"></i> ESF / Abrechnung
-                    </button>
-                  </h2>
-                  <div id="cEsf" class="accordion-collapse collapse">
-                    <div class="accordion-body bg-body text-dark pt-2">
-                      <div class="d-grid gap-2">
-                        <button class="btn btn-outline-secondary text-start">
-                          <i class="bi bi-people me-2"></i> Teilnehmer mit ESF Abrechnung
-                        </button>
-                        <button class="btn btn-outline-secondary text-start">
-                          <i class="bi bi-people me-2"></i> Teilnehmer ohne ESF Abrechnung
-                        </button>
-                        <button class="btn btn-outline-secondary text-start">
-                          <i class="bi bi-folder2-open me-2"></i> ESF-Stammblätter erzeugen
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Listen & Unterlagen -->
-                <div class="accordion-item border-0">
-                  <h2 class="accordion-header">
-                    <button
-                      class="accordion-button collapsed bg-body text-dark fw-semibold shadow-none"
-                      type="button"
-                      data-bs-toggle="collapse"
-                      data-bs-target="#cListen"
-                      style="background-color: var(--bs-body-bg);"
-                    >
-                      <i class="bi bi-card-list me-2"></i> Listen & Unterlagen
-                    </button>
-                  </h2>
-                  <div id="cListen" class="accordion-collapse collapse">
-                    <div class="accordion-body bg-body text-dark pt-2">
-                      <div class="d-grid gap-2">
-                        <button class="btn btn-outline-secondary text-start">
-                          <i class="bi bi-bar-chart me-2"></i> Belegungszahlen
-                        </button>
-                        <button class="btn btn-outline-secondary text-start">
-                          <i class="bi bi-building me-2"></i> Liste Jobcenter – Anlage 2
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-              </div><!-- /accordion -->
-
             </div>
           </div>
+
+          <!-- === SCREEN B: ESF Report (wird eingeblendet) === -->
+          <div id="esfReportScreen" class="d-none">
+
+            <div class="d-flex flex-wrap justify-content-between align-items-start gap-2 mb-3">
+              <div>
+                <div class="text-secondary small">ESF / Abrechnung</div>
+                <h5 class="mb-0">Teilnehmer mit ESF-Abrechnung</h5>
+                <div class="text-secondary mt-2" style="font-size:.95rem;">
+                  Filtern Sie nach Zuweisungszeitraum. Öffnen Sie pro Teilnehmer das ESF-Formular zur Prüfung/Bearbeitung
+                  und erzeugen Sie anschließend alle Stammblätter gesammelt.
+                </div>
+              </div>
+              <div class="d-flex gap-2">
+                <button class="btn btn-outline-secondary btn-sm" type="button" id="btnBackToReports">
+                  <i class="bi bi-arrow-left me-1"></i> Zurück
+                </button>
+                <!-- Excel Button entfernt -->
+                <button class="btn btn-primary btn-sm" type="button" id="btnEsfBatchCreate">
+                  <i class="bi bi-folder2-open me-1"></i> Alle Stammblätter erzeugen
+                </button>
+              </div>
+            </div>
+
+            <!-- Filter + KPIs -->
+            <div class="card border-0 bg-body-tertiary mb-3">
+              <div class="card-body p-3">
+                <div class="row g-2 align-items-end">
+                  <div class="col-12 col-lg-3">
+                    <div class="form-floating">
+                      <input type="date" class="form-control" id="esfFilterVon" value="2024-01-01">
+                      <label for="esfFilterVon">Zuweisung von</label>
+                    </div>
+                  </div>
+                  <div class="col-12 col-lg-3">
+                    <div class="form-floating">
+                      <input type="date" class="form-control" id="esfFilterBis" value="2025-12-31">
+                      <label for="esfFilterBis">Zuweisung bis</label>
+                    </div>
+                  </div>
+                  <div class="col-12 col-lg-3">
+                    <div class="input-group">
+                      <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+                      <input type="text" class="form-control" id="esfFilterSearch" placeholder="Name, Kennung, …">
+                    </div>
+                  </div>
+                  <div class="col-12 col-lg-3 d-flex gap-2">
+                    <button class="btn btn-outline-dark w-100" type="button" id="btnEsfApply">
+                      <i class="bi bi-funnel me-1"></i> Anwenden
+                    </button>
+                    <button class="btn btn-outline-secondary" type="button" id="btnEsfReset" title="Zurücksetzen">
+                      <i class="bi bi-arrow-counterclockwise"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <hr class="my-3">
+
+                <!-- KPIs: Fehler/fehlend entfernt; nur 3 Spalten -->
+                <div class="row g-2">
+                  <div class="col-md-4">
+                    <div class="border rounded-3 p-2 bg-white">
+                      <div class="text-secondary small">Treffer</div>
+                      <div class="fs-4 fw-semibold" id="esfKpiTreffer">0</div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="border rounded-3 p-2 bg-white">
+                      <div class="text-secondary small">Vollständig</div>
+                      <div class="fs-4 fw-semibold text-success" id="esfKpiOk">0</div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="border rounded-3 p-2 bg-white">
+                      <div class="text-secondary small">Prüfen</div>
+                      <div class="fs-4 fw-semibold text-warning" id="esfKpiOpen">0</div>
+                    </div>
+                  </div>
+                </div>
+
+
+              </div>
+            </div>
+
+            <!-- Ergebnisliste -->
+            <div class="card border-0 shadow-sm">
+              <div class="card-body p-0">
+                <div class="table-responsive">
+                  <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                      <tr>
+                        <th>Teilnehmer</th>
+                        <th>Zuweisung</th>
+                        <th>ESF</th>
+                        <th>Status</th>
+                        <th class="text-end">Aktionen</th>
+                      </tr>
+                    </thead>
+                    <tbody id="esfResultsBody">
+                      <!-- per JS -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+          </div><!-- /esfReportScreen -->
 
         </div><!-- /tab-berichte -->
 
       </div><!-- /tab-content -->
-
     </div>
   </div>
 
 </div><!-- /container -->
+
+
+<!-- === ESF Modal (Prüfen/Bearbeiten) === -->
+<div class="modal fade" id="esfModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div>
+          <div class="text-secondary small">ESF-Formular</div>
+          <h5 class="modal-title mb-0" id="esfModalTitle">Teilnehmer</h5>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Schließen"></button>
+      </div>
+
+      <div class="modal-body">
+
+        <div class="alert alert-warning py-2 d-none" id="esfModalWarn">
+          <i class="bi bi-exclamation-triangle me-1"></i>
+          Einige Pflichtfelder fehlen. Bitte ergänzen, bevor Sie Stammblätter erzeugen.
+        </div>
+
+        <div class="row g-2">
+          <div class="col-md-6">
+            <div class="form-floating">
+              <input class="form-control" id="esfName" type="text" readonly>
+              <label for="esfName">Name</label>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-floating">
+              <input class="form-control" id="esfKennung" type="text" readonly>
+              <label for="esfKennung">Kennung</label>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="form-floating">
+              <input class="form-control" id="esfZuweisungVon" type="date" readonly>
+              <label for="esfZuweisungVon">Zuweisung von</label>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-floating">
+              <input class="form-control" id="esfZuweisungBis" type="date" readonly>
+              <label for="esfZuweisungBis">Zuweisung bis</label>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <div class="border rounded-3 p-3 bg-body-tertiary">
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="fw-semibold"><i class="bi bi-check2-square me-2"></i>ESF-Förderung</div>
+                <div class="form-check form-switch m-0">
+                  <input class="form-check-input" type="checkbox" role="switch" id="esfAktiv" disabled>
+                  <label class="form-check-label small text-muted" for="esfAktiv">aktiv</label>
+                </div>
+              </div>
+              <div class="small text-secondary mt-1">
+                Nur Teilnehmer mit aktivierter ESF-Förderung erscheinen in dieser Liste.
+              </div>
+            </div>
+          </div>
+
+          <!-- Pflichtfelder (Demo) -->
+          <div class="col-md-6">
+            <div class="form-floating">
+              <input class="form-control" id="esfGebDatum" type="date" readonly>
+              <label for="esfGebDatum">Geburtsdatum (Pflicht)</label>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-floating">
+              <input class="form-control" id="esfEintritt" type="date" readonly>
+              <label for="esfEintritt">Eintrittsdatum (Pflicht)</label>
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="form-floating">
+              <input class="form-control" id="esfAdresse" type="text" readonly>
+              <label for="esfAdresse">Adresse (Pflicht)</label>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <div class="form-floating">
+              <textarea class="form-control" id="esfNotiz" style="height: 120px" readonly></textarea>
+              <label for="esfNotiz">Notiz / Prüfvermerk</label>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <div class="me-auto d-flex align-items-center gap-2">
+          <button class="btn btn-outline-secondary" type="button" id="btnEsfModalEdit">
+            <i class="bi bi-gear me-1"></i> Bearbeiten
+          </button>
+          <span class="text-secondary small" id="esfModalStatusText">Status: —</span>
+        </div>
+
+        <button class="btn btn-outline-secondary d-none" type="button" id="btnEsfModalCancel">
+          Abbrechen
+        </button>
+        <button class="btn btn-primary d-none" type="button" id="btnEsfModalSave">
+          <i class="bi bi-check2 me-1"></i> Speichern
+        </button>
+
+        <!-- Vorschau Button entfernt -->
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Toast -->
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1080;">
+  <div id="appToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header">
+      <i class="bi bi-info-circle me-2"></i>
+      <strong class="me-auto" id="toastTitle">Info</strong>
+      <small class="text-muted">jetzt</small>
+      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Schließen"></button>
+    </div>
+    <div class="toast-body" id="toastBody">—</div>
+  </div>
+</div>
 
 <!-- Bootstrap Script -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -750,7 +897,6 @@
 <script>
   // =========================
   // DEMO: Stammdaten füllen
-  // (später aus Store/Backend)
   // =========================
   const massnahmeInput = {
     kurzname: "Integra 2025",
@@ -808,64 +954,51 @@
   }
 
   function renderMassnahmeStammdaten() {
-    // Titel
     document.getElementById("mNameTitle").textContent = massnahmeInput.kurzname;
-
-    // Laufzeit-KPI
     document.getElementById("mVon").textContent = fmtDateDE(massnahmeInput.von);
     document.getElementById("mBis").textContent = "– " + fmtDateDE(massnahmeInput.bis);
     document.getElementById("mFoerderungBadge").textContent = massnahmeInput.foerderung || "—";
 
-    // Inputs: Grunddaten
     document.getElementById("mKurzname").value = massnahmeInput.kurzname || "";
     document.getElementById("mAZ").value = massnahmeInput.az || "";
     document.getElementById("mNrArge").value = massnahmeInput.nrArge || "";
     document.getElementById("mKostenstelle").value = massnahmeInput.kostenstelle || "";
 
-    // Selects
     const kat = document.getElementById("mKategorie");
     if (kat) kat.value = massnahmeInput.kategorie || "Sonstige";
 
     const fo = document.getElementById("mFoerderungText");
     if (fo) fo.value = massnahmeInput.foerderung || "Andere";
 
-    // Kosten & Plätze
     document.getElementById("mPlatzzahl").value = (massnahmeInput.platzzahl ?? "");
     document.getElementById("mKostenpauschale").value = euro(massnahmeInput.kostenpauschale);
     document.getElementById("mMehraufwand").value = euro(massnahmeInput.mehraufwand);
     document.getElementById("mUrlaub").value = (massnahmeInput.urlaub ?? "");
     document.getElementById("mSonstiges").value = massnahmeInput.sonstiges || "";
 
-    // Vergabe
     document.getElementById("mVergabenummer").value = massnahmeInput.vergabenummer || "";
     document.getElementById("mLosnummer").value = massnahmeInput.losnummer || "";
     document.getElementById("mVBArbeitsverteilung").value = massnahmeInput.vbArbeitsverteilung || "";
     document.getElementById("mTaetigkeit").value = massnahmeInput.taetigkeit || "";
 
-    // Ansprechpartner
     const ta = document.getElementById("mAnsprechpartnerText");
     if (ta) ta.value = (massnahmeInput.ansprechpartner || []).join("\n");
     renderChipsFromTextArea();
   }
 
   // =========================
-  // Edit-Logik pro Block:
-  // - Zahnrad klick -> confirm -> Felder aktivieren + Save/Cancel zeigen
-  // - Cancel -> Werte zurücksetzen + Felder sperren
-  // - Save -> Felder sperren, Chips aktualisieren (bei Ansprechpartner)
+  // Edit-Logik pro Block
   // =========================
   const editSnapshots = {};
 
   function getBlockEl(blockKey) {
     return document.querySelector(`[data-edit-block="${blockKey}"]`);
   }
-
   function getEditableFields(blockKey) {
     const block = getBlockEl(blockKey);
     if (!block) return [];
     return Array.from(block.querySelectorAll("input, select, textarea"));
   }
-
   function setBlockEditing(blockKey, isEditing) {
     const fields = getEditableFields(blockKey);
     const actions = document.querySelector(`[data-edit-actions="${blockKey}"]`);
@@ -879,20 +1012,13 @@
     if (actions) actions.classList.toggle("d-none", !isEditing);
     if (gear) gear.disabled = isEditing;
 
-    // Optische Info (optional)
     const block = getBlockEl(blockKey);
     if (block) block.classList.toggle("border-primary", isEditing);
   }
-
   function snapshotBlock(blockKey) {
     const fields = getEditableFields(blockKey);
-    editSnapshots[blockKey] = fields.map(f => ({
-      id: f.id,
-      value: f.value,
-      tag: f.tagName
-    }));
+    editSnapshots[blockKey] = fields.map(f => ({ id: f.id, value: f.value }));
   }
-
   function restoreBlock(blockKey) {
     const snap = editSnapshots[blockKey] || [];
     snap.forEach(s => {
@@ -901,14 +1027,12 @@
     });
     if (blockKey === "ansprechpartner") renderChipsFromTextArea();
   }
-
   function initBlockEditors() {
     document.querySelectorAll("[data-edit-gear]").forEach(btn => {
       btn.addEventListener("click", () => {
         const blockKey = btn.getAttribute("data-edit-gear");
         const ok = window.confirm("Sind Sie sicher, dass Sie die Daten ändern wollen?");
         if (!ok) return;
-
         snapshotBlock(blockKey);
         setBlockEditing(blockKey, true);
       });
@@ -925,16 +1049,11 @@
     document.querySelectorAll("[data-edit-save]").forEach(btn => {
       btn.addEventListener("click", () => {
         const blockKey = btn.getAttribute("data-edit-save");
-
-        // Hier würdest du später speichern (API/Store). Demo: nur UI schließen.
         setBlockEditing(blockKey, false);
-
-        // Special: Ansprechpartner-Chips aktualisieren
         if (blockKey === "ansprechpartner") renderChipsFromTextArea();
       });
     });
 
-    // Startzustand: alles gesperrt
     ["grunddaten","kostenplaetze","vergabe","ansprechpartner"].forEach(k => setBlockEditing(k, false));
   }
 
@@ -945,73 +1064,365 @@
 </script>
 
 <script>
-function toggleDetails(button) {
-  const row = button.closest("tr");
-  const detailRow = row.nextElementSibling;
-  document.querySelectorAll(".detail-row").forEach(r => {
-    if (r !== detailRow) r.classList.add("d-none");
-  });
-  detailRow.classList.toggle("d-none");
-}
+  // =========================
+  // Anwesenheit (dein Bestand)
+  // =========================
+  function toggleDetails(button) {
+    const row = button.closest("tr");
+    const detailRow = row.nextElementSibling;
+    document.querySelectorAll(".detail-row").forEach(r => {
+      if (r !== detailRow) r.classList.add("d-none");
+    });
+    detailRow.classList.toggle("d-none");
+  }
 
-function setAnwesend(button) {
-  setActive(button, "bg-success");
-  document.getElementById("anwesenheit-zeiten").classList.remove("d-none");
-  document.getElementById("sonderoptionen").classList.add("d-none");
-}
+  function setAnwesend(button) {
+    setActive(button, "bg-success");
+    document.getElementById("anwesenheit-zeiten").classList.remove("d-none");
+    document.getElementById("sonderoptionen").classList.add("d-none");
+  }
 
-function setActive(button, colorClass) {
-  const group = button.parentElement.querySelectorAll("button");
-  group.forEach(btn => {
-    btn.classList.remove("bg-success", "bg-warning", "bg-info", "bg-danger", "bg-primary", "text-white", "text-dark");
-    btn.classList.add("btn-outline-secondary");
-  });
-  button.classList.remove("btn-outline-secondary");
-  colorClass.split(" ").forEach(c => button.classList.add(c));
-}
+  function setActive(button, colorClass) {
+    const group = button.parentElement.querySelectorAll("button");
+    group.forEach(btn => {
+      btn.classList.remove("bg-success", "bg-warning", "bg-info", "bg-danger", "bg-primary", "text-white", "text-dark");
+      btn.classList.add("btn-outline-secondary");
+    });
+    button.classList.remove("btn-outline-secondary");
+    colorClass.split(" ").forEach(c => button.classList.add(c));
+  }
 
-function setSpecial(button, type) {
-  const sonder = document.getElementById("sonderoptionen");
-  const au = document.getElementById("auBtn");
-  const urlaub = document.getElementById("urlaubFeld");
-  const grund = document.getElementById("grundFeld");
-  const zeiten = document.getElementById("anwesenheit-zeiten");
+  function setSpecial(button, type) {
+    const sonder = document.getElementById("sonderoptionen");
+    const au = document.getElementById("auBtn");
+    const urlaub = document.getElementById("urlaubFeld");
+    const grund = document.getElementById("grundFeld");
+    const zeiten = document.getElementById("anwesenheit-zeiten");
 
-  setActive(button,
-    type === "krank"         ? "bg-warning text-dark" :
-    type === "entschuldigt"  ? "bg-info text-white"   :
-    type === "unentschuldigt"? "bg-danger text-white" :
-                                "bg-primary text-white"
-  );
+    setActive(button,
+      type === "krank"         ? "bg-warning text-dark" :
+      type === "entschuldigt"  ? "bg-info text-white"   :
+      type === "unentschuldigt"? "bg-danger text-white" :
+                                  "bg-primary text-white"
+    );
 
-  sonder.classList.remove("d-none");
-  zeiten.classList.add("d-none");
+    sonder.classList.remove("d-none");
+    zeiten.classList.add("d-none");
 
-  au.style.display     = (type === "krank" || type === "entschuldigt") ? "inline-block" : "none";
-  urlaub.style.display = (type === "urlaub") ? "inline-block" : "none";
-  grund.style.display  = (type === "entschuldigt" || type === "unentschuldigt") ? "block" : "none";
-}
+    au.style.display     = (type === "krank" || type === "entschuldigt") ? "inline-block" : "none";
+    urlaub.style.display = (type === "urlaub") ? "inline-block" : "none";
+    grund.style.display  = (type === "entschuldigt" || type === "unentschuldigt") ? "block" : "none";
+  }
 
-document.addEventListener("DOMContentLoaded", function () {
-  document.querySelectorAll(".massnahme-tn-row").forEach(row => {
-    row.addEventListener("click", function () {
-      const target = this.getAttribute("data-page");
-      if (!target) return;
+  document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".massnahme-tn-row").forEach(row => {
+      row.addEventListener("click", function () {
+        const target = this.getAttribute("data-page");
+        if (!target) return;
 
-      let frame = null;
-      try {
-        if (window.parent && window.parent !== window) {
-          frame = window.parent.document.getElementById("mainFrame");
-        }
-      } catch (e) {}
+        let frame = null;
+        try {
+          if (window.parent && window.parent !== window) {
+            frame = window.parent.document.getElementById("mainFrame");
+          }
+        } catch (e) {}
 
-      if (frame) frame.src = target;
-      else window.location.href = target;
+        if (frame) frame.src = target;
+        else window.location.href = target;
+      });
     });
   });
-});
+</script>
+
+<script>
+  // =========================
+  // ESF Report Screen (NEU)
+  // =========================
+  const demoTeilnehmer = [
+    {
+      id: "tn-001",
+      kuerzel: "MM",
+      name: "Max Mustermann",
+      kennung: "KV-555NXX",
+      zuweisungVon: "2024-01-15",
+      zuweisungBis: "2024-12-31",
+      esf: true,
+      esfForm: { gebDatum: "1990-02-10", eintritt: "2024-01-15", adresse: "Musterstr. 1, 66111 Saarbrücken", notiz: "Daten geprüft am 10.05.2025." }
+    },
+    {
+      id: "tn-002",
+      kuerzel: "CP",
+      name: "Claudia Peters",
+      kennung: "JC-555XCRT",
+      zuweisungVon: "2024-03-01",
+      zuweisungBis: "2025-03-01",
+      esf: true,
+      esfForm: { gebDatum: "", eintritt: "2024-03-01", adresse: "Beispielweg 2, 66111 Saarbrücken", notiz: "" }
+    },
+    {
+      id: "tn-003",
+      kuerzel: "AB",
+      name: "Ali Benali",
+      kennung: "JC-1003",
+      zuweisungVon: "2024-02-01",
+      zuweisungBis: "2024-08-31",
+      esf: false,
+      esfForm: { gebDatum: "1985-11-05", eintritt: "2024-02-01", adresse: "—", notiz: "" }
+    }
+  ];
+
+  let esfState = {
+    filtered: [],
+    activeId: null,
+    modalSnapshot: null,
+    modalEditing: false
+  };
+
+  function showToast(title, body) {
+    const t = document.getElementById("appToast");
+    document.getElementById("toastTitle").textContent = title;
+    document.getElementById("toastBody").textContent = body;
+    const toast = bootstrap.Toast.getOrCreateInstance(t, { delay: 2500 });
+    toast.show();
+  }
+
+  function withinRange(dateISO, fromISO, toISO) {
+    if (!dateISO) return false;
+    const d = new Date(dateISO + "T00:00:00");
+    const f = fromISO ? new Date(fromISO + "T00:00:00") : null;
+    const t = toISO ? new Date(toISO + "T00:00:00") : null;
+    if (f && d < f) return false;
+    if (t && d > t) return false;
+    return true;
+  }
+
+  function esfCompleteness(tn) {
+    // Demo-Regel: Pflichtfelder (gebDatum, eintritt, adresse) vorhanden
+    const f = tn.esfForm || {};
+    const missing = [];
+    if (!f.gebDatum) missing.push("Geburtsdatum");
+    if (!f.eintritt) missing.push("Eintrittsdatum");
+    if (!f.adresse) missing.push("Adresse");
+    return { ok: missing.length === 0, missing };
+  }
+
+  function renderEsfKpis(list) {
+    const treffer = list.length;
+    let ok = 0, open = 0;
+
+    list.forEach(tn => {
+      const c = esfCompleteness(tn);
+      if (c.ok) ok++;
+      else open++;
+    });
+
+    document.getElementById("esfKpiTreffer").textContent = treffer;
+    document.getElementById("esfKpiOk").textContent = ok;
+    document.getElementById("esfKpiOpen").textContent = open;
+  }
+
+  function statusBadge(tn) {
+    const c = esfCompleteness(tn);
+    if (c.ok) return `<span class="badge text-bg-success">vollständig</span>`;
+    return `<span class="badge text-bg-warning text-dark">prüfen</span>`;
+  }
+
+  function renderEsfTable(list) {
+    const tbody = document.getElementById("esfResultsBody");
+    if (!tbody) return;
+
+    if (list.length === 0) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="5" class="text-center text-secondary py-4">
+            <i class="bi bi-inbox me-1"></i> Keine Treffer im gewählten Zeitraum.
+          </td>
+        </tr>`;
+      return;
+    }
+
+    tbody.innerHTML = list.map(tn => `
+      <tr>
+        <td class="fw-semibold">
+          <span class="badge text-bg-secondary me-2">${tn.kuerzel}</span>${tn.name}<br>
+          <span class="text-secondary small">${tn.kennung}</span>
+        </td>
+        <td>
+          <div class="small">${fmtDateDE(tn.zuweisungVon)} – ${fmtDateDE(tn.zuweisungBis)}</div>
+        </td>
+        <td>
+          ${tn.esf ? `<span class="badge text-bg-primary">aktiv</span>` : `<span class="badge text-bg-secondary">nein</span>`}
+        </td>
+        <td>${statusBadge(tn)}</td>
+        <td class="text-end">
+          <button class="btn btn-outline-secondary btn-sm" type="button"
+            onclick="openEsfModal('${tn.id}')">
+            <i class="bi bi-ui-checks-grid me-1"></i> ESF-Formular öffnen
+          </button>
+        </td>
+      </tr>
+    `).join("");
+  }
+
+  function applyEsfFilter() {
+    const von = document.getElementById("esfFilterVon")?.value || "";
+    const bis = document.getElementById("esfFilterBis")?.value || "";
+    const q = (document.getElementById("esfFilterSearch")?.value || "").trim().toLowerCase();
+
+    const filtered = demoTeilnehmer
+      .filter(tn => tn.esf === true)
+      .filter(tn => withinRange(tn.zuweisungVon, von, bis) || withinRange(tn.zuweisungBis, von, bis))
+      .filter(tn => {
+        if (!q) return true;
+        return (tn.name || "").toLowerCase().includes(q)
+          || (tn.kennung || "").toLowerCase().includes(q)
+          || (tn.kuerzel || "").toLowerCase().includes(q);
+      });
+
+    esfState.filtered = filtered;
+    renderEsfKpis(filtered);
+    renderEsfTable(filtered);
+  }
+
+  function openEsfModal(id) {
+    const tn = demoTeilnehmer.find(x => x.id === id);
+    if (!tn) return;
+
+    esfState.activeId = id;
+    esfState.modalEditing = false;
+
+    document.getElementById("esfModalTitle").textContent = `${tn.name} (${tn.kennung})`;
+    document.getElementById("esfName").value = tn.name || "";
+    document.getElementById("esfKennung").value = tn.kennung || "";
+    document.getElementById("esfZuweisungVon").value = tn.zuweisungVon || "";
+    document.getElementById("esfZuweisungBis").value = tn.zuweisungBis || "";
+    document.getElementById("esfAktiv").checked = !!tn.esf;
+
+    document.getElementById("esfGebDatum").value = tn.esfForm?.gebDatum || "";
+    document.getElementById("esfEintritt").value = tn.esfForm?.eintritt || "";
+    document.getElementById("esfAdresse").value = tn.esfForm?.adresse || "";
+    document.getElementById("esfNotiz").value = tn.esfForm?.notiz || "";
+
+    esfState.modalSnapshot = {
+      gebDatum: document.getElementById("esfGebDatum").value,
+      eintritt: document.getElementById("esfEintritt").value,
+      adresse: document.getElementById("esfAdresse").value,
+      notiz: document.getElementById("esfNotiz").value
+    };
+
+    const comp = esfCompleteness(tn);
+    document.getElementById("esfModalWarn").classList.toggle("d-none", comp.ok);
+    document.getElementById("esfModalStatusText").textContent =
+      comp.ok ? "Status: vollständig" : "Status: prüfen";
+
+    setEsfModalEditing(false);
+
+    const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById("esfModal"));
+    modal.show();
+  }
+
+  function setEsfModalEditing(isEditing) {
+    esfState.modalEditing = isEditing;
+
+    ["esfGebDatum","esfEintritt","esfAdresse","esfNotiz"].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.readOnly = !isEditing;
+    });
+
+    document.getElementById("btnEsfModalEdit").classList.toggle("d-none", isEditing);
+    document.getElementById("btnEsfModalCancel").classList.toggle("d-none", !isEditing);
+    document.getElementById("btnEsfModalSave").classList.toggle("d-none", !isEditing);
+  }
+
+  function saveEsfModal() {
+    const id = esfState.activeId;
+    const tn = demoTeilnehmer.find(x => x.id === id);
+    if (!tn) return;
+
+    tn.esfForm = tn.esfForm || {};
+    tn.esfForm.gebDatum = document.getElementById("esfGebDatum").value;
+    tn.esfForm.eintritt = document.getElementById("esfEintritt").value;
+    tn.esfForm.adresse = document.getElementById("esfAdresse").value;
+    tn.esfForm.notiz = document.getElementById("esfNotiz").value;
+
+    setEsfModalEditing(false);
+    applyEsfFilter();
+
+    const comp = esfCompleteness(tn);
+    document.getElementById("esfModalWarn").classList.toggle("d-none", comp.ok);
+    document.getElementById("esfModalStatusText").textContent =
+      comp.ok ? "Status: vollständig" : "Status: prüfen";
+
+    showToast("Gespeichert", "ESF-Daten wurden (demo) übernommen.");
+  }
+
+  function cancelEsfModal() {
+    if (!esfState.modalSnapshot) return;
+    document.getElementById("esfGebDatum").value = esfState.modalSnapshot.gebDatum;
+    document.getElementById("esfEintritt").value = esfState.modalSnapshot.eintritt;
+    document.getElementById("esfAdresse").value = esfState.modalSnapshot.adresse;
+    document.getElementById("esfNotiz").value = esfState.modalSnapshot.notiz;
+    setEsfModalEditing(false);
+  }
+
+  function batchCreateStammblaetter() {
+    const list = esfState.filtered || [];
+    const incomplete = list.filter(tn => !esfCompleteness(tn).ok);
+
+    if (list.length === 0) {
+      showToast("Keine Treffer", "Es gibt keine Teilnehmer für den aktuellen Filter.");
+      return;
+    }
+
+    if (incomplete.length > 0) {
+      showToast("Nicht möglich", `${incomplete.length} Teilnehmer haben unvollständige Pflichtfelder. Bitte zuerst prüfen.`);
+      return;
+    }
+
+    showToast("Batch gestartet", `Erzeuge ${list.length} Stammblätter (Demo)…`);
+  }
+
+  function switchReportsScreen(showEsf) {
+    const home = document.getElementById("reportsHome");
+    const esf = document.getElementById("esfReportScreen");
+    if (!home || !esf) return;
+
+    home.classList.toggle("d-none", showEsf);
+    esf.classList.toggle("d-none", !showEsf);
+
+    if (showEsf) applyEsfFilter();
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("btnEsfMitAbrechnung")?.addEventListener("click", () => {
+      switchReportsScreen(true);
+    });
+
+    document.getElementById("btnBackToReports")?.addEventListener("click", () => {
+      switchReportsScreen(false);
+    });
+
+    document.getElementById("btnEsfApply")?.addEventListener("click", applyEsfFilter);
+
+    document.getElementById("btnEsfReset")?.addEventListener("click", () => {
+      document.getElementById("esfFilterVon").value = "2024-01-01";
+      document.getElementById("esfFilterBis").value = "2025-12-31";
+      document.getElementById("esfFilterSearch").value = "";
+      applyEsfFilter();
+    });
+
+    document.getElementById("btnEsfBatchCreate")?.addEventListener("click", batchCreateStammblaetter);
+
+    document.getElementById("btnEsfModalEdit")?.addEventListener("click", () => {
+      const ok = window.confirm("Sind Sie sicher, dass Sie die ESF-Daten ändern wollen?");
+      if (!ok) return;
+      setEsfModalEditing(true);
+    });
+
+    document.getElementById("btnEsfModalCancel")?.addEventListener("click", cancelEsfModal);
+    document.getElementById("btnEsfModalSave")?.addEventListener("click", saveEsfModal);
+  });
 </script>
 
 </body>
 </html>
-
