@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -85,13 +86,20 @@
 <div class="col-lg-3 border-end mb-3 mb-lg-0">
 
   <!-- ID / Kennung / Status -->
-  <div class="d-flex justify-content-between align-items-start mb-2 small text-muted">
-    <div>
-      <div>TN-ID: <strong>12345</strong></div>
-      <div>Kennung: <strong>555XV5974</strong></div>
+
+<div class="d-flex justify-content-between align-items-start mb-2 small text-muted">
+  <div>
+    <div>TN-ID: <strong>12345</strong></div>
+    <div>Kennung: <strong>555XV5974</strong></div>
+
+    <!-- NEU: Förderung -->
+    <div class="mt-1">
+      Förderung: <strong id="foerderungText">-</strong>
     </div>
-    <span class="badge rounded-pill bg-success">aktiv</span>
   </div>
+  <span class="badge rounded-pill bg-success">aktiv</span>
+</div>
+
 
   <!-- Avatar + Name -->
   <div class="text-center mt-2 mb-3">
@@ -717,49 +725,93 @@
 <div class="tab-pane fade" id="tabESF" role="tabpanel" aria-labelledby="tabESF-tab">
   <h5 class="mb-3">ESF-Angaben</h5>
 
-  <form class="row g-3">
+<div class="alert alert-warning py-2 px-3 mb-3" role="alert">
+  <!-- Zeile 1: Checkbox -->
+  <div class="d-flex align-items-center gap-2">
+    <input
+      type="checkbox"
+      id="esfToggle"
+      class="form-check-input m-0"
+      style="transform: scale(1.2);"
+    >
+    <label for="esfToggle" class="form-check-label fw-semibold mb-0">
+      ESF
+    </label>
+  </div>
+
+  <!-- Zeile 2: Hinweis (darunter) -->
+  <div class="small mt-2">
+    <strong>Hinweis:</strong> Ohne Unterschrift dürfen keine ESF Daten gespeichert und kein Stammblatt erzeugt werden.
+  </div>
+</div>
+
+
+  <form class="row g-3" id="esfForm">
 
     <!-- OBERER BLOCK: Übernommene Angaben aus anderen Tabs -->
-<div class="col-md-6">
-  <div class="form-floating">
-    <input type="date" class="form-control" id="esfEintrittsdatum" placeholder="Eintrittsdatum" readonly>
-    <label for="esfEintrittsdatum">Eintrittsdatum (übernommen)</label>
+<!-- ✅ 4 Felder responsiv: Desktop = alle nebeneinander, sonst umbrechen -->
+<div class="row g-3 row-cols-1 row-cols-md-2 row-cols-xl-4">
+
+  <!-- Eintrittsdatum -->
+  <div class="col">
+    <div class="form-floating">
+      <input
+        type="date"
+        class="form-control"
+        id="esfEintrittsdatum"
+        value="2024-01-01"
+        readonly
+      >
+      <label for="esfEintrittsdatum">Eintrittsdatum (übernommen)</label>
+    </div>
   </div>
+
+  <!-- Drittstaat -->
+  <div class="col">
+    <div class="form-floating">
+      <select class="form-select" id="esfDrittstaat">
+        <option value="">keine Angabe</option>
+        <option value="ja">Ja</option>
+        <option value="nein">Nein</option>
+      </select>
+      <label for="esfDrittstaat">Drittstaatsangehörige/r</label>
+    </div>
+  </div>
+
+  <!-- Geflüchtet -->
+  <div class="col">
+    <div class="form-floating">
+      <select class="form-select" id="esfGefluechtet">
+        <option value="">keine Angabe</option>
+        <option value="ja">Ja</option>
+        <option value="nein">Nein</option>
+      </select>
+      <label for="esfGefluechtet">ist geflüchtet</label>
+    </div>
+  </div>
+
+  <!-- ausländische Herkunft -->
+  <div class="col">
+    <div class="form-floating">
+      <select class="form-select" id="esfAuslaendischeHerkunft">
+        <option value="">keine Angabe</option>
+        <option value="ja">Ja</option>
+        <option value="nein">Nein</option>
+      </select>
+      <label for="esfAuslaendischeHerkunft">ausländische Herkunft</label>
+    </div>
+  </div>
+
 </div>
 
-<div class="col-md-6">
-  <div class="form-floating">
-    <input type="text" class="form-control" id="esfDrittstaat" placeholder="Drittstaatsangehörige/r" readonly>
-    <label for="esfDrittstaat">Drittstaatsangehörige/r (StA Migration)</label>
-  </div>
-</div>
 
-<div class="col-md-6">
-  <div class="form-floating">
-    <input type="text" class="form-control" id="esfGefluechtet" placeholder="Geflüchtet" readonly>
-    <label for="esfGefluechtet">ist geflüchtet (StA Migration)</label>
-  </div>
-</div>
-
-<div class="col-md-6">
-  <div class="form-floating">
-    <input type="text" class="form-control" id="esfAuslaendischeHerkunft" placeholder="ausländische Herkunft" readonly>
-    <label for="esfAuslaendischeHerkunft">ausländische Herkunft (StA Migration)</label>
-  </div>
-</div>
 
 
     <div class="col-12">
       <hr class="mt-1 mb-3">
     </div>
 
-    <!-- Hinweis Einverständnis -->
-    <div class="col-12">
-      <div class="alert alert-warning small" role="alert">
-        <strong>Wichtig:</strong> Einverständniserklärung liegt vor?  
-        Ohne Einverständniserklärung darf kein Teilnehmer-Stammblatt ausgefüllt werden!
-      </div>
-    </div>
+
 
     <!-- Einverständniserklärung -->
     <div class="col-md-4">
@@ -1774,6 +1826,35 @@ function openTNMassnahmeProfil(page) {
   }
 }
   
+</script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const esfToggle = document.getElementById("esfToggle");
+    const esfForm = document.getElementById("esfForm");
+    const foerderungText = document.getElementById("foerderungText");
+
+    function applyEsfState() {
+      const isEsf = !!(esfToggle && esfToggle.checked);
+
+      // Formular anzeigen/ausblenden
+      if (esfForm) {
+        esfForm.style.display = isEsf ? "" : "none";
+      }
+
+      // Förderungstext (unter Kennung) dynamisch
+      if (foerderungText) {
+        foerderungText.textContent = isEsf ? "ESF" : "andere";
+      }
+    }
+
+    if (esfToggle) {
+      esfToggle.addEventListener("change", applyEsfState);
+    }
+
+    // Initialzustand: Checkbox aus => Formular weg + "andere"
+    applyEsfState();
+  });
 </script>
 
 </body>
