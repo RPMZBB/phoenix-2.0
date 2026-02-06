@@ -42,7 +42,7 @@
 
       <hr class="my-3">
 
-      <!-- ROW 1: Dynamische KPIs -->
+      <!-- ROW 1: KPIs -->
       <div class="row g-3 mb-3">
         <div class="col-md-3">
           <div class="card border-0 bg-body-tertiary h-100">
@@ -325,7 +325,7 @@
         <ul class="nav nav-tabs">
           <li class="nav-item">
             <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-teilnehmer">
-              <i class="bi bi-people me-1"></i> Aktuelle Teilnehmer
+              <i class="bi bi-people me-1"></i> Teilnehmer
             </button>
           </li>
           <li class="nav-item">
@@ -355,95 +355,183 @@
 
         <!-- TAB: TEILNEHMER -->
         <div class="tab-pane fade show active" id="tab-teilnehmer">
-          <!-- ... unverändert ... -->
+
           <div class="text-secondary mb-3" style="font-size: 0.95rem;">
-            Hier sehen Sie alle aktuell dieser Maßnahme zugewiesenen Teilnehmer.
-            Bereits aus dieser Maßnahme ausgeschiedene Teilnehmer müssen über den Bereich
-            <strong>„Teilnehmer“</strong> im Hauptmenü aufgerufen werden, um dort Daten zu erfassen
-            oder Berichte zu erzeugen.
+            Hier sehen Sie alle Teilnehmer dieser Maßnahme. Standardmäßig werden <strong>aktive</strong> Teilnehmer angezeigt.
+            Über <strong>Mehr Filter</strong> können Sie auch <strong>geplante</strong> und <strong>beendete</strong> Teilnehmer einblenden.
           </div>
 
+          <!-- Filter (aufgeräumt) -->
           <div class="card border-0 bg-body-tertiary mb-3">
             <div class="card-body p-3">
-              <div class="text-secondary small mb-2">Filtern / Suchen</div>
-              <div class="row g-2 align-items-center">
-                <div class="col-lg-3">
-                  <div class="input-group">
-                    <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
-                    <input type="text" class="form-control" placeholder="Name, Kennung, …">
+
+              <div class="d-flex flex-wrap justify-content-between align-items-start gap-2 mb-2">
+                <div>
+                  <div class="text-secondary small">Filtern / Suchen</div>
+                  <div class="text-secondary" style="font-size:.95rem;">
+                    Standardfilter oben – Status & Zeitraum bei Bedarf über <strong>Mehr Filter</strong>.
                   </div>
                 </div>
-                <div class="col-lg-2">
-                  <select class="form-select">
-                    <option selected>Betreuer</option>
+              </div>
+
+              <div class="row g-2 align-items-end">
+                <div class="col-12 col-lg-4">
+                  <div class="input-group">
+                    <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+                    <input type="text" class="form-control" id="tnFilterSearch" placeholder="Name, Kennung, Kürzel …">
+                  </div>
+                </div>
+
+                <div class="col-12 col-lg-2">
+                  <select class="form-select" id="tnFilterBetreuer">
+                    <option value="" selected>Betreuer</option>
                     <option>Daniel Chu</option>
                     <option>Holger Irmak</option>
                   </select>
                 </div>
-                <div class="col-lg-2">
-                  <select class="form-select">
-                    <option selected>Arbeitsbereich</option>
+
+                <div class="col-12 col-lg-2">
+                  <select class="form-select" id="tnFilterArbeitsbereich">
+                    <option value="" selected>Arbeitsbereich</option>
                     <option>Maler</option>
                     <option>Gärtnerei</option>
+                    <option>Hauswirtschaft</option>
                   </select>
                 </div>
 
-                <div class="col-lg-2 d-flex">
-                  <div class="dropdown w-100">
-                    <button class="btn btn-outline-secondary w-100 text-nowrap dropdown-toggle"
-                      type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                      <i class="bi bi-list-ul me-2"></i> Teilnehmerliste
-                    </button>
-                    <ul class="dropdown-menu w-100">
-                      <li><button class="dropdown-item" type="button"><i class="bi bi-filetype-pdf me-2"></i> PDF</button></li>
-                      <li><button class="dropdown-item" type="button"><i class="bi bi-filetype-docx me-2"></i> Word</button></li>
-                    </ul>
-                  </div>
+                <div class="col-12 col-lg-2">
+                  <select class="form-select" id="tnFilterAnleiter">
+                    <option value="" selected>Anleiter</option>
+                    <option>Sabine König</option>
+                    <option>Thomas Weber</option>
+                    <option>Murat Yilmaz</option>
+                  </select>
                 </div>
 
-                <div class="col-lg-3 d-flex">
-                  <div class="dropdown w-100">
-                    <button class="btn btn-outline-secondary w-100 text-nowrap dropdown-toggle"
-                      type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                      <i class="bi bi-pen me-2"></i> Unterschriftenliste
+                <div class="col-12 col-lg-2">
+                  <div class="d-flex gap-2">
+                    <button class="btn btn-outline-dark w-100" type="button" id="btnTnApply">
+                      <i class="bi bi-funnel me-1"></i> Anwenden
                     </button>
-                    <ul class="dropdown-menu w-100">
-                      <li><button class="dropdown-item" type="button"><i class="bi bi-filetype-pdf me-2"></i> PDF</button></li>
-                      <li><button class="dropdown-item" type="button"><i class="bi bi-filetype-docx me-2"></i> Word</button></li>
-                    </ul>
+
+                    <button class="btn btn-outline-secondary" type="button"
+                            data-bs-toggle="collapse" data-bs-target="#tnMoreFilters"
+                            aria-expanded="false" aria-controls="tnMoreFilters"
+                            title="Mehr Filter">
+                      <i class="bi bi-sliders"></i>
+                    </button>
+
+                    <button class="btn btn-outline-secondary" type="button" id="btnTnReset" title="Zurücksetzen">
+                      <i class="bi bi-arrow-counterclockwise"></i>
+                    </button>
                   </div>
                 </div>
-
               </div>
+
+              <!-- Mehr Filter -->
+              <div class="collapse mt-2" id="tnMoreFilters">
+                <div class="border rounded-3 bg-white p-3">
+                  <div class="row g-2 align-items-end">
+
+                    <div class="col-12 col-lg-6">
+                      <div class="small text-muted mb-1">Status anzeigen</div>
+                      <div class="d-flex flex-wrap gap-3">
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" id="statusAktiv" checked>
+                          <label class="form-check-label" for="statusAktiv">aktiv</label>
+                        </div>
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" id="statusGeplant">
+                          <label class="form-check-label" for="statusGeplant">geplant</label>
+                        </div>
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" id="statusBeendet">
+                          <label class="form-check-label" for="statusBeendet">beendet</label>
+                        </div>
+                      </div>
+                      <div class="form-text small">
+                        Standard ist nur <strong>aktiv</strong>. Für Planung/Archiv weitere Status aktivieren.
+                      </div>
+                    </div>
+
+                    <div class="col-12 col-lg-3">
+                      <div class="form-floating">
+                        <input type="date" class="form-control" id="tnFilterVon" value="">
+                        <label for="tnFilterVon">Zuweisung von</label>
+                      </div>
+                    </div>
+                    <div class="col-12 col-lg-3">
+                      <div class="form-floating">
+                        <input type="date" class="form-control" id="tnFilterBis" value="">
+                        <label for="tnFilterBis">Zuweisung bis</label>
+                      </div>
+                    </div>
+
+                  </div>
+
+                  <hr class="my-3">
+
+                  <div class="d-flex flex-wrap gap-2 justify-content-end">
+                    <button class="btn btn-outline-secondary btn-sm" type="button"
+                            data-bs-toggle="collapse" data-bs-target="#tnMoreFilters" aria-expanded="true">
+                      <i class="bi bi-chevron-up me-1"></i> Schließen
+                    </button>
+                    <button class="btn btn-outline-dark btn-sm" type="button" id="btnTnApply2">
+                      <i class="bi bi-funnel me-1"></i> Anwenden
+                    </button>
+                  </div>
+
+                </div>
+              </div>
+
             </div>
           </div>
 
+          <!-- Wichtige Aktionen (unter Filter, vor Tabelle) -->
+          <div class="d-flex justify-content-end gap-2 mb-2">
+            <div class="dropdown">
+              <button class="btn btn-primary text-nowrap dropdown-toggle"
+                      type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-list-ul me-2"></i> Teilnehmerliste
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li>
+                  <button class="dropdown-item" type="button" onclick="showToast('Export', 'Teilnehmerliste als PDF (Demo).')">
+                    <i class="bi bi-filetype-pdf me-2"></i> PDF
+                  </button>
+                </li>
+                <li>
+                  <button class="dropdown-item" type="button" onclick="showToast('Export', 'Teilnehmerliste als Word (Demo).')">
+                    <i class="bi bi-filetype-docx me-2"></i> Word
+                  </button>
+                </li>
+              </ul>
+            </div>
+
+            <button class="btn btn-success text-nowrap" type="button" id="btnOpenUnterschriftenModal">
+              <i class="bi bi-pen me-2"></i> Unterschriftenliste
+            </button>
+          </div>
+
+          <!-- Tabelle Teilnehmer -->
           <div class="table-responsive">
             <table class="table table-hover align-middle mb-0">
               <thead class="table-light">
               <tr>
-                <th>Teilnehmer</th><th>Betreuer</th><th>Arbeitsbereich</th><th>Zuweisung</th><th>Maßnahme</th><th>JC-Betreuer</th><th class="text-end">Aktionen</th>
+                <th>Teilnehmer</th>
+                <th>Status</th>
+                <th>Eintritt</th>
+                <th>Betreuer</th>
+                <th>Anleiter</th>
+                <th>Arbeitsbereich</th>
+                <th>Zuweisung</th>
+                <th>Maßnahme</th>
+                <th>JC-Betreuer</th>
+                <th class="text-end">Aktionen</th>
               </tr>
               </thead>
-              <tbody>
-              <tr class="massnahme-tn-row" data-page="TN-Profil_massnahme.html" style="cursor:pointer;">
-                <td class="fw-semibold"><span class="badge text-bg-secondary me-2">MM</span> Max Mustermann</td>
-                <td>Daniel Chu</td><td>Maler</td><td>01.01.20 - 01.01.24</td><td>Integra 2025</td><td>Daniel Chu</td>
-                <td class="text-end">
-                  <button class="btn btn-sm btn-outline-secondary" onclick="event.stopPropagation();">
-                    <i class="bi bi-pencil me-1"></i> Bearbeiten
-                  </button>
-                </td>
-              </tr>
-              <tr class="massnahme-tn-row" data-page="TN-Profil_massnahme.html" style="cursor:pointer;">
-                <td class="fw-semibold"><span class="badge text-bg-secondary me-2">CP</span> Claudia Peters</td>
-                <td>Daniel Chu</td><td>Maler</td><td>01.01.20 - 01.01.24</td><td>Integra 2025</td><td>Holger Irmak</td>
-                <td class="text-end">
-                  <button class="btn btn-sm btn-outline-secondary" onclick="event.stopPropagation();">
-                    <i class="bi bi-pencil me-1"></i> Bearbeiten
-                  </button>
-                </td>
-              </tr>
+              <tbody id="tnTableBody">
+                <!-- per JS -->
               </tbody>
             </table>
           </div>
@@ -451,7 +539,6 @@
 
         <!-- TAB: ANWESENHEIT -->
         <div class="tab-pane fade" id="tab-anwesenheit">
-          <!-- ... unverändert ... -->
           <div class="card border-0 bg-body-tertiary mb-3">
             <div class="card-body p-3">
               <div class="row g-2">
@@ -608,7 +695,6 @@
                     <div id="cEsf" class="accordion-collapse collapse">
                       <div class="accordion-body bg-body text-dark pt-2">
                         <div class="d-grid gap-2">
-                          <!-- HIER: Button bekommt ID -->
                           <button class="btn btn-outline-secondary text-start" id="btnEsfMitAbrechnung">
                             <i class="bi bi-people me-2"></i> Teilnehmer mit ESF Abrechnung
                           </button>
@@ -649,7 +735,7 @@
             </div>
           </div>
 
-          <!-- === SCREEN B: ESF Report (wird eingeblendet) === -->
+          <!-- === SCREEN B: ESF Report === -->
           <div id="esfReportScreen" class="d-none">
 
             <div class="d-flex flex-wrap justify-content-between align-items-start gap-2 mb-3">
@@ -657,44 +743,42 @@
                 <div class="text-secondary small">ESF / Abrechnung</div>
                 <h5 class="mb-0">Teilnehmer mit ESF-Abrechnung</h5>
                 <div class="text-secondary mt-2" style="font-size:.95rem;">
-                  Filtern Sie nach Zuweisungszeitraum. Öffnen Sie pro Teilnehmer das ESF-Formular zur Prüfung/Bearbeitung
+                  Filtern Sie nach Zeitraum. Öffnen Sie pro Teilnehmer das ESF-Formular zur Prüfung/Bearbeitung
                   und erzeugen Sie anschließend alle Stammblätter gesammelt.
                 </div>
               </div>
-              <div class="d-flex gap-2">
-                <button class="btn btn-outline-secondary btn-sm" type="button" id="btnBackToReports">
-                  <i class="bi bi-arrow-left me-1"></i> Zurück
+                <div class="d-flex gap-3">
+                <button class="btn btn-outline-secondary btn-md px-3" type="button" id="btnBackToReports">
+                    <i class="bi bi-arrow-left me-2"></i> Zurück
                 </button>
-                <!-- Excel Button entfernt -->
-                <button class="btn btn-primary btn-sm" type="button" id="btnEsfBatchCreate">
-                  <i class="bi bi-folder2-open me-1"></i> Alle Stammblätter erzeugen
+
+                <button class="btn btn-primary btn-md px-3" type="button" id="btnEsfBatchCreate">
+                    <i class="bi bi-layers-fill me-2"></i> Alle Stammblätter erzeugen
                 </button>
-              </div>
+                </div>
+
+
             </div>
 
-            <!-- Filter + KPIs -->
+            <!-- Filter + KPIs (ESF-Zeitraum) -->
             <div class="card border-0 bg-body-tertiary mb-3">
               <div class="card-body p-3">
+                <div class="text-secondary small mb-2">ESF-Zeitraum</div>
+
                 <div class="row g-2 align-items-end">
-                  <div class="col-12 col-lg-3">
+                  <div class="col-12 col-lg-4">
                     <div class="form-floating">
                       <input type="date" class="form-control" id="esfFilterVon" value="2024-01-01">
-                      <label for="esfFilterVon">Zuweisung von</label>
+                      <label for="esfFilterVon">Datum von</label>
                     </div>
                   </div>
-                  <div class="col-12 col-lg-3">
+                  <div class="col-12 col-lg-4">
                     <div class="form-floating">
                       <input type="date" class="form-control" id="esfFilterBis" value="2025-12-31">
-                      <label for="esfFilterBis">Zuweisung bis</label>
+                      <label for="esfFilterBis">Datum bis</label>
                     </div>
                   </div>
-                  <div class="col-12 col-lg-3">
-                    <div class="input-group">
-                      <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
-                      <input type="text" class="form-control" id="esfFilterSearch" placeholder="Name, Kennung, …">
-                    </div>
-                  </div>
-                  <div class="col-12 col-lg-3 d-flex gap-2">
+                  <div class="col-12 col-lg-4 d-flex gap-2">
                     <button class="btn btn-outline-dark w-100" type="button" id="btnEsfApply">
                       <i class="bi bi-funnel me-1"></i> Anwenden
                     </button>
@@ -706,7 +790,6 @@
 
                 <hr class="my-3">
 
-                <!-- KPIs: Fehler/fehlend entfernt; nur 3 Spalten -->
                 <div class="row g-2">
                   <div class="col-md-4">
                     <div class="border rounded-3 p-2 bg-white">
@@ -728,11 +811,10 @@
                   </div>
                 </div>
 
-
               </div>
             </div>
 
-            <!-- Ergebnisliste -->
+            <!-- Ergebnisliste (ESF Vertrag = Haken) -->
             <div class="card border-0 shadow-sm">
               <div class="card-body p-0">
                 <div class="table-responsive">
@@ -741,8 +823,8 @@
                       <tr>
                         <th>Teilnehmer</th>
                         <th>Zuweisung</th>
-                        <th>ESF</th>
-                        <th>Status</th>
+                        <th>ESF-Vertrag Zustimmung</th>
+                        <th>Daten</th>
                         <th class="text-end">Aktionen</th>
                       </tr>
                     </thead>
@@ -765,10 +847,52 @@
 </div><!-- /container -->
 
 
+<!-- === Unterschriftenliste Modal === -->
+<div class="modal fade" id="unterschriftenModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-md modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div>
+          <div class="text-secondary small">Drucken</div>
+          <h5 class="modal-title mb-0">Unterschriftenliste</h5>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Schließen"></button>
+      </div>
+
+      <div class="modal-body">
+        <div class="text-secondary mb-3" style="font-size:.95rem;">
+          Wählen Sie den Tag, für den die Unterschriftenliste gedruckt wird (Teilnehmer bestätigen Anwesenheit und Tätigkeit).
+        </div>
+
+        <div class="form-floating mb-3">
+          <input type="date" class="form-control" id="uDatum">
+          <label for="uDatum">Datum (für den Ausdruck)</label>
+        </div>
+
+        <div class="d-grid gap-2">
+          <button class="btn btn-primary" type="button" id="btnUDruckPdf">
+            <i class="bi bi-printer me-2"></i> Unterschriftenliste (PDF drucken)
+          </button>
+          <button class="btn btn-outline-secondary" type="button" id="btnUDruckExcel">
+            <i class="bi bi-file-earmark-spreadsheet me-2"></i> Unterschriftenliste (Excel)
+          </button>
+        </div>
+
+        <div class="alert alert-info mt-3 mb-0 py-2">
+          <i class="bi bi-info-circle me-1"></i>
+          Demo: Buttons zeigen nur eine Meldung (keine echte Datei-Erzeugung).
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <!-- === ESF Modal (Prüfen/Bearbeiten) === -->
 <div class="modal fade" id="esfModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+  <div class="modal-dialog modal-xl modal-dialog-scrollable">
     <div class="modal-content">
+
       <div class="modal-header">
         <div>
           <div class="text-secondary small">ESF-Formular</div>
@@ -781,10 +905,11 @@
 
         <div class="alert alert-warning py-2 d-none" id="esfModalWarn">
           <i class="bi bi-exclamation-triangle me-1"></i>
-          Einige Pflichtfelder fehlen. Bitte ergänzen, bevor Sie Stammblätter erzeugen.
+          Einige Pflichtfelder fehlen. Bitte ergänzen, bevor Stammblatt erzeugt wird.
         </div>
 
-        <div class="row g-2">
+        <!-- Kopf: Name/Kennung + Zuweisung -->
+        <div class="row g-2 mb-2">
           <div class="col-md-6">
             <div class="form-floating">
               <input class="form-control" id="esfName" type="text" readonly>
@@ -810,49 +935,208 @@
               <label for="esfZuweisungBis">Zuweisung bis</label>
             </div>
           </div>
+        </div>
 
-          <div class="col-12">
-            <div class="border rounded-3 p-3 bg-body-tertiary">
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="fw-semibold"><i class="bi bi-check2-square me-2"></i>ESF-Förderung</div>
-                <div class="form-check form-switch m-0">
-                  <input class="form-check-input" type="checkbox" role="switch" id="esfAktiv" disabled>
-                  <label class="form-check-label small text-muted" for="esfAktiv">aktiv</label>
-                </div>
-              </div>
-              <div class="small text-secondary mt-1">
-                Nur Teilnehmer mit aktivierter ESF-Förderung erscheinen in dieser Liste.
-              </div>
+        <!-- ESF Toggle + Hinweis -->
+        <div class="alert alert-warning py-2 px-3 mb-3" role="alert">
+          <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+            <div class="d-flex align-items-center gap-2">
+              <input type="checkbox" id="esfToggle" class="form-check-input m-0" style="transform: scale(1.2);" disabled>
+              <label for="esfToggle" class="form-check-label fw-semibold mb-0">ESF</label>
             </div>
-          </div>
 
-          <!-- Pflichtfelder (Demo) -->
-          <div class="col-md-6">
-            <div class="form-floating">
-              <input class="form-control" id="esfGebDatum" type="date" readonly>
-              <label for="esfGebDatum">Geburtsdatum (Pflicht)</label>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="form-floating">
-              <input class="form-control" id="esfEintritt" type="date" readonly>
-              <label for="esfEintritt">Eintrittsdatum (Pflicht)</label>
-            </div>
-          </div>
-          <div class="col-12">
-            <div class="form-floating">
-              <input class="form-control" id="esfAdresse" type="text" readonly>
-              <label for="esfAdresse">Adresse (Pflicht)</label>
+            <div class="small text-muted d-flex align-items-center gap-2">
+              <span id="esfVertragInfoIcon" class="text-success d-none"><i class="bi bi-check-circle-fill"></i></span>
+              <span id="esfVertragInfoText">Vertrag: —</span>
             </div>
           </div>
 
-          <div class="col-12">
-            <div class="form-floating">
-              <textarea class="form-control" id="esfNotiz" style="height: 120px" readonly></textarea>
-              <label for="esfNotiz">Notiz / Prüfvermerk</label>
-            </div>
+          <div class="small mt-2">
+            <strong>Hinweis:</strong> Ohne Unterschrift dürfen keine ESF Daten gespeichert und kein Stammblatt erzeugt werden.
           </div>
         </div>
+
+        <form class="row g-3" id="esfFormModal" onsubmit="return false;">
+
+          <!-- OBERER BLOCK: Übernommene Angaben -->
+          <div class="row g-3 row-cols-1 row-cols-md-2 row-cols-xl-4">
+
+            <!-- Eintrittsdatum (übernommen) -->
+            <div class="col">
+              <div class="form-floating">
+                <input type="date" class="form-control" id="esfEintrittsdatum" readonly>
+                <label for="esfEintrittsdatum">Eintrittsdatum (übernommen)</label>
+              </div>
+            </div>
+
+            <!-- Drittstaat -->
+            <div class="col">
+              <div class="form-floating">
+                <select class="form-select" id="esfDrittstaat" disabled>
+                  <option value="">keine Angabe</option>
+                  <option value="ja">Ja</option>
+                  <option value="nein">Nein</option>
+                </select>
+                <label for="esfDrittstaat">Drittstaatsangehörige/r</label>
+              </div>
+            </div>
+
+            <!-- Geflüchtet -->
+            <div class="col">
+              <div class="form-floating">
+                <select class="form-select" id="esfGefluechtet" disabled>
+                  <option value="">keine Angabe</option>
+                  <option value="ja">Ja</option>
+                  <option value="nein">Nein</option>
+                </select>
+                <label for="esfGefluechtet">ist geflüchtet</label>
+              </div>
+            </div>
+
+            <!-- ausländische Herkunft -->
+            <div class="col">
+              <div class="form-floating">
+                <select class="form-select" id="esfAuslaendischeHerkunft" disabled>
+                  <option value="">keine Angabe</option>
+                  <option value="ja">Ja</option>
+                  <option value="nein">Nein</option>
+                </select>
+                <label for="esfAuslaendischeHerkunft">ausländische Herkunft</label>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="col-12">
+            <hr class="mt-1 mb-1">
+          </div>
+
+          <!-- Einverständniserklärung -->
+          <div class="col-md-4">
+            <div class="form-floating">
+              <select class="form-select" id="esfEinverstaendnis" disabled>
+                <option value="">Bitte wählen …</option>
+                <option value="Ja">Ja</option>
+                <option value="Nein">Nein</option>
+              </select>
+              <label for="esfEinverstaendnis">Einverständniserklärung liegt vor</label>
+            </div>
+          </div>
+
+          <!-- Leistungsbezug nach SGB -->
+          <div class="col-md-4">
+            <div class="form-floating">
+              <select class="form-select" id="esfSgbLeistung" disabled>
+                <option value="">Bitte wählen …</option>
+                <option value="SGB II (Bürgergeld)">SGB II (Bürgergeld)</option>
+                <option value="SGB III (Arbeitslosengeld I)">SGB III (Arbeitslosengeld I)</option>
+                <option value="kein Leistungsbezug">kein Leistungsbezug</option>
+              </select>
+              <label for="esfSgbLeistung">Leistungsbezug nach SGB (bei Eintritt)</label>
+            </div>
+          </div>
+
+          <!-- Höchster Schulabschluss -->
+          <div class="col-md-4">
+            <div class="form-floating">
+              <select class="form-select" id="esfSchulabschluss" disabled>
+                <option value="">Bitte wählen …</option>
+                <option value="kein Schulabschluss">kein Schulabschluss</option>
+                <option value="Haupt-/Mittelschulabschluss">Haupt-/Mittelschulabschluss</option>
+                <option value="Realschulabschluss">Realschulabschluss</option>
+                <option value="Fachhochschulreife/Abitur">Fachhochschulreife/Abitur</option>
+              </select>
+              <label for="esfSchulabschluss">höchster erreichter Schulabschluss</label>
+            </div>
+          </div>
+
+          <!-- Höchster Berufsabschluss -->
+          <div class="col-md-4">
+            <div class="form-floating">
+              <select class="form-select" id="esfBerufsabschluss" disabled>
+                <option value="">Bitte wählen …</option>
+                <option value="kein Berufsabschluss">kein Berufsabschluss</option>
+                <option value="anerkannte Berufsausbildung">anerkannte Berufsausbildung</option>
+                <option value="Meister / Techniker">Meister / Techniker</option>
+                <option value="akademischer Abschluss">akademischer Abschluss</option>
+              </select>
+              <label for="esfBerufsabschluss">höchster erreichter Berufsabschluss</label>
+            </div>
+          </div>
+
+          <!-- Zielgruppe -->
+          <div class="col-md-4">
+            <div class="form-floating">
+              <select class="form-select" id="esfZielgruppe" disabled>
+                <option value="">Bitte wählen …</option>
+                <option value="arbeitslos">arbeitslos</option>
+                <option value="langzeitarbeitslos">langzeitarbeitslos</option>
+                <option value="erwerbstätig, von Armut bedroht">erwerbstätig, von Armut bedroht</option>
+              </select>
+              <label for="esfZielgruppe">Zielgruppe</label>
+            </div>
+          </div>
+
+          <!-- Fester Wohnsitz -->
+          <div class="col-md-4">
+            <div class="form-floating">
+              <select class="form-select" id="esfWohnsitz" disabled>
+                <option value="">Bitte wählen …</option>
+                <option value="Ja">Ja</option>
+                <option value="Nein">Nein</option>
+                <option value="keine Angabe">keine Angabe</option>
+              </select>
+              <label for="esfWohnsitz">Fester Wohnsitz</label>
+            </div>
+          </div>
+
+          <!-- Abschnitt "Beendet" -->
+          <div class="col-12 mt-2">
+            <hr>
+            <h6 class="text-muted mb-0">Beendet</h6>
+          </div>
+
+          <!-- Gründe für vorzeitigen Austritt -->
+          <div class="col-md-4">
+            <div class="form-floating">
+              <select class="form-select" id="esfAustrittsgrund" disabled>
+                <option value="">Bitte wählen …</option>
+                <option value="regulär beendet">regulär beendet</option>
+                <option value="vorzeitig abgebrochen (Teilnehmer)">vorzeitig abgebrochen (Teilnehmer)</option>
+                <option value="vorzeitig beendet (Träger/JC)">vorzeitig beendet (Träger/JC)</option>
+              </select>
+              <label for="esfAustrittsgrund">Gründe für vorzeitigen Austritt</label>
+            </div>
+          </div>
+
+          <!-- Erreichte Zertifizierung -->
+          <div class="col-md-4">
+            <div class="form-floating">
+              <select class="form-select" id="esfZertifizierung" disabled>
+                <option value="">Bitte wählen …</option>
+                <option value="keine Zertifizierung">keine Zertifizierung</option>
+                <option value="interne Teilnahmebescheinigung">interne Teilnahmebescheinigung</option>
+                <option value="anerkannte Qualifizierung / Zertifikat">anerkannte Qualifizierung / Zertifikat</option>
+              </select>
+              <label for="esfZertifizierung">erreichte Zertifizierung</label>
+            </div>
+          </div>
+
+          <!-- Verbleib nach Austritt -->
+          <div class="col-md-4">
+            <div class="form-floating">
+              <select class="form-select" id="esfVerbleib" disabled>
+                <option value="">Bitte wählen …</option>
+                <option value="Beschäftigung aufgenommen">Beschäftigung aufgenommen</option>
+                <option value="Ausbildung / Schule">Ausbildung / Schule</option>
+                <option value="weiter arbeitslos">weiter arbeitslos</option>
+                <option value="sonstiger Verbleib">sonstiger Verbleib</option>
+              </select>
+              <label for="esfVerbleib">Verbleib nach Austritt</label>
+            </div>
+          </div>
+
+        </form>
 
       </div>
 
@@ -864,15 +1148,17 @@
           <span class="text-secondary small" id="esfModalStatusText">Status: —</span>
         </div>
 
-        <button class="btn btn-outline-secondary d-none" type="button" id="btnEsfModalCancel">
-          Abbrechen
-        </button>
-        <button class="btn btn-primary d-none" type="button" id="btnEsfModalSave">
-          <i class="bi bi-check2 me-1"></i> Speichern
+        <button class="btn btn-outline-secondary d-none" type="button" id="btnEsfModalCancel">Abbrechen</button>
+
+        <button class="btn btn-success d-none" type="button" id="btnEsfModalSave">
+          <i class="bi bi-check2 me-1"></i> ESF-Angaben speichern
         </button>
 
-        <!-- Vorschau Button entfernt -->
+        <button class="btn btn-danger" type="button" id="btnEsfModalCreateStammblatt">
+          <i class="bi bi-file-earmark-arrow-down me-1"></i> Stammblatt erzeugen
+        </button>
       </div>
+
     </div>
   </div>
 </div>
@@ -896,7 +1182,31 @@
 
 <script>
   // =========================
-  // DEMO: Stammdaten füllen
+  // Utils
+  // =========================
+  function fmtDateDE(iso) {
+    if (!iso) return "–";
+    const [y,m,d] = iso.split("-");
+    if (!y || !m || !d) return iso;
+    return `${d}.${m}.${y}`;
+  }
+  function euro(v) {
+    const n = Number(v);
+    if (Number.isNaN(n)) return "0,00 €";
+    return n.toLocaleString("de-DE", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " €";
+  }
+  function showToast(title, body) {
+    const t = document.getElementById("appToast");
+    document.getElementById("toastTitle").textContent = title;
+    document.getElementById("toastBody").textContent = body;
+    const toast = bootstrap.Toast.getOrCreateInstance(t, { delay: 2500 });
+    toast.show();
+  }
+</script>
+
+<script>
+  // =========================
+  // Stammdaten füllen
   // =========================
   const massnahmeInput = {
     kurzname: "Integra 2025",
@@ -918,18 +1228,6 @@
     taetigkeit: "Längerer Text zur Tätigkeit.\nMehrzeilig möglich.\nHier steht später richtig viel.",
     ansprechpartner: ["Frau Müller", "Herr Schmidt"]
   };
-
-  function fmtDateDE(iso) {
-    if (!iso) return "–";
-    const [y,m,d] = iso.split("-");
-    if (!y || !m || !d) return iso;
-    return `${d}.${m}.${y}`;
-  }
-  function euro(v) {
-    const n = Number(v);
-    if (Number.isNaN(n)) return "0,00 €";
-    return n.toLocaleString("de-DE", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " €";
-  }
 
   function renderChipsFromTextArea() {
     const chips = document.getElementById("mAnsprechpartnerChips");
@@ -985,7 +1283,9 @@
     if (ta) ta.value = (massnahmeInput.ansprechpartner || []).join("\n");
     renderChipsFromTextArea();
   }
+</script>
 
+<script>
   // =========================
   // Edit-Logik pro Block
   // =========================
@@ -1056,16 +1356,198 @@
 
     ["grunddaten","kostenplaetze","vergabe","ansprechpartner"].forEach(k => setBlockEditing(k, false));
   }
-
-  document.addEventListener("DOMContentLoaded", () => {
-    renderMassnahmeStammdaten();
-    initBlockEditors();
-  });
 </script>
 
 <script>
   // =========================
-  // Anwesenheit (dein Bestand)
+  // Teilnehmer: Daten + Filter
+  // =========================
+  const demoTeilnehmerMassnahme = [
+    {
+      id: "tn-001", kuerzel: "MM", name: "Max Mustermann", kennung: "KV-555NXX",
+      status: "aktiv", eintritt: "2024-01-15", zuweisungVon: "2024-01-15", zuweisungBis: "2024-12-31",
+      betreuer: "Daniel Chu", anleiter: "Sabine König", arbeitsbereich: "Maler", massnahme: "Integra 2025", jcBetreuer: "Daniel Chu"
+    },
+    {
+      id: "tn-002", kuerzel: "CP", name: "Claudia Peters", kennung: "JC-555XCRT",
+      status: "aktiv", eintritt: "2024-03-01", zuweisungVon: "2024-03-01", zuweisungBis: "2025-03-01",
+      betreuer: "Daniel Chu", anleiter: "Thomas Weber", arbeitsbereich: "Gärtnerei", massnahme: "Integra 2025", jcBetreuer: "Holger Irmak"
+    },
+    {
+      id: "tn-003", kuerzel: "AB", name: "Ali Benali", kennung: "JC-1003",
+      status: "geplant", eintritt: "", zuweisungVon: "2025-02-01", zuweisungBis: "2025-08-31",
+      betreuer: "Holger Irmak", anleiter: "Murat Yilmaz", arbeitsbereich: "Hauswirtschaft", massnahme: "Integra 2025", jcBetreuer: "Daniel Chu"
+    },
+    {
+      id: "tn-004", kuerzel: "LS", name: "Leonie Schmitt", kennung: "JC-2044",
+      status: "beendet", eintritt: "2024-02-05", zuweisungVon: "2024-02-05", zuweisungBis: "2024-10-31",
+      betreuer: "Daniel Chu", anleiter: "Sabine König", arbeitsbereich: "Maler", massnahme: "Integra 2025", jcBetreuer: "Holger Irmak"
+    },
+    {
+      id: "tn-005", kuerzel: "HR", name: "Hasan Rahmani", kennung: "JC-3110",
+      status: "aktiv", eintritt: "2024-06-01", zuweisungVon: "2024-06-01", zuweisungBis: "2025-06-30",
+      betreuer: "Holger Irmak", anleiter: "Thomas Weber", arbeitsbereich: "Gärtnerei", massnahme: "Integra 2025", jcBetreuer: "Daniel Chu"
+    },
+    {
+      id: "tn-006", kuerzel: "NK", name: "Nina Keller", kennung: "JC-4088",
+      status: "geplant", eintritt: "", zuweisungVon: "2025-04-01", zuweisungBis: "2025-12-31",
+      betreuer: "Daniel Chu", anleiter: "Murat Yilmaz", arbeitsbereich: "Hauswirtschaft", massnahme: "Integra 2025", jcBetreuer: "Holger Irmak"
+    },
+    {
+      id: "tn-007", kuerzel: "FB", name: "Fatima Bouzid", kennung: "JC-5122",
+      status: "beendet", eintritt: "2024-01-20", zuweisungVon: "2024-01-20", zuweisungBis: "2024-07-31",
+      betreuer: "Holger Irmak", anleiter: "Sabine König", arbeitsbereich: "Gärtnerei", massnahme: "Integra 2025", jcBetreuer: "Daniel Chu"
+    }
+  ];
+
+  function statusBadgeTn(status) {
+    const s = String(status || "").toLowerCase();
+    if (s === "aktiv") return `<span class="badge text-bg-success">aktiv</span>`;
+    if (s === "geplant") return `<span class="badge text-bg-secondary">geplant</span>`;
+    if (s === "beendet") return `<span class="badge text-bg-dark">beendet</span>`;
+    return `<span class="badge text-bg-light border text-dark">—</span>`;
+  }
+
+  function fmtEintritt(eintrittISO, status) {
+    if (eintrittISO) return fmtDateDE(eintrittISO);
+    const s = String(status || "").toLowerCase();
+    if (s === "geplant") return "noch nicht gestartet";
+    return "—";
+  }
+
+  function withinRangeOverlap(vonISO, bisISO, fromISO, toISO) {
+    if (!vonISO && !bisISO) return true;
+
+    const aStart = vonISO ? new Date(vonISO + "T00:00:00") : null;
+    const aEnd   = bisISO ? new Date(bisISO + "T00:00:00") : null;
+
+    const f = fromISO ? new Date(fromISO + "T00:00:00") : null;
+    const t = toISO ? new Date(toISO + "T00:00:00") : null;
+
+    const start = aStart || aEnd;
+    const end   = aEnd || aStart;
+
+    if (!start || !end) return true;
+
+    if (f && end < f) return false;
+    if (t && start > t) return false;
+    return true;
+  }
+
+  function renderTeilnehmerTable(list) {
+    const tbody = document.getElementById("tnTableBody");
+    if (!tbody) return;
+
+    if (!list || list.length === 0) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="10" class="text-center text-secondary py-4">
+            <i class="bi bi-inbox me-1"></i> Keine Treffer für die aktuellen Filter.
+          </td>
+        </tr>`;
+      return;
+    }
+
+    tbody.innerHTML = list.map(tn => `
+      <tr class="massnahme-tn-row" data-page="TN-Profil_massnahme.html" style="cursor:pointer;">
+        <td class="fw-semibold">
+          <span class="badge text-bg-secondary me-2">${tn.kuerzel}</span> ${tn.name}<br>
+          <span class="text-secondary small">${tn.kennung}</span>
+        </td>
+        <td>${statusBadgeTn(tn.status)}</td>
+        <td>${fmtEintritt(tn.eintritt, tn.status)}</td>
+        <td>${tn.betreuer || "—"}</td>
+        <td>${tn.anleiter || "—"}</td>
+        <td>${tn.arbeitsbereich || "—"}</td>
+        <td>${fmtDateDE(tn.zuweisungVon)} – ${fmtDateDE(tn.zuweisungBis)}</td>
+        <td>${tn.massnahme || "—"}</td>
+        <td>${tn.jcBetreuer || "—"}</td>
+        <td class="text-end">
+          <button class="btn btn-sm btn-outline-secondary" onclick="event.stopPropagation(); showToast('Bearbeiten', 'Teilnehmer bearbeiten (Demo).');">
+            <i class="bi bi-pencil me-1"></i> Bearbeiten
+          </button>
+        </td>
+      </tr>
+    `).join("");
+
+    document.querySelectorAll(".massnahme-tn-row").forEach(row => {
+      row.addEventListener("click", function () {
+        const target = this.getAttribute("data-page");
+        if (!target) return;
+
+        let frame = null;
+        try {
+          if (window.parent && window.parent !== window) {
+            frame = window.parent.document.getElementById("mainFrame");
+          }
+        } catch (e) {}
+
+        if (frame) frame.src = target;
+        else window.location.href = target;
+      });
+    });
+  }
+
+  function applyTeilnehmerFilter() {
+    const q = (document.getElementById("tnFilterSearch")?.value || "").trim().toLowerCase();
+    const betreuer = (document.getElementById("tnFilterBetreuer")?.value || "").trim();
+    const arbeitsbereich = (document.getElementById("tnFilterArbeitsbereich")?.value || "").trim();
+    const anleiter = (document.getElementById("tnFilterAnleiter")?.value || "").trim();
+
+    const von = document.getElementById("tnFilterVon")?.value || "";
+    const bis = document.getElementById("tnFilterBis")?.value || "";
+
+    const showAktiv = document.getElementById("statusAktiv")?.checked;
+    const showGeplant = document.getElementById("statusGeplant")?.checked;
+    const showBeendet = document.getElementById("statusBeendet")?.checked;
+
+    const statusSet = new Set();
+    if (showAktiv) statusSet.add("aktiv");
+    if (showGeplant) statusSet.add("geplant");
+    if (showBeendet) statusSet.add("beendet");
+
+    let list = demoTeilnehmerMassnahme.slice();
+
+    list = list.filter(tn => statusSet.has(String(tn.status || "").toLowerCase()));
+
+    if (q) {
+      list = list.filter(tn =>
+        (tn.name || "").toLowerCase().includes(q) ||
+        (tn.kennung || "").toLowerCase().includes(q) ||
+        (tn.kuerzel || "").toLowerCase().includes(q)
+      );
+    }
+
+    if (betreuer) list = list.filter(tn => (tn.betreuer || "") === betreuer);
+    if (arbeitsbereich) list = list.filter(tn => (tn.arbeitsbereich || "") === arbeitsbereich);
+    if (anleiter) list = list.filter(tn => (tn.anleiter || "") === anleiter);
+
+    if (von || bis) {
+      list = list.filter(tn => withinRangeOverlap(tn.zuweisungVon, tn.zuweisungBis, von, bis));
+    }
+
+    renderTeilnehmerTable(list);
+  }
+
+  function resetTeilnehmerFilter() {
+    document.getElementById("tnFilterSearch").value = "";
+    document.getElementById("tnFilterBetreuer").value = "";
+    document.getElementById("tnFilterArbeitsbereich").value = "";
+    document.getElementById("tnFilterAnleiter").value = "";
+    document.getElementById("tnFilterVon").value = "";
+    document.getElementById("tnFilterBis").value = "";
+
+    document.getElementById("statusAktiv").checked = true;
+    document.getElementById("statusGeplant").checked = false;
+    document.getElementById("statusBeendet").checked = false;
+
+    applyTeilnehmerFilter();
+  }
+</script>
+
+<script>
+  // =========================
+  // Anwesenheit
   // =========================
   function toggleDetails(button) {
     const row = button.closest("tr");
@@ -1113,61 +1595,103 @@
     urlaub.style.display = (type === "urlaub") ? "inline-block" : "none";
     grund.style.display  = (type === "entschuldigt" || type === "unentschuldigt") ? "block" : "none";
   }
-
-  document.addEventListener("DOMContentLoaded", function () {
-    document.querySelectorAll(".massnahme-tn-row").forEach(row => {
-      row.addEventListener("click", function () {
-        const target = this.getAttribute("data-page");
-        if (!target) return;
-
-        let frame = null;
-        try {
-          if (window.parent && window.parent !== window) {
-            frame = window.parent.document.getElementById("mainFrame");
-          }
-        } catch (e) {}
-
-        if (frame) frame.src = target;
-        else window.location.href = target;
-      });
-    });
-  });
 </script>
 
 <script>
   // =========================
-  // ESF Report Screen (NEU)
+  // ESF Report + ESF Modal
   // =========================
-  const demoTeilnehmer = [
+  const demoEsfTeilnehmer = [
     {
-      id: "tn-001",
-      kuerzel: "MM",
-      name: "Max Mustermann",
-      kennung: "KV-555NXX",
-      zuweisungVon: "2024-01-15",
-      zuweisungBis: "2024-12-31",
-      esf: true,
-      esfForm: { gebDatum: "1990-02-10", eintritt: "2024-01-15", adresse: "Musterstr. 1, 66111 Saarbrücken", notiz: "Daten geprüft am 10.05.2025." }
+      id: "esf-001", kuerzel: "MM", name: "Max Mustermann", kennung: "KV-555NXX",
+      zuweisungVon: "2024-01-15", zuweisungBis: "2024-12-31",
+      esf: true, esfVertragUnterschrieben: true,
+      esfForm: {
+        eintrittsdatum: "2024-01-15",
+        drittstaat: "nein",
+        gefluechtet: "nein",
+        auslaendischeHerkunft: "ja",
+        einverstaendnis: "Ja",
+        sgbLeistung: "SGB II (Bürgergeld)",
+        schulabschluss: "Realschulabschluss",
+        berufsabschluss: "anerkannte Berufsausbildung",
+        zielgruppe: "arbeitslos",
+        wohnsitz: "Ja",
+        austrittsgrund: "",
+        zertifizierung: "",
+        verbleib: ""
+      }
     },
     {
-      id: "tn-002",
-      kuerzel: "CP",
-      name: "Claudia Peters",
-      kennung: "JC-555XCRT",
-      zuweisungVon: "2024-03-01",
-      zuweisungBis: "2025-03-01",
-      esf: true,
-      esfForm: { gebDatum: "", eintritt: "2024-03-01", adresse: "Beispielweg 2, 66111 Saarbrücken", notiz: "" }
+      id: "esf-002", kuerzel: "CP", name: "Claudia Peters", kennung: "JC-555XCRT",
+      zuweisungVon: "2024-03-01", zuweisungBis: "2025-03-01",
+      esf: true, esfVertragUnterschrieben: true, /* KEIN VERTRAG */
+      esfForm: {
+        eintrittsdatum: "2024-03-01",
+        drittstaat: "",
+        gefluechtet: "",
+        auslaendischeHerkunft: "",
+        einverstaendnis: "",
+        sgbLeistung: "",
+        schulabschluss: "",
+        berufsabschluss: "",
+        zielgruppe: "",
+        wohnsitz: "",
+        austrittsgrund: "",
+        zertifizierung: "",
+        verbleib: ""
+      }
     },
     {
-      id: "tn-003",
-      kuerzel: "AB",
-      name: "Ali Benali",
-      kennung: "JC-1003",
-      zuweisungVon: "2024-02-01",
-      zuweisungBis: "2024-08-31",
-      esf: false,
-      esfForm: { gebDatum: "1985-11-05", eintritt: "2024-02-01", adresse: "—", notiz: "" }
+      id: "esf-003", kuerzel: "LS", name: "Leonie Schmitt", kennung: "JC-2044",
+      zuweisungVon: "2024-02-05", zuweisungBis: "2024-10-31",
+      esf: true, esfVertragUnterschrieben: true,
+      esfForm: { eintrittsdatum: "2024-02-05", drittstaat:"nein", gefluechtet:"nein", auslaendischeHerkunft:"nein", einverstaendnis:"Ja",
+        sgbLeistung:"SGB II (Bürgergeld)", schulabschluss:"Fachhochschulreife/Abitur", berufsabschluss:"kein Berufsabschluss", zielgruppe:"langzeitarbeitslos", wohnsitz:"Ja",
+        austrittsgrund:"regulär beendet", zertifizierung:"interne Teilnahmebescheinigung", verbleib:"Beschäftigung aufgenommen"
+      }
+    },
+    {
+      id: "esf-004", kuerzel: "HR", name: "Hasan Rahmani", kennung: "JC-3110",
+      zuweisungVon: "2024-06-01", zuweisungBis: "2025-06-30",
+      esf: true, esfVertragUnterschrieben: true,
+      esfForm: { eintrittsdatum:"2024-06-01", drittstaat:"ja", gefluechtet:"nein", auslaendischeHerkunft:"ja", einverstaendnis:"Ja",
+        sgbLeistung:"SGB II (Bürgergeld)", schulabschluss:"Haupt-/Mittelschulabschluss", berufsabschluss:"anerkannte Berufsausbildung", zielgruppe:"arbeitslos", wohnsitz:"Ja",
+        austrittsgrund:"", zertifizierung:"", verbleib:""
+      }
+    },
+    {
+      id: "esf-005", kuerzel: "NK", name: "Nina Keller", kennung: "JC-4088",
+      zuweisungVon: "2025-04-01", zuweisungBis: "2025-12-31",
+      esf: true, esfVertragUnterschrieben: true,
+      esfForm: { eintrittsdatum:"", drittstaat:"", gefluechtet:"", auslaendischeHerkunft:"", einverstaendnis:"", sgbLeistung:"", schulabschluss:"", berufsabschluss:"", zielgruppe:"", wohnsitz:"", austrittsgrund:"", zertifizierung:"", verbleib:"" }
+    },
+    {
+      id: "esf-006", kuerzel: "FB", name: "Fatima Bouzid", kennung: "JC-5122",
+      zuweisungVon: "2024-01-20", zuweisungBis: "2024-07-31",
+      esf: true, esfVertragUnterschrieben: true,
+      esfForm: { eintrittsdatum:"2024-01-20", drittstaat:"ja", gefluechtet:"ja", auslaendischeHerkunft:"ja", einverstaendnis:"Ja",
+        sgbLeistung:"SGB II (Bürgergeld)", schulabschluss:"Haupt-/Mittelschulabschluss", berufsabschluss:"kein Berufsabschluss", zielgruppe:"langzeitarbeitslos", wohnsitz:"Nein",
+        austrittsgrund:"", zertifizierung:"", verbleib:""
+      }
+    },
+    {
+      id: "esf-007", kuerzel: "TR", name: "Tim Richter", kennung: "JC-6001",
+      zuweisungVon: "2024-09-01", zuweisungBis: "2025-02-28",
+      esf: true, esfVertragUnterschrieben: true,
+      esfForm: { eintrittsdatum:"2024-09-01", drittstaat:"nein", gefluechtet:"nein", auslaendischeHerkunft:"nein", einverstaendnis:"Nein",
+        sgbLeistung:"SGB III (Arbeitslosengeld I)", schulabschluss:"Realschulabschluss", berufsabschluss:"anerkannte Berufsausbildung", zielgruppe:"arbeitslos", wohnsitz:"Ja",
+        austrittsgrund:"", zertifizierung:"", verbleib:""
+      }
+    },
+    {
+      id: "esf-008", kuerzel: "JM", name: "Julia Mayer", kennung: "JC-7002",
+      zuweisungVon: "2024-05-10", zuweisungBis: "2025-05-10",
+      esf: true, esfVertragUnterschrieben: true,
+      esfForm: { eintrittsdatum:"2024-05-10", drittstaat:"nein", gefluechtet:"nein", auslaendischeHerkunft:"nein", einverstaendnis:"Ja",
+        sgbLeistung:"kein Leistungsbezug", schulabschluss:"Fachhochschulreife/Abitur", berufsabschluss:"akademischer Abschluss", zielgruppe:"erwerbstätig, von Armut bedroht", wohnsitz:"Ja",
+        austrittsgrund:"", zertifizierung:"", verbleib:""
+      }
     }
   ];
 
@@ -1177,14 +1701,6 @@
     modalSnapshot: null,
     modalEditing: false
   };
-
-  function showToast(title, body) {
-    const t = document.getElementById("appToast");
-    document.getElementById("toastTitle").textContent = title;
-    document.getElementById("toastBody").textContent = body;
-    const toast = bootstrap.Toast.getOrCreateInstance(t, { delay: 2500 });
-    toast.show();
-  }
 
   function withinRange(dateISO, fromISO, toISO) {
     if (!dateISO) return false;
@@ -1196,13 +1712,12 @@
     return true;
   }
 
+  // Vollständigkeit (anpassbar): Eintrittsdatum + Einverständnis
   function esfCompleteness(tn) {
-    // Demo-Regel: Pflichtfelder (gebDatum, eintritt, adresse) vorhanden
     const f = tn.esfForm || {};
     const missing = [];
-    if (!f.gebDatum) missing.push("Geburtsdatum");
-    if (!f.eintritt) missing.push("Eintrittsdatum");
-    if (!f.adresse) missing.push("Adresse");
+    if (!f.eintrittsdatum) missing.push("Eintrittsdatum");
+    if (!f.einverstaendnis) missing.push("Einverständnis");
     return { ok: missing.length === 0, missing };
   }
 
@@ -1221,10 +1736,21 @@
     document.getElementById("esfKpiOpen").textContent = open;
   }
 
-  function statusBadge(tn) {
+  function statusBadgeEsf(tn) {
     const c = esfCompleteness(tn);
     if (c.ok) return `<span class="badge text-bg-success">vollständig</span>`;
     return `<span class="badge text-bg-warning text-dark">prüfen</span>`;
+  }
+
+  function esfContractIcon(tn) {
+    if (tn.esfVertragUnterschrieben) {
+      return `<span class="text-success" title="ESF-Vertrag unterschrieben" aria-label="ESF-Vertrag unterschrieben">
+                <i class="bi bi-check-circle-fill"></i>
+              </span>`;
+    }
+    return `<span class="text-secondary" title="ESF-Vertrag fehlt" aria-label="ESF-Vertrag fehlt">
+              <i class="bi bi-dash-circle"></i>
+            </span>`;
   }
 
   function renderEsfTable(list) {
@@ -1247,16 +1773,11 @@
           <span class="badge text-bg-secondary me-2">${tn.kuerzel}</span>${tn.name}<br>
           <span class="text-secondary small">${tn.kennung}</span>
         </td>
-        <td>
-          <div class="small">${fmtDateDE(tn.zuweisungVon)} – ${fmtDateDE(tn.zuweisungBis)}</div>
-        </td>
-        <td>
-          ${tn.esf ? `<span class="badge text-bg-primary">aktiv</span>` : `<span class="badge text-bg-secondary">nein</span>`}
-        </td>
-        <td>${statusBadge(tn)}</td>
+        <td><div class="small">${fmtDateDE(tn.zuweisungVon)} – ${fmtDateDE(tn.zuweisungBis)}</div></td>
+        <td class="text-center">${esfContractIcon(tn)}</td>
+        <td>${statusBadgeEsf(tn)}</td>
         <td class="text-end">
-          <button class="btn btn-outline-secondary btn-sm" type="button"
-            onclick="openEsfModal('${tn.id}')">
+          <button class="btn btn-outline-secondary btn-sm" type="button" onclick="openEsfModal('${tn.id}')">
             <i class="bi bi-ui-checks-grid me-1"></i> ESF-Formular öffnen
           </button>
         </td>
@@ -1267,25 +1788,41 @@
   function applyEsfFilter() {
     const von = document.getElementById("esfFilterVon")?.value || "";
     const bis = document.getElementById("esfFilterBis")?.value || "";
-    const q = (document.getElementById("esfFilterSearch")?.value || "").trim().toLowerCase();
 
-    const filtered = demoTeilnehmer
+    const filtered = demoEsfTeilnehmer
       .filter(tn => tn.esf === true)
-      .filter(tn => withinRange(tn.zuweisungVon, von, bis) || withinRange(tn.zuweisungBis, von, bis))
-      .filter(tn => {
-        if (!q) return true;
-        return (tn.name || "").toLowerCase().includes(q)
-          || (tn.kennung || "").toLowerCase().includes(q)
-          || (tn.kuerzel || "").toLowerCase().includes(q);
-      });
+      .filter(tn => withinRange(tn.zuweisungVon, von, bis) || withinRange(tn.zuweisungBis, von, bis));
 
     esfState.filtered = filtered;
     renderEsfKpis(filtered);
     renderEsfTable(filtered);
   }
 
+  function setEsfModalEditing(isEditing) {
+    esfState.modalEditing = isEditing;
+
+    const selectIds = [
+      "esfDrittstaat","esfGefluechtet","esfAuslaendischeHerkunft",
+      "esfEinverstaendnis","esfSgbLeistung","esfSchulabschluss","esfBerufsabschluss",
+      "esfZielgruppe","esfWohnsitz",
+      "esfAustrittsgrund","esfZertifizierung","esfVerbleib"
+    ];
+
+    selectIds.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.disabled = !isEditing;
+    });
+
+    const eintritt = document.getElementById("esfEintrittsdatum");
+    if (eintritt) eintritt.readOnly = true;
+
+    document.getElementById("btnEsfModalEdit").classList.toggle("d-none", isEditing);
+    document.getElementById("btnEsfModalCancel").classList.toggle("d-none", !isEditing);
+    document.getElementById("btnEsfModalSave").classList.toggle("d-none", !isEditing);
+  }
+
   function openEsfModal(id) {
-    const tn = demoTeilnehmer.find(x => x.id === id);
+    const tn = demoEsfTeilnehmer.find(x => x.id === id);
     if (!tn) return;
 
     esfState.activeId = id;
@@ -1296,72 +1833,121 @@
     document.getElementById("esfKennung").value = tn.kennung || "";
     document.getElementById("esfZuweisungVon").value = tn.zuweisungVon || "";
     document.getElementById("esfZuweisungBis").value = tn.zuweisungBis || "";
-    document.getElementById("esfAktiv").checked = !!tn.esf;
 
-    document.getElementById("esfGebDatum").value = tn.esfForm?.gebDatum || "";
-    document.getElementById("esfEintritt").value = tn.esfForm?.eintritt || "";
-    document.getElementById("esfAdresse").value = tn.esfForm?.adresse || "";
-    document.getElementById("esfNotiz").value = tn.esfForm?.notiz || "";
+    document.getElementById("esfToggle").checked = !!tn.esf;
+
+    const icon = document.getElementById("esfVertragInfoIcon");
+    const txt = document.getElementById("esfVertragInfoText");
+    if (tn.esfVertragUnterschrieben) {
+      icon?.classList.remove("d-none");
+      if (txt) txt.textContent = "Vertrag: unterschrieben";
+    } else {
+      icon?.classList.add("d-none");
+      if (txt) txt.textContent = "Vertrag: fehlt";
+    }
+
+    const f = tn.esfForm || {};
+    document.getElementById("esfEintrittsdatum").value = f.eintrittsdatum || tn.zuweisungVon || "";
+    document.getElementById("esfDrittstaat").value = f.drittstaat ?? "";
+    document.getElementById("esfGefluechtet").value = f.gefluechtet ?? "";
+    document.getElementById("esfAuslaendischeHerkunft").value = f.auslaendischeHerkunft ?? "";
+
+    document.getElementById("esfEinverstaendnis").value = f.einverstaendnis ?? "";
+    document.getElementById("esfSgbLeistung").value = f.sgbLeistung ?? "";
+    document.getElementById("esfSchulabschluss").value = f.schulabschluss ?? "";
+    document.getElementById("esfBerufsabschluss").value = f.berufsabschluss ?? "";
+    document.getElementById("esfZielgruppe").value = f.zielgruppe ?? "";
+    document.getElementById("esfWohnsitz").value = f.wohnsitz ?? "";
+
+    document.getElementById("esfAustrittsgrund").value = f.austrittsgrund ?? "";
+    document.getElementById("esfZertifizierung").value = f.zertifizierung ?? "";
+    document.getElementById("esfVerbleib").value = f.verbleib ?? "";
 
     esfState.modalSnapshot = {
-      gebDatum: document.getElementById("esfGebDatum").value,
-      eintritt: document.getElementById("esfEintritt").value,
-      adresse: document.getElementById("esfAdresse").value,
-      notiz: document.getElementById("esfNotiz").value
+      eintrittsdatum: document.getElementById("esfEintrittsdatum").value,
+      drittstaat: document.getElementById("esfDrittstaat").value,
+      gefluechtet: document.getElementById("esfGefluechtet").value,
+      auslaendischeHerkunft: document.getElementById("esfAuslaendischeHerkunft").value,
+      einverstaendnis: document.getElementById("esfEinverstaendnis").value,
+      sgbLeistung: document.getElementById("esfSgbLeistung").value,
+      schulabschluss: document.getElementById("esfSchulabschluss").value,
+      berufsabschluss: document.getElementById("esfBerufsabschluss").value,
+      zielgruppe: document.getElementById("esfZielgruppe").value,
+      wohnsitz: document.getElementById("esfWohnsitz").value,
+      austrittsgrund: document.getElementById("esfAustrittsgrund").value,
+      zertifizierung: document.getElementById("esfZertifizierung").value,
+      verbleib: document.getElementById("esfVerbleib").value
     };
 
-    const comp = esfCompleteness(tn);
-    document.getElementById("esfModalWarn").classList.toggle("d-none", comp.ok);
+    const missing = [];
+    if (!document.getElementById("esfEintrittsdatum").value) missing.push("Eintrittsdatum");
+    if (!document.getElementById("esfEinverstaendnis").value) missing.push("Einverständnis");
+
+    document.getElementById("esfModalWarn").classList.toggle("d-none", missing.length === 0);
     document.getElementById("esfModalStatusText").textContent =
-      comp.ok ? "Status: vollständig" : "Status: prüfen";
+      missing.length === 0 ? "Status: vollständig" : "Status: prüfen";
 
     setEsfModalEditing(false);
-
-    const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById("esfModal"));
-    modal.show();
-  }
-
-  function setEsfModalEditing(isEditing) {
-    esfState.modalEditing = isEditing;
-
-    ["esfGebDatum","esfEintritt","esfAdresse","esfNotiz"].forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.readOnly = !isEditing;
-    });
-
-    document.getElementById("btnEsfModalEdit").classList.toggle("d-none", isEditing);
-    document.getElementById("btnEsfModalCancel").classList.toggle("d-none", !isEditing);
-    document.getElementById("btnEsfModalSave").classList.toggle("d-none", !isEditing);
+    bootstrap.Modal.getOrCreateInstance(document.getElementById("esfModal")).show();
   }
 
   function saveEsfModal() {
     const id = esfState.activeId;
-    const tn = demoTeilnehmer.find(x => x.id === id);
+    const tn = demoEsfTeilnehmer.find(x => x.id === id);
     if (!tn) return;
 
+    if (!tn.esfVertragUnterschrieben) {
+      showToast("Nicht möglich", "Ohne Unterschrift dürfen keine ESF Daten gespeichert werden.");
+      return;
+    }
+
     tn.esfForm = tn.esfForm || {};
-    tn.esfForm.gebDatum = document.getElementById("esfGebDatum").value;
-    tn.esfForm.eintritt = document.getElementById("esfEintritt").value;
-    tn.esfForm.adresse = document.getElementById("esfAdresse").value;
-    tn.esfForm.notiz = document.getElementById("esfNotiz").value;
+    tn.esfForm.eintrittsdatum = document.getElementById("esfEintrittsdatum").value;
+    tn.esfForm.drittstaat = document.getElementById("esfDrittstaat").value;
+    tn.esfForm.gefluechtet = document.getElementById("esfGefluechtet").value;
+    tn.esfForm.auslaendischeHerkunft = document.getElementById("esfAuslaendischeHerkunft").value;
+
+    tn.esfForm.einverstaendnis = document.getElementById("esfEinverstaendnis").value;
+    tn.esfForm.sgbLeistung = document.getElementById("esfSgbLeistung").value;
+    tn.esfForm.schulabschluss = document.getElementById("esfSchulabschluss").value;
+    tn.esfForm.berufsabschluss = document.getElementById("esfBerufsabschluss").value;
+    tn.esfForm.zielgruppe = document.getElementById("esfZielgruppe").value;
+    tn.esfForm.wohnsitz = document.getElementById("esfWohnsitz").value;
+
+    tn.esfForm.austrittsgrund = document.getElementById("esfAustrittsgrund").value;
+    tn.esfForm.zertifizierung = document.getElementById("esfZertifizierung").value;
+    tn.esfForm.verbleib = document.getElementById("esfVerbleib").value;
 
     setEsfModalEditing(false);
     applyEsfFilter();
 
-    const comp = esfCompleteness(tn);
-    document.getElementById("esfModalWarn").classList.toggle("d-none", comp.ok);
+    const c = esfCompleteness(tn);
+    document.getElementById("esfModalWarn").classList.toggle("d-none", c.ok);
     document.getElementById("esfModalStatusText").textContent =
-      comp.ok ? "Status: vollständig" : "Status: prüfen";
+      c.ok ? "Status: vollständig" : "Status: prüfen";
 
-    showToast("Gespeichert", "ESF-Daten wurden (demo) übernommen.");
+    showToast("Gespeichert", "ESF-Angaben wurden (demo) übernommen.");
   }
 
   function cancelEsfModal() {
     if (!esfState.modalSnapshot) return;
-    document.getElementById("esfGebDatum").value = esfState.modalSnapshot.gebDatum;
-    document.getElementById("esfEintritt").value = esfState.modalSnapshot.eintritt;
-    document.getElementById("esfAdresse").value = esfState.modalSnapshot.adresse;
-    document.getElementById("esfNotiz").value = esfState.modalSnapshot.notiz;
+
+    document.getElementById("esfEintrittsdatum").value = esfState.modalSnapshot.eintrittsdatum;
+    document.getElementById("esfDrittstaat").value = esfState.modalSnapshot.drittstaat;
+    document.getElementById("esfGefluechtet").value = esfState.modalSnapshot.gefluechtet;
+    document.getElementById("esfAuslaendischeHerkunft").value = esfState.modalSnapshot.auslaendischeHerkunft;
+
+    document.getElementById("esfEinverstaendnis").value = esfState.modalSnapshot.einverstaendnis;
+    document.getElementById("esfSgbLeistung").value = esfState.modalSnapshot.sgbLeistung;
+    document.getElementById("esfSchulabschluss").value = esfState.modalSnapshot.schulabschluss;
+    document.getElementById("esfBerufsabschluss").value = esfState.modalSnapshot.berufsabschluss;
+    document.getElementById("esfZielgruppe").value = esfState.modalSnapshot.zielgruppe;
+    document.getElementById("esfWohnsitz").value = esfState.modalSnapshot.wohnsitz;
+
+    document.getElementById("esfAustrittsgrund").value = esfState.modalSnapshot.austrittsgrund;
+    document.getElementById("esfZertifizierung").value = esfState.modalSnapshot.zertifizierung;
+    document.getElementById("esfVerbleib").value = esfState.modalSnapshot.verbleib;
+
     setEsfModalEditing(false);
   }
 
@@ -1374,8 +1960,14 @@
       return;
     }
 
+    const ohneVertrag = list.filter(tn => !tn.esfVertragUnterschrieben);
+    if (ohneVertrag.length > 0) {
+      showToast("Nicht möglich", `${ohneVertrag.length} Teilnehmer haben keinen unterschriebenen ESF-Vertrag.`);
+      return;
+    }
+
     if (incomplete.length > 0) {
-      showToast("Nicht möglich", `${incomplete.length} Teilnehmer haben unvollständige Pflichtfelder. Bitte zuerst prüfen.`);
+      showToast("Nicht möglich", `${incomplete.length} Teilnehmer sind unvollständig. Bitte zuerst prüfen.`);
       return;
     }
 
@@ -1392,26 +1984,75 @@
 
     if (showEsf) applyEsfFilter();
   }
+</script>
 
+<script>
+  // =========================
+  // Init
+  // =========================
   document.addEventListener("DOMContentLoaded", () => {
-    document.getElementById("btnEsfMitAbrechnung")?.addEventListener("click", () => {
-      switchReportsScreen(true);
+    // Stammdaten
+    renderMassnahmeStammdaten();
+    initBlockEditors();
+
+    // Teilnehmer: Standardmäßig nur aktiv
+    resetTeilnehmerFilter();
+
+    // Teilnehmer: Events
+    document.getElementById("btnTnApply")?.addEventListener("click", applyTeilnehmerFilter);
+    document.getElementById("btnTnReset")?.addEventListener("click", resetTeilnehmerFilter);
+    document.getElementById("btnTnApply2")?.addEventListener("click", () => document.getElementById("btnTnApply")?.click());
+
+    ["tnFilterSearch","tnFilterBetreuer","tnFilterArbeitsbereich","tnFilterAnleiter","tnFilterVon","tnFilterBis"].forEach(id => {
+      document.getElementById(id)?.addEventListener("change", applyTeilnehmerFilter);
+      if (id === "tnFilterSearch") {
+        document.getElementById(id)?.addEventListener("keyup", applyTeilnehmerFilter);
+      }
+    });
+    ["statusAktiv","statusGeplant","statusBeendet"].forEach(id => {
+      document.getElementById(id)?.addEventListener("change", applyTeilnehmerFilter);
     });
 
-    document.getElementById("btnBackToReports")?.addEventListener("click", () => {
-      switchReportsScreen(false);
+    // Unterschriftenliste Modal
+    document.getElementById("btnOpenUnterschriftenModal")?.addEventListener("click", () => {
+      const today = new Date();
+      const y = today.getFullYear();
+      const m = String(today.getMonth() + 1).padStart(2, "0");
+      const d = String(today.getDate()).padStart(2, "0");
+      document.getElementById("uDatum").value = `${y}-${m}-${d}`;
+
+      const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById("unterschriftenModal"));
+      modal.show();
     });
 
+    document.getElementById("btnUDruckPdf")?.addEventListener("click", () => {
+      const dt = document.getElementById("uDatum")?.value;
+      if (!dt) { showToast("Fehlt", "Bitte Datum auswählen."); return; }
+      showToast("Druck", `Unterschriftenliste (PDF) für ${fmtDateDE(dt)} (Demo).`);
+      bootstrap.Modal.getOrCreateInstance(document.getElementById("unterschriftenModal")).hide();
+    });
+
+    document.getElementById("btnUDruckExcel")?.addEventListener("click", () => {
+      const dt = document.getElementById("uDatum")?.value;
+      if (!dt) { showToast("Fehlt", "Bitte Datum auswählen."); return; }
+      showToast("Export", `Unterschriftenliste (Excel) für ${fmtDateDE(dt)} (Demo).`);
+      bootstrap.Modal.getOrCreateInstance(document.getElementById("unterschriftenModal")).hide();
+    });
+
+    // ESF Screens
+    document.getElementById("btnEsfMitAbrechnung")?.addEventListener("click", () => switchReportsScreen(true));
+    document.getElementById("btnBackToReports")?.addEventListener("click", () => switchReportsScreen(false));
     document.getElementById("btnEsfApply")?.addEventListener("click", applyEsfFilter);
-
     document.getElementById("btnEsfReset")?.addEventListener("click", () => {
       document.getElementById("esfFilterVon").value = "2024-01-01";
       document.getElementById("esfFilterBis").value = "2025-12-31";
-      document.getElementById("esfFilterSearch").value = "";
       applyEsfFilter();
     });
-
     document.getElementById("btnEsfBatchCreate")?.addEventListener("click", batchCreateStammblaetter);
+
+    // ESF Modal Buttons
+    document.getElementById("btnEsfModalCancel")?.addEventListener("click", cancelEsfModal);
+    document.getElementById("btnEsfModalSave")?.addEventListener("click", saveEsfModal);
 
     document.getElementById("btnEsfModalEdit")?.addEventListener("click", () => {
       const ok = window.confirm("Sind Sie sicher, dass Sie die ESF-Daten ändern wollen?");
@@ -1419,8 +2060,23 @@
       setEsfModalEditing(true);
     });
 
-    document.getElementById("btnEsfModalCancel")?.addEventListener("click", cancelEsfModal);
-    document.getElementById("btnEsfModalSave")?.addEventListener("click", saveEsfModal);
+    document.getElementById("btnEsfModalCreateStammblatt")?.addEventListener("click", () => {
+      const tn = demoEsfTeilnehmer.find(x => x.id === esfState.activeId);
+      if (!tn) return;
+
+      if (!tn.esfVertragUnterschrieben) {
+        showToast("Nicht möglich", "Ohne Unterschrift darf kein Stammblatt erzeugt werden.");
+        return;
+      }
+
+      const c = esfCompleteness(tn);
+      if (!c.ok) {
+        showToast("Nicht möglich", "Bitte zuerst Pflichtangaben vervollständigen.");
+        return;
+      }
+
+      showToast("Stammblatt", "Stammblatt erzeugen (Demo).");
+    });
   });
 </script>
 
