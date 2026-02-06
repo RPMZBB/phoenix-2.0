@@ -91,14 +91,22 @@
   <div>
     <div>TN-ID: <strong>12345</strong></div>
     <div>Kennung: <strong>555XV5974</strong></div>
-
-    <!-- NEU: Förderung -->
-    <div class="mt-1">
-      Förderung: <strong id="foerderungText">-</strong>
-    </div>
   </div>
-  <span class="badge rounded-pill bg-success">aktiv</span>
+
+  <!-- Status-Badges -->
+  <div class="d-flex align-items-center gap-2">
+    <span class="badge rounded-pill bg-success">aktiv</span>
+
+    <!-- ESF Badge (wird per JS ein-/ausgeblendet) -->
+    <span
+      class="badge rounded-pill bg-primary-subtle text-primary border d-none"
+      id="esfBadge"
+    >
+      ESF
+    </span>
+  </div>
 </div>
+
 
 
   <!-- Avatar + Name -->
@@ -127,7 +135,17 @@
     <div class="text-center mb-3">
       <div class="text-muted small mb-1">Aktuelle Maßnahme</div>
       <div class="h5 mb-1 text-primary fw-bold">Integra 2025</div>
-      <div class="small text-muted">01.01.2024 – 31.12.2024</div>
+      <div class="small text-muted">
+  <span class="fw-semibold text-secondary">Zuweisung:</span>
+  <span class="fw-semibold text-dark">01.01.2024 – 31.12.2024</span>
+</div>
+
+<div class="mt-2 d-inline-flex align-items-center gap-2 px-2 py-1 rounded-2 bg-white border small">
+  <i class="bi bi-box-arrow-in-right text-success"></i>
+  <span class="text-muted">Eintrittsdatum:</span>
+  <span class="fw-semibold text-dark">01.01.2024</span>
+</div>
+
     </div>
 
     <!-- Drei Felder nebeneinander -->
@@ -732,7 +750,7 @@
       type="checkbox"
       id="esfToggle"
       class="form-check-input m-0"
-      style="transform: scale(1.2);"
+      style="transform: scale(1.2);" checked
     >
     <label for="esfToggle" class="form-check-label fw-semibold mb-0">
       ESF
@@ -749,7 +767,7 @@
   <form class="row g-3" id="esfForm">
 
     <!-- OBERER BLOCK: Übernommene Angaben aus anderen Tabs -->
-<!-- ✅ 4 Felder responsiv: Desktop = alle nebeneinander, sonst umbrechen -->
+
 <div class="row g-3 row-cols-1 row-cols-md-2 row-cols-xl-4">
 
   <!-- Eintrittsdatum -->
@@ -1832,7 +1850,7 @@ function openTNMassnahmeProfil(page) {
   document.addEventListener("DOMContentLoaded", function () {
     const esfToggle = document.getElementById("esfToggle");
     const esfForm = document.getElementById("esfForm");
-    const foerderungText = document.getElementById("foerderungText");
+    const esfBadge = document.getElementById("esfBadge");
 
     function applyEsfState() {
       const isEsf = !!(esfToggle && esfToggle.checked);
@@ -1842,9 +1860,9 @@ function openTNMassnahmeProfil(page) {
         esfForm.style.display = isEsf ? "" : "none";
       }
 
-      // Förderungstext (unter Kennung) dynamisch
-      if (foerderungText) {
-        foerderungText.textContent = isEsf ? "ESF" : "andere";
+      // ESF Badge neben "aktiv" ein-/ausblenden
+      if (esfBadge) {
+        esfBadge.classList.toggle("d-none", !isEsf);
       }
     }
 
@@ -1852,10 +1870,11 @@ function openTNMassnahmeProfil(page) {
       esfToggle.addEventListener("change", applyEsfState);
     }
 
-    // Initialzustand: Checkbox aus => Formular weg + "andere"
-    applyEsfState();
+    applyEsfState(); // Initialzustand
   });
 </script>
+
+
 
 </body>
 </html>
