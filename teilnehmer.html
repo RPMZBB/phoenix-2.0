@@ -20,16 +20,14 @@
     /* Filterzeile: auf Desktop alles in 1 Reihe, mobil umbrechen */
     .filter-row{
       display:flex;
-      flex-wrap:wrap;           /* mobil/tablet darf umbrechen */
+      flex-wrap:wrap;
       gap:.5rem;
       align-items:end;
     }
     @media (min-width: 992px){
-      .filter-row{
-        flex-wrap:nowrap;       /* Desktop: eine Zeile */
-      }
+      .filter-row{ flex-wrap:nowrap; }
       .filter-item{ flex: 1 1 0; min-width: 0; }
-      .filter-search{ flex: 2.2 1 0; }     /* Suche etwas breiter */
+      .filter-search{ flex: 2.2 1 0; }
       .filter-actions{ flex: 0 0 auto; white-space:nowrap; }
     }
   </style>
@@ -419,7 +417,7 @@
                         <div class="col-md-4 mb-3">
                           <div class="form-floating">
                             <input type="date" class="form-control" id="tn_eintritt" />
-                            <label for="tn_eintritt">Eintrittsdatum</label>
+                            <label for="tn_eintritt">Eintrittsdatum (Unterschrift)</label>
                           </div>
                         </div>
 
@@ -445,6 +443,15 @@
                             </select>
                             <label for="tn_jc_mitarbeiter">JC-Mitarbeiter *</label>
                           </div>
+                        </div>
+                      </div>
+
+                      <!-- UX Hint: Eintrittsdatum steuert Status -->
+                      <div class="alert alert-light border small d-flex gap-2 mt-2 mb-0">
+                        <i class="bi bi-info-circle text-secondary mt-1"></i>
+                        <div class="text-secondary">
+                          <strong>Hinweis:</strong> Ohne Eintrittsdatum wird der Teilnehmer als <strong>Geplant</strong> gespeichert und erscheint <strong>nicht</strong> in ESF-Statistiken.
+                          Mit Eintrittsdatum wird er ab diesem Datum als <strong>Aktiv</strong> geführt und die Unterlagen können gedruckt werden.
                         </div>
                       </div>
 
@@ -529,6 +536,20 @@
                                   <span class="text-secondary">Zuweisung</span>
                                   <span class="fw-semibold text-end" id="sum_zuweisung">—</span>
                                 </div>
+                                <!-- NEU: Eintrittsdatum in Übersicht -->
+                                <div class="d-flex justify-content-between border-bottom py-1">
+                                  <span class="text-secondary">Eintrittsdatum</span>
+                                  <span class="fw-semibold text-end" id="sum_eintritt">—</span>
+                                </div>
+                                <!-- NEU: Status-Vorschau -->
+                                <div class="d-flex justify-content-between border-bottom py-1">
+                                  <span class="text-secondary">Status</span>
+                                  <span class="fw-semibold text-end">
+                                  <span class="badge bg-secondary" id="sum_status">—</span>
+                                </span>
+
+                                </div>
+
                                 <div class="d-flex justify-content-between border-bottom py-1">
                                   <span class="text-secondary">JC-Team</span>
                                   <span class="fw-semibold text-end" id="sum_jc_team">—</span>
@@ -541,18 +562,12 @@
 
                               <hr class="my-3">
 
-                              <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" role="switch" id="chkPrintAfterSave" checked>
-                                <label class="form-check-label" for="chkPrintAfterSave">
-                                  Erstunterlagen nach dem Speichern drucken
-                                </label>
-                              </div>
-
-                              <div class="alert alert-light border small mt-2 mb-0 d-flex gap-2">
+                              <!-- Schalter entfernt, stattdessen klare Erklärung -->
+                              <div class="alert alert-light border small mb-0 d-flex gap-2">
                                 <i class="bi bi-info-circle text-secondary mt-1"></i>
                                 <div class="text-secondary">
-                                  Hinweis: Wenn aktiv, werden nach dem Speichern die ausgewählten Unterlagen direkt gedruckt.
-                                  (Später auch an anderer Stelle möglich.)
+                                  Speichern Sie den Teilnehmer entweder als <strong>Geplant</strong> (ohne Eintrittsdatum) oder als <strong>Aktiv</strong> (mit Eintrittsdatum).
+                                  Nur <strong>Aktiv</strong> darf in ESF-Statistiken auftauchen.
                                 </div>
                               </div>
                             </div>
@@ -568,6 +583,9 @@
                               </div>
                               <div class="text-secondary small mb-3">
                                 Unterlagen auswählen, die beim Termin zur Unterschrift ausgedruckt werden.
+                                <span class="d-block mt-1">
+                                  <strong>Hinweis:</strong> Druck ist nur möglich, wenn ein Eintrittsdatum gesetzt ist.
+                                </span>
                               </div>
 
                               <div class="border rounded-3 p-3 bg-light mb-3">
@@ -652,9 +670,16 @@
                           <i class="bi bi-arrow-left me-1"></i> Zurück
                         </button>
 
-                        <button type="submit" class="btn btn-success" id="btnSaveTeilnehmer">
-                          <i class="bi bi-save me-1"></i> Teilnehmer speichern
-                        </button>
+                        <!-- NEU: 2 Buttons statt 1 -->
+                        <div class="d-flex flex-wrap gap-2">
+                          <button type="button" class="btn btn-outline-primary" id="btnSavePlanned">
+                            <i class="bi bi-calendar-plus me-1"></i> Als geplant speichern
+                          </button>
+
+                          <button type="button" class="btn btn-success" id="btnSaveActivePrint" disabled>
+                            <i class="bi bi-printer me-1"></i> Eintritt speichern &amp; Unterlagen drucken
+                          </button>
+                        </div>
                       </div>
 
                     </div>
@@ -819,6 +844,14 @@
       });
     }
 
+    function closeModal(id) {
+      const modalEl = document.getElementById(id);
+      if (!modalEl) return;
+      let modal = bootstrap.Modal.getInstance(modalEl);
+      if (!modal) modal = new bootstrap.Modal(modalEl);
+      modal.hide();
+    }
+
     document.addEventListener("DOMContentLoaded", function () {
       // Tooltips (statische Elemente)
       const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
@@ -890,80 +923,9 @@
       document.getElementById("btnNext3")?.addEventListener("click", () => {
         stepper.next(); showStep("step4");
         updateSummary();
+        syncSaveButtons(); // neu
       });
       document.getElementById("btnBack4")?.addEventListener("click", () => { stepper.previous(); showStep("step3"); });
-
-      // Live Summary Update
-      const liveIds = [
-        "tn_nachname","tn_vorname","tn_geburtsdatum","tn_telefon","tn_mobil",
-        "tn_strasse","tn_hausnummer","tn_plz","tn_ort","tn_land",
-        "tn_massnahme","tn_betreuer","tn_zuweisung_von","tn_zuweisung_bis",
-        "tn_jc_team","tn_jc_mitarbeiter"
-      ];
-      liveIds.forEach(id => document.getElementById(id)?.addEventListener("input", updateSummary));
-      liveIds.forEach(id => document.getElementById(id)?.addEventListener("change", updateSummary));
-
-      // Docs quick actions
-      document.getElementById("btnDocsAll")?.addEventListener("click", () => {
-        getDocIds().forEach(id => { const el = document.getElementById(id); if (el) el.checked = true; });
-      });
-      document.getElementById("btnDocsNone")?.addEventListener("click", () => {
-        getDocIds().forEach(id => { const el = document.getElementById(id); if (el) el.checked = false; });
-      });
-
-      // Submit -> Teilnehmer speichern -> ggf. drucken (Demo)
-      document.getElementById("teilnehmerForm")?.addEventListener("submit", function (e) {
-        e.preventDefault();
-
-        const requiredIds = ["tn_nachname","tn_massnahme","tn_betreuer","tn_zuweisung_von","tn_zuweisung_bis","tn_jc_team","tn_jc_mitarbeiter"];
-        let ok = true;
-        requiredIds.forEach(id => {
-          const el = document.getElementById(id);
-          if (el && !String(el.value || "").trim()) { el.classList.add("is-invalid"); ok = false; }
-          else el?.classList.remove("is-invalid");
-        });
-        if (!ok) {
-          if (!document.getElementById("tn_nachname")?.value.trim()) { stepper.to(1); showStep("step1"); }
-          else { stepper.to(2); showStep("step2"); }
-          return;
-        }
-
-        const payload = collectTeilnehmerPayload();
-        console.log("SAVE Teilnehmer (Demo)", payload);
-
-        // Modal schließen
-        const modalEl = document.getElementById("teilnehmerModal");
-        if (modalEl) {
-          let modal = bootstrap.Modal.getInstance(modalEl);
-          if (!modal) modal = new bootstrap.Modal(modalEl);
-          modal.hide();
-        }
-
-        // Wenn Schalter aktiv: direkt drucken (DEMO)
-        const printEnabled = document.getElementById("chkPrintAfterSave")?.checked;
-        if (printEnabled) {
-          const docs = getSelectedDocs();
-          alert(
-            "Drucken (Demo)\n\n" +
-            "Teilnehmer: " + [payload.vorname, payload.nachname].filter(Boolean).join(" ") + "\n" +
-            "Maßnahme: " + payload.massnahme + "\n" +
-            "Beförderung: " + payload.befoerderung + "\n\n" +
-            "Unterlagen:\n- " + (docs.length ? docs.join("\n- ") : "(keine)")
-          );
-        } else {
-          alert("Teilnehmer gespeichert (Demo).");
-        }
-      });
-
-      // Reset when modal closes
-      const modalEl = document.getElementById("teilnehmerModal");
-      modalEl?.addEventListener("hidden.bs.modal", () => {
-        document.getElementById("teilnehmerForm")?.reset();
-        stepper?.to(1);
-        showStep("step1");
-        ["tn_nachname","tn_massnahme","tn_betreuer","tn_zuweisung_von","tn_zuweisung_bis","tn_jc_team","tn_jc_mitarbeiter"]
-          .forEach(id => document.getElementById(id)?.classList.remove("is-invalid"));
-      });
 
       function showStep(id) {
         document.querySelectorAll(".bs-stepper-content .content").forEach(s => s.classList.add("d-none"));
@@ -1000,6 +962,9 @@
 
       function collectTeilnehmerPayload() {
         const befoerderung = document.querySelector('input[name="befoerderung"]:checked')?.value || "ÖPNV";
+        const eintritt = document.getElementById("tn_eintritt")?.value || "";
+        const status = eintritt ? "Aktiv" : "Geplant";
+
         return {
           nachname: (document.getElementById("tn_nachname")?.value || "").trim(),
           vorname: (document.getElementById("tn_vorname")?.value || "").trim(),
@@ -1016,16 +981,41 @@
           betreuer: document.getElementById("tn_betreuer")?.value || "",
           zuweisung_von: document.getElementById("tn_zuweisung_von")?.value || "",
           zuweisung_bis: document.getElementById("tn_zuweisung_bis")?.value || "",
+          eintritt,
           jc_team: document.getElementById("tn_jc_team")?.value || "",
           jc_mitarbeiter: document.getElementById("tn_jc_mitarbeiter")?.value || "",
+          status,
           befoerderung,
           docs: getSelectedDocs()
         };
       }
 
+      function validateRequired() {
+        const requiredIds = ["tn_nachname","tn_massnahme","tn_betreuer","tn_zuweisung_von","tn_zuweisung_bis","tn_jc_team","tn_jc_mitarbeiter"];
+        let ok = true;
+        requiredIds.forEach(id => {
+          const el = document.getElementById(id);
+          if (el && !String(el.value || "").trim()) { el.classList.add("is-invalid"); ok = false; }
+          else el?.classList.remove("is-invalid");
+        });
+        if (!ok) {
+          if (!document.getElementById("tn_nachname")?.value.trim()) { stepper.to(1); showStep("step1"); }
+          else { stepper.to(2); showStep("step2"); }
+        }
+        return ok;
+      }
+
       function setText(id, text) {
         const el = document.getElementById(id);
         if (el) el.textContent = text;
+      }
+
+      function syncSaveButtons() {
+        const eintritt = document.getElementById("tn_eintritt")?.value || "";
+        const btnActive = document.getElementById("btnSaveActivePrint");
+        if (btnActive) btnActive.disabled = !eintritt;
+        // Status-Vorschau aktualisieren
+        setText("sum_status", eintritt ? "Aktiv" : "Geplant");
       }
 
       function updateSummary() {
@@ -1050,9 +1040,95 @@
         const zuw = (p.zuweisung_von || p.zuweisung_bis) ? `${p.zuweisung_von || "—"} bis ${p.zuweisung_bis || "—"}` : "—";
         setText("sum_zuweisung", zuw);
 
+        setText("sum_eintritt", p.eintritt ? fmtDate(p.eintritt) : "—");
+        setText("sum_status", p.status || "—");
+
         setText("sum_jc_team", p.jc_team || "—");
         setText("sum_jc_mitarbeiter", p.jc_mitarbeiter || "—");
       }
+
+      // Live Summary Update
+      const liveIds = [
+        "tn_nachname","tn_vorname","tn_geburtsdatum","tn_telefon","tn_mobil",
+        "tn_strasse","tn_hausnummer","tn_plz","tn_ort","tn_land",
+        "tn_massnahme","tn_betreuer","tn_zuweisung_von","tn_zuweisung_bis",
+        "tn_eintritt",
+        "tn_jc_team","tn_jc_mitarbeiter"
+      ];
+      liveIds.forEach(id => document.getElementById(id)?.addEventListener("input", () => { updateSummary(); syncSaveButtons(); }));
+      liveIds.forEach(id => document.getElementById(id)?.addEventListener("change", () => { updateSummary(); syncSaveButtons(); }));
+
+      // Docs quick actions
+      document.getElementById("btnDocsAll")?.addEventListener("click", () => {
+        getDocIds().forEach(id => { const el = document.getElementById(id); if (el) el.checked = true; });
+      });
+      document.getElementById("btnDocsNone")?.addEventListener("click", () => {
+        getDocIds().forEach(id => { const el = document.getElementById(id); if (el) el.checked = false; });
+      });
+
+      // NEU: Speichern als GEPLANT (ohne Eintritt, ohne Druck)
+      document.getElementById("btnSavePlanned")?.addEventListener("click", function () {
+        if (!validateRequired()) return;
+
+        const payload = collectTeilnehmerPayload();
+        payload.status = "Geplant";
+        payload.eintritt = ""; // hart setzen, damit Logik eindeutig ist
+
+        console.log("SAVE Teilnehmer (Geplant) (Demo)", payload);
+
+        closeModal("teilnehmerModal");
+        alert(
+          "Teilnehmer gespeichert (Geplant) (Demo).\n\n" +
+          "Teilnehmer: " + [payload.vorname, payload.nachname].filter(Boolean).join(" ") + "\n" +
+          "Maßnahme: " + payload.massnahme + "\n" +
+          "Status: Geplant\n\n" +
+          "Hinweis: Er erscheint nicht in ESF-Statistiken (keine Unterschrift)."
+        );
+      });
+
+      // NEU: Speichern als AKTIV + Drucken
+      document.getElementById("btnSaveActivePrint")?.addEventListener("click", function () {
+        if (!validateRequired()) return;
+
+        const payload = collectTeilnehmerPayload();
+        if (!payload.eintritt) {
+          alert("Bitte ein Eintrittsdatum setzen, um als Aktiv zu speichern und Unterlagen zu drucken.");
+          document.getElementById("tn_eintritt")?.focus();
+          return;
+        }
+        payload.status = "Aktiv";
+
+        console.log("SAVE Teilnehmer (Aktiv + Print) (Demo)", payload);
+
+        closeModal("teilnehmerModal");
+
+        const docs = getSelectedDocs();
+        alert(
+          "Teilnehmer gespeichert (Aktiv) & Drucken (Demo)\n\n" +
+          "Teilnehmer: " + [payload.vorname, payload.nachname].filter(Boolean).join(" ") + "\n" +
+          "Maßnahme: " + payload.massnahme + "\n" +
+          "Eintritt: " + fmtDate(payload.eintritt) + "\n" +
+          "Status: Aktiv\n" +
+          "Beförderung: " + payload.befoerderung + "\n\n" +
+          "Unterlagen:\n- " + (docs.length ? docs.join("\n- ") : "(keine)")
+        );
+      });
+
+      // Reset when modal closes
+      const modalEl = document.getElementById("teilnehmerModal");
+      modalEl?.addEventListener("hidden.bs.modal", () => {
+        document.getElementById("teilnehmerForm")?.reset();
+        stepper?.to(1);
+        showStep("step1");
+        ["tn_nachname","tn_massnahme","tn_betreuer","tn_zuweisung_von","tn_zuweisung_bis","tn_jc_team","tn_jc_mitarbeiter"]
+          .forEach(id => document.getElementById(id)?.classList.remove("is-invalid"));
+
+        // Buttons/Übersicht zurücksetzen
+        setText("sum_eintritt", "—");
+        setText("sum_status", "—");
+        const btnActive = document.getElementById("btnSaveActivePrint");
+        if (btnActive) btnActive.disabled = true;
+      });
     });
   </script>
 
