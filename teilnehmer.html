@@ -369,6 +369,8 @@
                     <!-- STEP 2 -->
                     <div id="step2" class="content d-none" role="tabpanel" aria-labelledby="step2-trigger">
                       <div class="row">
+
+                        <!-- GRUPPE 1: Maßnahme / Betreuer / Kundennummer -->
                         <div class="col-md-4 mb-3">
                           <div class="form-floating">
                             <select class="form-select" id="tn_massnahme" required>
@@ -383,23 +385,75 @@
                         </div>
 
                         <div class="col-md-4 mb-3">
-                          <div class="form-floating">
-                            <select class="form-select" id="tn_betreuer" required>
-                              <option selected disabled value="">Betreuer wählen *</option>
-                              <option>Daniel Chu</option>
-                              <option>Janine Kerber</option>
-                            </select>
-                            <label for="tn_betreuer">Betreuer *</label>
+                          <!-- Select + Neu-Button -->
+                          <div class="input-group">
+                            <div class="form-floating flex-grow-1">
+                              <select class="form-select" id="tn_betreuer" required>
+                                <option selected disabled value="">Betreuer wählen *</option>
+                                <option>Daniel Chu</option>
+                                <option>Janine Kerber</option>
+                                <option value="__new__">+ Neu anlegen …</option>
+                              </select>
+                              <label for="tn_betreuer">Betreuer *</label>
+                            </div>
+                            <button class="btn btn-outline-secondary" type="button" id="btnNewBetreuer" title="Neuen Betreuer anlegen">
+                              <i class="bi bi-plus-lg"></i>
+                            </button>
                           </div>
                         </div>
 
                         <div class="col-md-4 mb-3">
                           <div class="form-floating">
-                            <input type="text" class="form-control" id="tn_kennung" placeholder="Kennung" />
-                            <label for="tn_kennung">Kennung</label>
+                            <input type="text" class="form-control" id="tn_kundennr" placeholder="Kundennummer" />
+                            <label for="tn_kundennr">Kundennummer</label>
                           </div>
                         </div>
 
+                        <!-- GRUPPE 2: TN-Kennung / JC-Team / JC-Mitarbeiter -->
+                        <div class="col-md-4 mb-3">
+                          <div class="form-floating">
+                            <input type="text" class="form-control" id="tn_kennung" placeholder="TN-Kennung" />
+                            <label for="tn_kennung">TN-Kennung</label>
+                          </div>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                          <div class="input-group">
+                            <div class="form-floating flex-grow-1">
+                              <select class="form-select" id="tn_jc_team" required>
+                                <option selected disabled value="">JC-Team *</option>
+                                <option>Team A</option>
+                                <option>Team B</option>
+                                <option>Team C</option>
+                                <option value="__new__">+ Neu anlegen …</option>
+                              </select>
+                              <label for="tn_jc_team">JC-Team *</label>
+                            </div>
+                            <button class="btn btn-outline-secondary" type="button" id="btnNewJcTeam" title="Neues JC-Team anlegen">
+                              <i class="bi bi-plus-lg"></i>
+                            </button>
+                          </div>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                          <div class="input-group">
+                            <div class="form-floating flex-grow-1">
+                              <select class="form-select" id="tn_jc_mitarbeiter" required>
+                                <option selected disabled value="">JC-Mitarbeiter *</option>
+                                <option>Alessandro</option>
+                                <option>Uwe</option>
+                                <option>Maria</option>
+                                <option value="__new__">+ Neu anlegen …</option>
+                              </select>
+                              <label for="tn_jc_mitarbeiter">JC-Mitarbeiter *</label>
+                            </div>
+                            <button class="btn btn-outline-secondary" type="button" id="btnNewJcMitarbeiter" title="Neuen JC-Mitarbeiter anlegen">
+                              <i class="bi bi-plus-lg"></i>
+                            </button>
+                          </div>
+                        </div>
+
+                        <!-- GRUPPE 3: Zuweisung / Eintritt -->
                         <div class="col-md-4 mb-3">
                           <div class="form-floating">
                             <input type="date" class="form-control" id="tn_zuweisung_von" required />
@@ -418,30 +472,6 @@
                           <div class="form-floating">
                             <input type="date" class="form-control" id="tn_eintritt" />
                             <label for="tn_eintritt">Eintrittsdatum (Unterschrift)</label>
-                          </div>
-                        </div>
-
-                        <div class="col-md-4 mb-3">
-                          <div class="form-floating">
-                            <select class="form-select" id="tn_jc_team" required>
-                              <option selected disabled value="">JC-Team *</option>
-                              <option>Team A</option>
-                              <option>Team B</option>
-                              <option>Team C</option>
-                            </select>
-                            <label for="tn_jc_team">JC-Team *</label>
-                          </div>
-                        </div>
-
-                        <div class="col-md-4 mb-3">
-                          <div class="form-floating">
-                            <select class="form-select" id="tn_jc_mitarbeiter" required>
-                              <option selected disabled value="">JC-Mitarbeiter *</option>
-                              <option>Alessandro</option>
-                              <option>Uwe</option>
-                              <option>Maria</option>
-                            </select>
-                            <label for="tn_jc_mitarbeiter">JC-Mitarbeiter *</label>
                           </div>
                         </div>
                       </div>
@@ -512,6 +542,17 @@
                                   <span class="text-secondary">Name</span>
                                   <span class="fw-semibold text-end" id="sum_name">—</span>
                                 </div>
+
+                                <!-- NEU: Kundennummer + TN-Kennung in Übersicht -->
+                                <div class="d-flex justify-content-between border-bottom py-1">
+                                  <span class="text-secondary">Kundennummer</span>
+                                  <span class="fw-semibold text-end" id="sum_kundennr">—</span>
+                                </div>
+                                <div class="d-flex justify-content-between border-bottom py-1">
+                                  <span class="text-secondary">TN-Kennung</span>
+                                  <span class="fw-semibold text-end" id="sum_kennung">—</span>
+                                </div>
+
                                 <div class="d-flex justify-content-between border-bottom py-1">
                                   <span class="text-secondary">Geburt</span>
                                   <span class="fw-semibold text-end" id="sum_geb">—</span>
@@ -536,18 +577,15 @@
                                   <span class="text-secondary">Zuweisung</span>
                                   <span class="fw-semibold text-end" id="sum_zuweisung">—</span>
                                 </div>
-                                <!-- NEU: Eintrittsdatum in Übersicht -->
                                 <div class="d-flex justify-content-between border-bottom py-1">
                                   <span class="text-secondary">Eintrittsdatum</span>
                                   <span class="fw-semibold text-end" id="sum_eintritt">—</span>
                                 </div>
-                                <!-- NEU: Status-Vorschau -->
                                 <div class="d-flex justify-content-between border-bottom py-1">
                                   <span class="text-secondary">Status</span>
                                   <span class="fw-semibold text-end">
-                                  <span class="badge bg-secondary" id="sum_status">—</span>
-                                </span>
-
+                                    <span class="badge bg-secondary" id="sum_status">—</span>
+                                  </span>
                                 </div>
 
                                 <div class="d-flex justify-content-between border-bottom py-1">
@@ -562,7 +600,6 @@
 
                               <hr class="my-3">
 
-                              <!-- Schalter entfernt, stattdessen klare Erklärung -->
                               <div class="alert alert-light border small mb-0 d-flex gap-2">
                                 <i class="bi bi-info-circle text-secondary mt-1"></i>
                                 <div class="text-secondary">
@@ -670,7 +707,6 @@
                           <i class="bi bi-arrow-left me-1"></i> Zurück
                         </button>
 
-                        <!-- NEU: 2 Buttons statt 1 -->
                         <div class="d-flex flex-wrap gap-2">
                           <button type="button" class="btn btn-outline-primary" id="btnSavePlanned">
                             <i class="bi bi-calendar-plus me-1"></i> Als geplant speichern
@@ -704,6 +740,11 @@
     // --- DEMO-DATEN ---
     const TN_PROFILE_LINK = "TN-Profil_grunddaten.html";
     const NO_EINTRITT_LABEL = "Noch nicht unterschrieben";
+
+    // Platzhalter-Links (erstmal leer/Stub – kannst du später auf echte Formulare setzen)
+    const LINK_NEW_BETREUER = "#";
+    const LINK_NEW_JC_TEAM = "#";
+    const LINK_NEW_JC_MA = "#";
 
     const participants = [
       { name: "Max Mustermann", kundennr: "1234434", geb: "2000-01-01", status: "Aktiv",   von:"2025-01-01", bis:"2026-01-01", eintritt:"2025-01-03", massnahme:"Integra 2025", betreuer:"Daniel Chu" },
@@ -741,6 +782,15 @@
       if (s === "geplant") return `<span class="badge bg-primary">Geplant</span>`;
       if (s === "beendet") return `<span class="badge bg-secondary">Beendet</span>`;
       return `<span class="badge bg-light text-dark">${status || "—"}</span>`;
+    }
+
+    function goToPage(targetPage) {
+      if (!targetPage) return;
+      let frame = null;
+      try { frame = parent.document.getElementById("mainFrame"); } catch (e) {}
+      if (frame && targetPage && targetPage !== "#") frame.src = targetPage;
+      else if (targetPage && targetPage !== "#") window.location.href = targetPage;
+      else alert("Link (Platzhalter): hier später auf das entsprechende Formular verlinken.");
     }
 
     // Zeitraum-Filter: Überlappung
@@ -795,18 +845,13 @@
         tbody.appendChild(tr);
       });
 
-      // Tooltips neu initialisieren (dynamische Zeilen)
       const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
       tooltipTriggerList.map(el => new bootstrap.Tooltip(el));
 
-      // Row click -> iframe / navigation
       document.querySelectorAll("[data-row-click]").forEach(row => {
         row.addEventListener("click", function () {
           const targetPage = this.getAttribute("data-row-click");
-          let frame = null;
-          try { frame = parent.document.getElementById("mainFrame"); } catch (e) {}
-          if (frame && targetPage) frame.src = targetPage;
-          else if (targetPage) window.location.href = targetPage;
+          goToPage(targetPage);
         });
       });
 
@@ -823,13 +868,11 @@
 
       const filtered = participants.filter(p => {
         const hay = [p.name, p.kundennr, p.massnahme, p.betreuer, p.status].join(" ").toLowerCase();
-
         if (q && !hay.includes(q)) return false;
         if (massnahme && p.massnahme !== massnahme) return false;
         if (betreuer && p.betreuer !== betreuer) return false;
         if (status && p.status !== status) return false;
         if (!matchesDateRange(p.von, p.bis, von, bis)) return false;
-
         return true;
       });
 
@@ -853,15 +896,12 @@
     }
 
     document.addEventListener("DOMContentLoaded", function () {
-      // Tooltips (statische Elemente)
       const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
       tooltipTriggerList.map(el => new bootstrap.Tooltip(el));
 
-      // Initial Table
       renderTable(participants);
       applyFilters();
 
-      // Filter events
       ["fltSearch","fltMassnahme","fltBetreuer","fltStatus","fltVon","fltBis"].forEach(id => {
         document.getElementById(id)?.addEventListener("input", applyFilters);
         document.getElementById(id)?.addEventListener("change", applyFilters);
@@ -878,7 +918,6 @@
         applyFilters();
       });
 
-      // Spalten-Toggles
       document.querySelectorAll(".col-toggle").forEach(cb => {
         const colKey = cb.getAttribute("data-col");
         setColumnVisibility(colKey, cb.checked);
@@ -891,6 +930,25 @@
         stepper = new window.Stepper(stepperElement);
         showStep("step1");
       }
+
+      // --- "NEU anlegen" UX für Selects (Option + Button) ---
+      function bindNewSelect(selectId, btnId, link) {
+        const sel = document.getElementById(selectId);
+        const btn = document.getElementById(btnId);
+
+        sel?.addEventListener("change", () => {
+          if (sel.value === "__new__") {
+            sel.value = ""; // zurücksetzen
+            goToPage(link);
+          }
+        });
+
+        btn?.addEventListener("click", () => goToPage(link));
+      }
+
+      bindNewSelect("tn_betreuer", "btnNewBetreuer", LINK_NEW_BETREUER);
+      bindNewSelect("tn_jc_team", "btnNewJcTeam", LINK_NEW_JC_TEAM);
+      bindNewSelect("tn_jc_mitarbeiter", "btnNewJcMitarbeiter", LINK_NEW_JC_MA);
 
       // Step navigation
       document.getElementById("btnNext1")?.addEventListener("click", () => {
@@ -923,7 +981,7 @@
       document.getElementById("btnNext3")?.addEventListener("click", () => {
         stepper.next(); showStep("step4");
         updateSummary();
-        syncSaveButtons(); // neu
+        syncSaveButtons();
       });
       document.getElementById("btnBack4")?.addEventListener("click", () => { stepper.previous(); showStep("step3"); });
 
@@ -968,6 +1026,8 @@
         return {
           nachname: (document.getElementById("tn_nachname")?.value || "").trim(),
           vorname: (document.getElementById("tn_vorname")?.value || "").trim(),
+          kundennr: (document.getElementById("tn_kundennr")?.value || "").trim(),
+          kennung: (document.getElementById("tn_kennung")?.value || "").trim(),
           geburtsdatum: document.getElementById("tn_geburtsdatum")?.value || "",
           strasse: (document.getElementById("tn_strasse")?.value || "").trim(),
           hausnummer: (document.getElementById("tn_hausnummer")?.value || "").trim(),
@@ -1014,7 +1074,6 @@
         const eintritt = document.getElementById("tn_eintritt")?.value || "";
         const btnActive = document.getElementById("btnSaveActivePrint");
         if (btnActive) btnActive.disabled = !eintritt;
-        // Status-Vorschau aktualisieren
         setText("sum_status", eintritt ? "Aktiv" : "Geplant");
       }
 
@@ -1023,6 +1082,10 @@
 
         const fullName = [p.vorname, p.nachname].filter(Boolean).join(" ").trim() || "—";
         setText("sum_name", fullName);
+
+        setText("sum_kundennr", p.kundennr || "—");
+        setText("sum_kennung", p.kennung || "—");
+
         setText("sum_geb", p.geburtsdatum || "—");
 
         const tel = [p.telefon, p.mobil].filter(Boolean).join(" / ");
@@ -1051,8 +1114,8 @@
       const liveIds = [
         "tn_nachname","tn_vorname","tn_geburtsdatum","tn_telefon","tn_mobil",
         "tn_strasse","tn_hausnummer","tn_plz","tn_ort","tn_land",
-        "tn_massnahme","tn_betreuer","tn_zuweisung_von","tn_zuweisung_bis",
-        "tn_eintritt",
+        "tn_massnahme","tn_betreuer","tn_kundennr","tn_kennung",
+        "tn_zuweisung_von","tn_zuweisung_bis","tn_eintritt",
         "tn_jc_team","tn_jc_mitarbeiter"
       ];
       liveIds.forEach(id => document.getElementById(id)?.addEventListener("input", () => { updateSummary(); syncSaveButtons(); }));
@@ -1066,13 +1129,13 @@
         getDocIds().forEach(id => { const el = document.getElementById(id); if (el) el.checked = false; });
       });
 
-      // NEU: Speichern als GEPLANT (ohne Eintritt, ohne Druck)
+      // Speichern als GEPLANT
       document.getElementById("btnSavePlanned")?.addEventListener("click", function () {
         if (!validateRequired()) return;
 
         const payload = collectTeilnehmerPayload();
         payload.status = "Geplant";
-        payload.eintritt = ""; // hart setzen, damit Logik eindeutig ist
+        payload.eintritt = "";
 
         console.log("SAVE Teilnehmer (Geplant) (Demo)", payload);
 
@@ -1080,13 +1143,15 @@
         alert(
           "Teilnehmer gespeichert (Geplant) (Demo).\n\n" +
           "Teilnehmer: " + [payload.vorname, payload.nachname].filter(Boolean).join(" ") + "\n" +
+          "Kundennummer: " + (payload.kundennr || "—") + "\n" +
+          "TN-Kennung: " + (payload.kennung || "—") + "\n" +
           "Maßnahme: " + payload.massnahme + "\n" +
           "Status: Geplant\n\n" +
           "Hinweis: Er erscheint nicht in ESF-Statistiken (keine Unterschrift)."
         );
       });
 
-      // NEU: Speichern als AKTIV + Drucken
+      // Speichern als AKTIV + Drucken
       document.getElementById("btnSaveActivePrint")?.addEventListener("click", function () {
         if (!validateRequired()) return;
 
@@ -1106,6 +1171,8 @@
         alert(
           "Teilnehmer gespeichert (Aktiv) & Drucken (Demo)\n\n" +
           "Teilnehmer: " + [payload.vorname, payload.nachname].filter(Boolean).join(" ") + "\n" +
+          "Kundennummer: " + (payload.kundennr || "—") + "\n" +
+          "TN-Kennung: " + (payload.kennung || "—") + "\n" +
           "Maßnahme: " + payload.massnahme + "\n" +
           "Eintritt: " + fmtDate(payload.eintritt) + "\n" +
           "Status: Aktiv\n" +
@@ -1123,9 +1190,11 @@
         ["tn_nachname","tn_massnahme","tn_betreuer","tn_zuweisung_von","tn_zuweisung_bis","tn_jc_team","tn_jc_mitarbeiter"]
           .forEach(id => document.getElementById(id)?.classList.remove("is-invalid"));
 
-        // Buttons/Übersicht zurücksetzen
         setText("sum_eintritt", "—");
         setText("sum_status", "—");
+        setText("sum_kundennr", "—");
+        setText("sum_kennung", "—");
+
         const btnActive = document.getElementById("btnSaveActivePrint");
         if (btnActive) btnActive.disabled = true;
       });
