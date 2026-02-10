@@ -304,6 +304,7 @@
       <div id="personalBlock" class="accordion-collapse collapse" data-bs-parent="#stammAccordion">
         <div class="accordion-body bg-light">
 
+          <!-- ✅ UPDATED: Personal-Form mit allen gewünschten Feldern -->
           <form id="personalForm" class="mb-4">
             <div class="row g-3">
               <div class="col-md-4">
@@ -322,15 +323,13 @@
 
               <div class="col-md-4">
                 <div class="form-floating">
-                  <input class="form-control" id="persFunktion" placeholder="Funktion">
-                  <label for="persFunktion">Funktion (optional)</label>
-                </div>
-              </div>
-
-              <div class="col-md-4">
-                <div class="form-floating">
-                  <input class="form-control" id="persTelefon" placeholder="Telefon">
-                  <label for="persTelefon">Telefon</label>
+                  <select class="form-select" id="persGeschlecht">
+                    <option value="" selected>—</option>
+                    <option value="m">Männlich</option>
+                    <option value="w">Weiblich</option>
+                    <option value="d">Divers</option>
+                  </select>
+                  <label for="persGeschlecht">Geschlecht</label>
                 </div>
               </div>
 
@@ -343,10 +342,44 @@
 
               <div class="col-md-4">
                 <div class="form-floating">
-                  <input class="form-control" id="persStandort" placeholder="Standort">
-                  <label for="persStandort">Standort (z. B. SB)</label>
+                  <input class="form-control" id="persTelefon" placeholder="Telefon">
+                  <label for="persTelefon">Telefon</label>
                 </div>
               </div>
+
+              <div class="col-md-4">
+                <div class="form-floating">
+                  <input class="form-control" id="persMobil" placeholder="Mobiltelefon">
+                  <label for="persMobil">Mobiltelefon</label>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="form-floating">
+                  <select class="form-select" id="persRolle">
+                    <option value="" selected>—</option>
+                    <option value="SozPäd">SozPäd</option>
+                    <option value="Anleiter">Anleiter</option>
+                    <option value="Lehrkraft">Lehrkraft</option>
+                  </select>
+                  <label for="persRolle">Funktion/Rolle</label>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="form-floating">
+                  <input class="form-control" id="persBriefunterschrift" placeholder="Briefunterschrift">
+                  <label for="persBriefunterschrift">Briefunterschrift</label>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="form-floating">
+                  <input class="form-control" id="persStellungszeichen" placeholder="Stellungszeichen">
+                  <label for="persStellungszeichen">Stellungszeichen</label>
+                </div>
+              </div>
+
             </div>
 
             <div class="text-end mt-3">
@@ -356,6 +389,7 @@
             </div>
           </form>
 
+          <!-- ✅ UPDATED: Liste zeigt alle Felder (nur Bootstrap Klassen) -->
           <div class="bg-white border rounded p-3">
             <div class="d-flex justify-content-between align-items-center mb-2">
               <div class="fw-semibold">Vorhandenes Personal</div>
@@ -445,10 +479,11 @@ function escHtml(str) {
 
 function setupEditableList({
   formId,
-  fields,          // [{id, label}]
+  fields,          // [{id, label, type?, options?}]
   listId,
   storageKey,
-  formatPreview    // (obj) => string
+  formatPreview,   // (obj) => string (Überschrift)
+  renderPreviewHtml // (obj) => html string (Details, optional)
 }) {
   const form = document.getElementById(formId);
   const list = document.getElementById(listId);
@@ -477,18 +512,21 @@ function setupEditableList({
       li.className = "list-group-item";
 
       const preview = formatPreview(item);
+      const detailsHtml = renderPreviewHtml ? renderPreviewHtml(item) : "";
 
       li.innerHTML = `
         <div class="d-flex justify-content-between align-items-start gap-3">
           <div class="flex-grow-1">
             <div class="fw-semibold">${escHtml(preview)}</div>
+
+            ${detailsHtml ? `<div class="mt-2">${detailsHtml}</div>` : ``}
           </div>
 
           <div class="btn-group btn-group-sm flex-shrink-0">
-            <button class="btn btn-outline-secondary" data-action="edit">
+            <button class="btn btn-outline-secondary" data-action="edit" title="Bearbeiten">
               <i class="bi bi-pencil"></i>
             </button>
-            <button class="btn btn-outline-danger" data-action="delete">
+            <button class="btn btn-outline-danger" data-action="delete" title="Löschen">
               <i class="bi bi-trash"></i>
             </button>
           </div>
@@ -496,14 +534,32 @@ function setupEditableList({
 
         <div class="mt-3 d-none" data-edit-panel>
           <div class="row g-2">
-            ${fields.map(f => `
-              <div class="col-md-6">
-                <div class="form-floating">
-                  <input class="form-control" placeholder="${escHtml(f.label)}" data-field="${escHtml(f.id)}" value="${escHtml(item[f.id] || "")}">
-                  <label>${escHtml(f.label)}</label>
+            ${fields.map(f => {
+              if (f.type === "select") {
+                return `
+                  <div class="col-md-6">
+                    <div class="form-floating">
+                      <select class="form-select" placeholder="${escHtml(f.label)}" data-field="${escHtml(f.id)}">
+                        ${(f.options || []).map(opt => `
+                          <option value="${escHtml(opt.value)}" ${String(item[f.id]||"")===String(opt.value) ? "selected" : ""}>
+                            ${escHtml(opt.label)}
+                          </option>
+                        `).join("")}
+                      </select>
+                      <label>${escHtml(f.label)}</label>
+                    </div>
+                  </div>
+                `;
+              }
+              return `
+                <div class="col-md-6">
+                  <div class="form-floating">
+                    <input class="form-control" placeholder="${escHtml(f.label)}" data-field="${escHtml(f.id)}" value="${escHtml(item[f.id] || "")}">
+                    <label>${escHtml(f.label)}</label>
+                  </div>
                 </div>
-              </div>
-            `).join("")}
+              `;
+            }).join("")}
           </div>
 
           <div class="d-flex justify-content-end gap-2 mt-2">
@@ -539,7 +595,7 @@ function setupEditableList({
 
         panel.querySelectorAll("[data-field]").forEach(inp => {
           const key = inp.getAttribute("data-field");
-          updated[key] = inp.value.trim();
+          updated[key] = (inp.value || "").trim();
         });
 
         const firstKey = fields[0].id;
@@ -620,7 +676,7 @@ setupEditableList({
   formatPreview: (o) => `${o.bankName} – ${o.bankBlz}`
 });
 
-/* Personal */
+/* ✅ UPDATED Personal: neue Felder + Liste zeigt ALLES */
 setupEditableList({
   formId: "personalForm",
   listId: "personalList",
@@ -628,15 +684,41 @@ setupEditableList({
   fields: [
     { id: "persVorname", label: "Vorname" },
     { id: "persNachname", label: "Nachname" },
-    { id: "persFunktion", label: "Funktion (optional)" },
-    { id: "persTelefon", label: "Telefon" },
+    { id: "persGeschlecht", label: "Geschlecht", type: "select", options: [
+      { value: "", label: "—" },
+      { value: "m", label: "Männlich" },
+      { value: "w", label: "Weiblich" },
+      { value: "d", label: "Divers" }
+    ]},
     { id: "persMail", label: "E-Mail" },
-    { id: "persStandort", label: "Standort (z. B. SB)" }
+    { id: "persTelefon", label: "Telefon" },
+    { id: "persMobil", label: "Mobiltelefon" },
+    { id: "persRolle", label: "Funktion/Rolle", type: "select", options: [
+      { value: "", label: "—" },
+      { value: "SozPäd", label: "SozPäd" },
+      { value: "Anleiter", label: "Anleiter" },
+      { value: "Lehrkraft", label: "Lehrkraft" }
+    ]},
+    { id: "persBriefunterschrift", label: "Briefunterschrift" },
+    { id: "persStellungszeichen", label: "Stellungszeichen" }
   ],
-  formatPreview: (o) => {
-    const name = `${o.persVorname} ${o.persNachname}`.trim();
-    const extra = [o.persFunktion, o.persStandort].filter(Boolean).join(" • ");
-    return extra ? `${name} – ${extra}` : name;
+formatPreview: () => "",
+renderPreviewHtml: (o) => {
+  const cell = (val, strong=false) => `
+    <div class="col-12 col-lg text-truncate">
+      <span class="${strong ? "fw-semibold" : ""}">${escHtml(val || "—")}</span>
+    </div>
+  `;
+
+  return `
+    <div class="row align-items-center g-2">
+      ${cell(`${o.persVorname || ""} ${o.persNachname || ""}`.trim(), true)}
+      ${cell(o.persRolle)}
+      ${cell(o.persMail)}
+      ${cell(o.persTelefon)}
+      ${cell(o.persMobil)}
+    </div>
+    `;
   }
 });
 
