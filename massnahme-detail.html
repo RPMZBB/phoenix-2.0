@@ -537,92 +537,45 @@
           </div>
         </div>
 
-        <!-- TAB: ANWESENHEIT -->
-        <div class="tab-pane fade" id="tab-anwesenheit">
-          <div class="card border-0 bg-body-tertiary mb-3">
-            <div class="card-body p-3">
-              <div class="row g-2">
-                <div class="col-md-6"><select class="form-select"><option selected>Betreuer</option></select></div>
-                <div class="col-md-6"><select class="form-select"><option selected>Arbeitsbereich</option></select></div>
-              </div>
-              <div class="d-flex flex-wrap align-items-center gap-2 mt-3">
-                <button class="btn btn-outline-secondary"><i class="bi bi-chevron-left"></i></button>
-                <input type="date" class="form-control w-auto" value="2025-05-21">
-                <button class="btn btn-outline-secondary"><i class="bi bi-chevron-right"></i></button>
-                <button class="btn btn-outline-dark ms-lg-2">Alle Anwesend</button>
-              </div>
-            </div>
-          </div>
+<!-- TAB: ANWESENHEIT -->
+<div class="tab-pane fade" id="tab-anwesenheit">
 
-          <div class="table-responsive">
-            <table class="table table-hover align-middle">
-              <thead class="table-light">
-              <tr><th>Teilnehmer</th><th>Anwesenheit</th><th class="text-end">Aktion</th></tr>
-              </thead>
-              <tbody>
-              <tr>
-                <td><span class="badge text-bg-secondary me-2">MM</span> Max Mustermann</td>
-                <td>
-                  <div class="d-flex flex-wrap gap-1">
-                    <button class="btn btn-outline-secondary btn-sm" onclick="setAnwesend(this)">Anwesend</button>
-                    <button class="btn btn-outline-secondary btn-sm" onclick="setSpecial(this, 'krank')">Krank</button>
-                    <button class="btn btn-outline-secondary btn-sm" onclick="setSpecial(this, 'entschuldigt')">Entschuldigt</button>
-                    <button class="btn btn-outline-secondary btn-sm" onclick="setSpecial(this, 'unentschuldigt')">Unentschuldigt</button>
-                    <button class="btn btn-outline-secondary btn-sm" onclick="setSpecial(this, 'urlaub')">Urlaub</button>
-                  </div>
-                </td>
-                <td class="text-end">
-                  <button class="btn btn-outline-dark btn-sm" onclick="toggleDetails(this)">Detail</button>
-                </td>
-              </tr>
+  <div class="card border-0 bg-body-tertiary mb-3">
+    <div class="card-body p-3">
+      <div class="row g-2">
+        <div class="col-md-6"><select class="form-select"><option selected>Betreuer</option></select></div>
+        <div class="col-md-6"><select class="form-select"><option selected>Arbeitsbereich</option></select></div>
+      </div>
 
-              <tr class="d-none detail-row">
-                <td colspan="3" class="bg-light">
-                  <div id="anwesenheit-zeiten" class="mb-3 d-none">
-                    <div class="mb-2">
-                      <strong>Praxis</strong>
-                      <input type="time" class="form-control d-inline-block w-auto ms-2 me-2" value="08:00">
-                      <input type="time" class="form-control d-inline-block w-auto me-2" value="16:00">
-                      <input type="text" class="form-control d-inline-block w-auto" value="8 Stunden" readonly>
-                    </div>
-                    <div class="mb-2">
-                      <strong>Theorie</strong>
-                      <input type="time" class="form-control d-inline-block w-auto ms-2 me-2" value="08:00">
-                      <input type="time" class="form-control d-inline-block w-auto me-2" value="16:00">
-                      <input type="text" class="form-control d-inline-block w-auto" value="8 Stunden" readonly>
-                    </div>
-                  </div>
+      <div class="d-flex flex-wrap align-items-center gap-2 mt-3">
+        <button class="btn btn-outline-secondary"><i class="bi bi-chevron-left"></i></button>
 
-                  <div id="sonderoptionen" class="mt-3 d-none">
-                    <div class="mb-2 d-flex flex-wrap align-items-center gap-2">
-                      <label class="form-label mb-0">von:</label>
-                      <input type="date" class="form-control w-auto">
-                      <label class="form-label mb-0">bis:</label>
-                      <input type="date" class="form-control w-auto">
+        <input type="date" class="form-control w-auto" id="anwDate">
 
-                      <button class="btn btn-outline-primary btn-sm" id="auBtn" style="display:none;">
-                        <i class="bi bi-upload me-1"></i> AU hochladen
-                      </button>
+        <button class="btn btn-outline-secondary"><i class="bi bi-chevron-right"></i></button>
 
-                      <input type="text" class="form-control w-auto" id="urlaubFeld" placeholder="Urlaubsanspruch" style="display:none;">
-                    </div>
+        <button class="btn btn-outline-dark ms-lg-2" id="btnAllPresent">Alle anwesend</button>
+      </div>
+    </div>
+  </div>
 
-                    <div class="mb-2" id="grundFeld" style="display:none;">
-                      <label for="grundInput" class="form-label">Grund</label>
-                      <input type="text" class="form-control" id="grundInput" placeholder="z. B. Arzttermin">
-                    </div>
-                  </div>
+  <div class="table-responsive">
+    <table class="table table-hover align-middle">
+      <thead class="table-light">
+        <tr>
+          <th>Teilnehmer</th>
+          <th>Anwesenheit</th>
+          <th class="text-end">Aktion</th>
+        </tr>
+      </thead>
+      <tbody id="anwTableBody">
+        <!-- per JS -->
+      </tbody>
+    </table>
+  </div>
 
-                  <button class="btn btn-outline-primary btn-sm mt-2">
-                    <i class="bi bi-pen me-1"></i> persönliche Arbeitszeit bearbeiten
-                  </button>
-                </td>
-              </tr>
+</div>
 
-              </tbody>
-            </table>
-          </div>
-        </div>
 
         <!-- TAB: FAHRKOSTEN -->
         <div class="tab-pane fade" id="tab-fahrkosten">
@@ -1545,55 +1498,428 @@
 
 <script>
   // =========================
-  // Anwesenheit
+  // Anwesenheit (neu)
   // =========================
-  function toggleDetails(button) {
-    const row = button.closest("tr");
-    const detailRow = row.nextElementSibling;
-    document.querySelectorAll(".detail-row").forEach(r => {
-      if (r !== detailRow) r.classList.add("d-none");
-    });
-    detailRow.classList.toggle("d-none");
+
+  // 4 zusätzliche Beispielteilnehmer + dein bisheriger (macht 5)
+  const demoAnwesenheit = [
+    { id:"a-001", kuerzel:"MM", name:"Max Mustermann" },
+    { id:"a-002", kuerzel:"CP", name:"Claudia Peters" },
+    { id:"a-003", kuerzel:"AB", name:"Ali Benali" },
+    { id:"a-004", kuerzel:"LS", name:"Leonie Schmitt" },
+    { id:"a-005", kuerzel:"HR", name:"Hasan Rahmani" },
+  ];
+
+  // Sollstunden (Demo) – wenn du später pro TN individuell willst: hier oder pro Datensatz erweitern
+  const ANW_SOLL_STUNDEN = 8;
+
+  const AW_PRAXIS_BEREICHE = ["Gärtner", "Maler", "Metallwerkstatt"];
+  const AW_THEORIE_MODULE = [
+    "Deutsch HSA", "Mathe HSA", "Bewerbungstraining", "IT Grundlagen",
+    "Berufsorientierung", "Kommunikation", "Gesundheit", "Arbeitsschutz"
+  ];
+  const AW_PROJEKTE = ["Baustelle Blieskastel", "Sauber und Fein Burbach"];
+
+  function escapeHtml(s){
+    return String(s ?? "")
+      .replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;").replaceAll("'","&#039;");
   }
 
-  function setAnwesend(button) {
-    setActive(button, "bg-success");
-    document.getElementById("anwesenheit-zeiten").classList.remove("d-none");
-    document.getElementById("sonderoptionen").classList.add("d-none");
+  function todayISO(){
+    const d = new Date();
+    const y = d.getFullYear();
+    const m = String(d.getMonth()+1).padStart(2,"0");
+    const dd = String(d.getDate()).padStart(2,"0");
+    return `${y}-${m}-${dd}`;
   }
 
-  function setActive(button, colorClass) {
-    const group = button.parentElement.querySelectorAll("button");
-    group.forEach(btn => {
-      btn.classList.remove("bg-success", "bg-warning", "bg-info", "bg-danger", "bg-primary", "text-white", "text-dark");
-      btn.classList.add("btn-outline-secondary");
-    });
-    button.classList.remove("btn-outline-secondary");
-    colorClass.split(" ").forEach(c => button.classList.add(c));
+  // ===== Render =====
+  function renderAnwesenheitTable(){
+    const tbody = document.getElementById("anwTableBody");
+    if(!tbody) return;
+
+    tbody.innerHTML = demoAnwesenheit.map(tn => `
+      <tr class="anw-row" data-tn="${tn.id}">
+        <td>
+          <span class="badge text-bg-secondary me-2">${escapeHtml(tn.kuerzel)}</span>
+          ${escapeHtml(tn.name)}
+        </td>
+
+        <td>
+          <div class="d-flex flex-wrap gap-1">
+            <button class="btn btn-outline-secondary btn-sm" type="button"
+              onclick="setAttendanceStatus('${tn.id}','anwesend', this)">Anwesend</button>
+
+            <button class="btn btn-outline-secondary btn-sm" type="button"
+              onclick="setAttendanceStatus('${tn.id}','krank', this)">Krank</button>
+
+            <button class="btn btn-outline-secondary btn-sm" type="button"
+              onclick="setAttendanceStatus('${tn.id}','entschuldigt', this)">Entschuldigt</button>
+
+            <button class="btn btn-outline-secondary btn-sm" type="button"
+              onclick="setAttendanceStatus('${tn.id}','unentschuldigt', this)">Unentschuldigt</button>
+
+            <button class="btn btn-outline-secondary btn-sm" type="button"
+              onclick="setAttendanceStatus('${tn.id}','urlaub', this)">Urlaub</button>
+          </div>
+        </td>
+
+        <td class="text-end">
+<button class="btn btn-outline-secondary btn-sm"
+  type="button"
+  onclick="toggleAnwDetails('${tn.id}', this)"
+  title="Details ein-/ausklappen">
+  <i class="bi bi-chevron-down"></i>
+</button>
+
+        </td>
+      </tr>
+
+      <tr class="detail-row d-none" data-detail="${tn.id}">
+        <td colspan="3" class="bg-light">
+
+          <!-- Bereich "Anwesend": Arbeitszeit-Builder -->
+          <div class="border rounded-3 bg-white p-3 mb-3 d-none" data-anw-anwesend="${tn.id}">
+<div class="d-flex flex-column flex-lg-row align-items-lg-center justify-content-lg-between gap-2 mb-2">
+  <div class="fw-semibold">Tageszeiten detail</div>
+
+  <div class="d-flex flex-wrap align-items-center gap-2 ms-lg-auto">
+    <span class="text-muted small">Gesamt</span>
+    <span class="fw-semibold" id="awTotal_${tn.id}">0:00</span>
+
+    <span class="text-muted small ms-lg-3">Soll</span>
+    <span class="fw-semibold">${ANW_SOLL_STUNDEN}:00</span>
+
+    <span class="badge text-bg-secondary" id="awSollBadge_${tn.id}">offen</span>
+<button class="btn btn-outline-secondary btn-sm ms-lg-2 text-nowrap"
+  type="button"
+  onclick="showToast('Arbeitszeit', 'Arbeitszeit bearbeiten (Demo).')">
+  <i class="bi bi-pen me-1"></i>
+  pers. AZ bearbeiten
+</button>
+
+
+  </div>
+</div>
+
+
+            <div id="awRows_${tn.id}" class="vstack gap-2"></div>
+
+            <div class="d-flex flex-wrap gap-2 mt-3">
+<button class="btn btn-primary btn-sm fw-semibold text-nowrap"
+  type="button"
+  onclick="addAwRow('${tn.id}')">
+  <i class="bi bi-plus-circle me-1"></i>
+  weiterer Eintrag
+</button>
+
+            </div>
+          </div>
+
+          <!-- Sonderoptionen (Krank/Entsch./Unentsch./Urlaub) -->
+          <div class="border rounded-3 bg-white p-3 d-none" data-anw-sonder="${tn.id}">
+            <div class="d-flex flex-wrap align-items-center gap-2">
+              <label class="form-label mb-0">von:</label>
+              <input type="date" class="form-control w-auto" id="awFrom_${tn.id}">
+              <label class="form-label mb-0">bis:</label>
+              <input type="date" class="form-control w-auto" id="awTo_${tn.id}">
+            </div>
+
+            <div class="mt-2 d-none" id="awGrundWrap_${tn.id}">
+              <label class="form-label">Grund</label>
+              <input type="text" class="form-control" id="awGrund_${tn.id}" placeholder="z. B. Arzttermin">
+            </div>
+
+            <div class="mt-2 d-none" id="awUrlaubWrap_${tn.id}">
+              <label class="form-label">Urlaubsanspruch</label>
+              <input type="text" class="form-control" id="awUrlaub_${tn.id}" placeholder="z. B. 2 Tage">
+            </div>
+
+            <div class="mt-2 d-none" id="awAuWrap_${tn.id}">
+              <button class="btn btn-outline-primary btn-sm" type="button"
+                onclick="showToast('Upload', 'AU hochladen (Demo).')">
+                <i class="bi bi-upload me-1"></i> AU hochladen
+              </button>
+            </div>
+          </div>
+
+
+
+        </td>
+      </tr>
+    `).join("");
   }
 
-  function setSpecial(button, type) {
-    const sonder = document.getElementById("sonderoptionen");
-    const au = document.getElementById("auBtn");
-    const urlaub = document.getElementById("urlaubFeld");
-    const grund = document.getElementById("grundFeld");
-    const zeiten = document.getElementById("anwesenheit-zeiten");
+// ===== Detail Toggle (NUR über Pfeil) =====
+function toggleAnwDetails(tnId, btn){
+  const detailRow = document.querySelector(`tr[data-detail="${tnId}"]`);
+  if(!detailRow) return;
 
-    setActive(button,
-      type === "krank"         ? "bg-warning text-dark" :
-      type === "entschuldigt"  ? "bg-info text-white"   :
-      type === "unentschuldigt"? "bg-danger text-white" :
-                                  "bg-primary text-white"
+  const isOpen = !detailRow.classList.contains("d-none");
+  detailRow.classList.toggle("d-none", isOpen);
+
+  const icon = btn.querySelector("i");
+  if(icon){
+    icon.classList.toggle("bi-chevron-down", isOpen);
+    icon.classList.toggle("bi-chevron-up", !isOpen);
+  }
+}
+
+
+// ===== Status Handling (ändert NICHT mehr das Auf-/Zuklappen) =====
+function setAttendanceStatus(tnId, type, buttonEl){
+
+  // Buttons optisch aktiv setzen (nur in der Zeile)
+  const row = document.querySelector(`tr.anw-row[data-tn="${tnId}"]`);
+  const btns = row ? row.querySelectorAll("td:nth-child(2) button") : [];
+  btns.forEach(b=>{
+    b.classList.remove(
+      "bg-success","bg-warning","bg-info",
+      "bg-danger","bg-primary",
+      "text-white","text-dark"
     );
+    b.classList.add("btn-outline-secondary");
+  });
 
-    sonder.classList.remove("d-none");
-    zeiten.classList.add("d-none");
+  if(buttonEl){
+    buttonEl.classList.remove("btn-outline-secondary");
+    if(type==="anwesend") buttonEl.classList.add("bg-success","text-white");
+    if(type==="krank") buttonEl.classList.add("bg-warning","text-dark");
+    if(type==="entschuldigt") buttonEl.classList.add("bg-info","text-white");
+    if(type==="unentschuldigt") buttonEl.classList.add("bg-danger","text-white");
+    if(type==="urlaub") buttonEl.classList.add("bg-primary","text-white");
+  }
 
-    au.style.display     = (type === "krank" || type === "entschuldigt") ? "inline-block" : "none";
-    urlaub.style.display = (type === "urlaub") ? "inline-block" : "none";
-    grund.style.display  = (type === "entschuldigt" || type === "unentschuldigt") ? "block" : "none";
+  const anwesendBox = document.querySelector(`[data-anw-anwesend="${tnId}"]`);
+  const sonderBox   = document.querySelector(`[data-anw-sonder="${tnId}"]`);
+
+  const grundWrap  = document.getElementById(`awGrundWrap_${tnId}`);
+  const urlaubWrap = document.getElementById(`awUrlaubWrap_${tnId}`);
+  const auWrap     = document.getElementById(`awAuWrap_${tnId}`);
+
+  if(type === "anwesend"){
+    anwesendBox?.classList.remove("d-none");
+    sonderBox?.classList.add("d-none");
+
+    // Standard: eine Zeile vorbereiten (aber NICHT öffnen)
+    const container = document.getElementById(`awRows_${tnId}`);
+    if(container && container.children.length === 0){
+      addAwRow(tnId);
+    }
+    recalcTotals(tnId);
+    return;
+  }
+
+  // Sonderfälle
+  anwesendBox?.classList.add("d-none");
+  sonderBox?.classList.remove("d-none");
+
+  // Sichtbarkeit nach Typ
+  if(grundWrap){
+    grundWrap.classList.toggle(
+      "d-none",
+      !(type==="entschuldigt" || type==="unentschuldigt")
+    );
+  }
+
+  if(urlaubWrap){
+    urlaubWrap.classList.toggle("d-none", type!=="urlaub");
+  }
+
+  if(auWrap){
+    auWrap.classList.toggle(
+      "d-none",
+      !(type==="krank" || type==="entschuldigt")
+    );
+  }
+}
+
+
+// ===== Arbeitszeit-Zeilen =====
+function addAwRow(tnId){
+  const container = document.getElementById(`awRows_${tnId}`);
+  if(!container) return;
+
+  const uid = `${tnId}_${Math.random().toString(16).slice(2)}`;
+
+  // (HTML für die Zeile kommt hier – bleibt unverändert)
+
+
+
+
+
+    
+
+    container.insertAdjacentHTML("beforeend", `
+<div class="border rounded-3 p-2" data-aw-row="${uid}">
+  <div class="row g-2 align-items-center">
+
+    <!-- von -->
+    <div class="col-6 col-lg-2">
+      <div class="d-flex align-items-center gap-2">
+        <span class="text-muted small">von</span>
+        <input type="time"
+          class="form-control form-control-sm"
+          id="awFrom_${uid}"
+          value="08:00"
+          onchange="recalcTotals('${tnId}')">
+      </div>
+    </div>
+
+    <!-- bis -->
+    <div class="col-6 col-lg-2">
+      <div class="d-flex align-items-center gap-2">
+        <span class="text-muted small">bis</span>
+        <input type="time"
+          class="form-control form-control-sm"
+          id="awTo_${uid}"
+          value="16:00"
+          onchange="recalcTotals('${tnId}')">
+      </div>
+    </div>
+
+    <!-- Art -->
+    <div class="col-12 col-lg-2">
+      <div class="d-flex align-items-center gap-2">
+        <span class="text-muted small">Art</span>
+        <select class="form-select form-select-sm flex-grow-1"
+          id="awType_${uid}"
+          onchange="onAwTypeChange('${uid}'); recalcTotals('${tnId}')">
+          <option value="praxis" selected>Praxis</option>
+          <option value="theorie">Theorie</option>
+          <option value="projekt">Projekt</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Auswahl -->
+    <div class="col-12 col-lg-4">
+      <div class="d-flex align-items-center gap-2">
+        <span class="text-muted small">Auswahl</span>
+        <select class="form-select form-select-sm flex-grow-1"
+          id="awPick_${uid}"
+          onchange="recalcTotals('${tnId}')"></select>
+      </div>
+    </div>
+
+    <!-- Std + Entfernen -->
+    <div class="col-12 col-lg-2">
+      <div class="d-flex align-items-center justify-content-lg-end gap-2">
+        <span class="text-muted small">Std.</span>
+        <span class="fw-semibold" id="awHours_${uid}">0:00</span>
+        <button class="btn btn-outline-danger btn-sm py-0 px-2"
+          type="button"
+          onclick="removeAwRow('${tnId}','${uid}')"
+          title="Entfernen">
+          <i class="bi bi-trash"></i>
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+    `);
+
+    // Standard: Praxis befüllen
+    onAwTypeChange(uid);
+    recalcTotals(tnId);
+  }
+
+  function removeAwRow(tnId, uid){
+    document.querySelector(`[data-aw-row="${uid}"]`)?.remove();
+    recalcTotals(tnId);
+  }
+
+  function onAwTypeChange(uid){
+    const typeEl = document.getElementById(`awType_${uid}`);
+    const pickEl = document.getElementById(`awPick_${uid}`);
+    if(!typeEl || !pickEl) return;
+
+    const t = typeEl.value;
+
+    let opts = [];
+    if(t === "praxis") opts = AW_PRAXIS_BEREICHE;
+    if(t === "theorie") opts = AW_THEORIE_MODULE;
+    if(t === "projekt") opts = AW_PROJEKTE;
+
+    pickEl.innerHTML = opts.map(o => `<option value="${escapeHtml(o)}">${escapeHtml(o)}</option>`).join("");
+  }
+
+  function minutesBetween(from, to){
+    if(!from || !to) return 0;
+    const [fh,fm] = from.split(":").map(Number);
+    const [th,tm] = to.split(":").map(Number);
+    if([fh,fm,th,tm].some(Number.isNaN)) return 0;
+    const start = fh*60 + fm;
+    const end = th*60 + tm;
+    return Math.max(0, end - start);
+  }
+
+  function fmtHM(mins){
+    const h = Math.floor(mins/60);
+    const m = mins%60;
+    return `${h}:${String(m).padStart(2,"0")}`;
+  }
+
+  function recalcTotals(tnId){
+    const rows = document.querySelectorAll(`#awRows_${tnId} [data-aw-row]`);
+    let totalMins = 0;
+
+    rows.forEach(row=>{
+      const uid = row.getAttribute("data-aw-row");
+      const from = document.getElementById(`awFrom_${uid}`)?.value || "";
+      const to = document.getElementById(`awTo_${uid}`)?.value || "";
+      const mins = minutesBetween(from, to);
+      totalMins += mins;
+
+      const out = document.getElementById(`awHours_${uid}`);
+      if(out) out.textContent = fmtHM(mins);
+    });
+
+    const totalEl = document.getElementById(`awTotal_${tnId}`);
+    if(totalEl) totalEl.textContent = fmtHM(totalMins);
+
+    const badge = document.getElementById(`awSollBadge_${tnId}`);
+    if(badge){
+      const sollMins = ANW_SOLL_STUNDEN * 60;
+      if(totalMins >= sollMins){
+        badge.className = "badge text-bg-success ms-2";
+        badge.textContent = "erfüllt";
+      }else{
+        badge.className = "badge text-bg-danger ms-2";
+        badge.textContent = "Fehlzeit";
+      }
+    }
+  }
+
+  // ===== Alle anwesend =====
+  function setAllPresent(){
+    demoAnwesenheit.forEach(tn=>{
+      // setStatus ohne Button-Referenz: wir aktivieren nur die UI-Boxen & öffnen Detail
+
+
+      const anwesendBox = document.querySelector(`[data-anw-anwesend="${tn.id}"]`);
+      const sonderBox = document.querySelector(`[data-anw-sonder="${tn.id}"]`);
+      anwesendBox?.classList.remove("d-none");
+      sonderBox?.classList.add("d-none");
+
+      const container = document.getElementById(`awRows_${tn.id}`);
+      if(container && container.children.length === 0){
+        addAwRow(tn.id);
+      }
+      recalcTotals(tn.id);
+
+      // Optional: auch optisch den "Anwesend"-Button highlighten
+      const row = document.querySelector(`tr.anw-row[data-tn="${tn.id}"]`);
+      const btn = row?.querySelector(`td:nth-child(2) button:nth-child(1)`);
+      if(btn) setAttendanceStatus(tn.id, "anwesend", btn);
+    });
   }
 </script>
+
 
 <script>
   // =========================
@@ -1982,6 +2308,15 @@
 
     if (showEsf) applyEsfFilter();
   }
+
+// Anwesenheit: Datum immer heute + Tabelle rendern
+document.getElementById("anwDate").value = todayISO();
+renderAnwesenheitTable();
+
+// Alle anwesend
+document.getElementById("btnAllPresent")?.addEventListener("click", setAllPresent);
+
+  
 </script>
 
 <script>
