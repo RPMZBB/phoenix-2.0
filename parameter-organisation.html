@@ -11,7 +11,6 @@
 </head>
 
 <body class="p-4 bg-light">
-
 <div class="container-fluid">
 
   <!-- Header -->
@@ -24,8 +23,8 @@
             Organisation
           </h2>
           <div class="text-muted" style="font-size: 0.95rem;">
-            Verwaltung von <strong>Jobcentern</strong>, <strong>Teams</strong> und <strong>Arbeitsbereichen</strong>
-            für Zuordnung, Berichte und Auswertungen.
+            Verwaltung von <strong>Jobcentern</strong> inkl. <strong>Teams</strong> und <strong>Mitarbeitenden</strong>
+            sowie <strong>Arbeitsbereichen</strong> und <strong>Projekten</strong>.
           </div>
 
           <!-- Info aufklappbar -->
@@ -42,11 +41,12 @@
             <div class="collapse mt-2" id="orgInfo">
               <div class="p-3 bg-white border rounded">
                 <div class="text-muted" style="font-size:.95rem;">
-                  <strong>Jobcenter</strong> dienen der Stammdatenpflege und Ansprechpartner-Zuordnung.<br>
-                  <strong>Teams</strong> strukturieren Zuständigkeiten innerhalb eines Jobcenters.<br>
-                  <strong>Arbeitsbereiche</strong> werden u. a. in Maßnahmen, Listen und Berichten verwendet.
+                  <strong>Jobcenter</strong> enthalten Anschrift/Kommunikation und Organisationsstruktur.<br>
+                  <strong>Arbeitsbereiche</strong> enthalten Standardtexte (z. B. Erstunterlagen).<br>
+                  <strong>Projekte (in Arbeit)</strong> sind Einsatz-/Arbeitsorte (z. B. AGH) und werden später in der Anwesenheitserfassung
+                  zur Stunden-Zuordnung genutzt.
                   <div class="mt-2 small text-muted">
-                    Demo: Einträge werden nur im Browser gespeichert (LocalStorage).
+                    Demo: Daten werden nur im Browser gespeichert (LocalStorage).
                   </div>
                 </div>
               </div>
@@ -62,155 +62,549 @@
     </div>
   </div>
 
-  <!-- Accordion -->
-  <div class="accordion" id="orgAccordion">
+  <!-- JOB CENTER -->
+  <div class="card border-0 shadow mb-4">
+    <div class="card-body p-4">
 
-    <!-- JOBCENTER -->
-    <div class="accordion-item border-0 mb-3 shadow-sm">
-      <h2 class="accordion-header">
-        <button class="accordion-button collapsed bg-white text-dark fw-semibold"
+      <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+        <div>
+          <div class="text-muted small">Organisationseinheiten</div>
+          <h4 class="fw-semibold mb-0">
+            <i class="bi bi-building me-2"></i> Jobcenter
+          </h4>
+        </div>
+
+        <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#jcModal" id="btnOpenCreateJc">
+          <i class="bi bi-plus-circle me-1"></i> Jobcenter anlegen
+        </button>
+      </div>
+
+      <div class="bg-white border rounded p-3">
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-2">
+          <div class="fw-semibold">Vorhandene Jobcenter</div>
+          <div class="text-muted small">Klicke ein Jobcenter, um Mitarbeitende zu sehen.</div>
+        </div>
+
+        <div id="jobcenterEmpty" class="text-muted small d-none">Noch keine Jobcenter vorhanden.</div>
+        <div class="accordion" id="jobcenterAccordion"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ARBEITSBEREICHE (aufklappbar) -->
+  <div class="card border-0 shadow mb-4">
+    <div class="card-body p-4">
+
+      <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+        <div>
+          <div class="text-muted small">Vorlagen / Standardtexte</div>
+          <h4 class="fw-semibold mb-0">
+            <i class="bi bi-briefcase me-2"></i> Arbeitsbereiche
+          </h4>
+        </div>
+
+        <button class="btn btn-outline-secondary"
                 type="button"
                 data-bs-toggle="collapse"
-                data-bs-target="#jobcenterBlock">
-          <i class="bi bi-building me-2"></i> Jobcenter
+                data-bs-target="#arbeitsbereicheCollapse"
+                aria-expanded="false"
+                aria-controls="arbeitsbereicheCollapse">
+          <i class="bi bi-chevron-down me-1"></i> Aufklappen
         </button>
-      </h2>
+      </div>
 
-      <div id="jobcenterBlock" class="accordion-collapse collapse" data-bs-parent="#orgAccordion">
-        <div class="accordion-body bg-light">
+      <div class="collapse mt-3" id="arbeitsbereicheCollapse">
 
-          <form id="jobcenterForm" class="mb-4">
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+          <div class="text-muted small">
+            Lege Arbeitsbereiche mit Standardtexten an (z. B. für Erstunterlagen).
+          </div>
+
+          <button class="btn btn-primary" type="button" id="btnOpenCreateBereich">
+            <i class="bi bi-plus-circle me-1"></i> Arbeitsbereich anlegen
+          </button>
+        </div>
+
+        <div class="bg-white border rounded p-3">
+          <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-2">
+            <div class="fw-semibold">Übersicht Arbeitsbereiche</div>
+            <div class="text-muted small">Bearbeiten / Löschen</div>
+          </div>
+
+          <div class="table-responsive border rounded">
+            <table class="table table-sm mb-0 align-middle">
+              <thead class="table-light">
+                <tr>
+                  <th>Name</th>
+                  <th>Standardtext (Auszug)</th>
+                  <th class="text-end" style="width: 160px;">Aktion</th>
+                </tr>
+              </thead>
+              <tbody id="bereichListBody"></tbody>
+            </table>
+          </div>
+
+          <div id="bereichEmpty" class="text-muted small mt-2 d-none">Noch keine Arbeitsbereiche vorhanden.</div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- PROJEKTE (in Arbeit) (aufklappbar) -->
+  <div class="card border-0 shadow mb-4">
+    <div class="card-body p-4">
+
+      <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+        <div>
+          <div class="text-muted small">Einsatzorte / Tätigkeiten (für spätere Stunden-Zuordnung)</div>
+          <h4 class="fw-semibold mb-0">
+            <i class="bi bi-cone-striped me-2"></i> Projekte (in Arbeit)
+          </h4>
+        </div>
+
+        <button class="btn btn-outline-secondary"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#projekteCollapse"
+                aria-expanded="false"
+                aria-controls="projekteCollapse">
+          <i class="bi bi-chevron-down me-1"></i> Aufklappen
+        </button>
+      </div>
+
+      <div class="collapse mt-3" id="projekteCollapse">
+
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+          <div class="text-muted small">
+            Projekte sind z. B. Baustellen / Arbeitsorte. Später wird in der Anwesenheit erfasst, wie viele Stunden ein Teilnehmender
+            in welchem Projekt gearbeitet hat.
+          </div>
+
+          <button class="btn btn-primary" type="button" id="btnOpenCreateProjekt">
+            <i class="bi bi-plus-circle me-1"></i> Projekt anlegen
+          </button>
+        </div>
+
+        <div class="bg-white border rounded p-3">
+          <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-2">
+            <div class="fw-semibold">Übersicht Projekte</div>
+            <div class="text-muted small">Bearbeiten / Löschen</div>
+          </div>
+
+          <div class="table-responsive border rounded">
+            <table class="table table-sm mb-0 align-middle">
+              <thead class="table-light">
+                <tr>
+                  <th>Name</th>
+                  <th>Ort</th>
+                  <th>Beschreibung (Auszug)</th>
+                  <th class="text-end" style="width: 160px;">Aktion</th>
+                </tr>
+              </thead>
+              <tbody id="projektListBody"></tbody>
+            </table>
+          </div>
+
+          <div id="projektEmpty" class="text-muted small mt-2 d-none">Noch keine Projekte vorhanden.</div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- =========================
+     MODALS
+========================= -->
+
+<!-- Jobcenter: Create/Edit -->
+<div class="modal fade" id="jcModal" tabindex="-1" aria-labelledby="jcModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content border-0 shadow">
+      <div class="modal-header">
+        <h5 class="modal-title" id="jcModalLabel">
+          <i class="bi bi-building me-2"></i><span id="jcModalTitle">Jobcenter anlegen</span>
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Schließen"></button>
+      </div>
+
+      <div class="modal-body">
+        <form id="jcForm">
+          <input type="hidden" id="jcId">
+          <div class="row g-3">
+            <div class="col-lg-6">
+              <div class="form-floating">
+                <input class="form-control" id="jcName" placeholder="JC-Name" required>
+                <label for="jcName">JC-Name *</label>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-floating">
+                <select class="form-select" id="jcArt" required>
+                  <option value="" selected disabled>Bitte wählen…</option>
+                  <option>Jobcenter</option>
+                  <option>Arbeitsagentur</option>
+                  <option>Sozialamt</option>
+                  <option>Bildungsträger</option>
+                  <option>Sonstige</option>
+                </select>
+                <label for="jcArt">Art *</label>
+              </div>
+            </div>
+            <div class="col-lg-8">
+              <div class="form-floating">
+                <input class="form-control" id="jcStrasse" placeholder="Straße">
+                <label for="jcStrasse">Straße / Hausnr.</label>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="form-floating">
+                <input class="form-control" id="jcOrtsteil" placeholder="Ortsteil">
+                <label for="jcOrtsteil">Ortsteil (optional)</label>
+              </div>
+            </div>
+            <div class="col-lg-3">
+              <div class="form-floating">
+                <input class="form-control" id="jcPlz" placeholder="PLZ" inputmode="numeric">
+                <label for="jcPlz">PLZ</label>
+              </div>
+            </div>
+            <div class="col-lg-5">
+              <div class="form-floating">
+                <input class="form-control" id="jcOrt" placeholder="Ort">
+                <label for="jcOrt">Ort</label>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="form-floating">
+                <input class="form-control" id="jcTelefon" placeholder="Telefon" inputmode="tel">
+                <label for="jcTelefon">Telefon</label>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-floating">
+                <input class="form-control" id="jcEmail" placeholder="E-Mail" inputmode="email">
+                <label for="jcEmail">E-Mail</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-text mt-2">
+            * Pflichtfelder. Teams und Mitarbeitende werden innerhalb des Jobcenters verwaltet.
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-outline-secondary" type="button" data-bs-dismiss="modal">Abbrechen</button>
+        <button class="btn btn-primary" type="button" id="btnSaveJc">
+          <i class="bi bi-save me-1"></i> Speichern
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Team: Manage -->
+<div class="modal fade" id="teamModal" tabindex="-1" aria-labelledby="teamModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-scrollable">
+    <div class="modal-content border-0 shadow">
+      <div class="modal-header">
+        <h5 class="modal-title" id="teamModalLabel">
+          <i class="bi bi-people me-2"></i><span id="teamModalTitle">Teams verwalten</span>
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Schließen"></button>
+      </div>
+
+      <div class="modal-body">
+        <div class="border rounded p-3 bg-light">
+          <div class="d-flex justify-content-between align-items-center gap-2 mb-2">
+            <div class="fw-semibold"><i class="bi bi-plus-circle me-2"></i><span id="teamFormTitle">Team anlegen</span></div>
+            <span class="text-muted small">Gilt nur für das aktuell gewählte Jobcenter</span>
+          </div>
+
+          <form id="teamForm">
+            <input type="hidden" id="teamId">
+            <input type="hidden" id="teamJcId">
+
             <div class="row g-3">
-              <div class="col-md-6">
+              <div class="col-lg-4">
                 <div class="form-floating">
-                  <input class="form-control" id="jcName" placeholder="Name" required>
-                  <label for="jcName">Name des Jobcenters</label>
+                  <input class="form-control" id="teamName" placeholder="Teamname" required>
+                  <label for="teamName">Teamname *</label>
                 </div>
               </div>
-
-              <div class="col-md-6">
+              <div class="col-lg-6">
                 <div class="form-floating">
-                  <input class="form-control" id="jcZusatz" placeholder="Zusatz">
-                  <label for="jcZusatz">Firmenname-Zusatz (optional)</label>
+                  <input class="form-control" id="teamInfo" placeholder="Beschreibung">
+                  <label for="teamInfo">Beschreibung / Sonstiges (optional)</label>
                 </div>
+              </div>
+              <div class="col-lg-2 d-flex align-items-stretch">
+                <button class="btn btn-primary w-100" type="button" id="btnSaveTeam">
+                  <i class="bi bi-save me-1"></i> Speichern
+                </button>
               </div>
             </div>
 
-            <div class="text-end mt-3">
-              <button class="btn btn-primary btn-sm" type="submit">
-                <i class="bi bi-save me-1"></i> Jobcenter speichern
+            <div class="d-flex justify-content-end mt-2">
+              <button class="btn btn-outline-secondary btn-sm d-none" type="button" id="btnCancelTeamEdit">
+                Bearbeitung abbrechen
               </button>
             </div>
-          </form>
 
-          <div class="bg-white border rounded p-3">
-            <div class="d-flex justify-content-between align-items-center mb-2">
-              <div class="fw-semibold">Vorhandene Jobcenter</div>
-              <span class="text-muted small">Bearbeiten / Löschen</span>
+            <div class="form-text mt-2">
+              Hinweis: Beim Löschen eines Teams werden zugeordnete Mitarbeitende automatisch auf <strong>„kein Team“</strong> gesetzt.
             </div>
-            <ul class="list-group list-group-sm" id="jobcenterList"></ul>
-          </div>
-
+          </form>
         </div>
+
+        <hr class="my-4">
+
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-2">
+          <div class="fw-semibold"><i class="bi bi-list-ul me-2"></i>Team-Übersicht</div>
+          <div class="text-muted small" id="teamCountHint"></div>
+        </div>
+
+        <div class="table-responsive border rounded">
+          <table class="table table-sm mb-0 align-middle">
+            <thead class="table-light">
+              <tr>
+                <th>Team</th>
+                <th class="d-none d-lg-table-cell">Beschreibung</th>
+                <th class="text-end" style="width: 140px;">Aktion</th>
+              </tr>
+            </thead>
+            <tbody id="teamListBody"></tbody>
+          </table>
+        </div>
+
+        <div class="text-muted small mt-2" id="teamEmptyHint"></div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-outline-secondary" type="button" data-bs-dismiss="modal">Schließen</button>
       </div>
     </div>
+  </div>
+</div>
 
-    <!-- TEAMS -->
-    <div class="accordion-item border-0 mb-3 shadow-sm">
-      <h2 class="accordion-header">
-        <button class="accordion-button collapsed bg-white text-dark fw-semibold"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#teamBlock">
-          <i class="bi bi-people me-2"></i> Teams (Jobcenter)
+<!-- Staff: Create/Edit -->
+<div class="modal fade" id="staffModal" tabindex="-1" aria-labelledby="staffModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-scrollable">
+    <div class="modal-content border-0 shadow">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staffModalLabel">
+          <i class="bi bi-person-vcard me-2"></i><span id="staffModalTitle">Mitarbeitende anlegen</span>
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Schließen"></button>
+      </div>
+
+      <div class="modal-body">
+        <form id="staffForm">
+          <input type="hidden" id="staffId">
+          <input type="hidden" id="staffJcId">
+
+          <div class="row g-3">
+            <div class="col-lg-3">
+              <div class="form-floating">
+                <input class="form-control" id="staffVorname" placeholder="Vorname" required>
+                <label for="staffVorname">Vorname *</label>
+              </div>
+            </div>
+
+            <div class="col-lg-3">
+              <div class="form-floating">
+                <input class="form-control" id="staffNachname" placeholder="Nachname" required>
+                <label for="staffNachname">Nachname *</label>
+              </div>
+            </div>
+
+            <div class="col-lg-2">
+              <div class="form-floating">
+                <select class="form-select" id="staffGeschlecht">
+                  <option value="">—</option>
+                  <option value="w">w</option>
+                  <option value="m">m</option>
+                  <option value="d">d</option>
+                  <option value="kA">keine Angabe</option>
+                </select>
+                <label for="staffGeschlecht">Geschlecht</label>
+              </div>
+            </div>
+
+            <div class="col-lg-4">
+              <div class="form-floating">
+                <input class="form-control" id="staffPosition" placeholder="Position/Funktion">
+                <label for="staffPosition">Position / Funktion</label>
+              </div>
+            </div>
+
+            <div class="col-lg-3">
+              <div class="form-floating">
+                <input class="form-control" id="staffTelefon" placeholder="Telefon" inputmode="tel">
+                <label for="staffTelefon">Telefon</label>
+              </div>
+            </div>
+
+            <div class="col-lg-3">
+              <div class="form-floating">
+                <input class="form-control" id="staffMobil" placeholder="Mobil" inputmode="tel">
+                <label for="staffMobil">Mobil</label>
+              </div>
+            </div>
+
+            <div class="col-lg-3">
+              <div class="form-floating">
+                <input class="form-control" id="staffEmail" placeholder="E-Mail" inputmode="email">
+                <label for="staffEmail">E-Mail</label>
+              </div>
+            </div>
+
+            <div class="col-lg-3">
+              <div class="form-floating">
+                <select class="form-select" id="staffTeamId"></select>
+                <label for="staffTeamId">Zuweisung Team</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-text mt-2">
+            Team-Zuweisung ist optional (aber empfohlen).
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-outline-secondary" type="button" data-bs-dismiss="modal">Abbrechen</button>
+        <button class="btn btn-primary" type="button" id="btnSaveStaff">
+          <i class="bi bi-save me-1"></i> Speichern
         </button>
-      </h2>
-
-      <div id="teamBlock" class="accordion-collapse collapse" data-bs-parent="#orgAccordion">
-        <div class="accordion-body bg-light">
-
-          <form id="teamForm" class="mb-4">
-            <div class="form-floating mb-3">
-              <input class="form-control" id="teamName" placeholder="Teamname" required>
-              <label for="teamName">Teamname</label>
-            </div>
-
-            <div class="form-floating mb-3">
-              <textarea class="form-control" id="teamInfo" style="height: 90px" placeholder="Beschreibung"></textarea>
-              <label for="teamInfo">Beschreibung / Sonstiges (optional)</label>
-            </div>
-
-            <div class="text-end">
-              <button class="btn btn-primary btn-sm" type="submit">
-                <i class="bi bi-save me-1"></i> Team speichern
-              </button>
-            </div>
-          </form>
-
-          <div class="bg-white border rounded p-3">
-            <div class="d-flex justify-content-between align-items-center mb-2">
-              <div class="fw-semibold">Vorhandene Teams</div>
-              <span class="text-muted small">Bearbeiten / Löschen</span>
-            </div>
-            <ul class="list-group list-group-sm" id="teamList"></ul>
-          </div>
-
-        </div>
       </div>
     </div>
+  </div>
+</div>
 
-    <!-- ARBEITSBEREICHE -->
-    <div class="accordion-item border-0 mb-3 shadow-sm">
-      <h2 class="accordion-header">
-        <button class="accordion-button collapsed bg-white text-dark fw-semibold"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#bereichBlock">
-          <i class="bi bi-briefcase me-2"></i> Arbeitsbereiche
+<!-- Arbeitsbereich: Create/Edit -->
+<div class="modal fade" id="bereichModal" tabindex="-1" aria-labelledby="bereichModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content border-0 shadow">
+      <div class="modal-header">
+        <h5 class="modal-title" id="bereichModalLabel">
+          <i class="bi bi-briefcase me-2"></i><span id="bereichModalTitle">Arbeitsbereich anlegen</span>
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Schließen"></button>
+      </div>
+
+      <div class="modal-body">
+        <form id="bereichForm">
+          <input type="hidden" id="bereichId">
+
+          <div class="row g-3">
+            <div class="col-12">
+              <div class="form-floating">
+                <input class="form-control" id="bereichName" placeholder="Name" required>
+                <label for="bereichName">Name *</label>
+              </div>
+            </div>
+
+            <div class="col-12">
+              <div class="form-floating">
+                <textarea class="form-control" id="bereichText" style="height: 220px" placeholder="Standardtext"></textarea>
+                <label for="bereichText">Standardtext (z. B. Erstunterlagen)</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-text mt-2">
+            Dieser Text kann später für Erstunterlagen / Berichte übernommen werden.
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-outline-secondary" type="button" data-bs-dismiss="modal">Abbrechen</button>
+        <button class="btn btn-primary" type="button" id="btnSaveBereich">
+          <i class="bi bi-save me-1"></i> Speichern
         </button>
-      </h2>
-
-      <div id="bereichBlock" class="accordion-collapse collapse" data-bs-parent="#orgAccordion">
-        <div class="accordion-body bg-light">
-
-          <form id="bereichForm" class="mb-4">
-            <div class="form-floating mb-3">
-              <input class="form-control" id="bereichName" placeholder="Bezeichnung" required>
-              <label for="bereichName">Bezeichnung</label>
-            </div>
-
-            <div class="form-floating mb-3">
-              <textarea class="form-control" id="bereichText" style="height: 110px" placeholder="Standardtext"></textarea>
-              <label for="bereichText">Standardtext für Berichte (optional)</label>
-            </div>
-
-            <div class="text-end">
-              <button class="btn btn-primary btn-sm" type="submit">
-                <i class="bi bi-save me-1"></i> Arbeitsbereich speichern
-              </button>
-            </div>
-          </form>
-
-          <div class="bg-white border rounded p-3">
-            <div class="d-flex justify-content-between align-items-center mb-2">
-              <div class="fw-semibold">Vorhandene Arbeitsbereiche</div>
-              <span class="text-muted small">Bearbeiten / Löschen</span>
-            </div>
-            <ul class="list-group list-group-sm" id="bereichList"></ul>
-          </div>
-
-        </div>
       </div>
     </div>
+  </div>
+</div>
 
+<!-- Projekt: Create/Edit -->
+<div class="modal fade" id="projektModal" tabindex="-1" aria-labelledby="projektModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content border-0 shadow">
+      <div class="modal-header">
+        <h5 class="modal-title" id="projektModalLabel">
+          <i class="bi bi-cone-striped me-2"></i><span id="projektModalTitle">Projekt anlegen</span>
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Schließen"></button>
+      </div>
+
+      <div class="modal-body">
+        <form id="projektForm">
+          <input type="hidden" id="projektId">
+
+          <div class="row g-3">
+            <div class="col-12">
+              <div class="form-floating">
+                <input class="form-control" id="projektName" placeholder="Name" required>
+                <label for="projektName">Name *</label>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-floating">
+                <input class="form-control" id="projektOrt" placeholder="Ort / Adresse">
+                <label for="projektOrt">Ort / Ortsangaben</label>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-floating">
+                <input class="form-control" id="projektOrtsteil" placeholder="Ortsteil / Zusatz">
+                <label for="projektOrtsteil">Ortsteil / Zusatz (optional)</label>
+              </div>
+            </div>
+
+            <div class="col-12">
+              <div class="form-floating">
+                <textarea class="form-control" id="projektBeschreibung" style="height: 220px" placeholder="Beschreibung"></textarea>
+                <label for="projektBeschreibung">Beschreibung der Tätigkeit</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-text mt-2">
+            Hinweis: Später kann in der Anwesenheitserfassung pro Tag/Teilnehmer die <strong>Stundenzahl je Projekt</strong> erfasst werden.
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-outline-secondary" type="button" data-bs-dismiss="modal">Abbrechen</button>
+        <button class="btn btn-primary" type="button" id="btnSaveProjekt">
+          <i class="bi bi-save me-1"></i> Speichern
+        </button>
+      </div>
+    </div>
   </div>
 </div>
 
 <!-- Bootstrap -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- Demo-Logik: LocalStorage + Bearbeiten -->
 <script>
+/* =========================
+   Utilities + Storage
+========================= */
 function escHtml(str) {
   return String(str ?? "")
     .replaceAll("&", "&amp;")
@@ -219,174 +613,701 @@ function escHtml(str) {
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
 }
-
-function setupEditableList({
-  formId,
-  fields,          // [{id, label}]
-  listId,
-  storageKey,
-  formatPreview    // (obj) => string
-}) {
-  const form = document.getElementById(formId);
-  const list = document.getElementById(listId);
-
-  function load() {
-    return JSON.parse(localStorage.getItem(storageKey) || "[]");
-  }
-  function save(data) {
-    localStorage.setItem(storageKey, JSON.stringify(data));
-  }
-
-  function render() {
-    const data = load();
-    list.innerHTML = "";
-
-    if (data.length === 0) {
-      const empty = document.createElement("div");
-      empty.className = "text-muted small";
-      empty.textContent = "Noch keine Einträge vorhanden.";
-      list.appendChild(empty);
-      return;
-    }
-
-    data.forEach((item, idx) => {
-      const li = document.createElement("li");
-      li.className = "list-group-item";
-
-      const preview = formatPreview(item);
-
-      li.innerHTML = `
-        <div class="d-flex justify-content-between align-items-start gap-3">
-          <div class="flex-grow-1">
-            <div class="fw-semibold">${escHtml(preview)}</div>
-          </div>
-
-          <div class="btn-group btn-group-sm flex-shrink-0">
-            <button class="btn btn-outline-secondary" data-action="edit">
-              <i class="bi bi-pencil"></i>
-            </button>
-            <button class="btn btn-outline-danger" data-action="delete">
-              <i class="bi bi-trash"></i>
-            </button>
-          </div>
-        </div>
-
-        <div class="mt-3 d-none" data-edit-panel>
-          <div class="row g-2">
-            ${fields.map(f => `
-              <div class="col-md-6">
-                <div class="form-floating">
-                  <input class="form-control" placeholder="${escHtml(f.label)}" data-field="${escHtml(f.id)}" value="${escHtml(item[f.id] || "")}">
-                  <label>${escHtml(f.label)}</label>
-                </div>
-              </div>
-            `).join("")}
-          </div>
-
-          <div class="d-flex justify-content-end gap-2 mt-2">
-            <button class="btn btn-outline-secondary btn-sm" data-action="cancel">
-              Abbrechen
-            </button>
-            <button class="btn btn-primary btn-sm" data-action="save">
-              <i class="bi bi-save me-1"></i> Speichern
-            </button>
-          </div>
-        </div>
-      `;
-
-      li.querySelector('[data-action="delete"]').addEventListener("click", () => {
-        const next = load().filter((_, i) => i !== idx);
-        save(next);
-        render();
-      });
-
-      li.querySelector('[data-action="edit"]').addEventListener("click", () => {
-        li.querySelector("[data-edit-panel]").classList.toggle("d-none");
-      });
-
-      li.querySelector('[data-action="cancel"]').addEventListener("click", () => {
-        li.querySelector("[data-edit-panel]").classList.add("d-none");
-        render(); // reset values
-      });
-
-      li.querySelector('[data-action="save"]').addEventListener("click", () => {
-        const next = load();
-        const panel = li.querySelector("[data-edit-panel]");
-        const updated = { ...next[idx] };
-
-        panel.querySelectorAll("[data-field]").forEach(inp => {
-          const key = inp.getAttribute("data-field");
-          updated[key] = inp.value.trim();
-        });
-
-        // simple Pflichtfeld-Check: erstes Feld
-        const firstKey = fields[0].id;
-        if (!updated[firstKey]) return;
-
-        next[idx] = updated;
-        save(next);
-        render();
-      });
-
-      list.appendChild(li);
-    });
-  }
-
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const obj = {};
-    fields.forEach(f => {
-      obj[f.id] = (document.getElementById(f.id).value || "").trim();
-    });
-
-    // Pflichtfeld: erstes Feld
-    if (!obj[fields[0].id]) return;
-
-    const data = load();
-    data.push(obj);
-    save(data);
-    form.reset();
-    render();
-  });
-
-  render();
+function uid(prefix="id") {
+  return `${prefix}_${Date.now()}_${Math.random().toString(16).slice(2)}`;
+}
+function isEmail(v) {
+  const s = String(v || "").trim();
+  if (!s) return true;
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s);
+}
+function compactAddress(j) {
+  const parts = [];
+  if (j.strasse) parts.push(j.strasse);
+  const ortLine = [j.plz, j.ort].filter(Boolean).join(" ");
+  if (ortLine) parts.push(ortLine);
+  if (j.ortsteil) parts.push(j.ortsteil);
+  return parts.join(" · ");
+}
+function snippet(txt, max=120){
+  const s = String(txt || "").replace(/\s+/g, " ").trim();
+  if (!s) return "—";
+  return s.length > max ? (s.slice(0, max) + "…") : s;
 }
 
-/* Jobcenter */
-setupEditableList({
-  formId: "jobcenterForm",
-  listId: "jobcenterList",
-  storageKey: "org_jobcenter",
-  fields: [
-    { id: "jcName", label: "Name des Jobcenters" },
-    { id: "jcZusatz", label: "Firmenname-Zusatz (optional)" }
-  ],
-  formatPreview: (o) => o.jcZusatz ? `${o.jcName} (${o.jcZusatz})` : o.jcName
+/* =========================
+   Storage Keys
+========================= */
+const STORE = {
+  jobcenter: "org_jobcenter_v6",
+  teams: "org_jobcenter_teams_v6",
+  staff: "org_jobcenter_staff_v6",
+  bereiche: "org_arbeitsbereiche_v2",
+  projekte: "org_projekte_v1"
+};
+function load(key){ return JSON.parse(localStorage.getItem(key) || "[]"); }
+function save(key, data){ localStorage.setItem(key, JSON.stringify(data)); }
+
+function getTeamsForJobcenter(jcId){ return load(STORE.teams).filter(t => t.jcId === jcId); }
+function getStaffForJobcenter(jcId){ return load(STORE.staff).filter(s => s.jcId === jcId); }
+function getTeamName(jcId, teamId){
+  const t = load(STORE.teams).find(x => x.jcId === jcId && x.id === teamId);
+  return t ? t.name : "";
+}
+
+/* =========================
+   Modals
+========================= */
+const jcModal = new bootstrap.Modal(document.getElementById("jcModal"));
+const teamModal = new bootstrap.Modal(document.getElementById("teamModal"));
+const staffModal = new bootstrap.Modal(document.getElementById("staffModal"));
+const bereichModal = new bootstrap.Modal(document.getElementById("bereichModal"));
+const projektModal = new bootstrap.Modal(document.getElementById("projektModal"));
+
+/* =========================
+   Jobcenter modal helpers
+========================= */
+function openCreateJcModal(){
+  document.getElementById("jcModalTitle").textContent = "Jobcenter anlegen";
+  document.getElementById("jcId").value = "";
+  document.getElementById("jcForm").reset();
+}
+function openEditJcModal(jc){
+  document.getElementById("jcModalTitle").textContent = "Jobcenter bearbeiten";
+  document.getElementById("jcId").value = jc.id;
+  document.getElementById("jcName").value = jc.name || "";
+  document.getElementById("jcArt").value = jc.art || "";
+  document.getElementById("jcStrasse").value = jc.strasse || "";
+  document.getElementById("jcPlz").value = jc.plz || "";
+  document.getElementById("jcOrt").value = jc.ort || "";
+  document.getElementById("jcOrtsteil").value = jc.ortsteil || "";
+  document.getElementById("jcTelefon").value = jc.telefon || "";
+  document.getElementById("jcEmail").value = jc.email || "";
+}
+
+/* =========================
+   Team modal helpers
+========================= */
+function openTeamModalForJobcenter(jcId){
+  document.getElementById("teamFormTitle").textContent = "Team anlegen";
+  document.getElementById("teamModalTitle").textContent = "Teams verwalten";
+  document.getElementById("teamId").value = "";
+  document.getElementById("teamJcId").value = jcId;
+  document.getElementById("teamForm").reset();
+  document.getElementById("btnCancelTeamEdit").classList.add("d-none");
+
+  renderTeamsInModal(jcId);
+  teamModal.show();
+}
+function startEditTeam(team){
+  document.getElementById("teamFormTitle").textContent = "Team bearbeiten";
+  document.getElementById("teamId").value = team.id;
+  document.getElementById("teamJcId").value = team.jcId;
+  document.getElementById("teamName").value = team.name || "";
+  document.getElementById("teamInfo").value = team.info || "";
+  document.getElementById("btnCancelTeamEdit").classList.remove("d-none");
+}
+document.getElementById("btnCancelTeamEdit").addEventListener("click", () => {
+  const jcId = (document.getElementById("teamJcId").value || "").trim();
+  document.getElementById("teamFormTitle").textContent = "Team anlegen";
+  document.getElementById("teamId").value = "";
+  document.getElementById("teamForm").reset();
+  document.getElementById("btnCancelTeamEdit").classList.add("d-none");
+  renderTeamsInModal(jcId);
+});
+function renderTeamsInModal(jcId){
+  const teams = getTeamsForJobcenter(jcId);
+  const body = document.getElementById("teamListBody");
+  const emptyHint = document.getElementById("teamEmptyHint");
+  const countHint = document.getElementById("teamCountHint");
+
+  countHint.textContent = teams.length ? `${teams.length} Teams` : "";
+  if (!teams.length) {
+    body.innerHTML = `<tr><td colspan="3" class="text-muted small py-3">Noch keine Teams vorhanden.</td></tr>`;
+    emptyHint.textContent = "Lege oben ein Team an.";
+    return;
+  }
+  emptyHint.textContent = "";
+
+  body.innerHTML = teams.map(t => `
+    <tr data-team-row="${escHtml(t.id)}">
+      <td><div class="fw-semibold">${escHtml(t.name)}</div></td>
+      <td class="d-none d-lg-table-cell text-muted">${escHtml(t.info || "—")}</td>
+      <td class="text-end">
+        <div class="btn-group btn-group-sm">
+          <button class="btn btn-outline-secondary" type="button" data-action="edit-team" title="Bearbeiten">
+            <i class="bi bi-pencil"></i>
+          </button>
+          <button class="btn btn-outline-danger" type="button" data-action="delete-team" title="Löschen">
+            <i class="bi bi-trash"></i>
+          </button>
+        </div>
+      </td>
+    </tr>
+  `).join("");
+
+  body.querySelectorAll('[data-action="edit-team"]').forEach(btn => {
+    btn.addEventListener("click", (e) => {
+      const id = e.currentTarget.closest("tr").getAttribute("data-team-row");
+      const team = load(STORE.teams).find(x => x.id === id);
+      startEditTeam(team);
+    });
+  });
+
+  body.querySelectorAll('[data-action="delete-team"]').forEach(btn => {
+    btn.addEventListener("click", (e) => {
+      const id = e.currentTarget.closest("tr").getAttribute("data-team-row");
+      const team = load(STORE.teams).find(x => x.id === id);
+      const ok = confirm(`Team "${team.name}" löschen?\n\nZugeordnete Mitarbeitende werden auf „kein Team“ gesetzt.`);
+      if (!ok) return;
+
+      save(STORE.teams, load(STORE.teams).filter(x => x.id !== id));
+
+      const allStaff = load(STORE.staff).map(s => {
+        if (s.jcId === jcId && s.teamId === id) return { ...s, teamId: "" };
+        return s;
+      });
+      save(STORE.staff, allStaff);
+
+      renderTeamsInModal(jcId);
+      renderJobcenters();
+    });
+  });
+}
+
+/* =========================
+   Staff modal helpers
+========================= */
+function fillTeamOptionsForStaff(jcId, selectedTeamId){
+  const teams = getTeamsForJobcenter(jcId);
+  const sel = document.getElementById("staffTeamId");
+  sel.innerHTML = `
+    <option value="">— (kein Team)</option>
+    ${teams.map(t => `<option value="${escHtml(t.id)}" ${selectedTeamId===t.id ? "selected":""}>${escHtml(t.name)}</option>`).join("")}
+  `;
+}
+function openCreateStaffModal(jcId){
+  document.getElementById("staffModalTitle").textContent = "Mitarbeitende anlegen";
+  document.getElementById("staffId").value = "";
+  document.getElementById("staffJcId").value = jcId;
+  document.getElementById("staffForm").reset();
+  fillTeamOptionsForStaff(jcId, "");
+  staffModal.show();
+}
+function openEditStaffModal(staff){
+  document.getElementById("staffModalTitle").textContent = "Mitarbeitende bearbeiten";
+  document.getElementById("staffId").value = staff.id;
+  document.getElementById("staffJcId").value = staff.jcId;
+  document.getElementById("staffVorname").value = staff.vorname || "";
+  document.getElementById("staffNachname").value = staff.nachname || "";
+  document.getElementById("staffGeschlecht").value = staff.geschlecht || "";
+  document.getElementById("staffPosition").value = staff.position || "";
+  document.getElementById("staffTelefon").value = staff.telefon || "";
+  document.getElementById("staffMobil").value = staff.mobil || "";
+  document.getElementById("staffEmail").value = staff.email || "";
+  fillTeamOptionsForStaff(staff.jcId, staff.teamId || "");
+  staffModal.show();
+}
+
+/* =========================
+   Arbeitsbereiche modal helpers
+========================= */
+function openCreateBereichModal(){
+  document.getElementById("bereichModalTitle").textContent = "Arbeitsbereich anlegen";
+  document.getElementById("bereichId").value = "";
+  document.getElementById("bereichForm").reset();
+  bereichModal.show();
+}
+function openEditBereichModal(b){
+  document.getElementById("bereichModalTitle").textContent = "Arbeitsbereich bearbeiten";
+  document.getElementById("bereichId").value = b.id;
+  document.getElementById("bereichName").value = b.name || "";
+  document.getElementById("bereichText").value = b.text || "";
+  bereichModal.show();
+}
+function renderArbeitsbereiche(){
+  const list = document.getElementById("bereichListBody");
+  const empty = document.getElementById("bereichEmpty");
+  const data = load(STORE.bereiche);
+
+  list.innerHTML = "";
+  empty.classList.toggle("d-none", data.length !== 0);
+
+  if (!data.length) return;
+
+  list.innerHTML = data.map(b => `
+    <tr data-bereich-row="${escHtml(b.id)}">
+      <td class="fw-semibold">${escHtml(b.name)}</td>
+      <td class="text-muted">${escHtml(snippet(b.text))}</td>
+      <td class="text-end">
+        <div class="btn-group btn-group-sm">
+          <button class="btn btn-outline-secondary" type="button" data-action="edit-bereich" title="Bearbeiten">
+            <i class="bi bi-pencil"></i>
+          </button>
+          <button class="btn btn-outline-danger" type="button" data-action="delete-bereich" title="Löschen">
+            <i class="bi bi-trash"></i>
+          </button>
+        </div>
+      </td>
+    </tr>
+  `).join("");
+
+  list.querySelectorAll('[data-action="edit-bereich"]').forEach(btn => {
+    btn.addEventListener("click", (e) => {
+      const id = e.currentTarget.closest("tr").getAttribute("data-bereich-row");
+      const b = load(STORE.bereiche).find(x => x.id === id);
+      openEditBereichModal(b);
+    });
+  });
+
+  list.querySelectorAll('[data-action="delete-bereich"]').forEach(btn => {
+    btn.addEventListener("click", (e) => {
+      const id = e.currentTarget.closest("tr").getAttribute("data-bereich-row");
+      const b = load(STORE.bereiche).find(x => x.id === id);
+      const ok = confirm(`Arbeitsbereich "${b.name}" wirklich löschen?`);
+      if (!ok) return;
+      save(STORE.bereiche, load(STORE.bereiche).filter(x => x.id !== id));
+      renderArbeitsbereiche();
+    });
+  });
+}
+
+/* =========================
+   Projekte modal helpers + render
+========================= */
+function openCreateProjektModal(){
+  document.getElementById("projektModalTitle").textContent = "Projekt anlegen";
+  document.getElementById("projektId").value = "";
+  document.getElementById("projektForm").reset();
+  projektModal.show();
+}
+function openEditProjektModal(p){
+  document.getElementById("projektModalTitle").textContent = "Projekt bearbeiten";
+  document.getElementById("projektId").value = p.id;
+  document.getElementById("projektName").value = p.name || "";
+  document.getElementById("projektOrt").value = p.ort || "";
+  document.getElementById("projektOrtsteil").value = p.ortsteil || "";
+  document.getElementById("projektBeschreibung").value = p.beschreibung || "";
+  projektModal.show();
+}
+function renderProjekte(){
+  const list = document.getElementById("projektListBody");
+  const empty = document.getElementById("projektEmpty");
+  const data = load(STORE.projekte);
+
+  list.innerHTML = "";
+  empty.classList.toggle("d-none", data.length !== 0);
+
+  if (!data.length) return;
+
+  list.innerHTML = data.map(p => `
+    <tr data-projekt-row="${escHtml(p.id)}">
+      <td class="fw-semibold">${escHtml(p.name)}</td>
+      <td class="text-muted">${escHtml([p.ort, p.ortsteil].filter(Boolean).join(" · ") || "—")}</td>
+      <td class="text-muted">${escHtml(snippet(p.beschreibung))}</td>
+      <td class="text-end">
+        <div class="btn-group btn-group-sm">
+          <button class="btn btn-outline-secondary" type="button" data-action="edit-projekt" title="Bearbeiten">
+            <i class="bi bi-pencil"></i>
+          </button>
+          <button class="btn btn-outline-danger" type="button" data-action="delete-projekt" title="Löschen">
+            <i class="bi bi-trash"></i>
+          </button>
+        </div>
+      </td>
+    </tr>
+  `).join("");
+
+  list.querySelectorAll('[data-action="edit-projekt"]').forEach(btn => {
+    btn.addEventListener("click", (e) => {
+      const id = e.currentTarget.closest("tr").getAttribute("data-projekt-row");
+      const p = load(STORE.projekte).find(x => x.id === id);
+      openEditProjektModal(p);
+    });
+  });
+
+  list.querySelectorAll('[data-action="delete-projekt"]').forEach(btn => {
+    btn.addEventListener("click", (e) => {
+      const id = e.currentTarget.closest("tr").getAttribute("data-projekt-row");
+      const p = load(STORE.projekte).find(x => x.id === id);
+      const ok = confirm(`Projekt "${p.name}" wirklich löschen?`);
+      if (!ok) return;
+      save(STORE.projekte, load(STORE.projekte).filter(x => x.id !== id));
+      renderProjekte();
+    });
+  });
+}
+
+/* =========================
+   Render Jobcenter Accordion
+========================= */
+function renderJobcenters() {
+  const acc = document.getElementById("jobcenterAccordion");
+  const empty = document.getElementById("jobcenterEmpty");
+  const jobcenter = load(STORE.jobcenter);
+
+  acc.innerHTML = "";
+  empty.classList.toggle("d-none", jobcenter.length !== 0);
+
+  jobcenter.forEach((jc) => {
+    const collapseId = `jcCollapse_${jc.id}`;
+    const headerId = `jcHeader_${jc.id}`;
+
+    const teams = getTeamsForJobcenter(jc.id);
+    const staffAll = getStaffForJobcenter(jc.id);
+
+    const subtitle = compactAddress(jc);
+    const title = `${jc.name} · ${jc.art}`;
+
+    const item = document.createElement("div");
+    item.className = "accordion-item border-0 mb-2";
+
+    item.innerHTML = `
+      <h2 class="accordion-header" id="${escHtml(headerId)}">
+        <button class="accordion-button collapsed bg-light"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#${escHtml(collapseId)}"
+                aria-expanded="false"
+                aria-controls="${escHtml(collapseId)}">
+          <div class="w-100 d-flex flex-wrap justify-content-between align-items-start gap-2">
+            <div class="me-2">
+              <div class="fw-semibold">
+                <i class="bi bi-building me-2"></i>${escHtml(title)}
+              </div>
+              <div class="text-muted small mt-1">${subtitle ? escHtml(subtitle) : "—"}</div>
+              <div class="text-muted small mt-1">
+                <span class="me-3"><i class="bi bi-people me-1"></i>${teams.length} Teams</span>
+                <span><i class="bi bi-person-vcard me-1"></i>${staffAll.length} Mitarbeitende</span>
+              </div>
+            </div>
+
+            <div class="btn-group btn-group-sm flex-shrink-0">
+              <button class="btn btn-outline-secondary" type="button" data-action="edit-jc" title="Jobcenter bearbeiten">
+                <i class="bi bi-pencil"></i>
+              </button>
+              <button class="btn btn-outline-danger" type="button" data-action="delete-jc" title="Jobcenter löschen">
+                <i class="bi bi-trash"></i>
+              </button>
+            </div>
+          </div>
+        </button>
+      </h2>
+
+      <div id="${escHtml(collapseId)}" class="accordion-collapse collapse" aria-labelledby="${escHtml(headerId)}" data-bs-parent="#jobcenterAccordion">
+        <div class="accordion-body bg-white border-top">
+
+          <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+            <div class="fw-semibold">
+              <i class="bi bi-person-vcard me-2"></i>Mitarbeitende
+              <span class="text-muted fw-normal">(${staffAll.length})</span>
+            </div>
+
+            <div class="d-flex flex-wrap gap-2">
+              <button class="btn btn-outline-secondary btn-sm" type="button" data-action="open-team-modal">
+                <i class="bi bi-people me-1"></i> Teams verwalten
+              </button>
+              <button class="btn btn-primary btn-sm" type="button" data-action="open-staff-modal">
+                <i class="bi bi-person-plus me-1"></i> Mitarbeitende anlegen
+              </button>
+            </div>
+          </div>
+
+          <div class="row g-2 align-items-end mb-3">
+            <div class="col-md-6 col-lg-4">
+              <div class="form-floating">
+                <select class="form-select" data-filter="team">
+                  <option value="" selected>Alle Teams</option>
+                  ${teams.map(t => `<option value="${escHtml(t.id)}">${escHtml(t.name)}</option>`).join("")}
+                </select>
+                <label>Filter nach Team</label>
+              </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+              <div class="form-floating">
+                <input class="form-control" placeholder="Suche" data-filter="search">
+                <label>Suche (Name, Position, E-Mail)</label>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="table-responsive border rounded">
+            <table class="table table-sm mb-0 align-middle">
+              <thead class="table-light">
+                <tr>
+                  <th>Name</th>
+                  <th class="d-none d-lg-table-cell">Position</th>
+                  <th>Team</th>
+                  <th class="d-none d-lg-table-cell">Telefon</th>
+                  <th class="d-none d-lg-table-cell">Mobil</th>
+                  <th class="d-none d-lg-table-cell">E-Mail</th>
+                  <th class="text-end" style="width: 160px;">Aktion</th>
+                </tr>
+              </thead>
+              <tbody data-list="staff"></tbody>
+            </table>
+          </div>
+
+          <div class="text-muted small mt-2" data-staff-hint></div>
+        </div>
+      </div>
+    `;
+
+    item.querySelector('[data-action="edit-jc"]').addEventListener("click", (e) => {
+      e.stopPropagation();
+      openEditJcModal(jc);
+      jcModal.show();
+    });
+
+    item.querySelector('[data-action="delete-jc"]').addEventListener("click", (e) => {
+      e.stopPropagation();
+      const ok = confirm(`Jobcenter "${jc.name}" wirklich löschen?\n\nHinweis: Teams & Mitarbeitende dieses Jobcenters werden ebenfalls gelöscht.`);
+      if (!ok) return;
+
+      save(STORE.jobcenter, load(STORE.jobcenter).filter(x => x.id !== jc.id));
+      save(STORE.teams, load(STORE.teams).filter(x => x.jcId !== jc.id));
+      save(STORE.staff, load(STORE.staff).filter(x => x.jcId !== jc.id));
+      renderJobcenters();
+    });
+
+    item.querySelector('[data-action="open-team-modal"]').addEventListener("click", () => openTeamModalForJobcenter(jc.id));
+    item.querySelector('[data-action="open-staff-modal"]').addEventListener("click", () => openCreateStaffModal(jc.id));
+
+    // staff list render with filters
+    const staffTbody = item.querySelector('[data-list="staff"]');
+    const teamFilter = item.querySelector('[data-filter="team"]');
+    const searchFilter = item.querySelector('[data-filter="search"]');
+    const hint = item.querySelector('[data-staff-hint]');
+
+    function renderStaffRows() {
+      const teamId = (teamFilter.value || "").trim();
+      const q = (searchFilter.value || "").trim().toLowerCase();
+
+      let staff = getStaffForJobcenter(jc.id);
+      if (teamId) staff = staff.filter(s => (s.teamId || "") === teamId);
+
+      if (q) {
+        staff = staff.filter(s => {
+          const hay = [
+            s.vorname, s.nachname, s.position, s.email, s.telefon, s.mobil,
+            getTeamName(jc.id, s.teamId || "")
+          ].join(" ").toLowerCase();
+          return hay.includes(q);
+        });
+      }
+
+      if (staff.length === 0) {
+        staffTbody.innerHTML = `<tr><td colspan="7" class="text-muted small py-3">Keine Mitarbeitenden gefunden.</td></tr>`;
+        hint.textContent = "";
+        return;
+      }
+
+      staffTbody.innerHTML = staff.map(s => {
+        const fullName = `${s.nachname}, ${s.vorname}`;
+        const teamName = s.teamId ? getTeamName(jc.id, s.teamId) : "";
+        return `
+          <tr data-staff-row="${escHtml(s.id)}">
+            <td>
+              <div class="fw-semibold">${escHtml(fullName)}</div>
+              <div class="text-muted small d-lg-none">${escHtml(s.position || "")}</div>
+            </td>
+            <td class="d-none d-lg-table-cell text-muted">${escHtml(s.position || "—")}</td>
+            <td>${escHtml(teamName || "—")}</td>
+            <td class="d-none d-lg-table-cell">${escHtml(s.telefon || "—")}</td>
+            <td class="d-none d-lg-table-cell">${escHtml(s.mobil || "—")}</td>
+            <td class="d-none d-lg-table-cell">${escHtml(s.email || "—")}</td>
+            <td class="text-end">
+              <div class="btn-group btn-group-sm">
+                <button class="btn btn-outline-secondary" type="button" data-action="edit-staff" title="Bearbeiten">
+                  <i class="bi bi-pencil"></i>
+                </button>
+                <button class="btn btn-outline-danger" type="button" data-action="delete-staff" title="Löschen">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join("");
+
+      hint.textContent = `Anzeige: ${staff.length} Mitarbeitende`;
+
+      staffTbody.querySelectorAll('[data-action="edit-staff"]').forEach(btn => {
+        btn.addEventListener("click", (e) => {
+          const id = e.currentTarget.closest("tr").getAttribute("data-staff-row");
+          const staffObj = load(STORE.staff).find(x => x.id === id);
+          openEditStaffModal(staffObj);
+        });
+      });
+      staffTbody.querySelectorAll('[data-action="delete-staff"]').forEach(btn => {
+        btn.addEventListener("click", (e) => {
+          const id = e.currentTarget.closest("tr").getAttribute("data-staff-row");
+          const staffObj = load(STORE.staff).find(x => x.id === id);
+          const ok = confirm(`Mitarbeitende "${staffObj.nachname}, ${staffObj.vorname}" löschen?`);
+          if (!ok) return;
+          save(STORE.staff, load(STORE.staff).filter(x => x.id !== id));
+          renderJobcenters();
+        });
+      });
+    }
+
+    teamFilter.addEventListener("change", renderStaffRows);
+    searchFilter.addEventListener("input", renderStaffRows);
+    renderStaffRows();
+
+    acc.appendChild(item);
+  });
+}
+
+/* =========================
+   Button events
+========================= */
+document.getElementById("btnOpenCreateJc").addEventListener("click", () => openCreateJcModal());
+document.getElementById("btnOpenCreateBereich").addEventListener("click", () => openCreateBereichModal());
+document.getElementById("btnOpenCreateProjekt").addEventListener("click", () => openCreateProjektModal());
+
+/* =========================
+   Save Jobcenter
+========================= */
+document.getElementById("btnSaveJc").addEventListener("click", () => {
+  const id = (document.getElementById("jcId").value || "").trim();
+  const name = (document.getElementById("jcName").value || "").trim();
+  const art = (document.getElementById("jcArt").value || "").trim();
+  const strasse = (document.getElementById("jcStrasse").value || "").trim();
+  const plz = (document.getElementById("jcPlz").value || "").trim();
+  const ort = (document.getElementById("jcOrt").value || "").trim();
+  const ortsteil = (document.getElementById("jcOrtsteil").value || "").trim();
+  const telefon = (document.getElementById("jcTelefon").value || "").trim();
+  const email = (document.getElementById("jcEmail").value || "").trim();
+
+  if (!name || !art) return;
+  if (!isEmail(email)) { alert("Bitte eine gültige E-Mail eingeben (oder Feld leer lassen)."); return; }
+
+  const all = load(STORE.jobcenter);
+  if (!id) all.push({ id: uid("jc"), name, art, strasse, plz, ort, ortsteil, telefon, email });
+  else {
+    const ix = all.findIndex(x => x.id === id);
+    if (ix >= 0) all[ix] = { ...all[ix], name, art, strasse, plz, ort, ortsteil, telefon, email };
+  }
+
+  save(STORE.jobcenter, all);
+  jcModal.hide();
+  renderJobcenters();
 });
 
-/* Teams */
-setupEditableList({
-  formId: "teamForm",
-  listId: "teamList",
-  storageKey: "org_teams",
-  fields: [
-    { id: "teamName", label: "Teamname" },
-    { id: "teamInfo", label: "Beschreibung / Sonstiges (optional)" }
-  ],
-  formatPreview: (o) => o.teamInfo ? `${o.teamName} – ${o.teamInfo}` : o.teamName
+/* =========================
+   Save Team
+========================= */
+document.getElementById("btnSaveTeam").addEventListener("click", () => {
+  const id = (document.getElementById("teamId").value || "").trim();
+  const jcId = (document.getElementById("teamJcId").value || "").trim();
+  const name = (document.getElementById("teamName").value || "").trim();
+  const info = (document.getElementById("teamInfo").value || "").trim();
+
+  if (!jcId || !name) return;
+
+  const all = load(STORE.teams);
+  if (!id) all.push({ id: uid("team"), jcId, name, info });
+  else {
+    const ix = all.findIndex(x => x.id === id);
+    if (ix >= 0) all[ix] = { ...all[ix], name, info };
+  }
+  save(STORE.teams, all);
+
+  document.getElementById("teamFormTitle").textContent = "Team anlegen";
+  document.getElementById("teamId").value = "";
+  document.getElementById("teamForm").reset();
+  document.getElementById("btnCancelTeamEdit").classList.add("d-none");
+
+  renderTeamsInModal(jcId);
+  renderJobcenters();
 });
 
-/* Arbeitsbereiche */
-setupEditableList({
-  formId: "bereichForm",
-  listId: "bereichList",
-  storageKey: "org_bereiche",
-  fields: [
-    { id: "bereichName", label: "Bezeichnung" },
-    { id: "bereichText", label: "Standardtext für Berichte (optional)" }
-  ],
-  formatPreview: (o) => o.bereichText ? `${o.bereichName} – ${o.bereichText}` : o.bereichName
+/* =========================
+   Save Staff
+========================= */
+document.getElementById("btnSaveStaff").addEventListener("click", () => {
+  const id = (document.getElementById("staffId").value || "").trim();
+  const jcId = (document.getElementById("staffJcId").value || "").trim();
+
+  const vorname = (document.getElementById("staffVorname").value || "").trim();
+  const nachname = (document.getElementById("staffNachname").value || "").trim();
+  const geschlecht = (document.getElementById("staffGeschlecht").value || "").trim();
+  const position = (document.getElementById("staffPosition").value || "").trim();
+  const telefon = (document.getElementById("staffTelefon").value || "").trim();
+  const mobil = (document.getElementById("staffMobil").value || "").trim();
+  const email = (document.getElementById("staffEmail").value || "").trim();
+  const teamId = (document.getElementById("staffTeamId").value || "").trim();
+
+  if (!jcId || !vorname || !nachname) return;
+  if (!isEmail(email)) { alert("Bitte eine gültige E-Mail eingeben (oder Feld leer lassen)."); return; }
+
+  const all = load(STORE.staff);
+  if (!id) all.push({ id: uid("staff"), jcId, teamId, vorname, nachname, geschlecht, position, telefon, mobil, email });
+  else {
+    const ix = all.findIndex(x => x.id === id);
+    if (ix >= 0) all[ix] = { ...all[ix], teamId, vorname, nachname, geschlecht, position, telefon, mobil, email };
+  }
+
+  save(STORE.staff, all);
+  staffModal.hide();
+  renderJobcenters();
 });
+
+/* =========================
+   Save Arbeitsbereich
+========================= */
+document.getElementById("btnSaveBereich").addEventListener("click", () => {
+  const id = (document.getElementById("bereichId").value || "").trim();
+  const name = (document.getElementById("bereichName").value || "").trim();
+  const text = (document.getElementById("bereichText").value || "").trim();
+
+  if (!name) return;
+
+  const all = load(STORE.bereiche);
+  if (!id) all.push({ id: uid("ab"), name, text });
+  else {
+    const ix = all.findIndex(x => x.id === id);
+    if (ix >= 0) all[ix] = { ...all[ix], name, text };
+  }
+
+  save(STORE.bereiche, all);
+  bereichModal.hide();
+  renderArbeitsbereiche();
+});
+
+/* =========================
+   Save Projekt
+========================= */
+document.getElementById("btnSaveProjekt").addEventListener("click", () => {
+  const id = (document.getElementById("projektId").value || "").trim();
+  const name = (document.getElementById("projektName").value || "").trim();
+  const ort = (document.getElementById("projektOrt").value || "").trim();
+  const ortsteil = (document.getElementById("projektOrtsteil").value || "").trim();
+  const beschreibung = (document.getElementById("projektBeschreibung").value || "").trim();
+
+  if (!name) return;
+
+  const all = load(STORE.projekte);
+  if (!id) all.push({ id: uid("prj"), name, ort, ortsteil, beschreibung });
+  else {
+    const ix = all.findIndex(x => x.id === id);
+    if (ix >= 0) all[ix] = { ...all[ix], name, ort, ortsteil, beschreibung };
+  }
+
+  save(STORE.projekte, all);
+  projektModal.hide();
+  renderProjekte();
+});
+
+/* =========================
+   Initial render
+========================= */
+renderJobcenters();
+renderArbeitsbereiche();
+renderProjekte();
 </script>
 
 </body>
