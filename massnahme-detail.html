@@ -692,10 +692,273 @@
 
         </div>
 
-        <!-- TAB: ARBEITSBEREICHE -->
-        <div class="tab-pane fade" id="tab-arbeitsbereiche">
-          <div class="text-secondary">Platzhalter: Arbeitsbereiche-Inhalte folgen.</div>
+<!-- TAB: ARBEITSBEREICHE -->
+<div class="tab-pane fade" id="tab-arbeitsbereiche">
+  <div class="tab-content p-3 p-lg-4"> 
+  <div class="d-flex flex-wrap justify-content-between align-items-start gap-2 mb-3">
+    <div>
+      <h5 class="mb-1">Arbeitsbereiche in dieser Maßnahme</h5>
+      <div class="text-secondary small">
+        Kachelübersicht der Arbeitsbereiche. Hier können Arbeitsbereiche aus den Stammdaten zur Maßnahme hinzugefügt
+        und Anleiter zugewiesen werden (auch mehrere).
+      </div>
+    </div>
+
+    <div class="d-flex flex-wrap gap-2">
+      <!-- Durchgriff zu Stammdaten Arbeitsbereiche -->
+      <button type="button" class="btn btn-outline-secondary" id="btnGoArbeitsbereicheStammdaten">
+        <i class="bi bi-box-arrow-up-right me-1"></i> Stammdaten Arbeitsbereiche öffnen
+      </button>
+
+      <!-- Arbeitsbereich hinzufügen (aus Stammdaten) -->
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAddArbeitsbereich">
+        <i class="bi bi-plus-lg me-1"></i> Arbeitsbereich hinzufügen
+      </button>
+    </div>
+  </div>
+
+  <div class="row g-3" id="abCards">
+    <!-- KACHEL 1 -->
+    <div class="col-12 col-md-6 col-xl-3">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-start gap-2">
+            <div>
+              <div class="text-secondary small">Bereich</div>
+              <div class="fw-semibold">Maler &amp; Lackierer</div>
+            </div>
+            <button class="btn btn-outline-secondary btn-sm" type="button" title="Bereich in Stammdaten öffnen"
+                    onclick="event.preventDefault(); alert('Demo: Stammdaten Arbeitsbereiche öffnen');">
+              <i class="bi bi-gear"></i>
+            </button>
+          </div>
+
+          <hr class="my-3">
+
+          <div class="small">
+            <div class="d-flex justify-content-between border-bottom py-1">
+              <span class="text-secondary">Anleiter</span>
+              <span class="fw-semibold text-end">Daniel Chu</span>
+            </div>
+            <div class="d-flex justify-content-between py-1">
+              <span class="text-secondary">Teilnehmer</span>
+              <span class="fw-semibold text-end">12</span>
+            </div>
+          </div>
+
+          <div class="d-flex flex-wrap gap-2 mt-3">
+            <button class="btn btn-outline-primary btn-sm" type="button"
+                    onclick="event.preventDefault(); alert('Demo: Anleiter zuweisen (mehrere möglich)');">
+              <i class="bi bi-person-plus me-1"></i> Anleiter zuweisen
+            </button>
+            <button class="btn btn-outline-secondary btn-sm" type="button"
+                    onclick="event.preventDefault(); alert('Demo: Teilnehmerliste zu diesem Bereich öffnen');">
+              <i class="bi bi-people me-1"></i> Zeige TN
+            </button>
+          </div>
         </div>
+      </div>
+    </div>
+
+    <!-- KACHEL 2 -->
+    <div class="col-12 col-md-6 col-xl-3">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-start gap-2">
+            <div>
+              <div class="text-secondary small">Bereich</div>
+              <div class="fw-semibold">IT &amp; Medien</div>
+            </div>
+            <button class="btn btn-outline-secondary btn-sm" type="button" title="Bereich in Stammdaten öffnen"
+                    onclick="event.preventDefault(); alert('Demo: Stammdaten Arbeitsbereiche öffnen');">
+              <i class="bi bi-gear"></i>
+            </button>
+          </div>
+
+          <hr class="my-3">
+
+          <div class="small">
+            <div class="d-flex justify-content-between border-bottom py-1">
+              <span class="text-secondary">Anleiter</span>
+              <span class="fw-semibold text-end">Janine Kerber</span>
+            </div>
+            <div class="d-flex justify-content-between py-1">
+              <span class="text-secondary">Teilnehmer</span>
+              <span class="fw-semibold text-end">7</span>
+            </div>
+          </div>
+
+          <div class="d-flex flex-wrap gap-2 mt-3">
+            <button class="btn btn-outline-primary btn-sm" type="button"
+                    onclick="event.preventDefault(); alert('Demo: Anleiter zuweisen (mehrere möglich)');">
+              <i class="bi bi-person-plus me-1"></i> Anleiter zuweisen
+            </button>
+            <button class="btn btn-outline-secondary btn-sm" type="button"
+                    onclick="event.preventDefault(); alert('Demo: Teilnehmerliste zu diesem Bereich öffnen');">
+              <i class="bi bi-people me-1"></i> Zeige TN
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- KACHEL 3 -->
+    <div class="col-12 col-md-6 col-xl-3">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-start gap-2">
+            <div>
+              <div class="text-secondary small">Bereich</div>
+              <div class="fw-semibold">Gärtner</div>
+            </div>
+            <button class="btn btn-outline-secondary btn-sm" type="button" title="Bereich in Stammdaten öffnen"
+                    onclick="event.preventDefault(); alert('Demo: Stammdaten Arbeitsbereiche öffnen');">
+              <i class="bi bi-gear"></i>
+            </button>
+          </div>
+
+          <hr class="my-3">
+
+          <div class="small">
+            <div class="d-flex justify-content-between border-bottom py-1">
+              <span class="text-secondary">Anleiter</span>
+              <span class="fw-semibold text-end">—</span>
+            </div>
+            <div class="d-flex justify-content-between py-1">
+              <span class="text-secondary">Teilnehmer</span>
+              <span class="fw-semibold text-end">9</span>
+            </div>
+          </div>
+
+          <div class="d-flex flex-wrap gap-2 mt-3">
+            <button class="btn btn-outline-primary btn-sm" type="button"
+                    onclick="event.preventDefault(); alert('Demo: Anleiter zuweisen (mehrere möglich)');">
+              <i class="bi bi-person-plus me-1"></i> Anleiter zuweisen
+            </button>
+            <button class="btn btn-outline-secondary btn-sm" type="button"
+                    onclick="event.preventDefault(); alert('Demo: Teilnehmerliste zu diesem Bereich öffnen');">
+              <i class="bi bi-people me-1"></i> Zeige TN
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- KACHEL 4 -->
+    <div class="col-12 col-md-6 col-xl-3">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-start gap-2">
+            <div>
+              <div class="text-secondary small">Bereich</div>
+              <div class="fw-semibold">Friseure</div>
+            </div>
+            <button class="btn btn-outline-secondary btn-sm" type="button" title="Bereich in Stammdaten öffnen"
+                    onclick="event.preventDefault(); alert('Demo: Stammdaten Arbeitsbereiche öffnen');">
+              <i class="bi bi-gear"></i>
+            </button>
+          </div>
+
+          <hr class="my-3">
+
+          <div class="small">
+            <div class="d-flex justify-content-between border-bottom py-1">
+              <span class="text-secondary">Anleiter</span>
+              <span class="fw-semibold text-end">Corinna Adams</span>
+            </div>
+            <div class="d-flex justify-content-between py-1">
+              <span class="text-secondary">Teilnehmer</span>
+              <span class="fw-semibold text-end">4</span>
+            </div>
+          </div>
+
+          <div class="d-flex flex-wrap gap-2 mt-3">
+            <button class="btn btn-outline-primary btn-sm" type="button"
+                    onclick="event.preventDefault(); alert('Demo: Anleiter zuweisen (mehrere möglich)');">
+              <i class="bi bi-person-plus me-1"></i> Anleiter zuweisen
+            </button>
+            <button class="btn btn-outline-secondary btn-sm" type="button"
+                    onclick="event.preventDefault(); alert('Demo: Teilnehmerliste zu diesem Bereich öffnen');">
+              <i class="bi bi-people me-1"></i> Zeige TN
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Arbeitsbereich zur Maßnahme hinzufügen (aus Stammdaten) -->
+  <div class="modal fade" id="modalAddArbeitsbereich" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div>
+            <h5 class="modal-title">Arbeitsbereich hinzufügen</h5>
+            <div class="text-secondary small">Wähle einen Arbeitsbereich aus den Stammdaten und weise optional Anleiter zu.</div>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Schließen"></button>
+        </div>
+
+        <div class="modal-body">
+          <div class="row g-3">
+
+            <div class="col-12 col-lg-6">
+              <div class="form-floating">
+                <select class="form-select" id="abSelectStammdaten">
+                  <option selected disabled value="">Arbeitsbereich aus Stammdaten wählen</option>
+                  <option>Maler &amp; Lackierer</option>
+                  <option>IT &amp; Medien</option>
+                  <option>Gärtner</option>
+                  <option>Friseure</option>
+                  <option>Hauswirtschaft</option>
+                  <option>Lager/Logistik</option>
+                </select>
+                <label for="abSelectStammdaten">Arbeitsbereich</label>
+              </div>
+
+              <div class="mt-2">
+                <button type="button" class="btn btn-outline-secondary btn-sm" id="btnGoArbeitsbereicheStammdaten2">
+                  <i class="bi bi-box-arrow-up-right me-1"></i> Stammdaten bearbeiten
+                </button>
+              </div>
+            </div>
+
+            <div class="col-12 col-lg-6">
+              <div class="form-floating">
+                <!-- multiple => mehrere Anleiter möglich -->
+                <select class="form-select" id="abSelectAnleiter" multiple style="height: 140px;">
+                  <option>Daniel Chu</option>
+                  <option>Janine Kerber</option>
+                  <option>Corinna Adams</option>
+                  <option>Rafael Piechowiak</option>
+                  <option>Max Beispiel</option>
+                </select>
+                <label for="abSelectAnleiter">Anleiter zuweisen (mehrere möglich)</label>
+              </div>
+              <div class="form-text">Tipp: Mit Strg/Cmd mehrere auswählen.</div>
+            </div>
+
+          </div>
+
+          <div class="alert alert-light border small mt-3 mb-0 d-flex gap-2">
+            <i class="bi bi-info-circle text-secondary mt-1"></i>
+            <div class="text-secondary">
+              Nach dem Hinzufügen erscheint der Arbeitsbereich als Kachel in dieser Maßnahme.
+              Die Teilnehmerzahl kommt später aus der Zuordnung der TN zu Arbeitsbereichen.
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Abbrechen</button>
+          <button type="button" class="btn btn-primary" id="btnAddArbeitsbereichToMassnahme">
+            <i class="bi bi-plus-lg me-1"></i> Hinzufügen
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
         <!-- TAB: BERICHTE & AUSWERTUNGEN -->
         <div class="tab-pane fade" id="tab-berichte">
@@ -901,7 +1164,8 @@
 
         </div><!-- /tab-berichte -->
 
-      </div><!-- /tab-content -->
+    </div>   
+    </div><!-- /tab-content -->
     </div>
   </div>
 
@@ -2921,7 +3185,80 @@ document.getElementById("btnAllPresent")?.addEventListener("click", setAllPresen
 })();
 </script>
 
+<script>
+  // Demo: Durchgriff zu "Stammdaten Arbeitsbereiche"
+  document.getElementById("btnGoArbeitsbereicheStammdaten")?.addEventListener("click", () => {
+    alert("Demo: Öffne Stammdaten → Arbeitsbereiche");
+  });
+  document.getElementById("btnGoArbeitsbereicheStammdaten2")?.addEventListener("click", () => {
+    alert("Demo: Öffne Stammdaten → Arbeitsbereiche (aus Modal)");
+  });
 
+  // Demo: Arbeitsbereich zur Maßnahme hinzufügen
+  document.getElementById("btnAddArbeitsbereichToMassnahme")?.addEventListener("click", () => {
+    const ab = document.getElementById("abSelectStammdaten")?.value || "";
+    if (!ab) { alert("Bitte zuerst einen Arbeitsbereich auswählen."); return; }
+
+    const sel = document.getElementById("abSelectAnleiter");
+    const anleiter = sel ? Array.from(sel.selectedOptions).map(o => o.value) : [];
+    const anleiterText = anleiter.length ? anleiter.join(", ") : "—";
+
+    // einfache Demo-Kachel (Teilnehmerzahl bleibt 0)
+    const wrap = document.getElementById("abCards");
+    const col = document.createElement("div");
+    col.className = "col-12 col-md-6 col-xl-3";
+    col.innerHTML = `
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-start gap-2">
+            <div>
+              <div class="text-secondary small">Bereich</div>
+              <div class="fw-semibold">${ab}</div>
+            </div>
+            <button class="btn btn-outline-secondary btn-sm" type="button" title="Bereich in Stammdaten öffnen"
+                    onclick="event.preventDefault(); alert('Demo: Stammdaten Arbeitsbereiche öffnen');">
+              <i class="bi bi-gear"></i>
+            </button>
+          </div>
+
+          <hr class="my-3">
+
+          <div class="small">
+            <div class="d-flex justify-content-between border-bottom py-1">
+              <span class="text-secondary">Anleiter</span>
+              <span class="fw-semibold text-end">${anleiterText}</span>
+            </div>
+            <div class="d-flex justify-content-between py-1">
+              <span class="text-secondary">Teilnehmer</span>
+              <span class="fw-semibold text-end">0</span>
+            </div>
+          </div>
+
+          <div class="d-flex flex-wrap gap-2 mt-3">
+            <button class="btn btn-outline-primary btn-sm" type="button"
+                    onclick="event.preventDefault(); alert('Demo: Anleiter zuweisen (mehrere möglich)');">
+              <i class="bi bi-person-plus me-1"></i> Anleiter zuweisen
+            </button>
+            <button class="btn btn-outline-secondary btn-sm" type="button"
+                    onclick="event.preventDefault(); alert('Demo: Teilnehmerliste zu diesem Bereich öffnen');">
+              <i class="bi bi-people me-1"></i> Zeige TN
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+    wrap?.prepend(col);
+
+    // Modal schließen
+    const modalEl = document.getElementById("modalAddArbeitsbereich");
+    const modal = bootstrap.Modal.getInstance(modalEl);
+    modal?.hide();
+
+    // Reset (Demo)
+    document.getElementById("abSelectStammdaten").value = "";
+    if (sel) Array.from(sel.options).forEach(o => (o.selected = false));
+  });
+</script>
 
 </body>
 </html>
