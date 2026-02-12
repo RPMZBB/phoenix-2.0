@@ -1240,6 +1240,74 @@
             <!-- SEKTION: ORGANISATION -->
             <div class="tab-pane fade" id="sektionOrga" role="tabpanel" aria-labelledby="sektionOrga-tab">
               <h5 class="mb-3">Organisation</h5>
+<!-- Arbeitsbereich -->
+<div class="mb-3">
+  <div class="border rounded-3 p-3">
+
+    <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-2">
+      <div>
+        <h6 class="mb-0">Arbeitsbereich</h6>
+        <div class="text-muted small">Zuweisung und Historie innerhalb dieser Maßnahme</div>
+      </div>
+
+      <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#abHistoryCollapse">
+        <i class="bi bi-clock-history me-1"></i> Historie
+      </button>
+    </div>
+
+    <!-- Aktueller Arbeitsbereich -->
+    <div class="bg-body-tertiary rounded-3 p-3 mb-3">
+      <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+        <div>
+          <div class="small text-muted">Aktueller Arbeitsbereich</div>
+          <div class="h6 mb-1 text-primary fw-semibold" id="abCurrentName">Maler</div>
+          <div class="small text-muted">
+            Zugewiesen am <span class="fw-semibold text-dark" id="abCurrentSince">12.11.2025</span>
+          </div>
+        </div>
+
+        <!-- Wechsel -->
+        <div class="d-flex gap-2 align-items-center flex-wrap">
+          <div class="form-floating" style="min-width: 240px;">
+            <select class="form-select" id="abSwitchSelect">
+              <option value="Maler" selected>Maler</option>
+              <option value="IT und Medien">IT und Medien</option>
+              <option value="Gärtner">Gärtner</option>
+              <option value="Friseure">Friseure</option>
+            </select>
+            <label for="abSwitchSelect">Arbeitsbereich wechseln</label>
+          </div>
+
+          <button class="btn btn-primary btn-sm" type="button" id="btnAbSwitch">
+            <i class="bi bi-arrow-repeat me-1"></i> Wechseln
+          </button>
+        </div>
+      </div>
+
+      <div class="small text-muted mt-2">
+        Hinweis: Der Wechsel schließt den bisherigen Zeitraum ab und startet einen neuen Eintrag in der Historie (Demo).
+      </div>
+    </div>
+
+    <!-- Historie (aufklappbar) -->
+    <div class="collapse" id="abHistoryCollapse">
+      <div class="border rounded-3 p-3 bg-white">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <div class="fw-semibold">Historie</div>
+          <span class="badge bg-light text-dark border" id="abHistoryCount">0</span>
+        </div>
+
+        <div class="list-group small" id="abHistoryList"></div>
+
+        <div class="text-muted small mt-2" id="abHistoryEmpty" style="display:none;">
+          Noch keine Historie vorhanden.
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 
               <div class="mb-3">
                 <div class="border rounded-3 p-3">
@@ -3109,7 +3177,123 @@
 })();
 </script>
 
+<script>
+(function () {
+  // ====== DEMO-STATE: Arbeitsbereich Historie ======
+  // from/to: YYYY-MM-DD oder "" (offen)
+  const abState = {
+    current: { name: "Maler", since: "2025-11-12" },
+    history: [
+      { name: "IT und Medien", from: "2025-09-01", to: "2025-10-31" },
+      { name: "Maler",         from: "2025-11-01", to: "" } // aktuell offen
+    ]
+  };
 
+  const el = (id) => document.getElementById(id);
+
+  function fmtDateDE(iso) {
+    if (!iso) return "—";
+    const [y,m,d] = String(iso).split("-");
+    if (!y || !m || !d) return iso;
+    return `${d}.${m}.${y}`;
+  }
+
+  function renderCurrent() {
+    const c = abState.current;
+    if (el("abCurrentName")) el("abCurrentName").textContent = c.name || "—";
+    if (el("abCurrentSince")) el("abCurrentSince").textContent = fmtDateDE(c.since);
+    if (el("abSwitchSelect")) el("abSwitchSelect").value = c.name || "";
+  }
+
+  function renderHistory() {
+    const list = el("abHistoryList");
+    const empty = el("abHistoryEmpty");
+    const count = el("abHistoryCount");
+    if (!list) return;
+
+    // Sortiert: neueste zuerst (nach from)
+    const rows = [...abState.history].sort((a,b) => (b.from||"").localeCompare(a.from||""));
+
+    if (count) count.textContent = String(rows.length);
+    if (empty) empty.style.display = rows.length ? "none" : "block";
+
+    list.innerHTML = rows.map(r => {
+      const toTxt = r.to ? fmtDateDE(r.to) : "<span class='badge bg-success-subtle text-success-emphasis'>aktuell</span>";
+      return `
+        <div class="list-group-item">
+          <div class="d-flex justify-content-between align-items-start gap-2">
+            <div class="flex-grow-1">
+              <div class="fw-semibold">${r.name}</div>
+              <div class="text-muted small">
+                ${fmtDateDE(r.from)} – ${toTxt}
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join("");
+  }
+
+  function closeOpenHistoryEntry(todayIso) {
+    // schließe offenen Eintrag (to leer) – nur wenn exists
+    const openIdx = abState.history.findIndex(x => x.to === "");
+    if (openIdx >= 0) {
+      // nur schließen, wenn today >= from (Demo simple)
+      abState.history[openIdx].to = todayIso;
+    }
+  }
+
+  function openNewHistoryEntry(name, todayIso) {
+    abState.history.push({ name, from: todayIso, to: "" });
+  }
+
+  function getTodayIso() {
+    const d = new Date();
+    const yyyy = String(d.getFullYear());
+    const mm = String(d.getMonth()+1).padStart(2, "0");
+    const dd = String(d.getDate()).padStart(2, "0");
+    return `${yyyy}-${mm}-${dd}`;
+  }
+
+  function bindSwitch() {
+    const btn = el("btnAbSwitch");
+    const sel = el("abSwitchSelect");
+    if (!btn || !sel) return;
+
+    btn.addEventListener("click", () => {
+      const next = (sel.value || "").trim();
+      if (!next) return;
+
+      if (next === abState.current.name) {
+        alert("Arbeitsbereich ist bereits gesetzt.");
+        return;
+      }
+
+      const today = getTodayIso();
+
+      // alten Eintrag schließen + neuen öffnen
+      closeOpenHistoryEntry(today);
+      openNewHistoryEntry(next, today);
+
+      // current updaten
+      abState.current = { name: next, since: today };
+
+      renderCurrent();
+      renderHistory();
+
+      // optional: Historie automatisch aufklappen
+      const c = el("abHistoryCollapse");
+      if (c) bootstrap.Collapse.getOrCreateInstance(c).show();
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    renderCurrent();
+    renderHistory();
+    bindSwitch();
+  });
+})();
+</script>
 
 </body>
 </html>
