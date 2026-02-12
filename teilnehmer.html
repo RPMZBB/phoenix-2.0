@@ -367,133 +367,166 @@
                     </div>
 
                     <!-- STEP 2 -->
-                    <div id="step2" class="content d-none" role="tabpanel" aria-labelledby="step2-trigger">
-                      <div class="row">
+<!-- STEP 2 (Neu strukturiert: 3 pro Reihe) -->
+<div id="step2" class="content d-none" role="tabpanel" aria-labelledby="step2-trigger">
+  <div class="row g-3">
 
-                        <!-- GRUPPE 1: Maßnahme / Betreuer / Kundennummer -->
-                        <div class="col-md-4 mb-3">
-                          <div class="form-floating">
-                            <select class="form-select" id="tn_massnahme" required>
-                              <option selected disabled value="">Maßnahme wählen *</option>
-                              <option>Maßnahme 1</option>
-                              <option>Maßnahme 2</option>
-                              <option>Maßnahme 3</option>
-                              <option>Maßnahme 4</option>
-                            </select>
-                            <label for="tn_massnahme">Maßnahme *</label>
-                          </div>
-                        </div>
+    <!-- ================= ROW 1 ================= -->
 
-                        <div class="col-md-4 mb-3">
-                          <!-- Select + Neu-Button -->
-                          <div class="input-group">
-                            <div class="form-floating flex-grow-1">
-                              <select class="form-select" id="tn_betreuer" required>
-                                <option selected disabled value="">Betreuer wählen *</option>
-                                <option>Daniel Chu</option>
-                                <option>Janine Kerber</option>
-                                <option value="__new__">+ Neu anlegen …</option>
-                              </select>
-                              <label for="tn_betreuer">Betreuer *</label>
-                            </div>
-                            <button class="btn btn-outline-secondary" type="button" id="btnNewBetreuer" title="Neuen Betreuer anlegen">
-                              <i class="bi bi-plus-lg"></i>
-                            </button>
-                          </div>
-                        </div>
+    <!-- Maßnahme -->
+    <div class="col-12 col-md-6 col-lg-4">
+      <div class="form-floating">
+        <select class="form-select" id="tn_massnahme" required>
+          <option selected disabled value="">Maßnahme wählen *</option>
+          <option>Maßnahme 1</option>
+          <option>Maßnahme 2</option>
+          <option>Maßnahme 3</option>
+          <option>Maßnahme 4</option>
+        </select>
+        <label for="tn_massnahme">Maßnahme *</label>
+      </div>
+    </div>
 
-                        <div class="col-md-4 mb-3">
-                          <div class="form-floating">
-                            <input type="text" class="form-control" id="tn_kundennr" placeholder="Kundennummer" />
-                            <label for="tn_kundennr">Kundennummer</label>
-                          </div>
-                        </div>
+    <!-- Betreuer -->
+    <div class="col-12 col-md-6 col-lg-4">
+      <div class="input-group">
+        <div class="form-floating flex-grow-1">
+          <select class="form-select" id="tn_betreuer" required>
+            <option selected disabled value="">Betreuer wählen *</option>
+            <option>Daniel Chu</option>
+            <option>Janine Kerber</option>
+            <option value="__new__">+ Neu anlegen …</option>
+          </select>
+          <label for="tn_betreuer">Betreuer *</label>
+        </div>
+        <button class="btn btn-outline-secondary" type="button" id="btnNewBetreuer">
+          <i class="bi bi-plus-lg"></i>
+        </button>
+      </div>
+    </div>
 
-                        <!-- GRUPPE 2: TN-Kennung / JC-Team / JC-Mitarbeiter -->
-                        <div class="col-md-4 mb-3">
-                          <div class="form-floating">
-                            <input type="text" class="form-control" id="tn_kennung" placeholder="TN-Kennung" />
-                            <label for="tn_kennung">TN-Kennung</label>
-                          </div>
-                        </div>
+    <!-- Arbeitsbereich -->
+    <div class="col-12 col-md-6 col-lg-4">
+      <div class="input-group">
+        <div class="form-floating flex-grow-1">
+          <select class="form-select" id="tn_arbeitsbereich" required>
+            <option selected disabled value="">Arbeitsbereich *</option>
+            <option>Maler und Lackierer</option>
+            <option>IT und Medien</option>
+            <option value="__new__">+ Neu anlegen …</option>
+          </select>
+          <label for="tn_arbeitsbereich">Arbeitsbereich *</label>
+        </div>
+        <button class="btn btn-outline-secondary" type="button" id="btnNewArbeitsbereich">
+          <i class="bi bi-plus-lg"></i>
+        </button>
+      </div>
+    </div>
 
-                        <div class="col-md-4 mb-3">
-                          <div class="input-group">
-                            <div class="form-floating flex-grow-1">
-                              <select class="form-select" id="tn_jc_team" required>
-                                <option selected disabled value="">JC-Team *</option>
-                                <option>Team A</option>
-                                <option>Team B</option>
-                                <option>Team C</option>
-                                <option value="__new__">+ Neu anlegen …</option>
-                              </select>
-                              <label for="tn_jc_team">JC-Team *</label>
-                            </div>
-                            <button class="btn btn-outline-secondary" type="button" id="btnNewJcTeam" title="Neues JC-Team anlegen">
-                              <i class="bi bi-plus-lg"></i>
-                            </button>
-                          </div>
-                        </div>
+    <!-- ================= ROW 2 ================= -->
 
-                        <div class="col-md-4 mb-3">
-                          <div class="input-group">
-                            <div class="form-floating flex-grow-1">
-                              <select class="form-select" id="tn_jc_mitarbeiter" required>
-                                <option selected disabled value="">JC-Mitarbeiter *</option>
-                                <option>Alessandro</option>
-                                <option>Uwe</option>
-                                <option>Maria</option>
-                                <option value="__new__">+ Neu anlegen …</option>
-                              </select>
-                              <label for="tn_jc_mitarbeiter">JC-Mitarbeiter *</label>
-                            </div>
-                            <button class="btn btn-outline-secondary" type="button" id="btnNewJcMitarbeiter" title="Neuen JC-Mitarbeiter anlegen">
-                              <i class="bi bi-plus-lg"></i>
-                            </button>
-                          </div>
-                        </div>
+    <!-- Kundennummer -->
+    <div class="col-12 col-md-6 col-lg-4">
+      <div class="form-floating">
+        <input type="text" class="form-control" id="tn_kundennr" placeholder="Kundennummer">
+        <label for="tn_kundennr">Kundennummer</label>
+      </div>
+    </div>
 
-                        <!-- GRUPPE 3: Zuweisung / Eintritt -->
-                        <div class="col-md-4 mb-3">
-                          <div class="form-floating">
-                            <input type="date" class="form-control" id="tn_zuweisung_von" required />
-                            <label for="tn_zuweisung_von">Zuweisung von *</label>
-                          </div>
-                        </div>
+    <!-- TN-Kennung -->
+    <div class="col-12 col-md-6 col-lg-4">
+      <div class="form-floating">
+        <input type="text" class="form-control" id="tn_kennung" placeholder="TN-Kennung">
+        <label for="tn_kennung">TN-Kennung</label>
+      </div>
+    </div>
 
-                        <div class="col-md-4 mb-3">
-                          <div class="form-floating">
-                            <input type="date" class="form-control" id="tn_zuweisung_bis" required />
-                            <label for="tn_zuweisung_bis">Zuweisung bis *</label>
-                          </div>
-                        </div>
+    <!-- JC-Team -->
+    <div class="col-12 col-md-6 col-lg-4">
+      <div class="input-group">
+        <div class="form-floating flex-grow-1">
+          <select class="form-select" id="tn_jc_team" required>
+            <option selected disabled value="">JC-Team *</option>
+            <option>Team A</option>
+            <option>Team B</option>
+            <option>Team C</option>
+            <option value="__new__">+ Neu anlegen …</option>
+          </select>
+          <label for="tn_jc_team">JC-Team *</label>
+        </div>
+        <button class="btn btn-outline-secondary" type="button" id="btnNewJcTeam">
+          <i class="bi bi-plus-lg"></i>
+        </button>
+      </div>
+    </div>
 
-                        <div class="col-md-4 mb-3">
-                          <div class="form-floating">
-                            <input type="date" class="form-control" id="tn_eintritt" />
-                            <label for="tn_eintritt">Eintrittsdatum (Unterschrift)</label>
-                          </div>
-                        </div>
-                      </div>
+    <!-- ================= ROW 3 ================= -->
 
-                      <!-- UX Hint: Eintrittsdatum steuert Status -->
-                      <div class="alert alert-light border small d-flex gap-2 mt-2 mb-0">
-                        <i class="bi bi-info-circle text-secondary mt-1"></i>
-                        <div class="text-secondary">
-                          <strong>Hinweis:</strong> Ohne Eintrittsdatum wird der Teilnehmer als <strong>Geplant</strong> gespeichert und erscheint <strong>nicht</strong> in ESF-Statistiken.
-                          Mit Eintrittsdatum wird er ab diesem Datum als <strong>Aktiv</strong> geführt und die Unterlagen können gedruckt werden.
-                        </div>
-                      </div>
+    <!-- JC-Mitarbeiter -->
+    <div class="col-12 col-md-6 col-lg-4">
+      <div class="input-group">
+        <div class="form-floating flex-grow-1">
+          <select class="form-select" id="tn_jc_mitarbeiter" required>
+            <option selected disabled value="">JC-Mitarbeiter *</option>
+            <option>Alessandro</option>
+            <option>Uwe</option>
+            <option>Maria</option>
+            <option value="__new__">+ Neu anlegen …</option>
+          </select>
+          <label for="tn_jc_mitarbeiter">JC-Mitarbeiter *</label>
+        </div>
+        <button class="btn btn-outline-secondary" type="button" id="btnNewJcMitarbeiter">
+          <i class="bi bi-plus-lg"></i>
+        </button>
+      </div>
+    </div>
 
-                      <div class="d-flex justify-content-between mt-3">
-                        <button type="button" class="btn btn-outline-secondary" id="btnBack2">
-                          <i class="bi bi-arrow-left me-1"></i> Zurück
-                        </button>
-                        <button type="button" class="btn btn-primary" id="btnNext2">
-                          Weiter <i class="bi bi-arrow-right ms-1"></i>
-                        </button>
-                      </div>
-                    </div>
+    <!-- Zuweisung von -->
+    <div class="col-12 col-md-6 col-lg-4">
+      <div class="form-floating">
+        <input type="date" class="form-control" id="tn_zuweisung_von" required>
+        <label for="tn_zuweisung_von">Zuweisung von *</label>
+      </div>
+    </div>
+
+    <!-- Zuweisung bis -->
+    <div class="col-12 col-md-6 col-lg-4">
+      <div class="form-floating">
+        <input type="date" class="form-control" id="tn_zuweisung_bis" required>
+        <label for="tn_zuweisung_bis">Zuweisung bis *</label>
+      </div>
+    </div>
+
+    <!-- ================= ROW 4 ================= -->
+
+    <!-- Eintritt -->
+    <div class="col-12 col-md-6 col-lg-4">
+      <div class="form-floating">
+        <input type="date" class="form-control" id="tn_eintritt">
+        <label for="tn_eintritt">Eintrittsdatum (Unterschrift)</label>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="alert alert-light border small d-flex gap-2 mt-3 mb-0">
+    <i class="bi bi-info-circle text-secondary mt-1"></i>
+    <div class="text-secondary">
+      <strong>Hinweis:</strong> Ohne Eintrittsdatum = <strong>Geplant</strong>.  
+      Mit Eintrittsdatum = <strong>Aktiv</strong>.
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-between mt-3">
+    <button type="button" class="btn btn-outline-secondary" id="btnBack2">
+      <i class="bi bi-arrow-left me-1"></i> Zurück
+    </button>
+    <button type="button" class="btn btn-primary" id="btnNext2">
+      Weiter <i class="bi bi-arrow-right ms-1"></i>
+    </button>
+  </div>
+</div>
+
 
                     <!-- STEP 3 -->
                     <div id="step3" class="content d-none" role="tabpanel" aria-labelledby="step3-trigger">
