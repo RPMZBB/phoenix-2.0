@@ -1113,6 +1113,144 @@
     </div>
   </div>
 </div>
+<!-- === Anwesenheit Übersicht Modal === -->
+<div class="modal fade" id="anwesenheitModal" tabindex="-1" aria-labelledby="anwesenheitModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="anwesenheitModalLabel">Anwesenheit – Detailansicht</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+        <div class="row g-3 mb-4">
+          <div class="col-md-4">
+            <div class="border rounded-3 p-4 h-100 d-flex flex-column justify-content-center text-center">
+              <div class="display-4 fw-semibold">56&nbsp;%</div>
+              <div class="text-muted text-uppercase small mt-2">Anwesenheitsquote</div>
+            </div>
+          </div>
+
+          <div class="col-md-8">
+            <div class="row g-3">
+              <div class="col-6">
+                <div class="border rounded-3 p-3 text-center h-100">
+                  <div class="small text-muted">Fehltage</div>
+                  <div class="fs-4 fw-semibold">2</div>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="border rounded-3 p-3 text-center h-100">
+                  <div class="small text-muted">Quote AU</div>
+                  <div class="fs-4 fw-semibold">90&nbsp;%</div>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="border rounded-3 p-3 text-center h-100">
+                  <div class="small text-muted">Urlaub</div>
+                  <div class="fs-4 fw-semibold">30</div>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="border rounded-3 p-3 text-center h-100">
+                  <div class="small text-muted">Quote F</div>
+                  <div class="fs-4 fw-semibold">10&nbsp;%</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+          <div class="d-flex flex-wrap gap-2 align-items-center">
+            <select class="form-select form-select-sm" style="width:auto;">
+              <option selected="">2025</option>
+              <option>2024</option>
+              <option>2023</option>
+            </select>
+
+            <select class="form-select form-select-sm" style="width:auto;">
+              <option>Januar</option>
+              <option>Februar</option>
+              <option>März</option>
+              <option>April</option>
+              <option>Mai</option>
+              <option>Juni</option>
+              <option>Juli</option>
+              <option>August</option>
+              <option>September</option>
+              <option>Oktober</option>
+              <option>November</option>
+              <option selected="">Dezember</option>
+            </select>
+
+            <div class="btn-group btn-group-sm" role="group">
+              <button type="button" class="btn btn-primary">Monat</button>
+              <button type="button" class="btn btn-outline-primary">Jahr</button>
+            </div>
+          </div>
+
+          <button class="btn btn-outline-secondary btn-sm" type="button">
+            Anwesenheit exportieren
+          </button>
+        </div>
+
+        <div class="border rounded-3">
+          <table class="table table-bordered mb-0 align-middle text-center small">
+            <thead class="table-light">
+              <tr>
+                <th scope="col">Mon</th>
+                <th scope="col">Tue</th>
+                <th scope="col">Wed</th>
+                <th scope="col">Thu</th>
+                <th scope="col">Fri</th>
+                <th scope="col">Sat</th>
+                <th scope="col">Sun</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="text-muted">26</td>
+                <td class="text-muted">27</td>
+                <td class="text-muted">28</td>
+                <td class="text-muted">29</td>
+                <td class="text-muted">30</td>
+                <td>1</td>
+                <td>2</td>
+              </tr>
+              <tr>
+                <td><span class="badge bg-success-subtle text-success-emphasis px-3">3</span></td>
+                <td><span class="badge bg-success-subtle text-success-emphasis px-3">4</span></td>
+                <td><span class="badge bg-danger-subtle text-danger-emphasis px-3">5</span></td>
+                <td><span class="badge bg-danger-subtle text-danger-emphasis px-3">6</span></td>
+                <td><span class="badge bg-warning-subtle text-warning-emphasis px-3">7</span></td>
+                <td>8</td>
+                <td>9</td>
+              </tr>
+              <tr>
+                <td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td>
+              </tr>
+              <tr>
+                <td>17</td><td>18</td><td>19</td><td>20</td>
+                <td>21<br><span class="badge bg-primary-subtle text-primary-emphasis mt-1">•</span></td>
+                <td>22</td><td>23</td>
+              </tr>
+              <tr>
+                <td>24</td><td>25</td><td>26</td><td>27</td><td>28</td><td>29</td>
+                <td><span class="badge bg-primary-subtle text-primary-emphasis px-3">30</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Schließen</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 <!-- Toast -->
@@ -1540,7 +1678,11 @@
     if(!tbody) return;
 
     tbody.innerHTML = demoAnwesenheit.map(tn => `
-      <tr class="anw-row" data-tn="${tn.id}">
+      <tr class="anw-row"
+    data-tn="${tn.id}"
+    style="cursor:pointer;"
+    onclick="toggleAnwDetails('${tn.id}', this)">
+
         <td>
           <span class="badge text-bg-secondary me-2">${escapeHtml(tn.kuerzel)}</span>
           ${escapeHtml(tn.name)}
@@ -1565,15 +1707,28 @@
           </div>
         </td>
 
-        <td class="text-end">
+<td class="text-end">
+  <div class="d-inline-flex align-items-center gap-2">
+
+    <button class="btn btn-outline-secondary btn-sm"
+      type="button"
+      onclick="openAnwesenheitOverview('${tn.id}')">
+      <i class="bi bi-graph-up me-1"></i> Übersicht öffnen
+    </button>
+
 <button class="btn btn-outline-secondary btn-sm"
   type="button"
-  onclick="toggleAnwDetails('${tn.id}', this)"
+  onclick="event.stopPropagation(); toggleAnwDetails('${tn.id}', this)"
   title="Details ein-/ausklappen">
   <i class="bi bi-chevron-down"></i>
 </button>
 
-        </td>
+
+  </div>
+</td>
+
+
+
       </tr>
 
       <tr class="detail-row d-none" data-detail="${tn.id}">
@@ -1652,19 +1807,36 @@
   }
 
 // ===== Detail Toggle (NUR über Pfeil) =====
-function toggleAnwDetails(tnId, btn){
+// ===== Detail Toggle =====
+function toggleAnwDetails(tnId, triggerEl){
   const detailRow = document.querySelector(`tr[data-detail="${tnId}"]`);
   if(!detailRow) return;
 
   const isOpen = !detailRow.classList.contains("d-none");
   detailRow.classList.toggle("d-none", isOpen);
 
-  const icon = btn.querySelector("i");
+  // Pfeil nur ändern, wenn Klick vom Pfeilbutton kam
+  const icon = triggerEl?.querySelector?.("i");
   if(icon){
     icon.classList.toggle("bi-chevron-down", isOpen);
     icon.classList.toggle("bi-chevron-up", !isOpen);
   }
 }
+
+
+function openAnwesenheitOverview(tnId){
+  const tn = (demoAnwesenheit || []).find(x => x.id === tnId);
+  const title = document.getElementById("anwesenheitModalLabel");
+  if(title){
+    title.textContent = tn ? `Anwesenheit – ${tn.name}` : "Anwesenheit – Detailansicht";
+  }
+
+  const modalEl = document.getElementById("anwesenheitModal");
+  if(!modalEl) return;
+
+  bootstrap.Modal.getOrCreateInstance(modalEl).show();
+}
+
 
 
 // ===== Status Handling (ändert NICHT mehr das Auf-/Zuklappen) =====
