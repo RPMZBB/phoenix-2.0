@@ -246,9 +246,6 @@
                   <option value="" selected disabled>Bitte wählen…</option>
                   <option>Jobcenter</option>
                   <option>Arbeitsagentur</option>
-                  <option>Sozialamt</option>
-                  <option>Bildungsträger</option>
-                  <option>Sonstige</option>
                 </select>
                 <label for="jcArt">Art *</label>
               </div>
@@ -960,39 +957,56 @@ function renderJobcenters() {
     item.className = "accordion-item border-0 mb-2";
 
     item.innerHTML = `
-      <h2 class="accordion-header" id="${escHtml(headerId)}">
-        <button class="accordion-button collapsed bg-light"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#${escHtml(collapseId)}"
-                aria-expanded="false"
-                aria-controls="${escHtml(collapseId)}">
-          <div class="w-100 d-flex flex-wrap justify-content-between align-items-start gap-2">
-            <div class="me-2">
-              <div class="fw-semibold">
-                <i class="bi bi-building me-2"></i>${escHtml(title)}
-              </div>
-              <div class="text-muted small mt-1">${subtitle ? escHtml(subtitle) : "—"}</div>
-              <div class="text-muted small mt-1">
-                <span class="me-3"><i class="bi bi-people me-1"></i>${teams.length} Teams</span>
-                <span><i class="bi bi-person-vcard me-1"></i>${staffAll.length} Mitarbeitende</span>
-              </div>
-            </div>
+<h2 class="accordion-header" id="${escHtml(headerId)}">
+  <div class="d-flex align-items-stretch gap-0">
 
-            <div class="btn-group btn-group-sm flex-shrink-0">
-              <button class="btn btn-outline-secondary" type="button" data-action="edit-jc" title="Jobcenter bearbeiten">
-                <i class="bi bi-pencil"></i>
-              </button>
-              <button class="btn btn-outline-danger" type="button" data-action="delete-jc" title="Jobcenter löschen">
-                <i class="bi bi-trash"></i>
-              </button>
-            </div>
+    <!-- LEFT: Accordion toggle -->
+    <button class="accordion-button collapsed bg-light flex-grow-1"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#${escHtml(collapseId)}"
+            aria-expanded="false"
+            aria-controls="${escHtml(collapseId)}">
+      <div class="w-100 d-flex flex-wrap justify-content-between align-items-start gap-2">
+        <div class="me-2">
+          <div class="fw-semibold">
+            <i class="bi bi-building me-2"></i>${escHtml(title)}
           </div>
+          <div class="text-muted small mt-1">${subtitle ? escHtml(subtitle) : "—"}</div>
+          <div class="text-muted small mt-1">
+            <span class="me-3"><i class="bi bi-people me-1"></i>${teams.length} Teams</span>
+            <span><i class="bi bi-person-vcard me-1"></i>${staffAll.length} Mitarbeitende</span>
+          </div>
+        </div>
+      </div>
+    </button>
+
+    <!-- RIGHT: Actions beside accordion -->
+    <div class="d-flex align-items-center px-2 bg-light border-start">
+      <div class="btn-group btn-group-sm" role="group" aria-label="Jobcenter Aktionen">
+        <button class="btn btn-outline-secondary"
+                type="button"
+                data-action="edit-jc"
+                title="Jobcenter bearbeiten"
+                onclick="event.stopPropagation();">
+          <i class="bi bi-pencil"></i>
         </button>
-      </h2>
+        <button class="btn btn-outline-danger"
+                type="button"
+                data-action="delete-jc"
+                title="Jobcenter löschen"
+                onclick="event.stopPropagation();">
+          <i class="bi bi-trash"></i>
+        </button>
+      </div>
+    </div>
+
+  </div>
+</h2>
+
 
       <div id="${escHtml(collapseId)}" class="accordion-collapse collapse" aria-labelledby="${escHtml(headerId)}" data-bs-parent="#jobcenterAccordion">
-        <div class="accordion-body bg-white border-top">
+        <div class="accordion-body bg-body-tertiary border border-top-0 rounded-bottom-3">
 
           <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
             <div class="fw-semibold">
