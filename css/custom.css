@@ -122,7 +122,6 @@
     }
     .accordion-button {
       background-color: transparent;
-      color: white;
       padding: 0.75rem 1rem;
     }
     .accordion-button::after {
@@ -214,6 +213,7 @@ textarea[readonly] {
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
 	cursor:pointer;
   }
+
 
 
 
