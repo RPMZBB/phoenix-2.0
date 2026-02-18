@@ -1405,51 +1405,630 @@
 
             </div>
 
-            <!-- SEKTION: TEILNAHME BEENDEN -->
-            <div class="tab-pane fade" id="sektionEnde" role="tabpanel" aria-labelledby="sektionEnde-tab">
+<!-- =========================
+     SEKTION: TEILNAHME BEENDEN (Formular + Beendet-Ansicht + Aktionen)
+
+     ========================= -->
+
+<div class="tab-pane fade" id="sektionEnde" role="tabpanel" aria-labelledby="sektionEnde-tab">
+
+  <!-- ===== FORMULAR (sichtbar solange NICHT beendet) ===== -->
+  <div id="teilnahmeBeendenFormWrap" class="border rounded-3 p-3">
+    <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-2">
+      <div>
+        <h5 class="mb-1 text-danger">Teilnahme beenden</h5>
+        <div class="text-muted small">
+          Austritt dokumentieren
+        </div>
+      </div>
+
+    </div>
+
+    <hr class="my-3">
+
+    <form id="teilnahmeBeendenForm">
+
+      <!-- Pflichtfeld -->
+      <div class="row g-2 mb-3">
+        <div class="col-12 col-md-6 col-lg-4">
+          <div class="form-floating">
+            <input type="date" class="form-control" id="tbMassnahmeAustritt" placeholder=" " required>
+            <label for="tbMassnahmeAustritt">Maßnahmeaustritt (letzter Tag)</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion mb-3" id="tbAccordion">
+
+        <!-- =========================
+             GRUND (standardmäßig zu)
+             ========================= -->
+        <div class="accordion-item border rounded-3 bg-white">
+          <h2 class="accordion-header" id="tbHeadingGrund">
+            <button class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#tbCollapseGrund"
+                    aria-expanded="false"
+                    aria-controls="tbCollapseGrund">
+              <i class="bi bi-list-check me-2"></i> Grund für den Maßnahmeaustritt
+              <span class="ms-2 small text-muted" id="tbGrundSummary">(bitte auswählen)</span>
+            </button>
+          </h2>
+
+          <div id="tbCollapseGrund"
+               class="accordion-collapse collapse"
+               aria-labelledby="tbHeadingGrund"
+               data-bs-parent="#tbAccordion">
+            <div class="accordion-body">
+
+              <!-- 1) Reguläres Ende -->
+              <div class="border rounded-3 p-3 mb-3">
+                <div class="d-flex justify-content-between align-items-start gap-2">
+                  <div class="fw-semibold">1. Reguläres Ende der Maßnahme</div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="tbGrundHaupt" id="tbGrundRegulaer" value="Reguläres Ende">
+                    <label class="form-check-label" for="tbGrundRegulaer">auswählen</label>
+                  </div>
+                </div>
+
+                <div class="mt-2 ps-2">
+                  <div class="text-muted small mb-1">Bitte genau eine Option wählen:</div>
+
+                  <div class="row g-2">
+                    <div class="col-12 col-md-6">
+                      <div class="form-check">
+                        <input class="form-check-input tb-reg" type="radio" name="tbRegOption" id="tbRegAGH" value="Maßnahmeende (AGH)" disabled>
+                        <label class="form-check-label" for="tbRegAGH">Maßnahmeende (AGH)</label>
+                      </div>
+                    </div>
+
+                    <div class="col-12 col-md-6">
+                      <div class="form-check">
+                        <input class="form-check-input tb-reg" type="radio" name="tbRegOption" id="tbRegEfW" value="Maßnahmeende (EfW)" disabled>
+                        <label class="form-check-label" for="tbRegEfW">Maßnahmeende (EfW)</label>
+                      </div>
+                    </div>
+
+                    <div class="col-12 col-md-6">
+                      <div class="form-check">
+                        <input class="form-check-input tb-reg" type="radio" name="tbRegOption" id="tbRegAktiv" value="Maßnahmeende (Aktivierung)" disabled>
+                        <label class="form-check-label" for="tbRegAktiv">Maßnahmeende (Aktivierung)</label>
+                      </div>
+                    </div>
+
+                    <div class="col-12 col-md-6">
+                      <div class="form-check">
+                        <input class="form-check-input tb-reg" type="radio" name="tbRegOption" id="tbRegBvB" value="Maßnahmeende (BvB)" disabled>
+                        <label class="form-check-label" for="tbRegBvB">Maßnahmeende (BvB)</label>
+                      </div>
+                    </div>
+
+                    <div class="col-12 col-md-6">
+                      <div class="form-check">
+                        <input class="form-check-input tb-reg" type="radio" name="tbRegOption" id="tbRegHSA" value="HSA-Kurs-Ende" disabled>
+                        <label class="form-check-label" for="tbRegHSA">HSA-Kurs-Ende</label>
+                      </div>
+                    </div>
+
+                    <div class="col-12 col-md-6">
+                      <div class="form-check">
+                        <input class="form-check-input tb-reg" type="radio" name="tbRegOption" id="tbRegAusb" value="Abschluss Ausbildung" disabled>
+                        <label class="form-check-label" for="tbRegAusb">Abschluss Ausbildung</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 2) Vorzeitiges Ende -->
               <div class="border rounded-3 p-3">
-                <h5>Teilnahme beenden</h5>
-                <p class="text-muted small mb-3">
-                  Hier wird die Maßnahme für diesen Teilnehmer offiziell beendet.
-                  Bitte Gründe und Datum dokumentieren. Die Beendigung kann an
-                  Kostenträger und interne Stellen gemeldet werden.
-                </p>
-
-                <div class="mb-3">
-                  <label class="form-label">Beendigungsdatum</label>
-                  <input type="date" class="form-control">
+                <div class="d-flex justify-content-between align-items-start gap-2">
+                  <div class="fw-semibold">2. Vorzeitiges Ende / Abbruch</div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="tbGrundHaupt" id="tbGrundVorzeitig" value="Vorzeitiges Ende / Abbruch">
+                    <label class="form-check-label" for="tbGrundVorzeitig">auswählen</label>
+                  </div>
                 </div>
 
-                <div class="mb-3">
-                  <label class="form-label">Beendigungsgrund</label>
-                  <select class="form-select">
-                    <option>Bitte wählen …</option>
-                    <option>Maßnahme erfolgreich abgeschlossen</option>
-                    <option>Eigenkündigung Teilnehmer</option>
-                    <option>Abbruch durch Träger</option>
-                    <option>Abbruch durch Kostenträger</option>
-                    <option>Nichtantritt / wiederholte Nichtteilnahme</option>
-                  </select>
+                <div class="mt-3 ps-2">
+
+                  <!-- 2.1 Auflösung – nur 1 Auswahl -->
+                  <div class="border rounded-3 p-3 mb-3 bg-body-tertiary">
+                    <div class="fw-semibold mb-2">2.1 Auflösung – Grund wählen</div>
+
+                    <div class="row g-2">
+                      <div class="col-12 col-md-6">
+                        <div class="form-check">
+                          <input class="form-check-input tb-auf" type="radio" name="tbVorOption" id="tbAufAusb" value="Auflösung: Ausbildungsaufnahme" disabled>
+                          <label class="form-check-label" for="tbAufAusb">Ausbildungsaufnahme</label>
+                        </div>
+                      </div>
+
+                      <div class="col-12 col-md-6">
+                        <div class="form-check">
+                          <input class="form-check-input tb-auf" type="radio" name="tbVorOption" id="tbAufArbeit" value="Auflösung: Arbeitsaufnahme" disabled>
+                          <label class="form-check-label" for="tbAufArbeit">Arbeitsaufnahme</label>
+                        </div>
+                      </div>
+
+                      <div class="col-12 col-md-6">
+                        <div class="form-check">
+                          <input class="form-check-input tb-auf" type="radio" name="tbVorOption" id="tbAufWechsel" value="Auflösung: Wechsel Förderprojekt" disabled>
+                          <label class="form-check-label" for="tbAufWechsel">Wechsel Förderprojekt</label>
+                        </div>
+                      </div>
+
+                      <div class="col-12 col-md-6">
+                        <div class="form-check">
+                          <input class="form-check-input tb-auf" type="radio" name="tbVorOption" id="tbAufGering" value="Auflösung: geringfügige Beschäftigung" disabled>
+                          <label class="form-check-label" for="tbAufGering">geringfügige Beschäftigung</label>
+                        </div>
+                      </div>
+
+                      <div class="col-12 col-md-6">
+                        <div class="form-check">
+                          <input class="form-check-input tb-auf" type="radio" name="tbVorOption" id="tbAufSelbst" value="Auflösung: Selbstständigkeit" disabled>
+                          <label class="form-check-label" for="tbAufSelbst">Selbstständigkeit</label>
+                        </div>
+                      </div>
+
+                      <div class="col-12 col-md-6">
+                        <div class="form-check">
+                          <input class="form-check-input tb-auf" type="radio" name="tbVorOption" id="tbAufS25" value="Auflösung: ist 25" disabled>
+                          <label class="form-check-label" for="tbAufS25">ist 25</label>
+                        </div>
+                      </div>
+
+                      <div class="col-12 col-md-6">
+                        <div class="form-check">
+                          <input class="form-check-input tb-auf" type="radio" name="tbVorOption" id="tbAufInd" value="Auflösung: individuelles Zuweisungsende" disabled>
+                          <label class="form-check-label" for="tbAufInd">individuelles Zuweisungsende</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- 2.2 Kündigung – nur 1 Auswahl -->
+                  <div class="border rounded-3 p-3 bg-body-tertiary">
+                    <div class="fw-semibold mb-2">2.2 Kündigung – Grund wählen</div>
+
+                    <div class="row g-2">
+                      <div class="col-12 col-md-6">
+                        <div class="form-check">
+                          <input class="form-check-input tb-kue" type="radio" name="tbVorOption" id="tbKueLeistung" value="Kündigung: mangelnder Leistung/fehlende Motivation" disabled>
+                          <label class="form-check-label" for="tbKueLeistung">mangelnder Leistung / fehlende Motivation</label>
+                        </div>
+                      </div>
+
+                      <div class="col-12 col-md-6">
+                        <div class="form-check">
+                          <input class="form-check-input tb-kue" type="radio" name="tbVorOption" id="tbKueUeberf" value="Kündigung: Überforderung/Krankheit" disabled>
+                          <label class="form-check-label" for="tbKueUeberf">Überforderung / Krankheit</label>
+                        </div>
+                      </div>
+
+                      <div class="col-12 col-md-6">
+                        <div class="form-check">
+                          <input class="form-check-input tb-kue" type="radio" name="tbVorOption" id="tbKueFehlen" value="Kündigung: unentschuldigtes Fehlen" disabled>
+                          <label class="form-check-label" for="tbKueFehlen">unentschuldigtes Fehlen</label>
+                        </div>
+                      </div>
+
+                      <div class="col-12 col-md-6">
+                        <div class="form-check">
+                          <input class="form-check-input tb-kue" type="radio" name="tbVorOption" id="tbKueNichtAn" value="Kündigung: Maßnahme nicht angetreten" disabled>
+                          <label class="form-check-label" for="tbKueNichtAn">Maßnahme nicht angetreten</label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="text-muted small mt-2">
+                      Hinweis: Es kann entweder ein Grund aus 2.1 <em>oder</em> 2.2 ausgewählt werden.
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+              <!-- Maßnahmebericht / Zeugnis -->
+              <div class="row g-2 mt-3">
+                <div class="col-12 col-lg-6">
+                  <div class="border rounded-3 p-3 h-100">
+                    <div class="fw-semibold mb-2">Maßnahmebericht</div>
+                    <div class="d-flex gap-3">
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="tbMassnahmebericht" id="tbMBJa" value="ja">
+                        <label class="form-check-label" for="tbMBJa">ja</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="tbMassnahmebericht" id="tbMBNein" value="nein" checked>
+                        <label class="form-check-label" for="tbMBNein">nein</label>
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
-                <div class="mb-3">
-                  <label class="form-label">Bemerkungen (intern)</label>
-                  <textarea class="form-control" rows="3"
-                            placeholder="Optionale Zusatzinfos, z.B. Vereinbarungen, offene Punkte …"></textarea>
+                <div class="col-12 col-lg-6">
+                  <div class="border rounded-3 p-3 h-100">
+                    <div class="fw-semibold mb-2">Zeugnis</div>
+                    <div class="d-flex gap-3">
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="tbZeugnis" id="tbZJa" value="ja">
+                        <label class="form-check-label" for="tbZJa">ja</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="tbZeugnis" id="tbZNein" value="nein" checked>
+                        <label class="form-check-label" for="tbZNein">nein</label>
+                      </div>
+                    </div>
+                  </div>
                 </div>
+              </div>
 
-                <div class="form-check mb-3">
-                  <input class="form-check-input" type="checkbox" id="teilnahmeEndeInfoJC">
-                  <label class="form-check-label small" for="teilnahmeEndeInfoJC">
-                    Kostenträger (z.&nbsp;B. Jobcenter) automatisch informieren
-                  </label>
+            </div><!-- /accordion-body -->
+          </div>
+        </div>
+
+        <!-- =========================
+             VERBLEIB (standardmäßig zu)
+             ========================= -->
+        <div class="accordion-item border rounded-3 bg-white mt-2">
+          <h2 class="accordion-header" id="tbHeadingVerbleib">
+            <button class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#tbCollapseVerbleib"
+                    aria-expanded="false"
+                    aria-controls="tbCollapseVerbleib">
+              <i class="bi bi-signpost-2 me-2"></i> Verbleib nach Maßnahmeaustritt
+              <span class="ms-2 small text-muted" id="tbVerbleibSummary">(optional)</span>
+            </button>
+          </h2>
+
+          <div id="tbCollapseVerbleib"
+               class="accordion-collapse collapse"
+               aria-labelledby="tbHeadingVerbleib"
+               data-bs-parent="#tbAccordion">
+            <div class="accordion-body">
+
+              <div class="row g-2">
+                <div class="col-12 col-md-6">
+                  <div class="form-check">
+                    <input class="form-check-input tb-ver" type="checkbox" id="tbV1" value="Beschäftigung am 1. Arbeitsmarkt (sozialversicherungspflichtig)">
+                    <label class="form-check-label" for="tbV1">Beschäftigung am 1. Arbeitsmarkt (sozialversicherungspflichtig)</label>
+                  </div>
                 </div>
+                <div class="col-12 col-md-6">
+                  <div class="form-check">
+                    <input class="form-check-input tb-ver" type="checkbox" id="tbV2" value="Ausbildung am 1. Arbeitsmarkt">
+                    <label class="form-check-label" for="tbV2">Ausbildung am 1. Arbeitsmarkt</label>
+                  </div>
+                </div>
+                <div class="col-12 col-md-6">
+                  <div class="form-check">
+                    <input class="form-check-input tb-ver" type="checkbox" id="tbV3" value="Beschäftigung am 2. Arbeitsmarkt (einschl. Beschäftigung und Qualifizierung)">
+                    <label class="form-check-label" for="tbV3">Beschäftigung am 2. Arbeitsmarkt (einschl. Beschäftigung und Qualifizierung)</label>
+                  </div>
+                </div>
+                <div class="col-12 col-md-6">
+                  <div class="form-check">
+                    <input class="form-check-input tb-ver" type="checkbox" id="tbV4" value="Außerbetriebliche Ausbildung">
+                    <label class="form-check-label" for="tbV4">Außerbetriebliche Ausbildung</label>
+                  </div>
+                </div>
+                <div class="col-12 col-md-6">
+                  <div class="form-check">
+                    <input class="form-check-input tb-ver" type="checkbox" id="tbV5" value="Neuzuweisung">
+                    <label class="form-check-label" for="tbV5">Neuzuweisung</label>
+                  </div>
+                </div>
+                <div class="col-12 col-md-6">
+                  <div class="form-check">
+                    <input class="form-check-input tb-ver" type="checkbox" id="tbV6" value="Sonstige Qualifizierungsmaßnahme">
+                    <label class="form-check-label" for="tbV6">Sonstige Qualifizierungsmaßnahme</label>
+                  </div>
+                </div>
+                <div class="col-12 col-md-6">
+                  <div class="form-check">
+                    <input class="form-check-input tb-ver" type="checkbox" id="tbV7" value="Wehrdienst / Zivildienst">
+                    <label class="form-check-label" for="tbV7">Wehrdienst / Zivildienst</label>
+                  </div>
+                </div>
+                <div class="col-12 col-md-6">
+                  <div class="form-check">
+                    <input class="form-check-input tb-ver" type="checkbox" id="tbV8" value="Freiwilliges Soziales Jahr">
+                    <label class="form-check-label" for="tbV8">Freiwilliges Soziales Jahr</label>
+                  </div>
+                </div>
+                <div class="col-12 col-md-6">
+                  <div class="form-check">
+                    <input class="form-check-input tb-ver" type="checkbox" id="tbV9" value="Rente / Vorruhestand">
+                    <label class="form-check-label" for="tbV9">Rente / Vorruhestand</label>
+                  </div>
+                </div>
+                <div class="col-12 col-md-6">
+                  <div class="form-check">
+                    <input class="form-check-input tb-ver" type="checkbox" id="tbV10" value="arbeitslos">
+                    <label class="form-check-label" for="tbV10">arbeitslos</label>
+                  </div>
+                </div>
+                <div class="col-12 col-md-6">
+                  <div class="form-check">
+                    <input class="form-check-input tb-ver" type="checkbox" id="tbV11" value="Geringfügige Beschäftigung">
+                    <label class="form-check-label" for="tbV11">Geringfügige Beschäftigung</label>
+                  </div>
+                </div>
+                <div class="col-12 col-md-6">
+                  <div class="form-check">
+                    <input class="form-check-input tb-ver" type="checkbox" id="tbV12" value="Nicht bekannt">
+                    <label class="form-check-label" for="tbV12">Nicht bekannt</label>
+                  </div>
+                </div>
+                <div class="col-12 col-md-6">
+                  <div class="form-check">
+                    <input class="form-check-input tb-ver" type="checkbox" id="tbV13" value="Selbstständigkeit">
+                    <label class="form-check-label" for="tbV13">Selbstständigkeit</label>
+                  </div>
+                </div>
+              </div>
 
-                <button class="btn btn-danger" type="button">
-                  <i class="bi bi-door-closed me-1"></i> Teilnahme jetzt beenden
-                </button>
+              <hr class="my-3">
+
+              <div class="fw-semibold mb-2">Sonstiges</div>
+              <div class="row g-2">
+                <div class="col-12 col-md-6 col-lg-4">
+                  <div class="form-check">
+                    <input class="form-check-input tb-sonst" type="checkbox" id="tbS1" value="Schwangerschaft">
+                    <label class="form-check-label" for="tbS1">Schwangerschaft</label>
+                  </div>
+                </div>
+                <div class="col-12 col-md-6 col-lg-4">
+                  <div class="form-check">
+                    <input class="form-check-input tb-sonst" type="checkbox" id="tbS2" value="Familienphase">
+                    <label class="form-check-label" for="tbS2">Familienphase</label>
+                  </div>
+                </div>
+                <div class="col-12 col-md-6 col-lg-4">
+                  <div class="form-check">
+                    <input class="form-check-input tb-sonst" type="checkbox" id="tbS3" value="Umzug">
+                    <label class="form-check-label" for="tbS3">Umzug</label>
+                  </div>
+                </div>
+                <div class="col-12 col-md-6 col-lg-4">
+                  <div class="form-check">
+                    <input class="form-check-input tb-sonst" type="checkbox" id="tbS4" value="Krankenhaus">
+                    <label class="form-check-label" for="tbS4">Krankenhaus</label>
+                  </div>
+                </div>
+                <div class="col-12 col-md-6 col-lg-4">
+                  <div class="form-check">
+                    <input class="form-check-input tb-sonst" type="checkbox" id="tbS5" value="Haft">
+                    <label class="form-check-label" for="tbS5">Haft</label>
+                  </div>
+                </div>
+                <div class="col-12 col-md-6 col-lg-4">
+                  <div class="form-check">
+                    <input class="form-check-input tb-sonst" type="checkbox" id="tbS6" value="Erwerbsunfähigkeit">
+                    <label class="form-check-label" for="tbS6">Erwerbsunfähigkeit</label>
+                  </div>
+                </div>
+                <div class="col-12 col-md-6 col-lg-4">
+                  <div class="form-check">
+                    <input class="form-check-input tb-sonst" type="checkbox" id="tbS7" value="Tod">
+                    <label class="form-check-label" for="tbS7">Tod</label>
+                  </div>
+                </div>
+              </div>
+
+            </div><!-- /accordion-body -->
+          </div>
+        </div>
+
+      </div><!-- /accordion -->
+
+      <!-- Actions -->
+      <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+        <div class="small text-muted">
+          
+        </div>
+
+        <div class="d-flex gap-2">
+          <button class="btn btn-outline-secondary" type="button" id="tbPreviewBtn">
+            <i class="bi bi-eye me-1"></i> Vorschau
+          </button>
+
+          <button class="btn btn-danger" type="submit" id="tbSaveBtn">
+            <i class="bi bi-door-closed me-1"></i> Teilnahme jetzt beenden
+          </button>
+        </div>
+      </div>
+
+    </form>
+  </div><!-- /FormWrap -->
+
+  <!-- ===== BEENDET-ANSICHT (sichtbar NACH Beendigung) ===== -->
+  <div id="teilnahmeBeendetView" class="d-none mt-3">
+    <div class="border rounded-3 p-3">
+
+      <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-2">
+        <div>
+          <h5 class="mb-1 text-danger">Teilnahme beendet</h5>
+          <div class="text-muted small">
+            Beendet am <span class="fw-semibold" id="tbBeendetAmText">—</span>
+          </div>
+          <div class="text-muted small mt-1">
+            Nach Erstellung wird es automatisch im Teilnehmerarchiv gespeichert.
+          </div>
+        </div>
+
+      </div>
+
+      <hr class="my-3">
+
+      <div class="row g-3">
+        <!-- Unterlagen -->
+        <div class="col-12 col-lg-7">
+          <div class="border rounded-3 p-3 h-100">
+            <div class="d-flex justify-content-between align-items-start gap-2 mb-2">
+              <div class="fw-semibold">
+                <i class="bi bi-folder2-open me-1"></i> Unterlagen im Archiv
+              </div>
+              <span class="badge bg-light text-dark border" id="tbArchivCount">2</span>
+            </div>
+
+            <div class="list-group small" id="tbArchivList">
+
+              <a href="#"
+                 class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+                 data-doc="austritt_checkliste">
+                <span>
+                  <i class="bi bi-ui-checks-grid me-2"></i>
+                  Austritt-Checkliste
+                  <span class="text-muted ms-2">PDF</span>
+                </span>
+                <span class="badge bg-light text-dark border">anzeigen</span>
+              </a>
+
+              <a href="#"
+                 class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+                 data-doc="beendigungsschreiben">
+                <span>
+                  <i class="bi bi-envelope-paper me-2"></i>
+                  Beendigungsschreiben
+                  <span class="text-muted ms-2">zum ausdrucken und versenden per Post</span>
+                </span>
+
+                <span class="d-flex align-items-center gap-2">
+                  <span class="badge bg-warning-subtle text-warning-emphasis border" id="tbBriefStatusBadge">
+                    nicht versendet
+                  </span>
+                  <span class="badge bg-light text-dark border">anzeigen</span>
+                </span>
+              </a>
+
+            </div>
+
+            <div class="text-muted small mt-2">
+              Dokumente können geöffnet gedruckt werden.
+            </div>
+          </div>
+        </div>
+
+        <!-- Aktionen (grauer Block – jetzt erst nach Beendigung) -->
+        <div class="col-12 col-lg-5">
+          <div class="border rounded-3 p-3 h-100 bg-body-tertiary">
+            <div class="fw-semibold mb-2">
+              <i class="bi bi-lightning-charge me-1"></i> Aktionen
+            </div>
+
+            <div class="d-grid gap-2">
+              <button class="btn btn-outline-primary"
+                      type="button"
+                      data-bs-toggle="modal"
+                      data-bs-target="#modalKostentraegerInformieren">
+                <i class="bi bi-send me-1"></i> Kostenträger informieren
+              </button>
+
+              <button class="btn btn-outline-secondary"
+                      type="button"
+                      id="btnBriefAlsVersendet">
+                <i class="bi bi-check2-circle me-1"></i> Beendigungsschreiben als versendet markieren
+              </button>
+            </div>
+
+            <div class="text-muted small mt-3">
+              Hinweis: Das Beendigungsschreiben wurde auch als Brief in „Dokumentation → Briefe“ abgelegt.
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /row -->
+
+    </div>
+  </div><!-- /BeendetView -->
+
+</div><!-- /tab-pane -->
+
+
+<!-- =========================
+     MODAL: Kostenträger informieren (Mail)
+     ========================= -->
+<div class="modal fade" id="modalKostentraegerInformieren" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <form id="formKostentraegerMail">
+
+        <div class="modal-header">
+          <h5 class="modal-title">
+            <i class="bi bi-send me-2"></i> Kostenträger informieren
+          </h5>
+          <button class="btn-close" data-bs-dismiss="modal" aria-label="Schließen"></button>
+        </div>
+
+        <div class="modal-body">
+          <div class="alert alert-info py-2 px-3 small mb-3">
+            Empfänger ist standardmäßig der Betreuer des Jobcenters. Weitere Empfänger können ergänzt werden.
+          </div>
+
+          <div class="row g-2">
+
+            <div class="col-12 col-md-6">
+              <div class="form-floating">
+                <input type="email" class="form-control" id="kcEmpfaenger" placeholder=" " value="betreuer.jobcenter@demo.de" required>
+                <label for="kcEmpfaenger">An (JC-Betreuer)</label>
               </div>
             </div>
+
+            <div class="col-12 col-md-6">
+              <div class="form-floating">
+                <input type="text" class="form-control" id="kcWeitere" placeholder=" " value="">
+                <label for="kcWeitere">Weitere Empfänger (optional)</label>
+              </div>
+              <div class="form-text">Mehrere Empfänger mit Komma trennen.</div>
+            </div>
+
+            <div class="col-12">
+              <div class="form-floating">
+                <input type="text" class="form-control" id="kcBetreff" placeholder=" "
+                       value="Teilnahme beendet – Information / Unterlagen">
+                <label for="kcBetreff">Betreff</label>
+              </div>
+            </div>
+
+            <div class="col-12">
+              <div class="form-floating">
+                <textarea class="form-control" id="kcText" placeholder=" " style="height: 180px">Guten Tag,
+
+die Teilnahme von Max Mustermann wurde beendet am {{DATUM}}.
+
+Unterlagen:
+- Austritt-Checkliste
+- Beendigungsschreiben
+
+Mit freundlichen Grüßen</textarea>
+                <label for="kcText">Nachricht</label>
+              </div>
+
+              <div class="form-text">
+                Anhänge Austritt-Checkliste + Beendigungsschreiben werden in den Anhang gelegt.
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn btn-outline-secondary" type="button" data-bs-dismiss="modal">Abbrechen</button>
+          <button class="btn btn-primary" type="submit">
+            <i class="bi bi-envelope-at me-1"></i> E-Mail öffnen
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>
 
           </div>
         </div>
@@ -3292,6 +3871,223 @@
     renderHistory();
     bindSwitch();
   });
+})();
+</script>
+<script>
+/* =========================
+   Teilnahme beenden – Logik (Demo)
+   - Accordions sind standardmäßig geschlossen (kein "show", Button hat "collapsed")
+   - Hauptgrund steuert enable/disable
+   - Regulär: genau 1 tbRegOption
+   - Vorzeitig: genau 1 tbVorOption (entweder 2.1 oder 2.2)
+   - Nach Submit: Formular ausblenden + Beendet-Ansicht anzeigen
+   - Archiv-Dokumente anklickbar (Demo)
+   - Kostenträger informieren: Modal -> mailto
+   - Brief: als versendet markieren (Badge)
+   ========================= */
+(function () {
+  const $ = (id) => document.getElementById(id);
+
+  const formWrap = $("teilnahmeBeendenFormWrap");
+  const beendetView = $("teilnahmeBeendetView");
+
+  const form = $("teilnahmeBeendenForm");
+  const grundSummary = $("tbGrundSummary");
+  const verbleibSummary = $("tbVerbleibSummary");
+
+  const radioReg = $("tbGrundRegulaer");
+  const radioVor = $("tbGrundVorzeitig");
+
+  const regRadios = document.querySelectorAll('input[name="tbRegOption"]');
+  const vorRadios = document.querySelectorAll('input[name="tbVorOption"]');
+
+  function disableRadios(nodeList, disabled) {
+    nodeList.forEach(el => {
+      el.disabled = disabled;
+      if (disabled) el.checked = false;
+    });
+  }
+
+  function getCheckedValue(name) {
+    return document.querySelector(`input[name="${name}"]:checked`)?.value || "";
+  }
+
+  function formatDateDE(iso){
+    if (!iso) return "";
+    const [y,m,d] = iso.split("-");
+    if (!y || !m || !d) return iso;
+    return `${d}.${m}.${y}`;
+  }
+
+  function updateUI() {
+    const isReg = !!radioReg?.checked;
+    const isVor = !!radioVor?.checked;
+
+    disableRadios(regRadios, !isReg);
+    disableRadios(vorRadios, !isVor);
+
+    if (isReg) disableRadios(vorRadios, true);
+    if (isVor) disableRadios(regRadios, true);
+
+    updateSummaries();
+  }
+
+  function updateSummaries() {
+    const main = getCheckedValue("tbGrundHaupt");
+    const parts = [];
+
+    if (main === "Reguläres Ende") {
+      const opt = getCheckedValue("tbRegOption");
+      parts.push("Regulär");
+      if (opt) parts.push(opt);
+    } else if (main === "Vorzeitiges Ende / Abbruch") {
+      const opt = getCheckedValue("tbVorOption");
+      parts.push("Vorzeitig");
+      if (opt) parts.push(opt);
+    }
+
+    if (grundSummary) grundSummary.textContent = parts.length ? "(" + parts.join(" – ") + ")" : "(bitte auswählen)";
+
+    const v = Array.from(document.querySelectorAll(".tb-ver")).filter(x => x.checked).map(x => x.value);
+    const s = Array.from(document.querySelectorAll(".tb-sonst")).filter(x => x.checked).map(x => x.value);
+
+    const vp = [];
+    if (v.length) vp.push(v.slice(0, 2).join(", ") + (v.length > 2 ? " …" : ""));
+    if (s.length) vp.push("Sonstiges: " + s.slice(0, 2).join(", ") + (s.length > 2 ? " …" : ""));
+    if (verbleibSummary) verbleibSummary.textContent = vp.length ? "(" + vp.join(" • ") + ")" : "(optional)";
+  }
+
+  function validateMinimal() {
+    const austritt = $("tbMassnahmeAustritt")?.value;
+    const main = getCheckedValue("tbGrundHaupt");
+
+    if (!austritt) { alert("Bitte Maßnahmeaustritt (letzter Tag) auswählen."); return false; }
+    if (!main) { alert("Bitte einen Grund (Hauptauswahl) auswählen."); return false; }
+
+    if (main === "Reguläres Ende" && !getCheckedValue("tbRegOption")) {
+      alert("Bitte beim regulären Ende genau eine Option auswählen."); return false;
+    }
+    if (main === "Vorzeitiges Ende / Abbruch" && !getCheckedValue("tbVorOption")) {
+      alert("Bitte beim vorzeitigen Ende genau einen Grund auswählen (2.1 oder 2.2)."); return false;
+    }
+    return true;
+  }
+
+  function buildPayload() {
+    const main = getCheckedValue("tbGrundHaupt");
+    return {
+      massnahmeAustritt: $("tbMassnahmeAustritt")?.value || "",
+      grundHaupt: main,
+      grundDetail: (main === "Reguläres Ende") ? getCheckedValue("tbRegOption") : getCheckedValue("tbVorOption"),
+      massnahmebericht: document.querySelector('input[name="tbMassnahmebericht"]:checked')?.value || "nein",
+      zeugnis: document.querySelector('input[name="tbZeugnis"]:checked')?.value || "nein",
+      verbleib: {
+        optionen: Array.from(document.querySelectorAll(".tb-ver")).filter(x => x.checked).map(x => x.value),
+        sonstiges: Array.from(document.querySelectorAll(".tb-sonst")).filter(x => x.checked).map(x => x.value)
+      }
+    };
+  }
+
+  function demoCreateIntervention(payload) {
+    // Hook: hier später an deine Interventionen anbinden
+    console.log("Intervention (Demo) -> Teilnahme beendet.", payload);
+  }
+
+  function demoCreateLetter(payload) {
+    // Hook: hier später Brief erzeugen/ablegen
+    console.log("Brief (Demo) -> Beendigungsschreiben erzeugen", payload);
+  }
+
+  function showBeendetView(beendetAmIso) {
+    const d = formatDateDE(beendetAmIso || "");
+    $("tbBeendetAmText").textContent = d || "—";
+
+    // Mail-Template aktualisieren
+    const t = $("kcText");
+    if (t) t.value = (t.value || "").replaceAll("{{DATUM}}", d || "—");
+
+    // Views umschalten
+    if (formWrap) formWrap.classList.add("d-none");
+    if (beendetView) beendetView.classList.remove("d-none");
+  }
+
+  // Events
+  document.addEventListener("change", (e) => {
+    if (e.target?.name === "tbGrundHaupt") updateUI();
+    if (e.target?.name === "tbRegOption") updateSummaries();
+    if (e.target?.name === "tbVorOption") updateSummaries();
+    if (e.target?.classList?.contains("tb-ver") || e.target?.classList?.contains("tb-sonst")) updateSummaries();
+  });
+
+  $("tbPreviewBtn")?.addEventListener("click", () => {
+    if (!validateMinimal()) return;
+    alert("Vorschau (Demo)\n\n" + JSON.stringify(buildPayload(), null, 2));
+  });
+
+  // Submit: Teilnahme beenden
+  form?.addEventListener("submit", (e) => {
+    e.preventDefault();
+    if (!validateMinimal()) return;
+
+    const payload = buildPayload();
+
+    // Demo-Hooks
+    demoCreateLetter(payload);
+    demoCreateIntervention(payload);
+
+    // Umschalten auf beendet
+    showBeendetView(payload.massnahmeAustritt);
+
+    alert("Teilnahme wurde beendet (Demo).");
+  });
+
+  // Archiv-Dokument klicken (Demo)
+  document.addEventListener("click", (e) => {
+    const a = e.target.closest("[data-doc]");
+    if (!a) return;
+    e.preventDefault();
+    alert("Dokument öffnen (Demo): " + a.getAttribute("data-doc"));
+  });
+
+  // Brief als versendet markieren
+  $("btnBriefAlsVersendet")?.addEventListener("click", () => {
+    const badge = $("tbBriefStatusBadge");
+    if (!badge) return;
+    badge.className = "badge bg-success-subtle text-success-emphasis border";
+    badge.textContent = "versendet";
+    alert("Beendigungsschreiben als versendet markiert (Demo).");
+  });
+
+  // Kostenträger informieren -> mailto öffnen (Demo)
+  $("formKostentraegerMail")?.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const to = $("kcEmpfaenger")?.value || "";
+    const cc = $("kcWeitere")?.value || "";
+    const subj = $("kcBetreff")?.value || "";
+    const body = $("kcText")?.value || "";
+
+    const mailto =
+      "mailto:" + encodeURIComponent(to) +
+      (cc ? ("?cc=" + encodeURIComponent(cc)) : "?") +
+      "&subject=" + encodeURIComponent(subj) +
+      "&body=" + encodeURIComponent(body);
+
+    window.location.href = mailto;
+
+    // Modal schließen
+    const modalEl = $("modalKostentraegerInformieren");
+    if (modalEl && window.bootstrap) {
+      bootstrap.Modal.getInstance(modalEl)?.hide();
+    }
+  });
+
+  // init
+  updateUI();
+
+  // OPTIONAL: Wenn du testen willst, dass "beendet" schon aktiv ist:
+  // showBeendetView("2026-02-18");
+
 })();
 </script>
 
