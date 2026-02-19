@@ -1815,6 +1815,102 @@
           </div>
         </div>
 
+<!-- =========================
+     ACCORDION: ESF-ANGABEN ZUR BEENDIGUNG
+     ========================= -->
+
+<div class="accordion-item border rounded-3 bg-white mt-2">
+  <h2 class="accordion-header" id="headingEsfBeendigung">
+    <button class="accordion-button collapsed"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#collapseEsfBeendigung"
+            aria-expanded="false"
+            aria-controls="collapseEsfBeendigung">
+      <i class="bi bi-clipboard-data me-2"></i>
+      ESF-Angaben zur Beendigung
+    </button>
+  </h2>
+
+  <div id="collapseEsfBeendigung"
+       class="accordion-collapse collapse"
+       aria-labelledby="headingEsfBeendigung"
+       data-bs-parent="#tbAccordion">
+
+    <div class="accordion-body">
+
+      <div class="row g-3">
+
+        <!-- ESF Austrittsgrund -->
+        <div class="col-12">
+          <div class="form-floating">
+            <select class="form-select" id="esfAustrittsgrund">
+              <option value="">Bitte wählen …</option>
+              <option>Kein Abbruch</option>
+              <option>Aufnahme sozialversicherungspflichtiger Beschäftigung</option>
+              <option>Aufnahme geringfügige Beschäftigung</option>
+              <option>Ausbildungsaufnahme</option>
+              <option>weiterer Schulbesuch</option>
+              <option>Aufnahme Studium</option>
+              <option>Selbstständigkeit</option>
+              <option>Kündigung Ausbildungsvertrag</option>
+              <option>vorgezogene Abschlussprüfung</option>
+              <option>sonstiger Abbruchgrund</option>
+            </select>
+            <label for="esfAustrittsgrund">Gründe für vorzeitigen Austritt</label>
+          </div>
+        </div>
+
+        <!-- ESF Zertifizierung -->
+        <div class="col-12">
+          <div class="form-floating">
+            <select class="form-select" id="esfZertifizierung">
+              <option value="">Bitte wählen …</option>
+              <option>hat eine Qualifizierung erhalten (qualifizierter TN-Nachweis)</option>
+              <option>einfacher Teilnahmenachweis</option>
+              <option>hat qualifizierte Beratung erhalten (Nachweis)</option>
+              <option>ist in ein Kompetenzfeststellungsverfahren gemündet</option>
+              <option>hat eine Qualifikationsanerkennung erreicht</option>
+              <option>absolviert eine schulische/berufliche Ausbildung</option>
+              <option>hat einen Arbeitsplatz</option>
+              <option>hat einen Ausbildungsabschluss erlangt</option>
+              <option>hat ein Studium aufgenommen</option>
+              <option>hat Teilnahme abgebrochen</option>
+            </select>
+            <label for="esfZertifizierung">erreichte Zertifizierung</label>
+          </div>
+        </div>
+
+        <!-- ESF Verbleib -->
+        <div class="col-12">
+          <div class="form-floating">
+            <select class="form-select" id="esfVerbleib">
+              <option value="">Bitte wählen …</option>
+              <option>auf Arbeitssuche</option>
+              <option>absolviert eine schulische/berufliche Ausbildung</option>
+              <option>erlangt eine Qualifizierung</option>
+              <option>hat einen Arbeitsplatz</option>
+              <option>hat eine Selbstständigkeit aufgenommen / selbstständig</option>
+              <option>Wechsel in Folgemaßnahme</option>
+              <option>sonstiger Verbleib</option>
+            </select>
+            <label for="esfVerbleib">Verbleib nach Austritt</label>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="small text-muted mt-3">
+        Diese Angaben dienen der ESF-statistischen Auswertung bei Maßnahmeende.
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+
         <!-- =========================
              VERBLEIB (standardmäßig zu)
              ========================= -->
