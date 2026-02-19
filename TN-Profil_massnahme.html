@@ -1540,14 +1540,26 @@
                     <div class="row g-2">
                       <div class="col-12 col-md-6">
                         <div class="form-check">
-                          <input class="form-check-input tb-auf" type="radio" name="tbVorOption" id="tbAufAusb" value="Auflösung: Ausbildungsaufnahme" disabled>
+                          <input class="form-check-input tb-auf tb-vermittlung-trigger"
+       type="radio"
+       name="tbVorOption"
+       id="tbAufAusb"
+       value="Ausbildungsaufnahme"
+       data-vermittlung="Ausbildung"
+       disabled>
                           <label class="form-check-label" for="tbAufAusb">Ausbildungsaufnahme</label>
                         </div>
                       </div>
 
                       <div class="col-12 col-md-6">
                         <div class="form-check">
-                          <input class="form-check-input tb-auf" type="radio" name="tbVorOption" id="tbAufArbeit" value="Auflösung: Arbeitsaufnahme" disabled>
+                          <input class="form-check-input tb-auf tb-vermittlung-trigger"
+       type="radio"
+       name="tbVorOption"
+       id="tbAufArbeit"
+       value="Arbeitsaufnahme"
+       data-vermittlung="SV-pflichtige Beschäftigung"
+       disabled>
                           <label class="form-check-label" for="tbAufArbeit">Arbeitsaufnahme</label>
                         </div>
                       </div>
@@ -1561,7 +1573,13 @@
 
                       <div class="col-12 col-md-6">
                         <div class="form-check">
-                          <input class="form-check-input tb-auf" type="radio" name="tbVorOption" id="tbAufGering" value="Auflösung: geringfügige Beschäftigung" disabled>
+                          <input class="form-check-input tb-auf tb-vermittlung-trigger"
+       type="radio"
+       name="tbVorOption"
+       id="tbAufGering"
+       value="geringfügige Beschäftigung"
+       data-vermittlung="Minijob"
+       disabled>
                           <label class="form-check-label" for="tbAufGering">geringfügige Beschäftigung</label>
                         </div>
                       </div>
@@ -1588,6 +1606,133 @@
                       </div>
                     </div>
                   </div>
+
+<!-- Vermittlungsdetails (dynamisch) -->
+<div id="vermittlungDetailsBlock"
+     class="border border-success-subtle border-top-0 rounded-bottom-3 p-3 bg-success-subtle mt-0 mb-3 d-none">
+
+  <!-- Titel -->
+  <div class="fw-semibold text-success mb-3">
+    <i class="bi bi-check-circle me-1"></i> Angaben zur erfolgreichen Vermittlung
+  </div>
+
+  <div class="row g-3">
+
+    <!-- Pflicht: Datum -->
+    <div class="col-12 col-md-6">
+      <div class="form-floating">
+        <input type="date"
+               class="form-control"
+               id="vermittlungDatum"
+               required>
+        <label for="vermittlungDatum">
+          Datum der Beschäftigungsaufnahme *
+        </label>
+      </div>
+    </div>
+
+    <!-- Pflicht: Arbeitgeber -->
+    <div class="col-12 col-md-6">
+      <div class="form-floating">
+        <input type="text"
+               class="form-control"
+               id="vermittlungArbeitgeber"
+               placeholder=" "
+               required>
+        <label for="vermittlungArbeitgeber">
+          Arbeitgeber / Ausbildungsbetrieb *
+        </label>
+      </div>
+    </div>
+
+    <!-- Straße -->
+    <div class="col-12">
+      <div class="form-floating">
+        <input type="text"
+               class="form-control"
+               id="vermittlungStrasse"
+               placeholder=" ">
+        <label for="vermittlungStrasse">
+          Straße (optional)
+        </label>
+      </div>
+    </div>
+
+    <!-- PLZ -->
+    <div class="col-12 col-md-4">
+      <div class="form-floating">
+        <input type="text"
+               class="form-control"
+               id="vermittlungPLZ"
+               placeholder=" ">
+        <label for="vermittlungPLZ">
+          PLZ (optional)
+        </label>
+      </div>
+    </div>
+
+    <!-- Ort -->
+    <div class="col-12 col-md-8">
+      <div class="form-floating">
+        <input type="text"
+               class="form-control"
+               id="vermittlungOrt"
+               placeholder=" ">
+        <label for="vermittlungOrt">
+          Ort (optional)
+        </label>
+      </div>
+    </div>
+
+    <!-- Ansprechpartner -->
+    <div class="col-12 col-md-6">
+      <div class="form-floating">
+        <input type="text"
+               class="form-control"
+               id="vermittlungAnsprechperson"
+               placeholder=" ">
+        <label for="vermittlungAnsprechperson">
+          Ansprechpartner im Betrieb (optional)
+        </label>
+      </div>
+    </div>
+
+    <!-- E-Mail -->
+    <div class="col-12 col-md-3">
+      <div class="form-floating">
+        <input type="email"
+               class="form-control"
+               id="vermittlungEmail"
+               placeholder=" ">
+        <label for="vermittlungEmail">
+          E-Mail (optional)
+        </label>
+      </div>
+    </div>
+
+    <!-- Telefon -->
+    <div class="col-12 col-md-3">
+      <div class="form-floating">
+        <input type="tel"
+               class="form-control"
+               id="vermittlungTelefon"
+               placeholder=" ">
+        <label for="vermittlungTelefon">
+          Telefon (optional)
+        </label>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="small text-muted mt-3">
+    * Pflichtfelder für statistische Erfassung erfolgreicher Vermittlungen.
+  </div>
+
+</div>
+
+
+
 
                   <!-- 2.2 Kündigung – nur 1 Auswahl -->
                   <div class="border rounded-3 p-3 bg-body-tertiary">
@@ -4089,6 +4234,53 @@ Mit freundlichen Grüßen</textarea>
   // showBeendetView("2026-02-18");
 
 })();
+
+(function () {
+
+  const vermittlungsBlock = document.getElementById("vermittlungDetailsBlock");
+  const badge = document.getElementById("vermittlungArtBadge");
+  const vermittlungsTriggers = document.querySelectorAll(".tb-vermittlung-trigger");
+
+  function updateVermittlungUI() {
+
+    const selected = document.querySelector(".tb-vermittlung-trigger:checked");
+
+    if (!selected) {
+      vermittlungsBlock.classList.add("d-none");
+      return;
+    }
+
+    const art = selected.getAttribute("data-vermittlung");
+
+    vermittlungsBlock.classList.remove("d-none");
+    badge.textContent = art;
+
+    // Erfolgslogik automatisch setzen
+    const erfolgCheckbox = document.getElementById("vermittlungErfolgreich");
+
+    if (art === "Minijob") {
+      erfolgCheckbox.checked = false;
+    } else {
+      erfolgCheckbox.checked = true;
+    }
+  }
+
+  document.addEventListener("change", function (e) {
+    if (e.target.classList.contains("tb-vermittlung-trigger")) {
+      updateVermittlungUI();
+    }
+
+    // Wenn anderer VorOption gewählt wird → ausblenden
+    if (e.target.name === "tbVorOption" &&
+        !e.target.classList.contains("tb-vermittlung-trigger")) {
+
+      vermittlungsBlock.classList.add("d-none");
+    }
+  });
+
+})();
+
+
 </script>
 
 </body>
