@@ -11,6 +11,37 @@
 
   <!-- Custom Styles -->
   <link rel="stylesheet" href="css/custom.css">
+
+  <style>
+    /* Kompakte Monatsübersicht: weniger horizontales Scrollen */
+    .anw-month-table {
+      font-size: .78rem;
+      table-layout: fixed;
+      width: 100%;
+    }
+    .anw-month-table th,
+    .anw-month-table td {
+      padding: .25rem .18rem;
+      white-space: nowrap;
+    }
+    .anw-month-table .anw-month-person {
+      width: 150px;
+      max-width: 150px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .anw-month-table .anw-month-day {
+      width: 30px;
+    }
+    .anw-month-table .anw-month-kpi {
+      width: 38px;
+    }
+    .anw-month-table .badge {
+      font-size: .7rem;
+      min-width: 22px;
+      padding: .25em .35em;
+    }
+  </style>
 </head>
 
 <body class="bg-light p-4 p-lg-5">
@@ -551,30 +582,88 @@
             </div>
 
             <div class="d-flex flex-wrap align-items-center gap-2 mt-3">
-              <button class="btn btn-outline-secondary" type="button"><i class="bi bi-chevron-left"></i></button>
+              <button class="btn btn-outline-secondary" type="button" id="btnAnwPrev"><i class="bi bi-chevron-left"></i></button>
 
               <input type="date" class="form-control w-auto" id="anwDate">
 
-              <button class="btn btn-outline-secondary" type="button"><i class="bi bi-chevron-right"></i></button>
+              <button class="btn btn-outline-secondary" type="button" id="btnAnwNext"><i class="bi bi-chevron-right"></i></button>
 
-              <button class="btn btn-outline-dark ms-lg-2" id="btnAllPresent" type="button">Alle anwesend</button>
+              <div class="btn-group ms-lg-2" role="group" aria-label="Anwesenheitsansicht umschalten">
+                <input type="radio" class="btn-check" name="anwViewMode" id="anwViewDay" checked>
+                <label class="btn btn-outline-primary" for="anwViewDay">
+                  <i class="bi bi-calendar-day me-1"></i> Tagesansicht
+                </label>
+
+                <input type="radio" class="btn-check" name="anwViewMode" id="anwViewMonth">
+                <label class="btn btn-outline-primary" for="anwViewMonth">
+                  <i class="bi bi-calendar-month me-1"></i> Monatsübersicht
+                </label>
+              </div>
+
+              <button class="btn btn-outline-dark ms-lg-auto" id="btnAllPresent" type="button">Alle anwesend</button>
+            </div>
+
+            <div class="small text-muted mt-2" id="anwViewHint">
+              Tagesansicht: Anwesenheiten für einen einzelnen Tag erfassen.
             </div>
           </div>
         </div>
 
-        <div class="table-responsive">
-          <table class="table table-hover align-middle mb-0">
-            <thead class="table-light">
-              <tr>
-                <th>Teilnehmer</th>
-                <th>Anwesenheit</th>
-                <th class="text-end">Aktion</th>
-              </tr>
-            </thead>
-            <tbody id="anwTableBody">
-              <!-- per JS -->
-            </tbody>
-          </table>
+        <!-- Tagesansicht: ursprünglich belassen -->
+        <div id="anwDayView">
+          <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+              <thead class="table-light">
+                <tr>
+                  <th>Teilnehmer</th>
+                  <th>Anwesenheit</th>
+                  <th class="text-end">Aktion</th>
+                </tr>
+              </thead>
+              <tbody id="anwTableBody">
+                <!-- per JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Monatsübersicht -->
+        <div id="anwMonthView" class="d-none">
+          <div class="card border-0 shadow-sm mb-3">
+            <div class="card-body p-3">
+              <div class="d-flex flex-wrap justify-content-between align-items-start gap-3">
+                <div>
+                  <div class="text-secondary small">Monatsübersicht</div>
+                  <h5 class="mb-1" id="anwMonthTitle">—</h5>
+                  <div class="text-secondary" style="font-size:.95rem;">
+                    Übersicht über Anwesenheit, Fehlzeiten, AU/Krank und Urlaub im ausgewählten Monat.
+                  </div>
+                </div>
+
+                <div class="d-flex flex-wrap gap-2">
+                  <span class="badge text-bg-success">A = anwesend</span>
+                  <span class="badge text-bg-warning text-dark">K = krank/AU</span>
+                  <span class="badge text-bg-primary">U = Urlaub</span>
+                  <span class="badge text-bg-danger">F = fehlt</span>
+                  <span class="badge text-bg-info">E = entschuldigt</span>
+                  <span class="badge text-bg-light border text-dark">– = offen</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+
+          <div class="table-responsive border rounded-3 bg-white">
+            <table class="table table-bordered table-sm align-middle text-center mb-0 anw-month-table">
+              <thead class="table-light" id="anwMonthHead">
+                <!-- per JS -->
+              </thead>
+              <tbody id="anwMonthBody">
+                <!-- per JS -->
+              </tbody>
+            </table>
+          </div>
         </div>
 
       </div><!-- /tab-anwesenheit -->
@@ -1820,7 +1909,7 @@
 
 <script>
   // =========================
-  // Anwesenheit (neu)
+  // Anwesenheit (Tagesansicht + Monatsübersicht)
   // =========================
 
   // 4 zusätzliche Beispielteilnehmer + dein bisheriger (macht 5)
@@ -1842,6 +1931,12 @@
   ];
   const AW_PROJEKTE = ["Baustelle Blieskastel", "Sauber und Fein Burbach"];
 
+  const anwState = {
+    view: "day",
+    selectedDate: "",
+    statusByDate: {}
+  };
+
   function escapeHtml(s){
     return String(s ?? "")
       .replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;")
@@ -1856,7 +1951,51 @@
     return `${y}-${m}-${dd}`;
   }
 
-  // ===== Render =====
+  function addDaysISO(iso, diff){
+    const d = new Date(iso + "T00:00:00");
+    d.setDate(d.getDate() + diff);
+    return d.toISOString().slice(0,10);
+  }
+
+  function daysInMonth(year, monthIndex){
+    return new Date(year, monthIndex + 1, 0).getDate();
+  }
+
+  function getMonthNameDE(monthIndex){
+    return [
+      "Januar","Februar","März","April","Mai","Juni",
+      "Juli","August","September","Oktober","November","Dezember"
+    ][monthIndex];
+  }
+
+  function getStatus(tnId, iso){
+    return anwState.statusByDate?.[iso]?.[tnId] || "";
+  }
+
+  function setStatus(tnId, iso, status){
+    if(!anwState.statusByDate[iso]) anwState.statusByDate[iso] = {};
+    anwState.statusByDate[iso][tnId] = status;
+  }
+
+  function statusShort(status){
+    if(status === "anwesend") return "A";
+    if(status === "krank") return "K";
+    if(status === "urlaub") return "U";
+    if(status === "unentschuldigt") return "F";
+    if(status === "entschuldigt") return "E";
+    return "–";
+  }
+
+  function statusBadgeClass(status){
+    if(status === "anwesend") return "text-bg-success";
+    if(status === "krank") return "text-bg-warning text-dark";
+    if(status === "urlaub") return "text-bg-primary";
+    if(status === "unentschuldigt") return "text-bg-danger";
+    if(status === "entschuldigt") return "text-bg-info";
+    return "text-bg-light border text-dark";
+  }
+
+  // ===== Render Tagesansicht: ursprünglich belassen =====
   function renderAnwesenheitTable(){
     const tbody = document.getElementById("anwTableBody");
     if(!tbody) return;
@@ -1990,6 +2129,107 @@
     `).join("");
   }
 
+  // ===== Monatsübersicht =====
+  function renderAnwesenheitMonth(){
+    const head = document.getElementById("anwMonthHead");
+    const body = document.getElementById("anwMonthBody");
+    const title = document.getElementById("anwMonthTitle");
+    if(!head || !body) return;
+
+    const iso = anwState.selectedDate || document.getElementById("anwDate")?.value || todayISO();
+    const d = new Date(iso + "T00:00:00");
+    const year = d.getFullYear();
+    const monthIndex = d.getMonth();
+    const count = daysInMonth(year, monthIndex);
+
+    if(title){
+      title.textContent = `${getMonthNameDE(monthIndex)} ${year}`;
+    }
+
+    let headHtml = `
+      <tr>
+        <th class="text-start anw-month-person" title="Teilnehmer">TN</th>
+    `;
+
+    for(let day = 1; day <= count; day++){
+      const current = new Date(year, monthIndex, day);
+      const weekday = current.getDay();
+      const isWeekend = weekday === 0 || weekday === 6;
+
+      headHtml += `
+        <th class="anw-month-day ${isWeekend ? "table-secondary" : ""}" title="Tag ${day}">
+          ${day}
+        </th>
+      `;
+    }
+
+    headHtml += `
+        <th class="anw-month-kpi" title="Anwesenheitsquote in Prozent"><i class="bi bi-person-check"></i></th>
+        <th class="anw-month-kpi" title="Fehltage"><i class="bi bi-calendar-x"></i></th>
+        <th class="anw-month-kpi" title="Quote Arbeitsunfähigkeit in Prozent"><i class="bi bi-heart-pulse"></i></th>
+        <th class="anw-month-kpi" title="Urlaub Anzahl"><i class="bi bi-airplane"></i></th>
+        <th class="anw-month-kpi" title="Quote Fehlzeit in Prozent"><i class="bi bi-exclamation-triangle"></i></th>
+      </tr>
+    `;
+
+    head.innerHTML = headHtml;
+
+    body.innerHTML = demoAnwesenheit.map(tn => {
+      let anwesend = 0;
+      let fehlt = 0;
+      let krank = 0;
+      let urlaub = 0;
+      let relevanteTage = 0;
+      let cells = "";
+
+      for(let day = 1; day <= count; day++){
+        const dd = String(day).padStart(2,"0");
+        const mm = String(monthIndex + 1).padStart(2,"0");
+        const currentIso = `${year}-${mm}-${dd}`;
+        const current = new Date(currentIso + "T00:00:00");
+        const weekday = current.getDay();
+        const isWeekend = weekday === 0 || weekday === 6;
+        const status = getStatus(tn.id, currentIso);
+
+        if(!isWeekend) relevanteTage++;
+        if(status === "anwesend") anwesend++;
+        if(status === "unentschuldigt") fehlt++;
+        if(status === "krank") krank++;
+        if(status === "urlaub") urlaub++;
+
+        cells += `
+          <td class="anw-month-day ${isWeekend ? "table-secondary" : ""}">
+            <button class="badge ${statusBadgeClass(status)} border-0"
+              type="button"
+              title="${fmtDateDE(currentIso)}"
+              onclick="jumpToDay('${currentIso}')">
+              ${statusShort(status)}
+            </button>
+          </td>
+        `;
+      }
+
+      const anwesenheitsquote = relevanteTage > 0 ? Math.round((anwesend / relevanteTage) * 100) : 0;
+      const quoteAU = relevanteTage > 0 ? Math.round((krank / relevanteTage) * 100) : 0;
+      const quoteF = relevanteTage > 0 ? Math.round((fehlt / relevanteTage) * 100) : 0;
+
+      return `
+        <tr>
+          <td class="text-start fw-semibold">
+            <span class="badge text-bg-secondary me-2">${escapeHtml(tn.kuerzel)}</span>
+            ${escapeHtml(tn.name)}
+          </td>
+          ${cells}
+          <td class="fw-semibold">${anwesenheitsquote}&nbsp;%</td>
+          <td class="fw-semibold text-danger">${fehlt}</td>
+          <td class="fw-semibold text-warning">${quoteAU}&nbsp;%</td>
+          <td class="fw-semibold text-primary">${urlaub}</td>
+          <td class="fw-semibold text-danger">${quoteF}&nbsp;%</td>
+        </tr>
+      `;
+    }).join("");
+  }
+
 // ===== Detail Toggle (NUR über Pfeil) =====
 // ===== Detail Toggle =====
 function toggleAnwDetails(tnId, triggerEl){
@@ -2025,6 +2265,8 @@ function openAnwesenheitOverview(tnId){
 
 // ===== Status Handling (ändert NICHT mehr das Auf-/Zuklappen) =====
 function setAttendanceStatus(tnId, type, buttonEl){
+  const iso = anwState.selectedDate || document.getElementById("anwDate")?.value || todayISO();
+  setStatus(tnId, iso, type);
 
   // Buttons optisch aktiv setzen (nur in der Zeile)
   const row = document.querySelector(`tr.anw-row[data-tn="${tnId}"]`);
@@ -2064,6 +2306,7 @@ function setAttendanceStatus(tnId, type, buttonEl){
       addAwRow(tnId);
     }
     recalcTotals(tnId);
+    renderAnwesenheitMonth();
     return;
   }
 
@@ -2089,6 +2332,8 @@ function setAttendanceStatus(tnId, type, buttonEl){
       !(type==="krank" || type==="entschuldigt")
     );
   }
+
+  renderAnwesenheitMonth();
 }
 
 
@@ -2253,9 +2498,10 @@ function addAwRow(tnId){
 
   // ===== Alle anwesend =====
   function setAllPresent(){
-    demoAnwesenheit.forEach(tn=>{
-      // setStatus ohne Button-Referenz: wir aktivieren nur die UI-Boxen & öffnen Detail
+    const iso = anwState.selectedDate || document.getElementById("anwDate")?.value || todayISO();
 
+    demoAnwesenheit.forEach(tn=>{
+      setStatus(tn.id, iso, "anwesend");
 
       const anwesendBox = document.querySelector(`[data-anw-anwesend="${tn.id}"]`);
       const sonderBox = document.querySelector(`[data-anw-sonder="${tn.id}"]`);
@@ -2273,7 +2519,123 @@ function addAwRow(tnId){
       const btn = row?.querySelector(`td:nth-child(2) button:nth-child(1)`);
       if(btn) setAttendanceStatus(tn.id, "anwesend", btn);
     });
+
+    renderAnwesenheitMonth();
   }
+
+  function setAnwView(view){
+    anwState.view = view;
+
+    const dayView = document.getElementById("anwDayView");
+    const monthView = document.getElementById("anwMonthView");
+    const hint = document.getElementById("anwViewHint");
+
+    if(view === "month"){
+      dayView?.classList.add("d-none");
+      monthView?.classList.remove("d-none");
+      if(hint) hint.textContent = "Monatsübersicht: Alle Teilnehmer und Status je Tag im Überblick.";
+      renderAnwesenheitMonth();
+    } else {
+      monthView?.classList.add("d-none");
+      dayView?.classList.remove("d-none");
+      if(hint) hint.textContent = "Tagesansicht: Anwesenheiten für einen einzelnen Tag erfassen.";
+      renderAnwesenheitTable();
+    }
+  }
+
+  function jumpToDay(iso){
+    anwState.selectedDate = iso;
+    const dateEl = document.getElementById("anwDate");
+    if(dateEl) dateEl.value = iso;
+
+    const dayRadio = document.getElementById("anwViewDay");
+    if(dayRadio) dayRadio.checked = true;
+    setAnwView("day");
+  }
+
+  function initAnwesenheitDemoData(){
+    const iso = anwState.selectedDate || todayISO();
+    const d = new Date(iso + "T00:00:00");
+    const year = d.getFullYear();
+    const month = String(d.getMonth()+1).padStart(2,"0");
+
+    const sample = [
+      ["a-001", `${year}-${month}-03`, "anwesend"],
+      ["a-001", `${year}-${month}-04`, "anwesend"],
+      ["a-001", `${year}-${month}-05`, "krank"],
+      ["a-001", `${year}-${month}-06`, "krank"],
+      ["a-001", `${year}-${month}-07`, "urlaub"],
+
+      ["a-002", `${year}-${month}-03`, "anwesend"],
+      ["a-002", `${year}-${month}-04`, "entschuldigt"],
+      ["a-002", `${year}-${month}-05`, "anwesend"],
+
+      ["a-003", `${year}-${month}-03`, "unentschuldigt"],
+      ["a-003", `${year}-${month}-04`, "anwesend"],
+      ["a-003", `${year}-${month}-05`, "anwesend"],
+
+      ["a-004", `${year}-${month}-03`, "urlaub"],
+      ["a-004", `${year}-${month}-04`, "urlaub"],
+
+      ["a-005", `${year}-${month}-03`, "anwesend"],
+      ["a-005", `${year}-${month}-04`, "anwesend"],
+      ["a-005", `${year}-${month}-05`, "anwesend"],
+    ];
+
+    sample.forEach(([tnId, date, status]) => setStatus(tnId, date, status));
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    anwState.selectedDate = todayISO();
+
+    const dateEl = document.getElementById("anwDate");
+    if(dateEl){
+      dateEl.value = anwState.selectedDate;
+      dateEl.addEventListener("change", () => {
+        anwState.selectedDate = dateEl.value || todayISO();
+        renderAnwesenheitTable();
+        renderAnwesenheitMonth();
+      });
+    }
+
+    initAnwesenheitDemoData();
+
+    document.getElementById("anwViewDay")?.addEventListener("change", () => setAnwView("day"));
+    document.getElementById("anwViewMonth")?.addEventListener("change", () => setAnwView("month"));
+
+    document.getElementById("btnAnwPrev")?.addEventListener("click", () => {
+      if(anwState.view === "month"){
+        const d = new Date(anwState.selectedDate + "T00:00:00");
+        d.setMonth(d.getMonth() - 1);
+        anwState.selectedDate = d.toISOString().slice(0,10);
+      } else {
+        anwState.selectedDate = addDaysISO(anwState.selectedDate, -1);
+      }
+
+      if(dateEl) dateEl.value = anwState.selectedDate;
+      renderAnwesenheitTable();
+      renderAnwesenheitMonth();
+    });
+
+    document.getElementById("btnAnwNext")?.addEventListener("click", () => {
+      if(anwState.view === "month"){
+        const d = new Date(anwState.selectedDate + "T00:00:00");
+        d.setMonth(d.getMonth() + 1);
+        anwState.selectedDate = d.toISOString().slice(0,10);
+      } else {
+        anwState.selectedDate = addDaysISO(anwState.selectedDate, 1);
+      }
+
+      if(dateEl) dateEl.value = anwState.selectedDate;
+      renderAnwesenheitTable();
+      renderAnwesenheitMonth();
+    });
+
+    document.getElementById("btnAllPresent")?.addEventListener("click", setAllPresent);
+
+    renderAnwesenheitTable();
+    renderAnwesenheitMonth();
+  });
 </script>
 
 
@@ -2665,14 +3027,6 @@ function addAwRow(tnId){
     if (showEsf) applyEsfFilter();
   }
 
-// Anwesenheit: Datum immer heute + Tabelle rendern
-document.getElementById("anwDate").value = todayISO();
-renderAnwesenheitTable();
-
-// Alle anwesend
-document.getElementById("btnAllPresent")?.addEventListener("click", setAllPresent);
-
-  
 </script>
 
 <script>
