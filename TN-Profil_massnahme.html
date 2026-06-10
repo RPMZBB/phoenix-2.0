@@ -1419,9 +1419,8 @@
                       <i class="bi bi-plus-lg me-1"></i> Neue LuV erstellen
                     </button>
                   </div>
-                  <div class="small d-flex flex-wrap gap-2 mt-2">
-                    <span class="badge bg-success-subtle text-success-emphasis">Start-LuV 12.09.2025</span>
-                    <span class="badge bg-primary-subtle text-primary-emphasis">Verlaufs-LuV 30.11.2025</span>
+                  <div id="luvKarteListe" class="d-flex flex-column gap-2 mt-3">
+                    <!-- wird per JS befüllt -->
                   </div>
                 </div>
               </div>
@@ -1452,6 +1451,9 @@
                         </button>
                         <button class="btn btn-sm btn-warning text-dark fw-semibold" id="btnLuvVorschau">
                           <i class="bi bi-eye me-1"></i> Vorschau &amp; Drucken
+                        </button>
+                        <button class="btn btn-sm btn-success fw-semibold" id="btnLuVSpeichernFertigTop">
+                          <i class="bi bi-check-lg me-1"></i> Speichern
                         </button>
                         <button type="button" class="btn-close btn-close-white ms-1" data-bs-dismiss="modal"></button>
                       </div>
@@ -1751,6 +1753,9 @@
           <button class="btn btn-warning text-dark fw-semibold btn-sm" id="btn-vorschau-2">
             <i class="bi bi-eye me-1"></i> Vorschau &amp; Drucken
           </button>
+          <button class="btn btn-success fw-semibold btn-sm" id="btnLuVSpeichernFertig">
+            <i class="bi bi-check-lg me-1"></i> Speichern &amp; abschlie&szlig;en
+          </button>
         </div>
       </div>
     </div>
@@ -1991,6 +1996,7 @@ function anleiterNotenUebernehmen(notenObj) {
 // ════════════════════════════════════════════════════
 (function() {
   var luvInitDone = false;
+  var _editingLuvId = null;
   var aktiveLuvArt = '1';
   var noten = {};
 
@@ -2124,56 +2130,338 @@ function anleiterNotenUebernehmen(notenObj) {
     return p[2] + '.' + p[1] + '.' + p[0];
   }
 
-  function generatePreview() {
-    var art = aktiveLuvArt;
-    var cfg = LUV_CONFIG[art] || LUV_CONFIG['1'];
-    var nl = {1:'sehr gut',2:'gut',3:'befriedigend',4:'ausreichend',5:'mangelhaft',6:'ungen\u00fcgend'};
-    var bew = '';
-    KRITERIEN.forEach(function(k) {
-      var n = noten[k.id];
-      bew += '<div style="display:flex;justify-content:space-between;margin:.2em 0;">'
-        + '<span>' + k.label + ':</span>'
-        + '<span>' + (n ? '<strong>' + n + '</strong> (' + nl[n] + ')' : '\u2013') + '</span></div>';
-    });
-    var f1 = gv('luvFreitext1');
-    var f2 = gv('luvFreitext2');
-    var zt = gv('luvZieltext');
-    var von = fmtDate(gv('luvVon'));
-    var bis = fmtDate(gv('luvBis'));
-    var ug  = gv('luvUnterschrift') || 'Daniel Chu';
-    var ud  = fmtDate(gv('luvUnterschriftDatum'));
 
-    var html = '<h1 style="font-size:14pt;text-align:center;font-weight:bold;">'
+  // ── Demo data: Arbeitsbereiche, Praktika, Hemmnisse ─────────────────
+  var DEMO_BEREICHE = [
+    { name: 'Maler & Lackierer', von: '12.09.2025', bis: 'aktuell',
+      qualifikation: 'Grundkenntnisse in Vorbereitung und Ausführung von Malerarbeiten. Umgang mit Werkzeug und Materialien erlernt.' }
+  ];
+  var DEMO_PRAKTIKA = [
+    { betrieb: 'Malerbetrieb Meier, Saarbrücken', von: '03.11.2025', bis: '14.11.2025' }
+  ];
+  var DEMO_HEMMNISSE = [
+    'Kein Führerschein',
+    'Kinderbetreuung'
+  ];
+
+  // ── Saved LuV store ──────────────────────────────────────────────────
+  var savedLuvs = [
+    {
+      id: 'luv-demo-1',
+      art: '1', artLabel: 'Start-LuV',
+      datum: '12.09.2025', von: '12.09.2025', bis: '11.11.2025',
+      betreuer: 'Daniel Chu', lehrkraft: 'H. Peter', anleiter: 'R. Piechowiak',
+      f1: 'Guter Start. Teilnehmer zeigt Bereitschaft, braucht noch Unterstützung beim Eingewöhnen.',
+      f2: '', zieltext: 'Regelmäßige Teilnahme sicherstellen. Praktikum für Nov/Dez planen.',
+      noten: {anw:3,puenkt:2,mot:3,eig:3,handw:2,ausd:3,lern:3,soz:2,team:2},
+      potential: 'mittel'
+    },
+    {
+      id: 'luv-demo-2',
+      art: '2', artLabel: 'Verlaufs-LuV',
+      datum: '30.11.2025', von: '12.09.2025', bis: '30.11.2025',
+      betreuer: 'Daniel Chu', lehrkraft: 'H. Peter', anleiter: 'R. Piechowiak',
+      f1: 'Deutliche Verbesserung in allen Bereichen. Besonders das handwerkliche Geschick ist überdurchschnittlich.',
+      f2: 'Praktikum verlängern. Fokus auf Pünktlichkeit beibehalten.',
+      zieltext: '',
+      noten: {anw:2,puenkt:1,mot:2,eig:2,handw:1,ausd:2,lern:2,soz:1,team:2},
+      potential: 'hoch'
+    }
+  ];
+
+  var ART_COLORS = {
+    '1': 'bg-success-subtle text-success-emphasis',
+    '2': 'bg-primary-subtle text-primary-emphasis',
+    'gefahr': 'bg-danger-subtle text-danger-emphasis',
+    '4': 'bg-warning-subtle text-warning-emphasis'
+  };
+
+  var NL = {1:'sehr gut',2:'gut',3:'befriedigend',4:'ausreichend',5:'mangelhaft',6:'ungenügend'};
+
+  // ── Render LuV summary card list ─────────────────────────────────────
+  function renderLuvKarte() {
+    var liste = document.getElementById('luvKarteListe');
+    if (!liste) return;
+    if (savedLuvs.length === 0) {
+      liste.innerHTML = '<div class="text-muted small fst-italic">Noch keine LuVs erstellt.</div>';
+      return;
+    }
+    var artCls = {'1':'bg-success-subtle text-success-emphasis',
+                  '2':'bg-primary-subtle text-primary-emphasis',
+                  'gefahr':'bg-danger-subtle text-danger-emphasis',
+                  '4':'bg-warning-subtle text-warning-emphasis'};
+    var html = '';
+    savedLuvs.forEach(function(luv) {
+      var cls = artCls[luv.art] || 'bg-secondary-subtle text-secondary-emphasis';
+      var entwurfTag = luv.entwurf
+        ? '<span class="badge bg-warning-subtle text-warning-emphasis ms-1">Entwurf</span>' : '';
+      html += '<div class="d-flex align-items-center gap-2 py-1 border-bottom">'
+        + '<span class="badge ' + cls + '">' + luv.artLabel + '</span>'
+        + '<span class="small fw-semibold">' + luv.datum + '</span>'
+        + entwurfTag
+        + '<div class="ms-auto d-flex gap-1">'
+        + '<button class="btn btn-outline-primary btn-sm luv-karte-open-btn" type="button"'
+        + ' data-luv-id="' + luv.id + '" title="Im Formular öffnen">'
+        + '<i class="bi bi-pencil-square me-1"></i>Bearbeiten</button>'
+        + '<button class="btn btn-outline-secondary btn-sm luv-karte-print-btn" type="button"'
+        + ' data-luv-id="' + luv.id + '" title="Vorschau & Drucken">'
+        + '<i class="bi bi-printer"></i></button>'
+        + '<button class="btn btn-outline-danger btn-sm luv-karte-del-btn" type="button"'
+        + ' data-luv-id="' + luv.id + '" title="Löschen">'
+        + '<i class="bi bi-trash"></i></button>'
+        + '</div></div>';
+    });
+    liste.innerHTML = html;
+
+    // Bearbeiten: load into form and open modal
+    liste.querySelectorAll('.luv-karte-open-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var id = this.getAttribute('data-luv-id');
+        var luv = savedLuvs.find(function(x){ return x.id === id; });
+        if (!luv) return;
+        loadLuvIntoForm(luv);
+        luvInitDone = false;
+        bootstrap.Modal.getOrCreateInstance(document.getElementById('modalLuVVollbild')).show();
+      });
+    });
+
+    // Drucken: generate preview for this LuV
+    liste.querySelectorAll('.luv-karte-print-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var id = this.getAttribute('data-luv-id');
+        var luv = savedLuvs.find(function(x){ return x.id === id; });
+        if (!luv) return;
+        var paper = document.getElementById('luvPreviewPaper');
+        if (paper) paper.innerHTML = buildPreviewHtml(luv);
+        var ov = document.getElementById('luvPreviewOverlay');
+        if (ov) { ov.style.display = 'block'; ov.scrollTop = 0; }
+      });
+    });
+
+    // Löschen
+    liste.querySelectorAll('.luv-karte-del-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var id = this.getAttribute('data-luv-id');
+        var luv = savedLuvs.find(function(x){ return x.id === id; });
+        if (!luv) return;
+        if (!confirm('LuV "' + luv.artLabel + ' ' + luv.datum + '" wirklich löschen?')) return;
+        savedLuvs = savedLuvs.filter(function(x){ return x.id !== id; });
+        renderLuvKarte();
+      });
+    });
+  }
+
+
+  // ── Open saved LuV in read-only modal ────────────────────────────────
+    // luvAnsehen replaced by loadLuvIntoForm via renderLuvKarte
+  window.luvAnsehen = function(id) { /* no-op */ };
+
+  // ── Save LuV (called from Speichern buttons) ─────────────────────────
+  function saveLuV(asEntwurf) {
+    var luv = {
+      id: 'luv-' + Date.now(),
+      art: aktiveLuvArt,
+      artLabel: LUV_CONFIG[aktiveLuvArt].label,
+      datum: gv('luvDatum') || new Date().toLocaleDateString('de-DE'),
+      von: gv('luvVon'), bis: gv('luvBis'),
+      betreuer: gv('luvBetreuer'), lehrkraft: gv('luvLehrkraft'), anleiter: gv('luvAnleiter'),
+      f1: gv('luvFreitext1'), f2: gv('luvFreitext2'), zieltext: gv('luvZieltext'),
+      noten: Object.assign({}, noten),
+      potential: gv('luvPotential'),
+      entwurf: !!asEntwurf
+    };
+    // If editing an existing LuV, update it; otherwise add new
+    if (_editingLuvId) {
+      luv.id = _editingLuvId;
+      var idx = savedLuvs.findIndex(function(x){ return x.id === _editingLuvId; });
+      if (idx > -1) savedLuvs[idx] = luv; else savedLuvs.push(luv);
+    } else {
+      savedLuvs.push(luv);
+    }
+    _editingLuvId = null;
+    renderLuvKarte();
+    luvSaveEntwurf();
+    return luv;
+  }
+
+  function buildPreviewHtml(luv) {
+    var cfg = LUV_CONFIG[luv.art] || LUV_CONFIG['1'];
+
+    var bewGrid = KRITERIEN.map(function(k) {
+      var n = luv.noten[k.id];
+      return '<div style="display:flex;justify-content:space-between;margin:.2em 0;">'
+        + '<span>' + k.label + ':</span>'
+        + '<span>' + (n ? '<strong>' + n + '</strong> (' + NL[n] + ')' : '–') + '</span></div>';
+    }).join('');
+
+    var bereicheHtml = DEMO_BEREICHE.map(function(b) {
+      return '<tr><td>' + b.name + '</td><td>' + b.von + '</td><td>' + b.bis + '</td></tr>';
+    }).join('');
+
+    var qualHtml = DEMO_BEREICHE.map(function(b) {
+      return '<p style="margin:.3em 0;"><strong>' + b.name + ':</strong> ' + b.qualifikation + '</p>';
+    }).join('');
+
+    var praktikaHtml = DEMO_PRAKTIKA.length
+      ? DEMO_PRAKTIKA.map(function(p) {
+          return '<tr><td>' + p.betrieb + '</td><td>' + p.von + '</td><td>' + p.bis + '</td></tr>';
+        }).join('')
+      : '<tr><td colspan="3" style="color:#888;font-style:italic;">Keine Praktika erfasst</td></tr>';
+
+    var hemmnisseHtml = DEMO_HEMMNISSE.length
+      ? DEMO_HEMMNISSE.join(' &nbsp;·&nbsp; ')
+      : '(keine erfasst)';
+
+    var prevLuvs = savedLuvs
+      .filter(function(x){ return x.id !== luv.id; })
+      .map(function(x){ return x.artLabel + ' ' + x.datum; }).join(', ');
+
+    var html = '<h1 style="font-size:14pt;text-align:center;font-weight:bold;margin-bottom:.3em;">'
       + 'Leistungs- und Verhaltensbeurteilung (' + cfg.label + ')</h1>'
-      + '<p style="text-align:center;">Bewertungszeitraum: ' + von + ' \u2013 ' + bis + '</p>'
+      + '<p style="text-align:center;margin-top:0;">Bewertungszeitraum: ' + luv.von + ' – ' + luv.bis + '</p>'
+
       + '<h2 style="font-size:12pt;font-weight:bold;margin-top:1.2em;">1) Personenbezogene Daten</h2>'
-      + '<table style="width:100%;font-size:10pt;border-collapse:collapse;margin-bottom:1em;">'
-      + '<tr><td style="color:#555;padding:.15em 1em .15em 0;">Nachname:</td><td><strong>Mustermann</strong></td>'
-      + '<td style="padding-left:2em;color:#555;">Geburtsdatum:</td><td>01.01.1990</td></tr>'
+      + '<table style="width:100%;font-size:10pt;border-collapse:collapse;margin-bottom:.8em;">'
+      + '<tr><td style="color:#555;padding:.15em 1em .15em 0;width:180px;">Nachname:</td><td><strong>Mustermann</strong></td>'
+      + '<td style="padding-left:2em;color:#555;width:120px;">Geburtsdatum:</td><td>01.01.1990</td></tr>'
       + '<tr><td style="color:#555;">Vorname:</td><td><strong>Max</strong></td>'
       + '<td style="padding-left:2em;color:#555;">Kd-Nr.:</td><td>555D021632</td></tr>'
-      + '<tr><td style="color:#555;">Betreuer/in:</td><td colspan="3">' + gv('luvBetreuer') + '</td></tr>'
-      + '<tr><td style="color:#555;">Ma\u00dfnahme:</td><td colspan="3">Integra 2025 &middot; 12.09.2025 \u2013 11.09.2026</td></tr>'
+      + '<tr><td style="color:#555;">Betreuer/in beim Träger:</td><td>' + luv.betreuer + '</td>'
+      + '<td style="padding-left:2em;color:#555;">Lehrkraft:</td><td>' + luv.lehrkraft + '</td></tr>'
+      + '<tr><td style="color:#555;">Anleiter/in:</td><td>' + luv.anleiter + '</td><td></td><td></td></tr>'
+      + '<tr><td style="color:#555;">Maßnahme:</td><td colspan="3">Integra 2025 &nbsp;&middot;&nbsp; 12.09.2025 – 11.09.2026</td></tr>'
       + '</table>'
+
       + '<h2 style="font-size:12pt;font-weight:bold;margin-top:1.2em;">2) ' + cfg.f1_titel + '</h2>'
-      + '<p>' + (f1 || '(keine Eintragung)').split('\n').join('<br>') + '</p>'
+      + '<p style="font-size:10pt;">' + (luv.f1 || '(keine Eintragung)').split(String.fromCharCode(10)).join('<br>') + '</p>'
+
       + (cfg.f2
         ? '<h2 style="font-size:12pt;font-weight:bold;margin-top:1.2em;">' + cfg.f2_label + '</h2>'
-          + '<p>' + (f2 || '(keine Eintragung)').split('\n').join('<br>') + '</p>'
+          + '<p style="font-size:10pt;">' + (luv.f2 || '(keine Eintragung)').split(String.fromCharCode(10)).join('<br>') + '</p>'
         : '')
+
       + (cfg.ziel
         ? '<h2 style="font-size:12pt;font-weight:bold;margin-top:1.2em;">3) Schritte zur Zielvereinbarung</h2>'
-          + '<p>' + (zt || '(keine Eintragung)') + '</p>'
+          + '<p style="font-size:10pt;">' + (luv.zieltext || '(keine Eintragung)') + '</p>'
         : '')
-      + '<h2 style="font-size:12pt;font-weight:bold;margin-top:1.2em;">4) Zus\u00e4tzliche Angaben</h2>'
-      + '<p><strong>Bewertung (Schulnotensystem)</strong></p>'
-      + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:.25em 2em;font-size:10pt;">' + bew + '</div>'
-      + '<p style="margin-top:2em;">' + ud + '&nbsp;&nbsp;&nbsp;&nbsp;gez. ' + ug + '</p>';
 
-    var paper = g('luvPreviewPaper');
-    if (paper) paper.innerHTML = html;
-    var ov = g('luvPreviewOverlay');
+      + '<h2 style="font-size:12pt;font-weight:bold;margin-top:1.2em;">4) Zusätzliche Angaben</h2>'
+
+      + (prevLuvs ? '<p style="font-size:10pt;"><strong>Bereits erstellte LuVs:</strong> ' + prevLuvs + '</p>' : '')
+
+      + '<p style="font-size:10pt;font-weight:bold;margin-bottom:.3em;">Anwesenheitsstatistik (gesamte Zuweisungsdauer)</p>'
+      + '<table style="border-collapse:collapse;font-size:9pt;margin-bottom:.8em;">'
+      + '<tr style="background:#f0f0f0;">'
+      + '<th style="padding:.2em .5em;border:1px solid #ccc;">A</th><th style="padding:.2em .5em;border:1px solid #ccc;">U</th>'
+      + '<th style="padding:.2em .5em;border:1px solid #ccc;">K</th><th style="padding:.2em .5em;border:1px solid #ccc;">E</th>'
+      + '<th style="padding:.2em .5em;border:1px solid #ccc;">F</th>'
+      + '<th style="padding:.2em .5em;border:1px solid #ccc;">Quote A+U</th>'
+      + '<th style="padding:.2em .5em;border:1px solid #ccc;">Quote K+E</th>'
+      + '<th style="padding:.2em .5em;border:1px solid #ccc;">Quote F</th>'
+      + '</tr>'
+      + '<tr>'
+      + '<td style="text-align:center;padding:.2em .5em;border:1px solid #ccc;">38</td>'
+      + '<td style="text-align:center;padding:.2em .5em;border:1px solid #ccc;">2</td>'
+      + '<td style="text-align:center;padding:.2em .5em;border:1px solid #ccc;">6</td>'
+      + '<td style="text-align:center;padding:.2em .5em;border:1px solid #ccc;">1</td>'
+      + '<td style="text-align:center;padding:.2em .5em;border:1px solid #ccc;">9</td>'
+      + '<td style="text-align:center;padding:.2em .5em;border:1px solid #ccc;">71,43 %</td>'
+      + '<td style="text-align:center;padding:.2em .5em;border:1px solid #ccc;">12,50 %</td>'
+      + '<td style="text-align:center;padding:.2em .5em;border:1px solid #ccc;">16,07 %</td>'
+      + '</tr></table>'
+
+      + '<p style="font-size:10pt;font-weight:bold;margin-bottom:.3em;">Im Berichtszeitraum durchgeführte Tätigkeiten</p>'
+      + '<table style="border-collapse:collapse;font-size:9pt;margin-bottom:.8em;width:100%;">'
+      + '<tr style="background:#f0f0f0;"><th style="padding:.2em .5em;border:1px solid #ccc;text-align:left;">Bereich</th>'
+      + '<th style="padding:.2em .5em;border:1px solid #ccc;text-align:left;">Von</th>'
+      + '<th style="padding:.2em .5em;border:1px solid #ccc;text-align:left;">Bis</th></tr>'
+      + DEMO_BEREICHE.map(function(b){
+          return '<tr><td style="padding:.2em .5em;border:1px solid #ccc;">' + b.name + '</td>'
+            + '<td style="padding:.2em .5em;border:1px solid #ccc;">' + b.von + '</td>'
+            + '<td style="padding:.2em .5em;border:1px solid #ccc;">' + b.bis + '</td></tr>';
+        }).join('')
+      + '</table>'
+
+      + '<p style="font-size:10pt;font-weight:bold;margin-bottom:.3em;">Im Berichtszeitraum erworbene Qualifikationen</p>'
+      + '<div style="font-size:9pt;margin-bottom:.8em;">' + qualHtml + '</div>'
+
+      + '<p style="font-size:10pt;font-weight:bold;margin-bottom:.3em;">Bewertung (Schulnotensystem)</p>'
+      + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:.25em 2em;font-size:9pt;margin-bottom:.8em;">'
+      + bewGrid + '</div>'
+
+      + '<p style="font-size:10pt;font-weight:bold;margin-bottom:.3em;">Praktika</p>'
+      + '<table style="border-collapse:collapse;font-size:9pt;margin-bottom:.8em;width:100%;">'
+      + '<tr style="background:#f0f0f0;">'
+      + '<th style="padding:.2em .5em;border:1px solid #ccc;text-align:left;">Betrieb / Ort</th>'
+      + '<th style="padding:.2em .5em;border:1px solid #ccc;text-align:left;">Von</th>'
+      + '<th style="padding:.2em .5em;border:1px solid #ccc;text-align:left;">Bis</th></tr>'
+      + praktikaHtml + '</table>'
+
+      + '<p style="font-size:10pt;font-weight:bold;margin-bottom:.3em;">Vermittlungshemmnisse</p>'
+      + '<p style="font-size:9pt;">' + hemmnisseHtml + '</p>'
+
+      + '<p style="margin-top:2em;font-size:10pt;">'
+      + luv.datum + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gez. ' + luv.betreuer + '</p>';
+
+    return html;
+  }
+
+  function generatePreview() {
+    var luv = {
+      id: '__preview__',
+      art: aktiveLuvArt,
+      artLabel: LUV_CONFIG[aktiveLuvArt].label,
+      datum: gv('luvDatum') || new Date().toLocaleDateString('de-DE'),
+      von: gv('luvVon') || '–', bis: gv('luvBis') || '–',
+      betreuer: gv('luvBetreuer') || 'Daniel Chu',
+      lehrkraft: gv('luvLehrkraft') || 'H. Peter',
+      anleiter: gv('luvAnleiter') || 'R. Piechowiak',
+      f1: gv('luvFreitext1'), f2: gv('luvFreitext2'), zieltext: gv('luvZieltext'),
+      noten: Object.assign({}, noten),
+      potential: gv('luvPotential')
+    };
+    var paper = document.getElementById('luvPreviewPaper');
+    if (paper) paper.innerHTML = buildPreviewHtml(luv);
+    var ov = document.getElementById('luvPreviewOverlay');
     if (ov) { ov.style.display = 'block'; ov.scrollTop = 0; }
+  }
+
+
+  // Load a saved LuV into the form fields
+  function loadLuvIntoForm(luv) {
+    // Art
+    aktiveLuvArt = luv.art;
+    // Kopfdaten
+    var dEl = document.getElementById('luvDatum');
+    var vEl = document.getElementById('luvVon');
+    var bEl = document.getElementById('luvBis');
+    var mEl = document.getElementById('luvMonatJahr');
+    var beEl = document.getElementById('luvBetreuer');
+    var lkEl = document.getElementById('luvLehrkraft');
+    var anEl = document.getElementById('luvAnleiter');
+    var f1El = document.getElementById('luvFreitext1');
+    var f2El = document.getElementById('luvFreitext2');
+    var ztEl = document.getElementById('luvZieltext');
+    var inEl = document.getElementById('luvInfos');
+    var poEl = document.getElementById('luvPotential');
+    var udEl = document.getElementById('luvUnterschriftDatum');
+    var ugEl = document.getElementById('luvUnterschrift');
+
+    if (dEl) dEl.value = luv.datum || '';
+    if (vEl) vEl.value = luv.von || '';
+    if (bEl) bEl.value = luv.bis || '';
+    if (beEl) beEl.value = luv.betreuer || '';
+    if (lkEl) lkEl.value = luv.lehrkraft || '';
+    if (anEl) anEl.value = luv.anleiter || '';
+    if (f1El) f1El.value = luv.f1 || '';
+    if (f2El) f2El.value = luv.f2 || '';
+    if (ztEl) ztEl.value = luv.zieltext || '';
+    if (inEl) inEl.value = luv.infos || '';
+    if (poEl) poEl.value = luv.potential || '';
+    // Noten
+    Object.assign(noten, luv.noten || {});
+    // Store id for update on save
+    _editingLuvId = luv.id;
   }
 
   function initLuV() {
@@ -2276,14 +2564,80 @@ function anleiterNotenUebernehmen(notenObj) {
       });
     }
 
+    // Speichern-Buttons verdrahten
+    function doSaveFertig() {
+      var luv = saveLuV(false);
+      var m = bootstrap.Modal.getInstance(g('modalLuVVollbild'));
+      if (m) {
+        m.hide();
+        setTimeout(function() {
+          alert('LuV gespeichert: ' + luv.artLabel + ' vom ' + luv.datum);
+        }, 400);
+      }
+    }
+
+    var btnSpeichernFertig = g('btnLuVSpeichernFertig');
+    if (btnSpeichernFertig) {
+      btnSpeichernFertig.addEventListener('click', doSaveFertig);
+    }
+
+    var btnSpeichernFertigTop = g('btnLuVSpeichernFertigTop');
+    if (btnSpeichernFertigTop) {
+      btnSpeichernFertigTop.addEventListener('click', doSaveFertig);
+    }
+
+    var btnSpeichernEntwurf = g('btnLuVSpeichernEntwurf');
+    if (btnSpeichernEntwurf) {
+      btnSpeichernEntwurf.addEventListener('click', function() { saveLuV(true); });
+    }
+
+    // Ansehen-Modal: "Bearbeiten" öffnet das Vollbild-Modal
+    var btnAnsehenBearbeiten = document.getElementById('btnLuvAnsehenBearbeiten');
+    if (btnAnsehenBearbeiten) {
+      btnAnsehenBearbeiten.addEventListener('click', function() {
+        var _ansehenInst = bootstrap.Modal.getInstance(document.getElementById('modalLuVAnsehen')); if (_ansehenInst) _ansehenInst.hide();
+        setTimeout(function() {
+          bootstrap.Modal.getOrCreateInstance(g('modalLuVVollbild')).show();
+        }, 300);
+      });
+    }
+
+    // Ansehen-Modal: "Drucken"
+    var btnAnsehenDrucken = document.getElementById('btnLuvAnsehenDrucken');
+    if (btnAnsehenDrucken) {
+      btnAnsehenDrucken.addEventListener('click', function() { window.print(); });
+    }
+
+    // Render existing LuVs in card
+    renderLuvKarte();
+
     // Set default LuV art
     setLuvArt('1');
+
+    // Allow re-init when modal is closed and reopened (reset form)
+    var mainModal = g('modalLuVVollbild');
+    if (mainModal) {
+      mainModal.addEventListener('hidden.bs.modal', function() {
+        // Reset note buttons visual state but keep savedLuvs
+        KRITERIEN.forEach(function(k) { noten[k.id] = null; });
+        _editingLuvId = null;
+        renderBewGrid('bewertungGrid', null);
+        var art1 = g('luvArt'); if (art1) art1.value = '';
+        setLuvArt('1');
+        luvInitDone = false; // allow full re-init next open
+      });
+    }
   }
 
-  // Wire to modal open event
+  // Wire to modal open event + init card on page load
   document.addEventListener('DOMContentLoaded', function() {
     var modalEl = g('modalLuVVollbild');
     if (modalEl) modalEl.addEventListener('shown.bs.modal', initLuV);
+    // Render initial LuV badges in card (page load)
+    renderLuvKarte();
+    // Wire luvAnsehen for Ansehen modal drucken
+    var btnDruck = document.getElementById('btnLuvAnsehenDrucken');
+    if (btnDruck) btnDruck.addEventListener('click', function() { window.print(); });
   });
 
 })();
@@ -5531,6 +5885,33 @@ function anleiterNotenUebernehmen(notenObj) {
 
 </script>
 
+
+
+<!-- ── Modal: gespeicherte LuV ansehen ─────────────────────────────── -->
+<div class="modal fade" id="modalLuVAnsehen" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div>
+          <h5 class="modal-title" id="luvAnsehenTitel">LuV</h5>
+          <div class="text-muted small" id="luvAnsehenMeta"></div>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body" id="luvAnsehenBody">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Schließen</button>
+        <button type="button" class="btn btn-outline-primary btn-sm" id="btnLuvAnsehenBearbeiten">
+          <i class="bi bi-pencil me-1"></i> Bearbeiten
+        </button>
+        <button type="button" class="btn btn-primary btn-sm" id="btnLuvAnsehenDrucken">
+          <i class="bi bi-printer me-1"></i> Drucken
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
 
 </body>
 </html>
