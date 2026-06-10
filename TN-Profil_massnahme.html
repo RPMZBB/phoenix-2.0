@@ -1683,6 +1683,12 @@
   }
 
   // ── Render card list ────────────────────────────────────────────────
+  function fmtZVDate(iso) {
+    if (!iso) return '—';
+    var p = iso.split('-');
+    return p.length === 3 ? p[2] + '.' + p[1] + '.' + p[0] : iso;
+  }
+
   function renderZVFPKarte() {
     var liste = g('zvfpKarteListe');
     if (!liste) return;
@@ -1696,7 +1702,7 @@
         ? '<span class="badge bg-warning-subtle text-warning-emphasis ms-1">Entwurf</span>' : '';
       html += '<div class="d-flex align-items-center gap-2 py-1 border-bottom">'
         + '<span class="badge bg-info-subtle text-info-emphasis">ZV/FP</span>'
-        + '<span class="small fw-semibold">' + (z.datum || '—') + '</span>'
+        + '<span class="small fw-semibold">' + fmtZVDate(z.datum) + '</span>'
         + entwurfTag
         + '<div class="ms-auto d-flex gap-1">'
         + '<button class="btn btn-outline-primary btn-sm zvfp-open-btn" type="button" data-zvfp-id="' + z.id + '">'
@@ -1737,7 +1743,7 @@
         var id = this.getAttribute('data-zvfp-id');
         var z = savedZVFPs.find(function(x){ return x.id === id; });
         if (!z) return;
-        if (!confirm('Zielvereinbarung vom ' + (z.datum || '—') + ' wirklich löschen?')) return;
+        if (!confirm('Zielvereinbarung vom ' + fmtZVDate(z.datum) + ' wirklich löschen?')) return;
         savedZVFPs = savedZVFPs.filter(function(x){ return x.id !== id; });
         renderZVFPKarte();
       });
@@ -1865,7 +1871,7 @@
       if (m) {
         m.hide();
         setTimeout(function() {
-          alert('Zielvereinbarung / Förderplan vom ' + zvfp.datum + ' gespeichert.');
+          alert('Zielvereinbarung / Förderplan vom ' + fmtZVDate(zvfp.datum) + ' gespeichert.');
         }, 400);
       }
     });
