@@ -1362,49 +1362,556 @@
               </div>
 
               <!-- (Deine weiteren Blöcke kannst du hier behalten, UI bleibt) -->
-              <div class="mb-3">
+                            <!-- ============================================================
+                   ZIELVEREINBARUNG / FÖRDERPLAN
+                   ============================================================ -->
+              <div class="mb-3" id="zvfpBereich">
                 <div class="border rounded-3 p-3">
-                  <div class="d-flex justify-content-between align-items-center mb-2">
-                    <h6 class="mb-0">Zielvereinbarung</h6>
-                    <div class="d-flex gap-2">
-                      <button class="btn btn-outline-secondary btn-sm" type="button">
-                        <i class="bi bi-calendar-check me-1"></i> Detailansicht
-                      </button>
-                      <button class="btn btn-primary btn-sm" type="button">
-                        <i class="bi bi-plus-lg me-1"></i> erstellen
-                      </button>
+                  <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-2">
+                    <div>
+                      <h6 class="mb-0">Zielvereinbarung / Förderplan</h6>
+                      <div class="text-muted small">Vereinbarte Ziele, Aufgabenverteilung und Förderplangespräch</div>
                     </div>
+                    <button class="btn btn-primary btn-sm" type="button"
+                            data-bs-toggle="modal" data-bs-target="#modalZVFPVollbild">
+                      <i class="bi bi-plus-lg me-1"></i> Neue ZV/FP erstellen
+                    </button>
                   </div>
-                  <p class="text-muted small mb-2">Vereinbarte Ziele und Fortschritt des Teilnehmers.</p>
-                  <div class="small">
-                    <strong>Letzte Zielvereinbarung:</strong>
-                    <span class="text-muted">12. November 2025</span>
+                  <div id="zvfpKarteListe">
+                    <div class="text-muted small fst-italic">Noch keine Zielvereinbarung erstellt.</div>
                   </div>
                 </div>
               </div>
 
-              <div class="mb-3">
-                <div class="border rounded-3 p-3">
-                  <div class="d-flex justify-content-between align-items-center mb-2">
-                    <h6 class="mb-0">Förderplan</h6>
-                    <div class="d-flex gap-2">
-                      <button class="btn btn-outline-secondary btn-sm" type="button">
-                        <i class="bi bi-calendar-check me-1"></i> Detailansicht
-                      </button>
-                      <button class="btn btn-primary btn-sm" type="button">
-                        <i class="bi bi-plus-lg me-1"></i> erstellen
-                      </button>
+              <!-- ── ZV/FP Vollbild-Modal ───────────────────────────────────── -->
+              <div class="modal fade" id="modalZVFPVollbild" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-fullscreen">
+                  <div class="modal-content" style="background:#f0f2f5;">
+                    <div class="modal-header py-2 border-0" style="background:#1e2d3d;color:#fff;flex-wrap:wrap;gap:.5rem;">
+                      <div>
+                        <div class="fw-bold" style="font-size:1rem;">Zielvereinbarung / Förderplan</div>
+                        <div style="font-size:.8rem;color:#adb5bd;">Max Mustermann &middot; Integra 2025</div>
+                      </div>
+                      <div class="ms-auto d-flex gap-2 align-items-center flex-wrap">
+                        <span id="zvfpEntwurfBadge" style="display:none;background:#fff3cd;color:#856404;border:1px solid #ffc107;border-radius:4px;padding:.15rem .5rem;font-size:.75rem;font-weight:600;">
+                          <i class="bi bi-floppy me-1"></i>Entwurf
+                        </span>
+                        <button class="btn btn-sm btn-outline-light" id="btnZVFPEntwurf">
+                          <i class="bi bi-floppy me-1"></i> Entwurf speichern
+                        </button>
+                        <button class="btn btn-sm btn-warning text-dark fw-semibold" id="btnZVFPVorschau">
+                          <i class="bi bi-eye me-1"></i> Vorschau &amp; Drucken
+                        </button>
+                        <button class="btn btn-sm btn-success fw-semibold" id="btnZVFPSpeichern">
+                          <i class="bi bi-check-lg me-1"></i> Speichern
+                        </button>
+                        <button type="button" class="btn-close btn-close-white ms-1" data-bs-dismiss="modal"></button>
+                      </div>
                     </div>
-                  </div>
-                  <p class="text-muted small mb-2">Vereinbarter Förderplan des Teilnehmers.</p>
-                  <div class="small">
-                    <strong>Letzter Förderplan:</strong>
-                    <span class="text-muted">12. November 2025</span>
+
+                    <div class="modal-body p-0" style="overflow-y:auto;">
+                      <div style="max-width:960px;margin:0 auto;padding:1.5rem 1rem 4rem;">
+
+                        <!-- ── Kopf ──────────────────────────────────────────── -->
+                        <div class="card border-0 shadow-sm mb-4">
+                          <div class="card-body">
+                            <div class="row g-3 align-items-end">
+                              <div class="col-md-4">
+                                <label class="form-label small text-muted mb-1">Datum *</label>
+                                <input type="date" class="form-control" id="zvfpDatum">
+                              </div>
+                              <div class="col-md-4">
+                                <label class="form-label small text-muted mb-1">Betreuer/in</label>
+                                <select class="form-select" id="zvfpBetreuer">
+                                  <option selected>Daniel Chu</option>
+                                  <option>Corinna Adams</option>
+                                  <option>Janine Kerber</option>
+                                </select>
+                              </div>
+                              <div class="col-md-4">
+                                <label class="form-label small text-muted mb-1">Integrationsziel</label>
+                                <div class="d-flex flex-wrap gap-3 pt-1">
+                                  <div class="form-check form-check-inline mb-0">
+                                    <input class="form-check-input" type="checkbox" id="zvfpIzAusbildung">
+                                    <label class="form-check-label small" for="zvfpIzAusbildung">Vermittlung in Ausbildung</label>
+                                  </div>
+                                  <div class="form-check form-check-inline mb-0">
+                                    <input class="form-check-input" type="checkbox" id="zvfpIzArbeit">
+                                    <label class="form-check-label small" for="zvfpIzArbeit">Vermittlung in Arbeit</label>
+                                  </div>
+                                  <div class="form-check form-check-inline mb-0">
+                                    <input class="form-check-input" type="checkbox" id="zvfpIzHemmnisse">
+                                    <label class="form-check-label small" for="zvfpIzHemmnisse">Abbau von Vermittlungshemmnissen</label>
+                                  </div>
+                                  <div class="form-check form-check-inline mb-0">
+                                    <input class="form-check-input" type="checkbox" id="zvfpIzSonstiges">
+                                    <label class="form-check-label small" for="zvfpIzSonstiges">Sonstiges</label>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- ── Zielzeilen ────────────────────────────────────── -->
+                        <div class="card border-0 shadow-sm mb-4">
+                          <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                              <div class="fw-semibold">Vereinbarte Ziele / Fördereinheiten</div>
+                              <button class="btn btn-sm btn-primary" id="btnZVFPAddZiel" type="button">
+                                <i class="bi bi-plus-lg me-1"></i> Zeile hinzufügen
+                              </button>
+                            </div>
+                            <!-- Tabellen-Header -->
+                            <div class="row g-2 mb-2 d-none d-md-flex">
+                              <div class="col-md-3"><span class="small fw-semibold text-muted">Vereinbartes Ziel / Fördereinheit</span></div>
+                              <div class="col-md-3"><span class="small fw-semibold text-muted">Getroffene ZV / FP mit dem TN</span></div>
+                              <div class="col-md-3"><span class="small fw-semibold text-muted">Wer macht was (Aufgabenverteilung)?</span></div>
+                              <div class="col-md-2"><span class="small fw-semibold text-muted">Überprüfungszeitpunkt</span></div>
+                              <div class="col-md-1"><span class="small fw-semibold text-muted">Ziel erreicht</span></div>
+                            </div>
+                            <div id="zvfpZielzeilen"></div>
+                          </div>
+                        </div>
+
+                        <!-- ── Förderplangespräch ─────────────────────────────── -->
+                        <div class="card border-0 shadow-sm mb-4">
+                          <div class="card-body">
+                            <div class="fw-semibold mb-1">Förderplangespräch</div>
+                            <div class="text-muted small mb-3">(Was habe ich bisher erreicht / wobei hatte ich bisher Schwierigkeiten)</div>
+                            <div class="row g-3">
+                              <div class="col-md-3">
+                                <label class="form-label small text-muted mb-1">Datum</label>
+                                <input type="date" class="form-control form-control-sm" id="zvfpGesprDatum">
+                              </div>
+                              <div class="col-12">
+                                <textarea class="form-control" id="zvfpGesprText" rows="5"
+                                  placeholder="Förderplangespräch – Freitext …"></textarea>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
 
-              <!-- ============================================================
+              <!-- ── ZV/FP Druckvorschau-Overlay ─────────────────────────── -->
+              <div id="zvfpPreviewOverlay" style="display:none;position:fixed;inset:0;z-index:1200;background:rgba(0,0,0,.65);overflow-y:auto;">
+                <div style="position:sticky;top:0;background:#343a40;padding:.6rem 1rem;display:flex;gap:.5rem;align-items:center;">
+                  <span style="color:#fff;font-weight:600;margin-right:.5rem;">Vorschau – ZV/FP</span>
+                  <button class="btn btn-sm btn-warning text-dark" onclick="window.print()"><i class="bi bi-printer me-1"></i> Drucken</button>
+                  <button class="btn btn-sm btn-outline-light" onclick="alert('Als E-Mail senden (Demo)')"><i class="bi bi-envelope me-1"></i> E-Mail</button>
+                  <button class="btn btn-sm btn-outline-light ms-auto" id="btnZVFPClosePreview"><i class="bi bi-x-lg me-1"></i> Schließen</button>
+                </div>
+                <div id="zvfpPreviewPaper" style="background:#fff;max-width:760px;margin:2rem auto;padding:2.5rem 3rem;font-family:'Times New Roman',serif;font-size:11pt;line-height:1.5;"></div>
+              </div>
+
+              <!-- ── ZV/FP Script ───────────────────────────────────────── -->
+              <script>
+(function() {
+  var zvfpInitDone = false;
+  var savedZVFPs = [];
+  var _editingZVFPId = null;
+
+  // ── Vordefinierte Zielzeilen (Vorlagen) ────────────────────────────
+  var ZVFP_VORLAGEN = [
+    {
+      ziel: 'Erprobung Arbeitsbereiche zur Berufsfindung',
+      zvfp: 'regelmäßiges und pünktliches Erscheinen, motivierte Mitarbeit, Möglichkeit der beruflichen Orientierung nutzen',
+      aufgaben: 'Anleitende: Vermittlung fachpraktischer Inhalte, Beurteilung der Eignung, Betreuende: Überprüfung der Teilnahme, Begleitung des Ablaufs, Motivationsarbeit, gemeinsamer Austausch über Arbeits- und Sozialverhalten'
+    },
+    {
+      ziel: 'Teilnahme am Förderunterricht',
+      zvfp: 'pünktliches Erscheinen zum Unterricht',
+      aufgaben: 'Lehrkraft: Durchführung des Förderunterrichts, Betreuende: Überprüfung der Teilnahme und Motivationsarbeit, Anleiter: Überprüfung der Teilnahme'
+    },
+    {
+      ziel: 'Bewerbungsunterlagen erstellen',
+      zvfp: 'Vorlage der vorhandenen Unterlagen',
+      aufgaben: 'Lehrkraft: Unterstützung bei der Erstellung von Bewerbungsunterlagen, Betreuend: Korrektur der Bewerbungsunterlagen'
+    },
+    {
+      ziel: 'Praktikum absolvieren',
+      zvfp: 'regelmäßige und pünktliche Teilnahme, aktive Mitarbeit',
+      aufgaben: 'Betreuende: Begleitung und Kontakt zum Betrieb, Anleiter: Einführung und Betreuung vor Ort'
+    },
+    {
+      ziel: 'Abbau von Fehlzeiten',
+      zvfp: 'max. 10% unentschuldigte Fehlzeiten pro Monat',
+      aufgaben: 'Betreuende: monatliche Auswertung und Gespräch, TN: eigenverantwortliche Abmeldung bei Abwesenheit'
+    },
+    {
+      ziel: 'Verbesserung des Sozialverhaltens',
+      zvfp: 'konstruktiver Umgang mit Kollegen und Anleitenden, Konfliktlösungsstrategien anwenden',
+      aufgaben: 'Betreuende: regelmäßige Reflexionsgespräche, Anleiter: Rückmeldung zu Arbeits- und Sozialverhalten'
+    },
+    {
+      ziel: 'Sonstiges',
+      zvfp: '',
+      aufgaben: ''
+    }
+  ];
+
+  function g(id) { return document.getElementById(id); }
+  function gv(id) { var el = g(id); return el ? el.value : ''; }
+
+  // ── Build one Zielzeile row ─────────────────────────────────────────
+  function createZielzeile(data) {
+    data = data || {};
+    var row = document.createElement('div');
+    row.className = 'zvfp-zielzeile border rounded-3 p-3 mb-3 bg-white';
+
+    // Vorlagen-Select + Felder
+    row.innerHTML =
+      '<div class="row g-2 mb-2">'
+      + '<div class="col-12">'
+      + '<div class="d-flex align-items-center gap-2">'
+      + '<select class="form-select form-select-sm zvfp-vorlage-sel" style="max-width:320px;">'
+      + '<option value="">Vorlage wählen oder frei eingeben …</option>'
+      + ZVFP_VORLAGEN.map(function(v, i) {
+          return '<option value="' + i + '">' + v.ziel + '</option>';
+        }).join('')
+      + '</select>'
+      + '<button type="button" class="btn btn-sm btn-outline-danger zvfp-del-row ms-auto">'
+      + '<i class="bi bi-trash"></i></button>'
+      + '</div></div></div>'
+      + '<div class="row g-2">'
+      + '<div class="col-md-3">'
+      + '<label class="form-label small text-muted mb-1 d-md-none">Vereinbartes Ziel / Fördereinheit</label>'
+      + '<textarea class="form-control form-control-sm zvfp-f-ziel" rows="3"'
+      + ' placeholder="Ziel / Fördereinheit …">' + (data.ziel || '') + '</textarea>'
+      + '</div>'
+      + '<div class="col-md-3">'
+      + '<label class="form-label small text-muted mb-1 d-md-none">Getroffene ZV / FP mit dem TN</label>'
+      + '<textarea class="form-control form-control-sm zvfp-f-zvfp" rows="3"'
+      + ' placeholder="Getroffene ZV / FP …">' + (data.zvfp || '') + '</textarea>'
+      + '</div>'
+      + '<div class="col-md-3">'
+      + '<label class="form-label small text-muted mb-1 d-md-none">Wer macht was?</label>'
+      + '<textarea class="form-control form-control-sm zvfp-f-aufgaben" rows="3"'
+      + ' placeholder="Aufgabenverteilung …">' + (data.aufgaben || '') + '</textarea>'
+      + '</div>'
+      + '<div class="col-md-2">'
+      + '<label class="form-label small text-muted mb-1 d-md-none">Überprüfungszeitpunkt</label>'
+      + '<input type="date" class="form-control form-control-sm zvfp-f-pruefung"'
+      + ' value="' + (data.pruefung || '') + '">'
+      + '</div>'
+      + '<div class="col-md-1 d-flex align-items-center justify-content-center">'
+      + '<div class="form-check mb-0">'
+      + '<input class="form-check-input zvfp-f-erreicht" type="checkbox"'
+      + (data.erreicht ? ' checked' : '') + '>'
+      + '<label class="form-check-label small text-muted">erreicht</label>'
+      + '</div></div>'
+      + '</div>';
+
+    // Wire vorlage select
+    var sel = row.querySelector('.zvfp-vorlage-sel');
+    sel.addEventListener('change', function() {
+      var idx = parseInt(this.value);
+      if (isNaN(idx)) return;
+      var v = ZVFP_VORLAGEN[idx];
+      row.querySelector('.zvfp-f-ziel').value = v.ziel;
+      row.querySelector('.zvfp-f-zvfp').value = v.zvfp;
+      row.querySelector('.zvfp-f-aufgaben').value = v.aufgaben;
+    });
+
+    // Wire delete
+    row.querySelector('.zvfp-del-row').addEventListener('click', function() {
+      row.remove();
+    });
+
+    return row;
+  }
+
+  // ── Collect form data ───────────────────────────────────────────────
+  function collectZVFP() {
+    var zeilen = [];
+    g('zvfpZielzeilen').querySelectorAll('.zvfp-zielzeile').forEach(function(row) {
+      zeilen.push({
+        ziel:     row.querySelector('.zvfp-f-ziel').value,
+        zvfp:     row.querySelector('.zvfp-f-zvfp').value,
+        aufgaben: row.querySelector('.zvfp-f-aufgaben').value,
+        pruefung: row.querySelector('.zvfp-f-pruefung').value,
+        erreicht: row.querySelector('.zvfp-f-erreicht').checked
+      });
+    });
+    var iz = [];
+    if (g('zvfpIzAusbildung') && g('zvfpIzAusbildung').checked) iz.push('Vermittlung in Ausbildung');
+    if (g('zvfpIzArbeit') && g('zvfpIzArbeit').checked) iz.push('Vermittlung in Arbeit');
+    if (g('zvfpIzHemmnisse') && g('zvfpIzHemmnisse').checked) iz.push('Abbau von Vermittlungshemmnissen');
+    if (g('zvfpIzSonstiges') && g('zvfpIzSonstiges').checked) iz.push('Sonstiges');
+    return {
+      id: _editingZVFPId || ('zvfp-' + Date.now()),
+      datum: gv('zvfpDatum'),
+      betreuer: gv('zvfpBetreuer'),
+      integrationsziele: iz,
+      zeilen: zeilen,
+      gesprDatum: gv('zvfpGesprDatum'),
+      gesprText: gv('zvfpGesprText')
+    };
+  }
+
+  // ── Load into form ──────────────────────────────────────────────────
+  function loadZVFPIntoForm(zvfp) {
+    _editingZVFPId = zvfp.id;
+    if (g('zvfpDatum')) g('zvfpDatum').value = zvfp.datum || '';
+    if (g('zvfpBetreuer')) g('zvfpBetreuer').value = zvfp.betreuer || '';
+    // Integrationsziele
+    var izMap = {
+      'Vermittlung in Ausbildung': 'zvfpIzAusbildung',
+      'Vermittlung in Arbeit': 'zvfpIzArbeit',
+      'Abbau von Vermittlungshemmnissen': 'zvfpIzHemmnisse',
+      'Sonstiges': 'zvfpIzSonstiges'
+    };
+    Object.values(izMap).forEach(function(id) { if (g(id)) g(id).checked = false; });
+    (zvfp.integrationsziele || []).forEach(function(iz) {
+      var id = izMap[iz]; if (id && g(id)) g(id).checked = true;
+    });
+    // Zeilen
+    var container = g('zvfpZielzeilen');
+    if (container) {
+      container.innerHTML = '';
+      (zvfp.zeilen || []).forEach(function(z) {
+        container.appendChild(createZielzeile(z));
+      });
+    }
+    if (g('zvfpGesprDatum')) g('zvfpGesprDatum').value = zvfp.gesprDatum || '';
+    if (g('zvfpGesprText')) g('zvfpGesprText').value = zvfp.gesprText || '';
+  }
+
+  // ── Render card list ────────────────────────────────────────────────
+  function renderZVFPKarte() {
+    var liste = g('zvfpKarteListe');
+    if (!liste) return;
+    if (savedZVFPs.length === 0) {
+      liste.innerHTML = '<div class="text-muted small fst-italic">Noch keine Zielvereinbarung erstellt.</div>';
+      return;
+    }
+    var html = '';
+    savedZVFPs.forEach(function(z) {
+      var entwurfTag = z.entwurf
+        ? '<span class="badge bg-warning-subtle text-warning-emphasis ms-1">Entwurf</span>' : '';
+      html += '<div class="d-flex align-items-center gap-2 py-1 border-bottom">'
+        + '<span class="badge bg-info-subtle text-info-emphasis">ZV/FP</span>'
+        + '<span class="small fw-semibold">' + (z.datum || '—') + '</span>'
+        + entwurfTag
+        + '<div class="ms-auto d-flex gap-1">'
+        + '<button class="btn btn-outline-primary btn-sm zvfp-open-btn" type="button" data-zvfp-id="' + z.id + '">'
+        + '<i class="bi bi-pencil-square me-1"></i>Bearbeiten</button>'
+        + '<button class="btn btn-outline-secondary btn-sm zvfp-print-btn" type="button" data-zvfp-id="' + z.id + '">'
+        + '<i class="bi bi-printer"></i></button>'
+        + '<button class="btn btn-outline-danger btn-sm zvfp-del-btn" type="button" data-zvfp-id="' + z.id + '">'
+        + '<i class="bi bi-trash"></i></button>'
+        + '</div></div>';
+    });
+    liste.innerHTML = html;
+
+    liste.querySelectorAll('.zvfp-open-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var id = this.getAttribute('data-zvfp-id');
+        var z = savedZVFPs.find(function(x){ return x.id === id; });
+        if (!z) return;
+        loadZVFPIntoForm(z);
+        zvfpInitDone = false;
+        bootstrap.Modal.getOrCreateInstance(g('modalZVFPVollbild')).show();
+      });
+    });
+
+    liste.querySelectorAll('.zvfp-print-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var id = this.getAttribute('data-zvfp-id');
+        var z = savedZVFPs.find(function(x){ return x.id === id; });
+        if (!z) return;
+        var paper = g('zvfpPreviewPaper');
+        if (paper) paper.innerHTML = buildZVFPPreview(z);
+        var ov = g('zvfpPreviewOverlay');
+        if (ov) { ov.style.display = 'block'; ov.scrollTop = 0; }
+      });
+    });
+
+    liste.querySelectorAll('.zvfp-del-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var id = this.getAttribute('data-zvfp-id');
+        var z = savedZVFPs.find(function(x){ return x.id === id; });
+        if (!z) return;
+        if (!confirm('Zielvereinbarung vom ' + (z.datum || '—') + ' wirklich löschen?')) return;
+        savedZVFPs = savedZVFPs.filter(function(x){ return x.id !== id; });
+        renderZVFPKarte();
+      });
+    });
+  }
+
+  // ── Build print preview HTML ────────────────────────────────────────
+  function buildZVFPPreview(zvfp) {
+    var izChecks = ['Vermittlung in Ausbildung', 'Vermittlung in Arbeit',
+                    'Abbau von Vermittlungshemmnissen', 'Sonstiges'];
+    var izHtml = izChecks.map(function(label) {
+      var checked = (zvfp.integrationsziele || []).indexOf(label) > -1;
+      return '<td style="padding:.3em .8em;border:1px solid #ccc;">'
+        + '<span style="display:inline-block;width:14px;height:14px;border:1px solid #333;'
+        + 'text-align:center;line-height:14px;font-size:10pt;margin-right:4px;">'
+        + (checked ? 'x' : '&nbsp;') + '</span>' + label + '</td>';
+    }).join('');
+
+    var zeilen = (zvfp.zeilen || []).filter(function(z){ return z.ziel; });
+    var zeilenHtml = zeilen.length ? zeilen.map(function(z) {
+      return '<tr>'
+        + '<td style="border:1px solid #999;padding:.4em .5em;vertical-align:top;font-size:9pt;">' + (z.ziel || '') + '</td>'
+        + '<td style="border:1px solid #999;padding:.4em .5em;vertical-align:top;font-size:9pt;">' + (z.zvfp || '') + '</td>'
+        + '<td style="border:1px solid #999;padding:.4em .5em;vertical-align:top;font-size:9pt;">' + (z.aufgaben || '') + '</td>'
+        + '<td style="border:1px solid #999;padding:.4em .5em;vertical-align:top;font-size:9pt;width:80px;">' + (z.pruefung ? z.pruefung.split('-').reverse().join('.') : '') + '</td>'
+        + '<td style="border:1px solid #999;padding:.4em .5em;vertical-align:top;font-size:9pt;width:60px;text-align:center;">' + (z.erreicht ? 'x' : '') + '</td>'
+        + '</tr>';
+    }).join('') : '<tr><td colspan="5" style="border:1px solid #999;padding:.4em;color:#888;font-style:italic;">Keine Ziele eingetragen</td></tr>';
+
+    return '<h1 style="font-size:16pt;font-weight:bold;margin-bottom:.2em;">'
+      + 'Zielvereinbarung / Förderplan vom ' + (zvfp.datum || '—') + '</h1>'
+      + '<table style="width:100%;border-collapse:collapse;margin-bottom:.8em;font-size:10pt;">'
+      + '<tr><td style="width:120px;color:#555;">Nachname:</td><td><strong>Mustermann</strong></td>'
+      + '<td style="padding-left:2em;color:#555;width:80px;">Projekt:</td><td>Integra 2025</td></tr>'
+      + '<tr><td style="color:#555;">Vorname:</td><td>Max</td>'
+      + '<td style="padding-left:2em;color:#555;">Betreuer/in:</td><td>' + (zvfp.betreuer || '—') + '</td></tr>'
+      + '</table>'
+      + '<p style="font-size:10pt;font-weight:bold;margin-bottom:.3em;">Integrationsziel:</p>'
+      + '<table style="border-collapse:collapse;margin-bottom:1em;"><tr>' + izHtml + '</tr></table>'
+      + '<table style="width:100%;border-collapse:collapse;margin-bottom:1.2em;">'
+      + '<thead><tr style="background:#e8a000;color:#fff;">'
+      + '<th style="border:1px solid #999;padding:.4em .5em;font-size:9pt;width:22%;">Vereinbartes Ziel / Fördereinheit</th>'
+      + '<th style="border:1px solid #999;padding:.4em .5em;font-size:9pt;width:28%;">Getroffene ZV / FP mit dem TN</th>'
+      + '<th style="border:1px solid #999;padding:.4em .5em;font-size:9pt;width:32%;">Wer macht was (Aufgabenverteilung)?</th>'
+      + '<th style="border:1px solid #999;padding:.4em .5em;font-size:9pt;width:10%;">Überprüfungszeitpunkt</th>'
+      + '<th style="border:1px solid #999;padding:.4em .5em;font-size:9pt;width:8%;">Ziel erreicht</th>'
+      + '</tr></thead><tbody>' + zeilenHtml + '</tbody></table>'
+      + '<div style="display:flex;gap:3em;margin-bottom:2em;">'
+      + '<div style="flex:1;border-top:1px solid #333;padding-top:.3em;font-size:9pt;">Unterschrift sozialpädagogische Fachkraft</div>'
+      + '<div style="flex:1;border-top:1px solid #333;padding-top:.3em;font-size:9pt;">Unterschrift Ausbilder*in, Lehrkraft</div>'
+      + '<div style="flex:1;border-top:1px solid #333;padding-top:.3em;font-size:9pt;">Unterschrift Teilnehmer*in</div>'
+      + '</div>'
+      + '<p style="font-size:11pt;font-weight:bold;margin-bottom:.1em;">Förderplangespräch</p>'
+      + '<p style="font-size:9pt;font-style:italic;margin-bottom:.5em;">(Was habe ich bisher erreicht / wobei hatte ich bisher Schwierigkeiten)</p>'
+      + '<p style="font-size:10pt;"><strong>Datum:</strong> ' + (zvfp.gesprDatum ? zvfp.gesprDatum.split('-').reverse().join('.') : '—') + '</p>'
+      + '<div style="border:1px solid #ccc;padding:.8em;min-height:80px;font-size:10pt;">'
+      + (zvfp.gesprText || '') + '</div>';
+  }
+
+  // ── Save ────────────────────────────────────────────────────────────
+  function saveZVFP(asEntwurf) {
+    var zvfp = collectZVFP();
+    zvfp.entwurf = !!asEntwurf;
+    if (_editingZVFPId) {
+      var idx = savedZVFPs.findIndex(function(x){ return x.id === _editingZVFPId; });
+      if (idx > -1) savedZVFPs[idx] = zvfp; else savedZVFPs.push(zvfp);
+    } else {
+      savedZVFPs.push(zvfp);
+    }
+    _editingZVFPId = null;
+    renderZVFPKarte();
+    // Flash Entwurf badge
+    var ind = g('zvfpEntwurfBadge');
+    if (ind) {
+      ind.style.display = 'inline-block';
+      var t = new Date().toLocaleTimeString('de-DE', {hour:'2-digit', minute:'2-digit'});
+      ind.innerHTML = '<i class="bi bi-floppy me-1"></i>' + (asEntwurf ? 'Entwurf ' + t : 'Gespeichert ' + t);
+      setTimeout(function(){ if (ind) ind.style.display = 'none'; }, 3000);
+    }
+    return zvfp;
+  }
+
+  // ── Reset form ──────────────────────────────────────────────────────
+  function resetZVFPForm() {
+    _editingZVFPId = null;
+    if (g('zvfpDatum')) g('zvfpDatum').value = '';
+    if (g('zvfpGesprDatum')) g('zvfpGesprDatum').value = '';
+    if (g('zvfpGesprText')) g('zvfpGesprText').value = '';
+    ['zvfpIzAusbildung','zvfpIzArbeit','zvfpIzHemmnisse','zvfpIzSonstiges'].forEach(function(id){
+      if (g(id)) g(id).checked = false;
+    });
+    var container = g('zvfpZielzeilen');
+    if (container) {
+      container.innerHTML = '';
+      // Start with 3 empty rows
+      for (var i = 0; i < 3; i++) container.appendChild(createZielzeile());
+    }
+  }
+
+  // ── Init ────────────────────────────────────────────────────────────
+  function initZVFP() {
+    if (zvfpInitDone) return;
+    zvfpInitDone = true;
+
+    // Add Ziel-Zeile button
+    var btnAdd = g('btnZVFPAddZiel');
+    if (btnAdd) btnAdd.addEventListener('click', function() {
+      g('zvfpZielzeilen').appendChild(createZielzeile());
+    });
+
+    // Entwurf
+    var btnEntwurf = g('btnZVFPEntwurf');
+    if (btnEntwurf) btnEntwurf.addEventListener('click', function() { saveZVFP(true); });
+
+    // Speichern
+    var btnSave = g('btnZVFPSpeichern');
+    if (btnSave) btnSave.addEventListener('click', function() {
+      if (!gv('zvfpDatum')) {
+        alert('Bitte ein Datum angeben.');
+        if (g('zvfpDatum')) g('zvfpDatum').focus();
+        return;
+      }
+      var zvfp = saveZVFP(false);
+      var m = bootstrap.Modal.getInstance(g('modalZVFPVollbild'));
+      if (m) {
+        m.hide();
+        setTimeout(function() {
+          alert('Zielvereinbarung / Förderplan vom ' + zvfp.datum + ' gespeichert.');
+        }, 400);
+      }
+    });
+
+    // Vorschau
+    var btnVorschau = g('btnZVFPVorschau');
+    if (btnVorschau) btnVorschau.addEventListener('click', function() {
+      var zvfp = collectZVFP();
+      var paper = g('zvfpPreviewPaper');
+      if (paper) paper.innerHTML = buildZVFPPreview(zvfp);
+      var ov = g('zvfpPreviewOverlay');
+      if (ov) { ov.style.display = 'block'; ov.scrollTop = 0; }
+    });
+
+    // Close preview
+    var btnClose = g('btnZVFPClosePreview');
+    if (btnClose) btnClose.addEventListener('click', function() {
+      var ov = g('zvfpPreviewOverlay'); if (ov) ov.style.display = 'none';
+    });
+
+    // Init rows if empty
+    if (g('zvfpZielzeilen') && g('zvfpZielzeilen').children.length === 0) {
+      for (var i = 0; i < 3; i++) g('zvfpZielzeilen').appendChild(createZielzeile());
+    }
+  }
+
+  // Wire to modal open
+  document.addEventListener('DOMContentLoaded', function() {
+    var modalEl = g('modalZVFPVollbild');
+    if (modalEl) {
+      modalEl.addEventListener('shown.bs.modal', function() {
+        initZVFP();
+      });
+      modalEl.addEventListener('hidden.bs.modal', function() {
+        if (!_editingZVFPId) resetZVFPForm();
+        zvfpInitDone = false;
+        _editingZVFPId = null;
+      });
+    }
+    renderZVFPKarte();
+  });
+
+})();
+              </script>
+
+<!-- ============================================================
                    LEISTUNGS- & VERHALTENSBEURTEILUNG (LuV)
                    ============================================================ -->
               <div class="mb-3" id="luvBereich">
