@@ -5,6 +5,211 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PHÖNIX Prototyp</title>
 
+  <style>
+    /* LuV Note-Buttons */
+    .note-btn.active-note,
+    .note-btn.btn-primary {
+      background-color: #0d6efd !important;
+      border-color: #0d6efd !important;
+      color: #fff !important;
+      font-weight: 600;
+    }
+    .note-btn { min-width: 32px; }
+  </style>
+
+
+  <style>
+    /* ── LuV Styles ──────────────────────────────────────────────────── */
+/* ── Seiten-Layout ─────────────────────────────────────────────── */
+    body { background: #f0f2f5; }
+
+    .luv-shell {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 1.5rem 1rem 4rem;
+    }
+
+    /* ── Sticky Header ─────────────────────────────────────────────── */
+    .luv-topbar {
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      background: #1e2d3d;
+      color: #fff;
+      padding: .75rem 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      box-shadow: 0 2px 8px rgba(0,0,0,.25);
+    }
+    .luv-topbar .art-badges button {
+      border-radius: 20px;
+      font-size: .8rem;
+      padding: .3rem .85rem;
+      transition: all .15s;
+    }
+    .luv-topbar .art-badges button.active {
+      background: #f97316;
+      border-color: #f97316;
+      color: #fff;
+    }
+    .luv-topbar .actions { margin-left: auto; display:flex; gap:.5rem; flex-wrap:wrap; }
+
+    /* ── Abschnitt-Karten ──────────────────────────────────────────── */
+    .luv-section {
+      background: #fff;
+      border-radius: .5rem;
+      box-shadow: 0 1px 4px rgba(0,0,0,.08);
+      margin-bottom: 1.25rem;
+      overflow: hidden;
+    }
+    .luv-section-head {
+      background: #f8f9fa;
+      border-bottom: 1px solid #e9ecef;
+      padding: .75rem 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+    }
+    .luv-section-head .sec-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 26px; height: 26px;
+      border-radius: 50%;
+      background: #1e2d3d;
+      color: #fff;
+      font-size: .8rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .luv-section-body { padding: 1.25rem; }
+
+    /* ── Personen-Kopf ─────────────────────────────────────────────── */
+    .tn-kopf {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: .5rem 1.5rem;
+    }
+    .tn-kopf .field label { font-size:.75rem; color:#6c757d; margin-bottom:.1rem; display:block; }
+    .tn-kopf .field .val { font-weight: 600; color: #212529; }
+    @media (max-width:600px) { .tn-kopf { grid-template-columns: 1fr 1fr; } }
+
+    /* ── Bewertungs-Raster ─────────────────────────────────────────── */
+    .bewertung-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: .5rem 2rem;
+    }
+    @media (max-width:600px) { .bewertung-grid { grid-template-columns: 1fr; } }
+
+    .bew-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: .4rem 0;
+      border-bottom: 1px solid #f0f0f0;
+      gap: .5rem;
+    }
+    .bew-row:last-child { border-bottom: none; }
+    .bew-label { font-size: .88rem; color: #444; flex-shrink: 0; }
+    .note-btns { display: flex; gap: 3px; flex-shrink: 0; }
+    .note-btns button {
+      width: 30px; height: 28px;
+      border: 1px solid #ced4da;
+      background: #fff;
+      border-radius: 4px;
+      font-size: .8rem;
+      cursor: pointer;
+      transition: all .12s;
+      color: #495057;
+    }
+    .note-btns button:hover { background: #e9ecef; }
+    .note-btns button.sel {
+      background: #1e2d3d;
+      border-color: #1e2d3d;
+      color: #fff;
+      font-weight: 700;
+    }
+    .note-btns button.sel-1,.note-btns button.sel-2 { background:#198754; border-color:#198754; color:#fff; }
+    .note-btns button.sel-3,.note-btns button.sel-4 { background:#fd7e14; border-color:#fd7e14; color:#fff; }
+    .note-btns button.sel-5,.note-btns button.sel-6 { background:#dc3545; border-color:#dc3545; color:#fff; }
+
+    /* ── Anwesenheits-Tabelle ──────────────────────────────────────── */
+    .anw-table th, .anw-table td { text-align: center; font-size:.85rem; }
+
+    /* ── Druckvorschau ─────────────────────────────────────────────── */
+    .preview-overlay {
+      display: none;
+      position: fixed; inset: 0; z-index: 1050;
+      background: rgba(0,0,0,.65);
+      overflow-y: auto;
+    }
+    .preview-overlay.show { display: block; }
+    .preview-paper {
+      background: #fff;
+      max-width: 760px;
+      margin: 2rem auto;
+      padding: 2.5rem 3rem;
+      font-family: "Times New Roman", serif;
+      font-size: 11pt;
+      line-height: 1.5;
+    }
+    .preview-paper h1 { font-size: 14pt; text-align: center; font-weight: bold; }
+    .preview-paper h2 { font-size: 12pt; font-weight: bold; margin-top: 1.4em; }
+    .preview-paper .meta-table { width: 100%; border-collapse: collapse; margin: .5em 0 1em; }
+    .preview-paper .meta-table td { padding: .15em 1em .15em 0; vertical-align: top; }
+    .preview-paper .meta-table td:first-child { color: #555; white-space: nowrap; min-width:180px; }
+    .preview-paper .bew-print-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: .3em 2em;
+    }
+    .preview-paper .bew-print-row { display: flex; justify-content: space-between; }
+    .preview-controls {
+      position: sticky; top: 0; background: #343a40;
+      padding: .6rem 1rem; display: flex; gap: .5rem; align-items: center;
+    }
+
+    /* ── Ziel-Tags ─────────────────────────────────────────────────── */
+    .ziel-chip {
+      display: inline-flex; align-items: center; gap: .3rem;
+      background: #e9f0ff; border: 1px solid #b8cbff;
+      border-radius: 20px; padding: .2rem .7rem; font-size: .82rem;
+    }
+    .ziel-chip button { background: none; border: none; color: #888; padding: 0; line-height:1; cursor:pointer; }
+    .ziel-chip button:hover { color: #dc3545; }
+
+    /* ── Entwurf-Badge ─────────────────────────────────────────────── */
+    .entwurf-badge {
+      display: inline-block; background: #fff3cd; color: #856404;
+      border: 1px solid #ffc107; border-radius: 4px;
+      padding: .15rem .5rem; font-size: .75rem; font-weight: 600;
+    }
+
+    /* ── LuV-Verlauf-Timeline ──────────────────────────────────────── */
+    .luv-timeline { list-style: none; padding: 0; margin: 0; }
+    .luv-timeline li {
+      padding: .5rem .75rem;
+      border-left: 3px solid #dee2e6;
+      margin-left: .5rem;
+      margin-bottom: .5rem;
+      position: relative;
+      background: #f8f9fa;
+      border-radius: 0 6px 6px 0;
+    }
+    .luv-timeline li::before {
+      content: '';
+      width: 10px; height: 10px; border-radius: 50%;
+      background: #6c757d;
+      position: absolute; left: -6.5px; top: .75rem;
+      border: 2px solid #fff;
+    }
+    .luv-timeline li.art-1::before { background: #198754; }
+    .luv-timeline li.art-2::before { background: #0d6efd; }
+    .luv-timeline li.art-gefahr::before { background: #dc3545; }
+    .luv-timeline li.art-4::before { background: #6f42c1; }
+    .luv-art-btn.active { background:#f97316!important; border-color:#f97316!important; color:#fff!important; }
+  </style>
   <!-- Bootstrap & Styles -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
@@ -1199,28 +1404,880 @@
                 </div>
               </div>
 
-              <div class="mb-3">
+              <!-- ============================================================
+                   LEISTUNGS- & VERHALTENSBEURTEILUNG (LuV)
+                   ============================================================ -->
+              <div class="mb-3" id="luvBereich">
                 <div class="border rounded-3 p-3">
-                  <div class="d-flex justify-content-between align-items-center mb-2">
-                    <h6 class="mb-0">Leistungs- &amp; Verhaltensbeurteilung</h6>
-                    <div class="d-flex gap-2">
-                      <button class="btn btn-outline-secondary btn-sm" type="button">
-                        <i class="bi bi-pencil me-1"></i> Bearbeiten
-                      </button>
-                      <button class="btn btn-primary btn-sm" type="button">
-                        <i class="bi bi-plus-lg me-1"></i> erstellen
-                      </button>
+                  <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-2">
+                    <div>
+                      <h6 class="mb-0">Leistungs- &amp; Verhaltensbeurteilung</h6>
+                      <div class="text-muted small">Einschätzungen zum Arbeits- und Sozialverhalten sowie Lernfortschritt (LuV)</div>
                     </div>
+                    <button class="btn btn-primary btn-sm" type="button"
+                            data-bs-toggle="modal" data-bs-target="#modalLuVVollbild">
+                      <i class="bi bi-plus-lg me-1"></i> Neue LuV erstellen
+                    </button>
                   </div>
-                  <p class="text-muted small mb-2">
-                    Einschätzungen zum Arbeitsverhalten, Sozialverhalten und Lernfortschritt. Erstellte LUVs:
-                  </p>
-                  <div class="small d-flex flex-wrap gap-2">
-                    <span class="badge bg-primary-subtle text-primary-emphasis">Start LUV 12.09.2025</span>
-                    <span class="badge bg-primary-subtle text-primary-emphasis">Verlaufs LUV 31.11.2025</span>
+                  <div class="small d-flex flex-wrap gap-2 mt-2">
+                    <span class="badge bg-success-subtle text-success-emphasis">Start-LuV 12.09.2025</span>
+                    <span class="badge bg-primary-subtle text-primary-emphasis">Verlaufs-LuV 30.11.2025</span>
                   </div>
                 </div>
               </div>
+
+              <!-- ── LuV Vollbild-Modal ─────────────────────────────────── -->
+              <div class="modal fade" id="modalLuVVollbild" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-fullscreen">
+                  <div class="modal-content" style="background:#f0f2f5;">
+
+                    <!-- Modal-Header = LuV Topbar -->
+                    <div class="modal-header py-2 border-0" style="background:#1e2d3d;color:#fff;flex-wrap:wrap;gap:.5rem;">
+                      <div>
+                        <div class="fw-bold" style="font-size:1rem;">Leistungs- &amp; Verhaltensbeurteilung</div>
+                        <div style="font-size:.8rem;color:#adb5bd;">Max Mustermann &middot; Integra 2025</div>
+                      </div>
+                      <div class="d-flex gap-2 flex-wrap ms-3" id="luvArtBadges">
+                        <button class="btn btn-sm btn-outline-light luv-art-btn active" data-art="1">Start-LuV</button>
+                        <button class="btn btn-sm btn-outline-light luv-art-btn" data-art="2">Verlaufs-LuV</button>
+                        <button class="btn btn-sm btn-outline-light luv-art-btn" data-art="gefahr">Gefährdungs-LuV</button>
+                        <button class="btn btn-sm btn-outline-light luv-art-btn" data-art="4">Abschluss-LuV</button>
+                      </div>
+                      <div class="ms-auto d-flex gap-2 align-items-center flex-wrap">
+                        <span id="luvEntwurfBadge" style="display:none;background:#fff3cd;color:#856404;border:1px solid #ffc107;border-radius:4px;padding:.15rem .5rem;font-size:.75rem;font-weight:600;">
+                          <i class="bi bi-floppy me-1"></i>Entwurf
+                        </span>
+                        <button class="btn btn-sm btn-outline-light" id="btnLuvEntwurf">
+                          <i class="bi bi-floppy me-1"></i> Entwurf speichern
+                        </button>
+                        <button class="btn btn-sm btn-warning text-dark fw-semibold" id="btnLuvVorschau">
+                          <i class="bi bi-eye me-1"></i> Vorschau &amp; Drucken
+                        </button>
+                        <button type="button" class="btn-close btn-close-white ms-1" data-bs-dismiss="modal"></button>
+                      </div>
+                    </div>
+
+                    <!-- Modal-Body = LuV Form -->
+                    <div class="modal-body p-0" style="overflow-y:auto;">
+                      <div class="luv-shell">
+
+<!-- ── 0) Kopf: Datum + Zeitraum ──────────────────────────────── -->
+  <div class="luv-section">
+    <div class="luv-section-body">
+      <div class="row g-3 align-items-end">
+        <div class="col-md-4">
+          <label class="form-label small text-muted mb-1">LuV-Datum *</label>
+          <input type="date" class="form-control" id="luvDatum" value="2025-12-10">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label small text-muted mb-1">Bewertungszeitraum von</label>
+          <input type="date" class="form-control" id="luvVon" value="2025-09-12">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label small text-muted mb-1">Bewertungszeitraum bis</label>
+          <input type="date" class="form-control" id="luvBis" value="2025-12-10">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 1) Personenbezogene Daten ──────────────────────────────── -->
+  <div class="luv-section">
+    <div class="luv-section-head">
+      <span class="sec-num">1</span>
+      <span class="fw-semibold">Personenbezogene Daten</span>
+      <span class="ms-auto text-muted small">(aus Teilnehmerprofil – nur lesen)</span>
+    </div>
+    <div class="luv-section-body">
+      <div class="tn-kopf">
+        <div class="field"><label>Nachname</label><div class="val">Mustermann</div></div>
+        <div class="field"><label>Vorname</label><div class="val">Max</div></div>
+        <div class="field"><label>Geburtsdatum</label><div class="val">01.01.1990</div></div>
+        <div class="field"><label>Kd-Nr.</label><div class="val">555D021632</div></div>
+        <div class="field"><label>Vermittlerin</label><div class="val">F. Beispiel (JC)</div></div>
+        <div class="field"><label>Betreuer/in beim Träger</label><div class="val">Daniel Chu</div></div>
+      </div>
+      <hr class="my-3">
+      <div class="tn-kopf">
+        <div class="field"><label>Name des Trägers</label><div class="val">Zentrum für Bildung und Beruf Saar gGmbH</div></div>
+        <div class="field"><label>Kurzbezeichnung der Maßnahme</label><div class="val">Integra 2025</div></div>
+        <div class="field"><label>Zuweisung von/bis</label><div class="val">12.09.2025 – 11.09.2026</div></div>
+      </div>
+      <hr class="my-3">
+      <div class="row g-3">
+        <div class="col-md-4">
+          <label class="form-label small text-muted mb-1">Betreuer/in *</label>
+          <select class="form-select form-select-sm" id="luvBetreuer">
+            <option selected>Daniel Chu</option>
+            <option>Corinna Adams</option>
+            <option>Janine Kerber</option>
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label small text-muted mb-1">Lehrkraft</label>
+          <select class="form-select form-select-sm" id="luvLehrkraft">
+            <option selected>H. Peter</option>
+            <option>Weitere Lehrkraft</option>
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label small text-muted mb-1">Anleiter/in</label>
+          <select class="form-select form-select-sm" id="luvAnleiter">
+            <option selected>R. Piechowiak</option>
+            <option>C. Adams</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 2) Freitext-Abschnitt (wechselt je nach LuV-Art) ──────── -->
+  <div class="luv-section">
+    <div class="luv-section-head">
+      <span class="sec-num">2</span>
+      <span class="fw-semibold" id="freitext-titel">Darstellung der individuellen Ausgangssituation</span>
+    </div>
+    <div class="luv-section-body">
+      <div class="text-muted small mb-2" id="freitext-hint">
+        Insbesondere Auswertung der Informationen zur persönlichen Lern- und Arbeitsbiographie.
+      </div>
+      <textarea class="form-control" id="luvFreitext1" rows="9"
+        placeholder="Freitext eingeben …"></textarea>
+
+      <!-- Zweites Freitext-Feld (nur bei Verlauf, Gefährdung, Abschluss) -->
+      <div id="freitext2-block" class="mt-4" style="display:none;">
+        <label class="form-label fw-semibold small" id="freitext2-label">Vorschlag für weiteres Vorgehen</label>
+        <div class="text-muted small mb-2" id="freitext2-hint"></div>
+        <textarea class="form-control" id="luvFreitext2" rows="6"
+          placeholder="Freitext eingeben …"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 3) Schritte zur Zielvereinbarung ──────────────────────── -->
+  <div class="luv-section" id="block-zielvereinbarung">
+    <div class="luv-section-head">
+      <span class="sec-num">3</span>
+      <span class="fw-semibold">Schritte zur Zielvereinbarung</span>
+    </div>
+    <div class="luv-section-body">
+
+      <!-- Bestehende Zielvereinbarungen verknüpfen -->
+      <div class="d-flex flex-wrap gap-2 align-items-center mb-3">
+        <button class="btn btn-sm btn-outline-primary" id="btnZielEinfuegen"
+                data-bs-toggle="modal" data-bs-target="#modalZielVB">
+          <i class="bi bi-link-45deg me-1"></i> Zielvereinbarung einfügen
+        </button>
+        <div class="text-muted small">oder Freitext eingeben</div>
+      </div>
+
+      <!-- Eingefügte ZVB-Chips -->
+      <div id="zielChips" class="d-flex flex-wrap gap-2 mb-3"></div>
+
+      <textarea class="form-control" id="luvZieltext" rows="5"
+        placeholder="Weitere Vereinbarungen und Ziele …"></textarea>
+    </div>
+  </div>
+
+  <!-- ── 4) Zusätzliche Angaben ─────────────────────────────────── -->
+  <div class="luv-section">
+    <div class="luv-section-head">
+      <span class="sec-num">4</span>
+      <span class="fw-semibold">Zusätzliche Angaben</span>
+    </div>
+    <div class="luv-section-body">
+
+      <!-- 4a) Bereits erstellte LuVs -->
+      <div id="block-vorherige-luvs" class="mb-4" style="display:none;">
+        <div class="fw-semibold small mb-2">Bereits erstellte LuVs</div>
+        <ul class="luv-timeline" id="luvTimeline">
+          <li class="art-1">
+            <span class="badge bg-success-subtle text-success-emphasis me-2">Start-LuV</span>
+            <span class="fw-semibold">12.09.2025</span>
+            <span class="text-muted small ms-2">D. Chu</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- 4b) Anwesenheitsstatistik -->
+      <div class="fw-semibold small mb-2">
+        Anwesenheitsstatistik
+        <span class="text-muted fw-normal">(gesamte Zuweisungsdauer)</span>
+      </div>
+      <div class="table-responsive mb-4">
+        <table class="table table-sm table-bordered anw-table mb-0" style="max-width:560px;">
+          <thead class="table-light">
+            <tr>
+              <th>A</th><th>U</th><th>K</th><th>E</th><th>F</th>
+              <th>Quote A+U</th><th>Quote K+E</th><th>Quote F</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>38</td><td>2</td><td>6</td><td>1</td><td>9</td>
+              <td class="fw-semibold text-success">71,43 %</td>
+              <td>12,50 %</td>
+              <td class="fw-semibold text-danger">16,07 %</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="text-muted small mt-1">
+          A=Anwesend · U=Urlaub · K=Krank · E=Entschuldigt · F=Fehlend unentschuldigt
+        </div>
+      </div>
+
+      <!-- 4c) Im Bereichszeitraum durchgeführte Tätigkeiten -->
+      <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap gap-2">
+        <div class="fw-semibold small">Im Berichtszeitraum durchgeführte Tätigkeiten</div>
+        <button class="btn btn-sm btn-outline-secondary"
+                onclick="navMitWarnung('arbeitsbereiche')">
+          <i class="bi bi-box-arrow-up-right me-1"></i> Arbeitsbereiche bearbeiten
+        </button>
+      </div>
+      <div class="mb-3">
+        <div class="table-responsive">
+          <table class="table table-sm table-hover mb-0" style="max-width:560px;">
+            <thead class="table-light"><tr><th>Bereich</th><th>Von</th><th>Bis</th></tr></thead>
+            <tbody id="bereicheTabelle">
+              <tr>
+                <td>Maler &amp; Lackierer</td>
+                <td>12.09.2025</td>
+                <td>heute</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 4d) Im Berichtszeitraum erworbene Qualifikationen -->
+      <div class="fw-semibold small mb-2">Im Berichtszeitraum erworbene Qualifikationen</div>
+      <div class="border rounded p-3 bg-body-tertiary mb-4 small" id="qualifikationenBlock">
+        <div class="text-muted fst-italic mb-2">(Texte aus den Arbeitsbereichen der Maßnahme)</div>
+        <div><span class="fw-semibold">Maler &amp; Lackierer:</span>
+          Grundkenntnisse in Vorbereitung und Ausführung von Malerarbeiten. Umgang mit Werkzeug und Materialien erlernt.
+        </div>
+      </div>
+
+      <!-- 4e) Bewertung (Schulnotensystem) -->
+      <div class="d-flex align-items-center gap-3 mb-3 flex-wrap">
+        <div class="fw-semibold small">Bewertung (Schulnotensystem)</div>
+        <button class="btn btn-sm btn-outline-secondary" id="btnAnleiterBew"
+                data-bs-toggle="modal" data-bs-target="#modalAnleiterBew">
+          <i class="bi bi-clipboard-check me-1"></i> Anleiterbewertungen einsehen
+        </button>
+        <button class="btn btn-sm btn-outline-primary" id="btnLetzteAnleiterEinfuegen">
+          <i class="bi bi-arrow-down-circle me-1"></i> Letzte Anleiterbewertung übernehmen
+        </button>
+      </div>
+      <div class="text-muted small mb-3">
+        1 = sehr gut · 2 = gut · 3 = befriedigend · 4 = ausreichend · 5 = mangelhaft · 6 = ungenügend
+      </div>
+
+      <div class="bewertung-grid" id="bewertungGrid">
+        <!-- wird per JS gerendert -->
+      </div>
+
+      <!-- 4f) Praktika -->
+      <hr class="my-4">
+      <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap gap-2">
+        <div class="fw-semibold small">Praktika</div>
+        <button class="btn btn-sm btn-outline-secondary" id="btnPraktikumLink"
+                onclick="navMitWarnung('praktika')">
+          <i class="bi bi-box-arrow-up-right me-1"></i> Praktika bearbeiten
+        </button>
+      </div>
+      <div id="praktikaBlock">
+        <div class="table-responsive">
+          <table class="table table-sm table-hover mb-0">
+            <thead class="table-light">
+              <tr><th>Betrieb / Ort</th><th>Von</th><th>Bis</th><th>Kurzbericht</th></tr>
+            </thead>
+            <tbody id="praktikaTabelle">
+              <tr>
+                <td>Malerbetrieb Meier, Saarbrücken</td>
+                <td>03.11.2025</td>
+                <td>14.11.2025</td>
+                <td class="text-muted small">Praktikum erfolgreich abgeschlossen.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 4g) Vermittlungshemmnisse -->
+      <hr class="my-4">
+      <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap gap-2">
+        <div class="fw-semibold small">Vermittlungshemmnisse</div>
+        <button class="btn btn-sm btn-outline-secondary"
+                onclick="navMitWarnung('vermittlungshemmnisse')">
+          <i class="bi bi-box-arrow-up-right me-1"></i> Hemmnisse bearbeiten
+        </button>
+      </div>
+      <div id="hemmnisseBlock">
+        <div class="d-flex flex-wrap gap-2 small">
+          <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle py-2 px-3">
+            Kein Führerschein
+          </span>
+          <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle py-2 px-3">
+            Kinderbetreuung
+          </span>
+        </div>
+        <div class="text-muted small mt-2 fst-italic">
+          (Hemmnisse werden aus dem Teilnehmerprofil übernommen)
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── Datum + Unterschrift ───────────────────────────────────── -->
+  <div class="luv-section">
+    <div class="luv-section-body">
+      <div class="row g-3 align-items-end">
+        <div class="col-md-4">
+          <label class="form-label small text-muted mb-1">Datum</label>
+          <input type="date" class="form-control form-control-sm" id="luvUnterschriftDatum"
+                 value="2025-12-10">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label small text-muted mb-1">Unterschrift (gez.)</label>
+          <input type="text" class="form-control form-control-sm" id="luvUnterschrift"
+                 value="Daniel Chu">
+        </div>
+        <div class="col-md-4 d-flex gap-2 flex-wrap align-items-end">
+          <button class="btn btn-outline-secondary btn-sm" id="btn-entwurf-2">
+            <i class="bi bi-floppy me-1"></i> Entwurf speichern
+          </button>
+          <button class="btn btn-warning text-dark fw-semibold btn-sm" id="btn-vorschau-2">
+            <i class="bi bi-eye me-1"></i> Vorschau &amp; Drucken
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+                      </div><!-- /luv-shell (modal) -->
+                    </div><!-- /modal-body -->
+
+                  </div><!-- /modal-content -->
+                </div><!-- /modal-dialog -->
+              </div><!-- /modalLuVVollbild -->
+
+              <!-- ── LuV: Druckvorschau-Overlay ─────────────────────────── -->
+<!-- ═══════════════════════════════════════════════════════════
+     MODAL: Zielvereinbarung einfügen
+═══════════════════════════════════════════════════════════ -->
+<div class="modal fade" id="modalZielVB" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Zielvereinbarung einfügen</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <p class="text-muted small mb-3">Wählen Sie eine bestehende Zielvereinbarung aus, die in den Bericht aufgenommen werden soll.</p>
+        <div class="list-group" id="zvbListe">
+          <label class="list-group-item list-group-item-action d-flex align-items-start gap-3">
+            <input class="form-check-input mt-1 flex-shrink-0" type="checkbox" value="1">
+            <div>
+              <div class="fw-semibold">Zielvereinbarung 12.11.2025</div>
+              <div class="text-muted small">4 Ziele · D. Chu · Start-LuV</div>
+              <div class="mt-1 small">
+                <span class="badge bg-light text-dark border me-1">Ziel 1: Regelmäßige Teilnahme steigern</span>
+                <span class="badge bg-light text-dark border me-1">Ziel 2: Praktikum suchen</span>
+                <span class="badge bg-light text-dark border">Ziel 3: Führerschein-Plan erstellen</span>
+              </div>
+            </div>
+          </label>
+          <label class="list-group-item list-group-item-action d-flex align-items-start gap-3">
+            <input class="form-check-input mt-1 flex-shrink-0" type="checkbox" value="2">
+            <div>
+              <div class="fw-semibold">Zielvereinbarung 03.09.2025</div>
+              <div class="text-muted small">2 Ziele · D. Chu · Erstgespräch</div>
+              <div class="mt-1 small">
+                <span class="badge bg-light text-dark border me-1">Ziel 1: Arbeitsbereich Maler erkunden</span>
+                <span class="badge bg-light text-dark border">Ziel 2: Fehlzeiten auf max. 20 % reduzieren</span>
+              </div>
+            </div>
+          </label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Abbrechen</button>
+        <button type="button" class="btn btn-primary btn-sm" id="btnZVBAuswahl" data-bs-dismiss="modal">
+          Auswahl einfügen
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     MODAL: Anleiterbewertungen einsehen
+═══════════════════════════════════════════════════════════ -->
+<div class="modal fade" id="modalAnleiterBew" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Anleiterbewertungen – Max Mustermann</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <p class="text-muted small mb-3">Monatliche Beurteilungen durch den Praxisanleiter R. Piechowiak.</p>
+
+        <!-- Bewertung Nov 2025 -->
+        <div class="card border-0 bg-body-tertiary mb-3">
+          <div class="card-body pb-2">
+            <div class="d-flex justify-content-between align-items-start mb-3">
+              <div>
+                <div class="fw-semibold">November 2025</div>
+                <div class="text-muted small">R. Piechowiak · Maler &amp; Lackierer</div>
+              </div>
+              <button class="btn btn-sm btn-primary" data-monat="2025-11"
+                      onclick="anleiterNoten({'anw':2,'puenkt':1,'mot':2,'eig':2,'handw':1,'ausd':2,'lern':2,'soz':1,'team':2}); bootstrap.Modal.getInstance(document.getElementById('modalAnleiterBew')).hide();">
+                <i class="bi bi-arrow-down-circle me-1"></i> Diese Noten übernehmen
+              </button>
+            </div>
+            <div class="bewertung-grid" id="anleiter-grid-nov"></div>
+          </div>
+        </div>
+
+        <!-- Bewertung Okt 2025 -->
+        <div class="card border-0 bg-body-tertiary mb-3">
+          <div class="card-body pb-2">
+            <div class="d-flex justify-content-between align-items-start mb-3">
+              <div>
+                <div class="fw-semibold">Oktober 2025</div>
+                <div class="text-muted small">R. Piechowiak · Maler &amp; Lackierer</div>
+              </div>
+              <button class="btn btn-sm btn-outline-primary" data-monat="2025-10"
+                      onclick="anleiterNoten({'anw':3,'puenkt':2,'mot':3,'eig':3,'handw':2,'ausd':3,'lern':3,'soz':2,'team':3}); bootstrap.Modal.getInstance(document.getElementById('modalAnleiterBew')).hide();">
+                <i class="bi bi-arrow-down-circle me-1"></i> Diese Noten übernehmen
+              </button>
+            </div>
+            <div class="bewertung-grid" id="anleiter-grid-okt"></div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Schließen</button>
+        <button type="button" class="btn btn-primary btn-sm"
+                onclick="anleiterNoten({'anw':2,'puenkt':1,'mot':2,'eig':2,'handw':1,'ausd':2,'lern':2,'soz':1,'team':2}); bootstrap.Modal.getInstance(document.getElementById('modalAnleiterBew')).hide();"
+                data-bs-dismiss="modal">
+          <i class="bi bi-arrow-down-circle me-1"></i> Letzte (Nov) übernehmen
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     DRUCKVORSCHAU-OVERLAY
+═══════════════════════════════════════════════════════════ -->
+<div class="preview-overlay" id="luvPreviewOverlay">
+  <div class="preview-controls">
+    <span class="text-white fw-semibold me-2">Vorschau</span>
+    <button class="btn btn-sm btn-warning text-dark" onclick="window.print()">
+      <i class="bi bi-printer me-1"></i> Drucken
+    </button>
+    <button class="btn btn-sm btn-outline-light" onclick="alert('Als E-Mail senden (Demo)')">
+      <i class="bi bi-envelope me-1"></i> Als E-Mail senden
+    </button>
+    <button class="btn btn-sm btn-outline-light ms-auto" id="btnLuvClosePreview">
+      <i class="bi bi-x-lg me-1"></i> Schließen
+    </button>
+  </div>
+  <div class="preview-paper" id="luvPreviewPaper">
+    <!-- wird per JS befüllt -->
+  </div>
+</div>
+
+              <!-- ── LuV: Nav-Warnung Modal ─────────────────────────────── -->
+<!-- ═══════════════════════════════════════════════════════════
+     MODAL: Navigation mit Warnung
+═══════════════════════════════════════════════════════════ -->
+<div class="modal fade" id="modalNavWarnung" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" style="max-width:420px;">
+    <div class="modal-content">
+      <div class="modal-header border-0 pb-0">
+        <h5 class="modal-title">
+          <i class="bi bi-exclamation-triangle text-warning me-2"></i>Bearbeitung verlassen?
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body pt-2">
+        <p class="text-muted mb-1">Ziel: <span class="nav-ziel-text fw-semibold text-dark"></span></p>
+        <p class="mb-0">Nicht gespeicherte Eingaben gehen verloren. Möchten Sie zuerst einen Entwurf speichern?</p>
+        <div class="alert alert-light border mt-3 mb-0 d-flex align-items-center gap-2 py-2 small">
+          <i class="bi bi-info-circle text-secondary flex-shrink-0"></i>
+          <span>Über <strong>„Entwurf speichern"</strong> bleiben alle Eingaben erhalten und Sie können jederzeit weiterarbeiten.</span>
+        </div>
+      </div>
+      <div class="modal-footer border-0 pt-1 flex-wrap gap-2">
+        <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">
+          Abbrechen
+        </button>
+        <button type="button" class="btn btn-outline-primary btn-sm" id="btnNavEntwurf">
+          <i class="bi bi-floppy me-1"></i> Entwurf speichern &amp; weiter
+        </button>
+        <button type="button" class="btn btn-danger btn-sm" id="btnNavOhneEntwurf">
+          <i class="bi bi-box-arrow-up-right me-1"></i> Ohne Speichern weiter
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+              <!-- ── LuV: Script ───────────────────────────────────────────────────── -->
+              <script>
+// ═══════════════════════════════════════════════════════════════
+// LuV: NAVIGATION MIT VERLASSEN-WARNUNG (global, für onclick=)
+// ═══════════════════════════════════════════════════════════════
+var _luvNavZiel = null;
+var _luvNavZiele = {
+  arbeitsbereiche:       'Arbeitsbereiche (TN-Profil → Maßnahme → Organisation)',
+  praktika:              'Praktika (TN-Profil → Maßnahme → Dokumentation)',
+  vermittlungshemmnisse: 'Vermittlungshemmnisse (TN-Profil → Grunddaten → Vermittlung)',
+};
+
+function navMitWarnung(ziel) {
+  _luvNavZiel = ziel;
+  var span = document.querySelector('#modalNavWarnung .nav-ziel-text');
+  if (span) span.textContent = _luvNavZiele[ziel] || ziel;
+  var modalEl = document.getElementById('modalNavWarnung');
+  if (modalEl) bootstrap.Modal.getOrCreateInstance(modalEl).show();
+}
+
+function showNavDemoAlert() {
+  alert('Navigation zu:\n' + (_luvNavZiele[_luvNavZiel] || _luvNavZiel) +
+    '\n\n(Demo: In der echten Anwendung \u00f6ffnet hier das entsprechende Formular.)');
+}
+
+function luvSaveEntwurf() {
+  var ind = document.getElementById('luvEntwurfBadge');
+  if (!ind) return;
+  ind.style.display = 'inline-block';
+  var t = new Date().toLocaleTimeString('de-DE', {hour:'2-digit',minute:'2-digit'});
+  ind.innerHTML = '<i class="bi bi-floppy me-1"></i>Entwurf gespeichert ' + t;
+  setTimeout(function() {
+    if (ind) ind.innerHTML = '<i class="bi bi-floppy me-1"></i>Entwurf';
+  }, 3000);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// LuV: KERN-LOGIK (initialisiert wenn Modal geöffnet wird)
+// ═══════════════════════════════════════════════════════════════
+(function() {
+
+var luvInitDone = false;
+
+var KRITERIEN = [
+  { id: 'anw',    label: 'Anwesenheit / Zuverlässigkeit' },
+  { id: 'puenkt', label: 'Pünktlichkeit' },
+  { id: 'mot',    label: 'Motivation / Engagement' },
+  { id: 'eig',    label: 'Eigeninitiative' },
+  { id: 'handw',  label: 'Handwerkliches Geschick' },
+  { id: 'ausd',   label: 'Ausdauer / Geduld' },
+  { id: 'lern',   label: 'Lernbereitschaft' },
+  { id: 'soz',    label: 'Soziale Kompetenz' },
+  { id: 'team',   label: 'Kooperations- / Teamfähigkeit' },
+];
+
+var noten = {};
+KRITERIEN.forEach(function(k) { noten[k.id] = null; });
+
+function renderBewGrid(containerId, readonlyNoten) {
+  var grid = document.getElementById(containerId);
+  if (!grid) return;
+  grid.innerHTML = '';
+  KRITERIEN.forEach(function(k) {
+    var row = document.createElement('div');
+    row.className = 'bew-row';
+    var label = document.createElement('span');
+    label.className = 'bew-label';
+    label.textContent = k.label + ':';
+    var btns = document.createElement('div');
+    btns.className = 'note-btns';
+    for (var n = 1; n <= 6; n++) {
+      (function(n) {
+        var btn = document.createElement('button');
+        btn.textContent = n;
+        btn.setAttribute('data-n', n);
+        btn.setAttribute('data-k', k.id);
+        btn.type = 'button';
+        var curVal = readonlyNoten ? readonlyNoten[k.id] : noten[k.id];
+        if (curVal == n) btn.className = 'sel sel-' + n;
+        if (!readonlyNoten) {
+          btn.addEventListener('click', function() {
+            noten[k.id] = n;
+            grid.querySelectorAll('[data-k="' + k.id + '"]').forEach(function(b) {
+              b.className = '';
+              if (parseInt(b.getAttribute('data-n')) == n) b.className = 'sel sel-' + n;
+            });
+          });
+        }
+        btns.appendChild(btn);
+      })(n);
+    }
+    row.appendChild(label);
+    row.appendChild(btns);
+    grid.appendChild(row);
+  });
+}
+
+var LUV_CONFIG = {
+  '1': {
+    label: 'Start-LuV',
+    f1_titel: 'Darstellung der individuellen Ausgangssituation',
+    f1_hint: 'Insbesondere Auswertung der Informationen zur persönlichen Lern- und Arbeitsbiographie.',
+    f2: false, ziel: true, vorherige: false,
+  },
+  '2': {
+    label: 'Verlaufs-LuV',
+    f1_titel: 'Darstellung der individuellen Entwicklung während der Teilnahme',
+    f1_hint: 'Beschreibung des Verlaufs, der Fortschritte und Schwierigkeiten seit der letzten LuV.',
+    f2: true, f2_label: 'Vorschlag für weiteres Vorgehen',
+    f2_hint: 'Empfehlungen zur weiteren Förderung und Zielen für den nächsten Zeitraum.',
+    ziel: false, vorherige: true,
+  },
+  'gefahr': {
+    label: 'Gefährdungs-LuV',
+    f1_titel: 'Darstellung der individuellen Entwicklung während der Teilnahme',
+    f1_hint: 'Beschreibung der aktuellen Gefährdungssituation und bisheriger Verlauf.',
+    f2: true, f2_label: 'Vorschlag für weiteres Vorgehen',
+    f2_hint: 'Schritte zur Stabilisierung und weiteren Begleitung.',
+    ziel: false, vorherige: true,
+  },
+  '4': {
+    label: 'Abschluss-LuV',
+    f1_titel: 'Darstellung der individuellen Situation',
+    f1_hint: 'Rückblick auf die gesamte Maßnahme und Ergebnisse.',
+    f2: true, f2_label: 'Aussagen zum Verbleib des Teilnehmenden',
+    f2_hint: 'Beschreibung des geplanten oder bereits erfolgten Verbleibs nach Maßnahmenende.',
+    ziel: false, vorherige: true,
+  },
+};
+
+var aktiveLuvArt = '1';
+
+function setLuvArt(art) {
+  aktiveLuvArt = art;
+  var cfg = LUV_CONFIG[art];
+  if (!cfg) return;
+  document.querySelectorAll('.luv-art-btn').forEach(function(b) {
+    b.classList.toggle('active', b.getAttribute('data-art') === art);
+  });
+  var t1 = document.getElementById('freitext-titel');
+  var h1 = document.getElementById('freitext-hint');
+  if (t1) t1.textContent = cfg.f1_titel;
+  if (h1) h1.textContent = cfg.f1_hint;
+  var f2block = document.getElementById('freitext2-block');
+  if (f2block) {
+    f2block.style.display = cfg.f2 ? '' : 'none';
+    if (cfg.f2) {
+      var lbl = document.getElementById('freitext2-label');
+      var hnt = document.getElementById('freitext2-hint');
+      if (lbl) lbl.textContent = cfg.f2_label;
+      if (hnt) hnt.textContent = cfg.f2_hint || '';
+    }
+  }
+  var zvb = document.getElementById('block-zielvereinbarung');
+  if (zvb) zvb.style.display = cfg.ziel ? '' : 'none';
+  var prev = document.getElementById('block-vorherige-luvs');
+  if (prev) prev.style.display = cfg.vorherige ? '' : 'none';
+}
+
+function fmtDate(iso) {
+  if (!iso) return '—';
+  var parts = iso.split('-');
+  return parts[2] + '.' + parts[1] + '.' + parts[0];
+}
+
+function anleiterNoten(notenObj) {
+  Object.assign(noten, notenObj);
+  renderBewGrid('bewertungGrid', null);
+  KRITERIEN.forEach(function(k) {
+    if (noten[k.id]) {
+      document.querySelectorAll('#bewertungGrid [data-k="' + k.id + '"]').forEach(function(b) {
+        b.className = '';
+        if (parseInt(b.getAttribute('data-n')) == noten[k.id])
+          b.className = 'sel sel-' + noten[k.id];
+      });
+    }
+  });
+}
+
+function collectLuVPayload() {
+  return {
+    art: (document.getElementById('luvArt') || {}).value || aktiveLuvArt,
+    date: (document.getElementById('luvDatum') || {}).value || '',
+    monatJahr: (document.getElementById('luvMonatJahr') || {}).value || '',
+    von: (document.getElementById('luvVon') || {}).value || '',
+    bis: (document.getElementById('luvBis') || {}).value || '',
+    anleiter: (document.getElementById('luvAnleiter') || {}).value || '',
+    lehrkraft: (document.getElementById('luvLehrkraft') || {}).value || '',
+    infos: (document.getElementById('luvInfos') || {}).value || '',
+    noten: Object.assign({}, noten),
+    potential: (document.getElementById('luvPotential') || {}).value || '',
+  };
+}
+
+function generateLuvPreview() {
+  var art = aktiveLuvArt;
+  var cfg = LUV_CONFIG[art] || LUV_CONFIG['1'];
+  var notenLabels = {1:'sehr gut',2:'gut',3:'befriedigend',4:'ausreichend',5:'mangelhaft',6:'ungenügend'};
+  var bewLines = '';
+  KRITERIEN.forEach(function(k) {
+    var n = noten[k.id];
+    bewLines += '<div style="display:flex;justify-content:space-between;margin-bottom:.25em;"><span>' + k.label + ':</span><span>' + (n ? '<strong>' + n + '</strong> (' + notenLabels[n] + ')' : '–') + '</span></div>';
+  });
+  var f1 = (document.getElementById('luvFreitext1') || {}).value || '';
+  var f2 = (document.getElementById('luvFreitext2') || {}).value || '';
+  var zieltext = (document.getElementById('luvZieltext') || {}).value || '';
+  var datum = fmtDate((document.getElementById('luvDatum') || {}).value || '');
+  var von   = fmtDate((document.getElementById('luvVon') || {}).value || '');
+  var bis   = fmtDate((document.getElementById('luvBis') || {}).value || '');
+  var unterschrift = (document.getElementById('luvUnterschrift') || {}).value || 'Daniel Chu';
+  var unterDatum   = fmtDate((document.getElementById('luvUnterschriftDatum') || {}).value || '');
+
+  var html = '<h1 style="font-size:14pt;text-align:center;font-weight:bold;">Leistungs- und Verhaltensbeurteilung (' + cfg.label + ')</h1>'
+    + '<p style="text-align:center;">Bewertungszeitraum:&nbsp; ' + von + ' – ' + bis + '</p>'
+    + '<h2 style="font-size:12pt;font-weight:bold;margin-top:1.2em;">1) Personenbezogene Daten</h2>'
+    + '<table style="width:100%;font-size:10pt;border-collapse:collapse;margin-bottom:1em;">'
+    + '<tr><td style="padding:.15em 1em .15em 0;color:#555;">Nachname:</td><td><strong>Mustermann</strong></td>'
+    + '<td style="padding-left:2em;color:#555;">Geburtsdatum:</td><td>01.01.1990</td></tr>'
+    + '<tr><td style="color:#555;">Vorname:</td><td><strong>Max</strong></td>'
+    + '<td style="padding-left:2em;color:#555;">Kd-Nr.:</td><td>555D021632</td></tr>'
+    + '<tr><td style="color:#555;">Betreuer/in:</td><td colspan="3">' + ((document.getElementById('luvBetreuer') || {}).value || 'Daniel Chu') + '</td></tr>'
+    + '<tr><td style="color:#555;">Maßnahme:</td><td colspan="3">Integra 2025 &nbsp;&middot;&nbsp; 12.09.2025 – 11.09.2026</td></tr>'
+    + '</table>'
+    + '<h2 style="font-size:12pt;font-weight:bold;margin-top:1.2em;">2) ' + cfg.f1_titel + '</h2>'
+    + '<p>' + (f1 || '(keine Eintragung)').split('\n').join('<br>') + '</p>'
+    + (cfg.f2 ? '<h2 style="font-size:12pt;font-weight:bold;margin-top:1.2em;">' + cfg.f2_label + '</h2><p>' + (f2 || '(keine Eintragung)').split('\n').join('<br>') + '</p>' : '')
+    + (cfg.ziel ? '<h2 style="font-size:12pt;font-weight:bold;margin-top:1.2em;">3) Schritte zur Zielvereinbarung</h2><p>' + (zieltext || '(keine Eintragung)') + '</p>' : '')
+    + '<h2 style="font-size:12pt;font-weight:bold;margin-top:1.2em;">4) Zusätzliche Angaben</h2>'
+    + '<p><strong>Bewertung (Schulnotensystem)</strong></p>'
+    + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:.25em 2em;font-size:10pt;">' + bewLines + '</div>'
+    + '<p style="margin-top:2em;">' + unterDatum + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gez. ' + unterschrift + '</p>';
+
+  var paper = document.getElementById('luvPreviewPaper');
+  if (paper) paper.innerHTML = html;
+  var overlay = document.getElementById('luvPreviewOverlay');
+  if (overlay) { overlay.style.display = 'block'; overlay.scrollTop = 0; }
+}
+
+// ── Init: runs once when modal is first shown ─────────────────
+function initLuV() {
+  if (luvInitDone) return;
+  luvInitDone = true;
+
+  // Art-Buttons (in modal header)
+  document.querySelectorAll('.luv-art-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      setLuvArt(btn.getAttribute('data-art'));
+    });
+  });
+
+  // Render note grids
+  renderBewGrid('bewertungGrid', null);
+  renderBewGrid('anleiter-grid-nov', {anw:2,puenkt:1,mot:2,eig:2,handw:1,ausd:2,lern:2,soz:1,team:2});
+  renderBewGrid('anleiter-grid-okt', {anw:3,puenkt:2,mot:3,eig:3,handw:2,ausd:3,lern:3,soz:2,team:3});
+
+  // ZVB chips
+  var btnZVBAuswahl = document.getElementById('btnZVBAuswahl');
+  if (btnZVBAuswahl) {
+    btnZVBAuswahl.addEventListener('click', function() {
+      var chips = document.getElementById('zielChips');
+      if (!chips) return;
+      document.querySelectorAll('#zvbListe input:checked').forEach(function(cb) {
+        var lbl = cb.closest('label');
+        var titel = lbl ? lbl.querySelector('.fw-semibold').textContent : '';
+        var exists = Array.from(chips.querySelectorAll('.ziel-chip'))
+          .some(function(c) { return c.getAttribute('data-zvb-id') === cb.value; });
+        if (!exists) {
+          var chip = document.createElement('span');
+          chip.className = 'ziel-chip';
+          chip.setAttribute('data-zvb-id', cb.value);
+          chip.innerHTML = '<i class="bi bi-link-45deg text-primary"></i>' + titel + '<button onclick="this.closest('.ziel-chip').remove()" title="Entfernen">×</button>';
+          chips.appendChild(chip);
+        }
+        cb.checked = false;
+      });
+    });
+  }
+
+  // Letzte Anleiterbewertung übernehmen
+  var btnLetzte = document.getElementById('btnLetzteAnleiterEinfuegen');
+  if (btnLetzte) {
+    btnLetzte.addEventListener('click', function() {
+      anleiterNoten({anw:2,puenkt:1,mot:2,eig:2,handw:1,ausd:2,lern:2,soz:1,team:2});
+      btnLetzte.classList.add('btn-success');
+      btnLetzte.classList.remove('btn-outline-primary');
+      btnLetzte.innerHTML = '<i class="bi bi-check-circle me-1"></i> Übernommen (Nov 2025)';
+      setTimeout(function() {
+        btnLetzte.classList.remove('btn-success');
+        btnLetzte.classList.add('btn-outline-primary');
+        btnLetzte.innerHTML = '<i class="bi bi-arrow-down-circle me-1"></i> Letzte Anleiterbewertung übernehmen';
+      }, 2500);
+    });
+  }
+
+  // Entwurf-Buttons (modal header + bottom)
+  ['btnLuvEntwurf', 'btn-entwurf', 'btn-entwurf-2'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.addEventListener('click', luvSaveEntwurf);
+  });
+
+  // Vorschau-Buttons
+  ['btnLuvVorschau', 'btn-vorschau', 'btn-vorschau-2'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.addEventListener('click', generateLuvPreview);
+  });
+
+  // Close preview
+  var btnClosePreview = document.getElementById('btnLuvClosePreview');
+  if (btnClosePreview) {
+    btnClosePreview.addEventListener('click', function() {
+      var ov = document.getElementById('luvPreviewOverlay');
+      if (ov) ov.style.display = 'none';
+    });
+  }
+
+  // Nav warning modal buttons
+  var btnNavE = document.getElementById('btnNavEntwurf');
+  if (btnNavE) {
+    btnNavE.addEventListener('click', function() {
+      luvSaveEntwurf();
+      var m = bootstrap.Modal.getInstance(document.getElementById('modalNavWarnung'));
+      if (m) m.hide();
+      setTimeout(showNavDemoAlert, 350);
+    });
+  }
+  var btnNavO = document.getElementById('btnNavOhneEntwurf');
+  if (btnNavO) {
+    btnNavO.addEventListener('click', function() {
+      var m = bootstrap.Modal.getInstance(document.getElementById('modalNavWarnung'));
+      if (m) m.hide();
+      setTimeout(showNavDemoAlert, 350);
+    });
+  }
+
+  // Set default LuV art
+  setLuvArt('1');
+}
+
+// Wire init to modal-shown event
+document.addEventListener('DOMContentLoaded', function() {
+  var modalEl = document.getElementById('modalLuVVollbild');
+  if (modalEl) {
+    modalEl.addEventListener('shown.bs.modal', initLuV);
+  }
+});
+
+})();
+              </script>
 
               <div>
                 <div class="border rounded-3 p-3">
