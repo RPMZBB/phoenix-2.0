@@ -2364,22 +2364,21 @@
     </div>
   </div>
 
-
   <!-- ── Datum + Unterschrift ───────────────────────────────────── -->
   <div class="luv-section">
     <div class="luv-section-body">
-      <div class="row g-3 align-items-end">
-        <div class="col-md-4">
+      <div class="d-flex flex-column flex-md-row gap-3 align-items-stretch align-items-md-end">
+        <div style="min-width:0;">
           <label class="form-label small text-muted mb-1">Datum</label>
           <input type="date" class="form-control form-control-sm" id="luvUnterschriftDatum"
                  value="2025-12-10">
         </div>
-        <div class="col-md-4">
+        <div style="min-width:0;">
           <label class="form-label small text-muted mb-1">Unterschrift (gez.)</label>
           <input type="text" class="form-control form-control-sm" id="luvUnterschrift"
                  value="Daniel Chu">
         </div>
-        <div class="col-md-4 d-flex gap-2 flex-wrap align-items-end">
+        <div class="d-flex flex-column flex-sm-row gap-2 flex-wrap ms-md-auto">
           <button class="btn btn-outline-secondary btn-sm" id="btn-entwurf-2">
             <i class="bi bi-floppy me-1"></i> Entwurf speichern
           </button>
@@ -2393,9 +2392,6 @@
       </div>
     </div>
   </div>
-
-
-
 
                       </div><!-- /luv-shell (modal) -->
                     </div><!-- /modal-body -->
@@ -2771,29 +2767,8 @@ function anleiterNotenUebernehmen(notenObj) {
   ];
 
   // ── Saved LuV store ──────────────────────────────────────────────────
-  var savedLuvs = [
-    {
-      id: 'luv-demo-1',
-      art: '1', artLabel: 'Start-LuV',
-      datum: '12.09.2025', von: '12.09.2025', bis: '11.11.2025',
-      betreuer: 'Daniel Chu', lehrkraft: 'H. Peter', anleiter: 'R. Piechowiak',
-      f1: 'Guter Start. Teilnehmer zeigt Bereitschaft, braucht noch Unterstützung beim Eingewöhnen.',
-      f2: '', zieltext: 'Regelmäßige Teilnahme sicherstellen. Praktikum für Nov/Dez planen.',
-      noten: {anw:3,puenkt:2,mot:3,eig:3,handw:2,ausd:3,lern:3,soz:2,team:2},
-      potential: 'mittel'
-    },
-    {
-      id: 'luv-demo-2',
-      art: '2', artLabel: 'Verlaufs-LuV',
-      datum: '30.11.2025', von: '12.09.2025', bis: '30.11.2025',
-      betreuer: 'Daniel Chu', lehrkraft: 'H. Peter', anleiter: 'R. Piechowiak',
-      f1: 'Deutliche Verbesserung in allen Bereichen. Besonders das handwerkliche Geschick ist überdurchschnittlich.',
-      f2: 'Praktikum verlängern. Fokus auf Pünktlichkeit beibehalten.',
-      zieltext: '',
-      noten: {anw:2,puenkt:1,mot:2,eig:2,handw:1,ausd:2,lern:2,soz:1,team:2},
-      potential: 'hoch'
-    }
-  ];
+  var savedLuvs = [];
+;
 
   var ART_COLORS = {
     '1': 'bg-success-subtle text-success-emphasis',
