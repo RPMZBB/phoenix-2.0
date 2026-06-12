@@ -2037,15 +2037,10 @@
                       <h6 class="mb-0">Leistungs- &amp; Verhaltensbeurteilung</h6>
                       <div class="text-muted small">Einschätzungen zum Arbeits- und Sozialverhalten sowie Lernfortschritt (LuV)</div>
                     </div>
-                    <div class="d-flex gap-2">
-                      <button class="btn btn-outline-secondary btn-sm" type="button" id="btnLuvAlleLoeschen" title="Alle LuVs entfernen (Demo-Reset)">
-                        <i class="bi bi-trash3"></i>
-                      </button>
-                      <button class="btn btn-primary btn-sm" type="button"
-                              data-bs-toggle="modal" data-bs-target="#modalLuVVollbild">
-                        <i class="bi bi-plus-lg me-1"></i> Neue LuV erstellen
-                      </button>
-                    </div>
+                    <button class="btn btn-primary btn-sm" type="button"
+                            data-bs-toggle="modal" data-bs-target="#modalLuVVollbild">
+                      <i class="bi bi-plus-lg me-1"></i> Neue LuV erstellen
+                    </button>
                   </div>
                   <div id="luvKarteListe" class="d-flex flex-column gap-2 mt-3">
                     <!-- wird per JS befüllt -->
@@ -3444,16 +3439,6 @@ function anleiterNotenUebernehmen(notenObj) {
     // Render initial LuV badges in card (page load)
     renderLuvKarte();
 
-    // Demo-reset: clear all saved LuVs
-    var btnAlleLoeschen = document.getElementById('btnLuvAlleLoeschen');
-    if (btnAlleLoeschen) {
-      btnAlleLoeschen.addEventListener('click', function() {
-        if (savedLuvs.length === 0) return;
-        if (!confirm('Alle ' + savedLuvs.length + ' LuV-Eintr\u00e4ge wirklich entfernen?')) return;
-        savedLuvs = [];
-        renderLuvKarte();
-      });
-    }
     // Wire luvAnsehen for Ansehen modal drucken
     var btnDruck = document.getElementById('btnLuvAnsehenDrucken');
     if (btnDruck) btnDruck.addEventListener('click', function() { window.print(); });
