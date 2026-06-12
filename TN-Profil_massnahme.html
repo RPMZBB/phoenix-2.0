@@ -1411,7 +1411,7 @@
                   <div class="modal-content" style="background:#f0f2f5;">
                     <div class="modal-header py-2 border-0" style="background:#1e2d3d;color:#fff;flex-wrap:wrap;gap:.5rem;">
                       <div>
-                        <div class="fw-bold" style="font-size:1rem;">Zielvereinbarung / Förderplan</div>
+                        <div class="fw-bold" style="font-size:1rem;">Zielvereinbarung</div>
                         <div style="font-size:.8rem;color:#adb5bd;">Max Mustermann &middot; Integra 2025</div>
                       </div>
                       <div class="ms-auto d-flex gap-2 align-items-center flex-wrap">
@@ -1858,7 +1858,7 @@
     }).join('') : '<tr><td colspan="5" style="border:1px solid #999;padding:.4em;color:#888;font-style:italic;">Keine Ziele eingetragen</td></tr>';
 
     return '<h1 style="font-size:16pt;font-weight:bold;margin-bottom:.2em;">'
-      + 'Zielvereinbarung / Förderplan vom ' + (zvfp.datum || '—') + '</h1>'
+      + 'Zielvereinbarung vom ' + (zvfp.datum || '—') + '</h1>'
       + '<table style="width:100%;border-collapse:collapse;margin-bottom:.8em;font-size:10pt;">'
       + '<tr><td style="width:120px;color:#555;">Nachname:</td><td><strong>Mustermann</strong></td>'
       + '<td style="padding-left:2em;color:#555;width:80px;">Projekt:</td><td>Integra 2025</td></tr>'
@@ -1972,7 +1972,7 @@
       if (m) {
         m.hide();
         setTimeout(function() {
-          alert('Zielvereinbarung / Förderplan vom ' + fmtZVDate(zvfp.datum) + ' gespeichert.');
+          alert('Zielvereinbarung vom ' + fmtZVDate(zvfp.datum) + ' gespeichert.');
         }, 400);
       }
     });
