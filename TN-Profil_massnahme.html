@@ -1492,7 +1492,7 @@
                               <div class="col-md-3"><span class="fw-semibold text-muted">Getroffene ZV / FP mit dem TN</span></div>
                               <div class="col-md-3"><span class="fw-semibold text-muted">Wer macht was<br>(Aufgabenverteilung)?</span></div>
                               <div class="col-md-2"><span class="fw-semibold text-muted">&Uuml;berpr&uuml;fungs-<br>zeitpunkt</span></div>
-                              <div class="col-md-1"><span class="fw-semibold text-muted">Ziel<br>erreicht</span></div>
+                              <div class="col-md-1"><span class="fw-semibold text-muted">Ziel</span></div>
                             </div>
                             <div id="zvfpZielzeilen"></div>
                           </div>
@@ -1621,13 +1621,29 @@
       + '<input type="date" class="form-control form-control-sm zvfp-f-pruefung"'
       + ' value="' + (data.pruefung || '') + '">'
       + '</div>'
-      + '<div class="col-md-1 d-flex align-items-center justify-content-center">'
+      + '<div class="col-md-1 d-flex flex-column align-items-start justify-content-center gap-1">'
       + '<div class="form-check mb-0">'
       + '<input class="form-check-input zvfp-f-erreicht" type="checkbox"'
       + (data.erreicht ? ' checked' : '') + '>'
       + '<label class="form-check-label small text-muted">erreicht</label>'
-      + '</div></div>'
+      + '</div>'
+      + '<div class="form-check mb-0">'
+      + '<input class="form-check-input zvfp-f-nicht-erreicht" type="checkbox"'
+      + (data.nichtErreicht ? ' checked' : '') + '>'
+      + '<label class="form-check-label small text-muted">nicht erreicht</label>'
+      + '</div>'
+      + '</div>'
       + '</div>';
+
+    // Mutually exclusive erreicht / nicht erreicht
+    var erreichtCb = row.querySelector('.zvfp-f-erreicht');
+    var nichtErreichtCb = row.querySelector('.zvfp-f-nicht-erreicht');
+    erreichtCb.addEventListener('change', function() {
+      if (erreichtCb.checked) nichtErreichtCb.checked = false;
+    });
+    nichtErreichtCb.addEventListener('change', function() {
+      if (nichtErreichtCb.checked) erreichtCb.checked = false;
+    });
 
     // Wire vorlage select
     var sel = row.querySelector('.zvfp-vorlage-sel');
@@ -1690,7 +1706,8 @@
         zvfp:     row.querySelector('.zvfp-f-zvfp').value,
         aufgaben: row.querySelector('.zvfp-f-aufgaben').value,
         pruefung: row.querySelector('.zvfp-f-pruefung').value,
-        erreicht: row.querySelector('.zvfp-f-erreicht').checked
+        erreicht: row.querySelector('.zvfp-f-erreicht').checked,
+        nichtErreicht: row.querySelector('.zvfp-f-nicht-erreicht').checked
       });
     });
     var gespraeche = [];
@@ -1776,10 +1793,27 @@
     savedZVFPs.forEach(function(z) {
       var entwurfTag = z.entwurf
         ? '<span class="badge bg-warning-subtle text-warning-emphasis ms-1">Entwurf</span>' : '';
-      html += '<div class="d-flex align-items-center gap-2 py-1 border-bottom">'
-        + '<span class="badge bg-info-subtle text-info-emphasis">ZV/FP</span>'
-        + '<span class="small fw-semibold">' + fmtZVDate(z.datum) + '</span>'
+      var bearbeitetTag = (z.bearbeitetAm && z.bearbeitetAm !== z.erstelltAm)
+        ? '<span class="text-muted small ms-2">bearbeitet am: ' + z.bearbeitetAm + '</span>' : '';
+
+      // Collect Überprüfungszeitpunkte from all rows
+      var pruefungsTermine = (z.zeilen || [])
+        .map(function(r){ return r.pruefung; })
+        .filter(function(p){ return !!p; })
+        .map(function(p){ return fmtZVDate(p); });
+      var pruefungsHtml = '';
+      if (pruefungsTermine.length) {
+        pruefungsHtml = '<div class="small text-muted mt-1">'
+          + '<i class="bi bi-calendar-check me-1"></i>\u00dcberpr\u00fcfung: '
+          + pruefungsTermine.join(', ')
+          + '</div>';
+      }
+
+      html += '<div class="py-1 border-bottom">'
+        + '<div class="d-flex align-items-center gap-2">'
+        + '<span class="badge bg-info-subtle text-info-emphasis">Zielvereinbarung vom ' + fmtZVDate(z.datum) + '</span>'
         + entwurfTag
+        + bearbeitetTag
         + '<div class="ms-auto d-flex gap-1">'
         + '<button class="btn btn-outline-primary btn-sm zvfp-open-btn" type="button" data-zvfp-id="' + z.id + '">'
         + '<i class="bi bi-pencil-square me-1"></i>Bearbeiten</button>'
@@ -1787,7 +1821,9 @@
         + '<i class="bi bi-printer"></i></button>'
         + '<button class="btn btn-outline-danger btn-sm zvfp-del-btn" type="button" data-zvfp-id="' + z.id + '">'
         + '<i class="bi bi-trash"></i></button>'
-        + '</div></div>';
+        + '</div></div>'
+        + pruefungsHtml
+        + '</div>';
     });
     liste.innerHTML = html;
 
@@ -1797,7 +1833,6 @@
         var z = savedZVFPs.find(function(x){ return x.id === id; });
         if (!z) return;
         loadZVFPIntoForm(z);
-        zvfpInitDone = false;
         bootstrap.Modal.getOrCreateInstance(g('modalZVFPVollbild')).show();
       });
     });
@@ -1853,7 +1888,9 @@
         + '<td style="border:1px solid #999;padding:.4em .5em;vertical-align:top;font-size:9pt;">' + (z.zvfp || '') + '</td>'
         + '<td style="border:1px solid #999;padding:.4em .5em;vertical-align:top;font-size:9pt;">' + (z.aufgaben || '') + '</td>'
         + '<td style="border:1px solid #999;padding:.4em .5em;vertical-align:top;font-size:9pt;width:80px;">' + (z.pruefung ? z.pruefung.split('-').reverse().join('.') : '') + '</td>'
-        + '<td style="border:1px solid #999;padding:.4em .5em;vertical-align:top;font-size:9pt;width:60px;text-align:center;">' + (z.erreicht ? 'x' : '') + '</td>'
+        + '<td style="border:1px solid #999;padding:.4em .5em;vertical-align:top;font-size:9pt;width:60px;text-align:center;">'
+        + (z.erreicht ? 'erreicht' : (z.nichtErreicht ? 'nicht erreicht' : ''))
+        + '</td>'
         + '</tr>';
     }).join('') : '<tr><td colspan="5" style="border:1px solid #999;padding:.4em;color:#888;font-style:italic;">Keine Ziele eingetragen</td></tr>';
 
@@ -1901,10 +1938,25 @@
   function saveZVFP(asEntwurf) {
     var zvfp = collectZVFP();
     zvfp.entwurf = !!asEntwurf;
+
+    var todayDE = fmtZVDate((function() {
+      var t = new Date();
+      return t.getFullYear() + '-' + String(t.getMonth()+1).padStart(2,'0') + '-' + String(t.getDate()).padStart(2,'0');
+    })());
+
     if (_editingZVFPId) {
       var idx = savedZVFPs.findIndex(function(x){ return x.id === _editingZVFPId; });
-      if (idx > -1) savedZVFPs[idx] = zvfp; else savedZVFPs.push(zvfp);
+      if (idx > -1) {
+        // Preserve original creation date; track last edit date
+        zvfp.erstelltAm = savedZVFPs[idx].erstelltAm || savedZVFPs[idx].datum;
+        zvfp.bearbeitetAm = todayDE;
+        savedZVFPs[idx] = zvfp;
+      } else {
+        zvfp.erstelltAm = zvfp.datum;
+        savedZVFPs.push(zvfp);
+      }
     } else {
+      zvfp.erstelltAm = zvfp.datum;
       savedZVFPs.push(zvfp);
     }
     _editingZVFPId = null;
@@ -1945,6 +1997,8 @@
   }
 
   // ── Init ────────────────────────────────────────────────────────────
+  var _zvfpSaving = false;
+
   function initZVFP() {
     if (zvfpInitDone) return;
     zvfpInitDone = true;
@@ -1962,18 +2016,23 @@
     // Speichern
     var btnSave = g('btnZVFPSpeichern');
     if (btnSave) btnSave.addEventListener('click', function() {
+      if (_zvfpSaving) return;
       if (!gv('zvfpDatum')) {
         alert('Bitte ein Datum angeben.');
         if (g('zvfpDatum')) g('zvfpDatum').focus();
         return;
       }
+      _zvfpSaving = true;
       var zvfp = saveZVFP(false);
       var m = bootstrap.Modal.getInstance(g('modalZVFPVollbild'));
       if (m) {
         m.hide();
         setTimeout(function() {
           alert('Zielvereinbarung vom ' + fmtZVDate(zvfp.datum) + ' gespeichert.');
+          _zvfpSaving = false;
         }, 400);
+      } else {
+        _zvfpSaving = false;
       }
     });
 
@@ -1993,14 +2052,6 @@
       var ov = g('zvfpPreviewOverlay'); if (ov) ov.style.display = 'none';
     });
 
-    // Init rows if empty
-    if (g('zvfpZielzeilen') && g('zvfpZielzeilen').children.length === 0) {
-      g('zvfpZielzeilen').appendChild(createZielzeile());
-    }
-    // Init Förderplangespräche if empty
-    if (g('zvfpGespraeche') && g('zvfpGespraeche').children.length === 0) {
-      g('zvfpGespraeche').appendChild(createGespraechRow());
-    }
     // Add-Gespräch button
     var btnAddGespr = g('btnZVFPAddGespraech');
     if (btnAddGespr) btnAddGespr.addEventListener('click', function() {
@@ -2008,17 +2059,31 @@
     });
   }
 
+  // Per-open refresh: called every time the modal is shown (after first init)
+  function refreshZVFPOnOpen() {
+    // Init rows if empty (fresh "Neue Zielvereinbarung")
+    if (g('zvfpZielzeilen') && g('zvfpZielzeilen').children.length === 0) {
+      g('zvfpZielzeilen').appendChild(createZielzeile());
+    }
+    // Init Förderplangespräche if empty
+    if (g('zvfpGespraeche') && g('zvfpGespraeche').children.length === 0) {
+      g('zvfpGespraeche').appendChild(createGespraechRow());
+    }
+  }
+
   // Wire to modal open
   document.addEventListener('DOMContentLoaded', function() {
     var modalEl = g('modalZVFPVollbild');
     if (modalEl) {
       modalEl.addEventListener('shown.bs.modal', function() {
-        initZVFP();
+        initZVFP();          // one-time event binding (no-op after first call)
+        refreshZVFPOnOpen();  // per-open: ensure default rows exist
       });
       modalEl.addEventListener('hidden.bs.modal', function() {
         if (!_editingZVFPId) resetZVFPForm();
-        zvfpInitDone = false;
         _editingZVFPId = null;
+        // NOTE: do NOT reset zvfpInitDone here - event bindings are permanent;
+        // resetting would cause click handlers to stack on re-open.
       });
     }
     renderZVFPKarte();
