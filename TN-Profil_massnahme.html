@@ -106,14 +106,21 @@
 
     .bew-row {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
+      flex-direction: column;
       padding: .4rem 0;
       border-bottom: 1px solid #f0f0f0;
-      gap: .5rem;
+      gap: .15rem;
     }
     .bew-row:last-child { border-bottom: none; }
-    .bew-label { font-size: .88rem; color: #444; flex-shrink: 0; }
+    .bew-label { font-size: .74rem; color: #6c757d; text-transform: uppercase; letter-spacing: .02em; }
+    .bew-custom-input {
+      font-size: .8rem;
+      border: 1px solid #ced4da;
+      border-radius: 4px;
+      padding: .15rem .4rem;
+      width: 100%;
+      margin-bottom: .15rem;
+    }
     .note-btns { display: flex; gap: 3px; flex-shrink: 0; }
     .note-btns button {
       width: 30px; height: 28px;
@@ -209,6 +216,21 @@
     .luv-timeline li.art-gefahr::before { background: #dc3545; }
     .luv-timeline li.art-4::before { background: #6f42c1; }
     .luv-art-btn.active { background:#f97316!important; border-color:#f97316!important; color:#fff!important; }
+    /* Zusätzliche Angaben - Sub-section headings */
+    .zus-subhead {
+      font-weight: 600;
+      font-size: .8rem;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      color: #495057;
+      margin-bottom: .6rem;
+      padding-bottom: .4rem;
+      border-bottom: 2px solid #dee2e6;
+    }
+    .zus-subblock {
+      margin-bottom: 1.75rem;
+      padding-top: .25rem;
+    }
   </style>
   <!-- Bootstrap & Styles -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
@@ -1445,8 +1467,10 @@
                                   </div>
                                   <div class="form-check form-check-inline mb-0">
                                     <input class="form-check-input" type="checkbox" id="zvfpIzSonstiges">
-                                    <label class="form-check-label small" for="zvfpIzSonstiges">Sonstiges</label>
+                                    <label class="form-check-label small" for="zvfpIzSonstiges">Sonstiges:</label>
                                   </div>
+                                  <input type="text" class="form-control form-control-sm" id="zvfpIzSonstigesText"
+                                         style="max-width:200px;" placeholder="Freitext ...">
                                 </div>
                               </div>
                             </div>
@@ -1463,32 +1487,30 @@
                               </button>
                             </div>
                             <!-- Tabellen-Header -->
-                            <div class="row g-2 mb-2 d-none d-md-flex">
-                              <div class="col-md-3"><span class="small fw-semibold text-muted">Vereinbartes Ziel / Fördereinheit</span></div>
-                              <div class="col-md-3"><span class="small fw-semibold text-muted">Getroffene ZV / FP mit dem TN</span></div>
-                              <div class="col-md-3"><span class="small fw-semibold text-muted">Wer macht was (Aufgabenverteilung)?</span></div>
-                              <div class="col-md-2"><span class="small fw-semibold text-muted">Überprüfungszeitpunkt</span></div>
-                              <div class="col-md-1"><span class="small fw-semibold text-muted">Ziel erreicht</span></div>
+                            <div class="row g-2 mb-2 d-none d-md-flex" style="font-size:.72rem;line-height:1.2;">
+                              <div class="col-md-3"><span class="fw-semibold text-muted">Vereinbartes Ziel / F&ouml;rdereinheit</span></div>
+                              <div class="col-md-3"><span class="fw-semibold text-muted">Getroffene ZV / FP mit dem TN</span></div>
+                              <div class="col-md-3"><span class="fw-semibold text-muted">Wer macht was<br>(Aufgabenverteilung)?</span></div>
+                              <div class="col-md-2"><span class="fw-semibold text-muted">&Uuml;berpr&uuml;fungs-<br>zeitpunkt</span></div>
+                              <div class="col-md-1"><span class="fw-semibold text-muted">Ziel<br>erreicht</span></div>
                             </div>
                             <div id="zvfpZielzeilen"></div>
                           </div>
                         </div>
 
-                        <!-- ── Förderplangespräch ─────────────────────────────── -->
+                        <!-- ── Förderplangespräch(e) ─────────────────────────────── -->
                         <div class="card border-0 shadow-sm mb-4">
                           <div class="card-body">
-                            <div class="fw-semibold mb-1">Förderplangespräch</div>
-                            <div class="text-muted small mb-3">(Was habe ich bisher erreicht / wobei hatte ich bisher Schwierigkeiten)</div>
-                            <div class="row g-3">
-                              <div class="col-md-3">
-                                <label class="form-label small text-muted mb-1">Datum</label>
-                                <input type="date" class="form-control form-control-sm" id="zvfpGesprDatum">
+                            <div class="d-flex justify-content-between align-items-start mb-1">
+                              <div>
+                                <div class="fw-semibold">Förderplangespräch(e)</div>
+                                <div class="text-muted small">(Was habe ich bisher erreicht / wobei hatte ich bisher Schwierigkeiten)</div>
                               </div>
-                              <div class="col-12">
-                                <textarea class="form-control" id="zvfpGesprText" rows="5"
-                                  placeholder="Förderplangespräch – Freitext …"></textarea>
-                              </div>
+                              <button class="btn btn-sm btn-primary" id="btnZVFPAddGespraech" type="button">
+                                <i class="bi bi-plus-lg me-1"></i> Gespräch hinzufügen
+                              </button>
                             </div>
+                            <div id="zvfpGespraeche" class="mt-3"></div>
                           </div>
                         </div>
 
@@ -1626,6 +1648,39 @@
     return row;
   }
 
+
+  // ── Build one Förderplangespräch row ────────────────────────────────
+  function createGespraechRow(data) {
+    data = data || {};
+    var row = document.createElement('div');
+    row.className = 'zvfp-gespraech-row border rounded-3 p-3 mb-3 bg-white';
+    row.innerHTML =
+      '<div class="d-flex justify-content-between align-items-start gap-2 mb-2">'
+      + '<div class="flex-grow-1">'
+      + '<label class="form-label small text-muted mb-1">Datum</label>'
+      + '<input type="date" class="form-control form-control-sm zvfp-gespr-datum" style="max-width:180px;"'
+      + ' value="' + (data.datum || '') + '">'
+      + '</div>'
+      + '<button type="button" class="btn btn-outline-danger btn-sm zvfp-gespr-del">'
+      + '<i class="bi bi-trash"></i></button>'
+      + '</div>'
+      + '<textarea class="form-control zvfp-gespr-text" rows="4"'
+      + ' placeholder="F\u00f6rderplangespr\u00e4ch \u2013 Freitext \u2026">' + (data.text || '') + '</textarea>';
+
+    row.querySelector('.zvfp-gespr-del').addEventListener('click', function() {
+      // Keep at least one row
+      var parent = row.parentElement;
+      if (parent && parent.children.length > 1) {
+        row.remove();
+      } else {
+        row.querySelector('.zvfp-gespr-datum').value = '';
+        row.querySelector('.zvfp-gespr-text').value = '';
+      }
+    });
+
+    return row;
+  }
+
   // ── Collect form data ───────────────────────────────────────────────
   function collectZVFP() {
     var zeilen = [];
@@ -1638,19 +1693,31 @@
         erreicht: row.querySelector('.zvfp-f-erreicht').checked
       });
     });
+    var gespraeche = [];
+    var gc = g('zvfpGespraeche');
+    if (gc) {
+      gc.querySelectorAll('.zvfp-gespraech-row').forEach(function(row) {
+        var datum = row.querySelector('.zvfp-gespr-datum').value;
+        var text = row.querySelector('.zvfp-gespr-text').value;
+        if (datum || text) gespraeche.push({ datum: datum, text: text });
+      });
+    }
     var iz = [];
     if (g('zvfpIzAusbildung') && g('zvfpIzAusbildung').checked) iz.push('Vermittlung in Ausbildung');
     if (g('zvfpIzArbeit') && g('zvfpIzArbeit').checked) iz.push('Vermittlung in Arbeit');
     if (g('zvfpIzHemmnisse') && g('zvfpIzHemmnisse').checked) iz.push('Abbau von Vermittlungshemmnissen');
-    if (g('zvfpIzSonstiges') && g('zvfpIzSonstiges').checked) iz.push('Sonstiges');
+    if (g('zvfpIzSonstiges') && g('zvfpIzSonstiges').checked) {
+      var sonstText = gv('zvfpIzSonstigesText');
+      iz.push(sonstText ? ('Sonstiges: ' + sonstText) : 'Sonstiges');
+    }
     return {
       id: _editingZVFPId || ('zvfp-' + Date.now()),
       datum: gv('zvfpDatum'),
       betreuer: gv('zvfpBetreuer'),
       integrationsziele: iz,
+      sonstigesText: gv('zvfpIzSonstigesText'),
       zeilen: zeilen,
-      gesprDatum: gv('zvfpGesprDatum'),
-      gesprText: gv('zvfpGesprText')
+      gespraeche: gespraeche
     };
   }
 
@@ -1660,26 +1727,35 @@
     if (g('zvfpDatum')) g('zvfpDatum').value = zvfp.datum || '';
     if (g('zvfpBetreuer')) g('zvfpBetreuer').value = zvfp.betreuer || '';
     // Integrationsziele
-    var izMap = {
-      'Vermittlung in Ausbildung': 'zvfpIzAusbildung',
-      'Vermittlung in Arbeit': 'zvfpIzArbeit',
-      'Abbau von Vermittlungshemmnissen': 'zvfpIzHemmnisse',
-      'Sonstiges': 'zvfpIzSonstiges'
-    };
-    Object.values(izMap).forEach(function(id) { if (g(id)) g(id).checked = false; });
+    if (g('zvfpIzAusbildung')) g('zvfpIzAusbildung').checked = false;
+    if (g('zvfpIzArbeit')) g('zvfpIzArbeit').checked = false;
+    if (g('zvfpIzHemmnisse')) g('zvfpIzHemmnisse').checked = false;
+    if (g('zvfpIzSonstiges')) g('zvfpIzSonstiges').checked = false;
+    if (g('zvfpIzSonstigesText')) g('zvfpIzSonstigesText').value = zvfp.sonstigesText || '';
     (zvfp.integrationsziele || []).forEach(function(iz) {
-      var id = izMap[iz]; if (id && g(id)) g(id).checked = true;
+      if (iz === 'Vermittlung in Ausbildung' && g('zvfpIzAusbildung')) g('zvfpIzAusbildung').checked = true;
+      else if (iz === 'Vermittlung in Arbeit' && g('zvfpIzArbeit')) g('zvfpIzArbeit').checked = true;
+      else if (iz === 'Abbau von Vermittlungshemmnissen' && g('zvfpIzHemmnisse')) g('zvfpIzHemmnisse').checked = true;
+      else if (iz.indexOf('Sonstiges') === 0 && g('zvfpIzSonstiges')) g('zvfpIzSonstiges').checked = true;
     });
     // Zeilen
     var container = g('zvfpZielzeilen');
     if (container) {
       container.innerHTML = '';
-      (zvfp.zeilen || []).forEach(function(z) {
+      var zeilen = (zvfp.zeilen && zvfp.zeilen.length) ? zvfp.zeilen : [{}];
+      zeilen.forEach(function(z) {
         container.appendChild(createZielzeile(z));
       });
     }
-    if (g('zvfpGesprDatum')) g('zvfpGesprDatum').value = zvfp.gesprDatum || '';
-    if (g('zvfpGesprText')) g('zvfpGesprText').value = zvfp.gesprText || '';
+    // Förderplangespräche
+    var gc = g('zvfpGespraeche');
+    if (gc) {
+      gc.innerHTML = '';
+      var gespraeche = (zvfp.gespraeche && zvfp.gespraeche.length) ? zvfp.gespraeche : [{}];
+      gespraeche.forEach(function(gr) {
+        gc.appendChild(createGespraechRow(gr));
+      });
+    }
   }
 
   // ── Render card list ────────────────────────────────────────────────
@@ -1753,7 +1829,7 @@
   // ── Build print preview HTML ────────────────────────────────────────
   function buildZVFPPreview(zvfp) {
     var izChecks = ['Vermittlung in Ausbildung', 'Vermittlung in Arbeit',
-                    'Abbau von Vermittlungshemmnissen', 'Sonstiges'];
+                    'Abbau von Vermittlungshemmnissen'];
     var izHtml = izChecks.map(function(label) {
       var checked = (zvfp.integrationsziele || []).indexOf(label) > -1;
       return '<td style="padding:.3em .8em;border:1px solid #ccc;">'
@@ -1761,6 +1837,14 @@
         + 'text-align:center;line-height:14px;font-size:10pt;margin-right:4px;">'
         + (checked ? 'x' : '&nbsp;') + '</span>' + label + '</td>';
     }).join('');
+    // Sonstiges (with free text)
+    var sonstigesEntry = (zvfp.integrationsziele || []).find(function(iz){ return iz.indexOf('Sonstiges') === 0; });
+    var sonstigesChecked = !!sonstigesEntry;
+    var sonstigesLabel = 'Sonstiges' + (zvfp.sonstigesText ? ': ' + zvfp.sonstigesText : '');
+    izHtml += '<td style="padding:.3em .8em;border:1px solid #ccc;">'
+      + '<span style="display:inline-block;width:14px;height:14px;border:1px solid #333;'
+      + 'text-align:center;line-height:14px;font-size:10pt;margin-right:4px;">'
+      + (sonstigesChecked ? 'x' : '&nbsp;') + '</span>' + sonstigesLabel + '</td>';
 
     var zeilen = (zvfp.zeilen || []).filter(function(z){ return z.ziel; });
     var zeilenHtml = zeilen.length ? zeilen.map(function(z) {
@@ -1796,11 +1880,21 @@
       + '<div style="flex:1;border-top:1px solid #333;padding-top:.3em;font-size:9pt;">Unterschrift Ausbilder*in, Lehrkraft</div>'
       + '<div style="flex:1;border-top:1px solid #333;padding-top:.3em;font-size:9pt;">Unterschrift Teilnehmer*in</div>'
       + '</div>'
-      + '<p style="font-size:11pt;font-weight:bold;margin-bottom:.1em;">Förderplangespräch</p>'
+      + '<p style="font-size:11pt;font-weight:bold;margin-bottom:.1em;">F\u00f6rderplangespr\u00e4ch(e)</p>'
       + '<p style="font-size:9pt;font-style:italic;margin-bottom:.5em;">(Was habe ich bisher erreicht / wobei hatte ich bisher Schwierigkeiten)</p>'
-      + '<p style="font-size:10pt;"><strong>Datum:</strong> ' + (zvfp.gesprDatum ? zvfp.gesprDatum.split('-').reverse().join('.') : '—') + '</p>'
-      + '<div style="border:1px solid #ccc;padding:.8em;min-height:80px;font-size:10pt;">'
-      + (zvfp.gesprText || '') + '</div>';
+      + (function() {
+          var gespraeche = (zvfp.gespraeche || []).filter(function(gr){ return gr.datum || gr.text; });
+          if (gespraeche.length === 0) {
+            return '<div style="border:1px solid #ccc;padding:.8em;min-height:80px;font-size:10pt;color:#888;font-style:italic;">(keine Eintragung)</div>';
+          }
+          return gespraeche.map(function(gr) {
+            var d = gr.datum ? gr.datum.split('-').reverse().join('.') : '\u2014';
+            return '<div style="border:1px solid #ccc;padding:.6em .8em;margin-bottom:.6em;font-size:10pt;">'
+              + '<div style="font-weight:bold;margin-bottom:.3em;">Datum: ' + d + '</div>'
+              + '<div>' + (gr.text || '').split(String.fromCharCode(10)).join('<br>') + '</div>'
+              + '</div>';
+          }).join('');
+        })();
   }
 
   // ── Save ────────────────────────────────────────────────────────────
@@ -1838,9 +1932,16 @@
     var container = g('zvfpZielzeilen');
     if (container) {
       container.innerHTML = '';
-      // Start with 3 empty rows
-      for (var i = 0; i < 3; i++) container.appendChild(createZielzeile());
+      // Start with 1 empty row
+      container.appendChild(createZielzeile());
     }
+    // Reset Förderplangespräche - start with 1 empty
+    var gespraecheContainer = g('zvfpGespraeche');
+    if (gespraecheContainer) {
+      gespraecheContainer.innerHTML = '';
+      gespraecheContainer.appendChild(createGespraechRow());
+    }
+    if (g('zvfpIzSonstigesText')) g('zvfpIzSonstigesText').value = '';
   }
 
   // ── Init ────────────────────────────────────────────────────────────
@@ -1894,8 +1995,17 @@
 
     // Init rows if empty
     if (g('zvfpZielzeilen') && g('zvfpZielzeilen').children.length === 0) {
-      for (var i = 0; i < 3; i++) g('zvfpZielzeilen').appendChild(createZielzeile());
+      g('zvfpZielzeilen').appendChild(createZielzeile());
     }
+    // Init Förderplangespräche if empty
+    if (g('zvfpGespraeche') && g('zvfpGespraeche').children.length === 0) {
+      g('zvfpGespraeche').appendChild(createGespraechRow());
+    }
+    // Add-Gespräch button
+    var btnAddGespr = g('btnZVFPAddGespraech');
+    if (btnAddGespr) btnAddGespr.addEventListener('click', function() {
+      g('zvfpGespraeche').appendChild(createGespraechRow());
+    });
   }
 
   // Wire to modal open
@@ -2103,23 +2213,23 @@
     <div class="luv-section-body">
 
       <!-- 4a) Bereits erstellte LuVs -->
-      <div id="block-vorherige-luvs" class="mb-4" style="display:none;">
-        <div class="fw-semibold small mb-2">Bereits erstellte LuVs</div>
+      <div id="block-vorherige-luvs" class="zus-subblock" style="display:none;">
+        <div class="zus-subhead">Bereits erstellte LuVs</div>
         <ul class="luv-timeline" id="luvTimeline">
-          <li class="art-1">
-            <span class="badge bg-success-subtle text-success-emphasis me-2">Start-LuV</span>
-            <span class="fw-semibold">12.09.2025</span>
-            <span class="text-muted small ms-2">D. Chu</span>
-          </li>
+          <!-- wird per JS befüllt -->
         </ul>
+        <div class="text-muted small fst-italic" id="luvTimelineEmpty" style="display:none;">
+          Noch keine weiteren LuVs vorhanden.
+        </div>
       </div>
 
       <!-- 4b) Anwesenheitsstatistik -->
-      <div class="fw-semibold small mb-2">
+      <div class="zus-subblock">
+      <div class="zus-subhead">
         Anwesenheitsstatistik
-        <span class="text-muted fw-normal">(gesamte Zuweisungsdauer)</span>
+        <span class="text-muted" style="text-transform:none;letter-spacing:normal;font-weight:400;">(gesamte Zuweisungsdauer)</span>
       </div>
-      <div class="table-responsive mb-4">
+      <div class="table-responsive">
         <table class="table table-sm table-bordered anw-table mb-0" style="max-width:560px;">
           <thead class="table-light">
             <tr>
@@ -2140,10 +2250,12 @@
           A=Anwesend · U=Urlaub · K=Krank · E=Entschuldigt · F=Fehlend unentschuldigt
         </div>
       </div>
+      </div>
 
       <!-- 4c) Im Bereichszeitraum durchgeführte Tätigkeiten -->
-      <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap gap-2">
-        <div class="fw-semibold small">Im Berichtszeitraum durchgeführte Tätigkeiten</div>
+      <div class="zus-subblock">
+      <div class="zus-subhead d-flex justify-content-between align-items-center flex-wrap gap-2" style="text-transform:none;letter-spacing:normal;">
+        <span style="text-transform:uppercase;letter-spacing:.04em;">Im Berichtszeitraum durchgeführte Tätigkeiten</span>
         <button class="btn btn-sm btn-outline-secondary"
                 onclick="navMitWarnung('arbeitsbereiche')">
           <i class="bi bi-box-arrow-up-right me-1"></i> Arbeitsbereiche bearbeiten
@@ -2165,17 +2277,19 @@
       </div>
 
       <!-- 4d) Im Berichtszeitraum erworbene Qualifikationen -->
-      <div class="fw-semibold small mb-2">Im Berichtszeitraum erworbene Qualifikationen</div>
-      <div class="border rounded p-3 bg-body-tertiary mb-4 small" id="qualifikationenBlock">
+      <div class="fw-semibold small mb-2 mt-3">Im Berichtszeitraum erworbene Qualifikationen</div>
+      <div class="border rounded p-3 bg-body-tertiary small" id="qualifikationenBlock">
         <div class="text-muted fst-italic mb-2">(Texte aus den Arbeitsbereichen der Maßnahme)</div>
         <div><span class="fw-semibold">Maler &amp; Lackierer:</span>
           Grundkenntnisse in Vorbereitung und Ausführung von Malerarbeiten. Umgang mit Werkzeug und Materialien erlernt.
         </div>
       </div>
+      </div>
 
       <!-- 4e) Bewertung (Schulnotensystem) -->
-      <div class="d-flex align-items-center gap-3 mb-3 flex-wrap">
-        <div class="fw-semibold small">Bewertung (Schulnotensystem)</div>
+      <div class="zus-subblock">
+      <div class="zus-subhead d-flex align-items-center gap-3 flex-wrap" style="text-transform:none;letter-spacing:normal;">
+        <span style="text-transform:uppercase;letter-spacing:.04em;">Bewertung (Schulnotensystem)</span>
         <button class="btn btn-sm btn-outline-secondary" id="btnAnleiterBew"
                 >
           <i class="bi bi-clipboard-check me-1"></i> Anleiterbewertungen einsehen
@@ -2191,11 +2305,12 @@
       <div class="bewertung-grid" id="bewertungGrid">
         <!-- wird per JS gerendert -->
       </div>
+      </div>
 
       <!-- 4f) Praktika -->
-      <hr class="my-4">
-      <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap gap-2">
-        <div class="fw-semibold small">Praktika</div>
+      <div class="zus-subblock">
+      <div class="zus-subhead d-flex justify-content-between align-items-center flex-wrap gap-2" style="text-transform:none;letter-spacing:normal;">
+        <span style="text-transform:uppercase;letter-spacing:.04em;">Praktika</span>
         <button class="btn btn-sm btn-outline-secondary" id="btnPraktikumLink"
                 onclick="navMitWarnung('praktika')">
           <i class="bi bi-box-arrow-up-right me-1"></i> Praktika bearbeiten
@@ -2219,10 +2334,12 @@
         </div>
       </div>
 
+      </div>
+
       <!-- 4g) Vermittlungshemmnisse -->
-      <hr class="my-4">
-      <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap gap-2">
-        <div class="fw-semibold small">Vermittlungshemmnisse</div>
+      <div class="zus-subblock mb-0">
+      <div class="zus-subhead d-flex justify-content-between align-items-center flex-wrap gap-2" style="text-transform:none;letter-spacing:normal;">
+        <span style="text-transform:uppercase;letter-spacing:.04em;">Vermittlungshemmnisse</span>
         <button class="btn btn-sm btn-outline-secondary"
                 onclick="navMitWarnung('vermittlungshemmnisse')">
           <i class="bi bi-box-arrow-up-right me-1"></i> Hemmnisse bearbeiten
@@ -2241,6 +2358,7 @@
           (Hemmnisse werden aus dem Teilnehmerprofil übernommen)
         </div>
       </div>
+      </div>
 
     </div>
   </div>
@@ -2248,18 +2366,18 @@
   <!-- ── Datum + Unterschrift ───────────────────────────────────── -->
   <div class="luv-section">
     <div class="luv-section-body">
-      <div class="row g-3 align-items-end">
-        <div class="col-md-4">
+      <div class="d-flex flex-column flex-md-row gap-3 align-items-stretch align-items-md-end">
+        <div style="min-width:0;">
           <label class="form-label small text-muted mb-1">Datum</label>
           <input type="date" class="form-control form-control-sm" id="luvUnterschriftDatum"
                  value="2025-12-10">
         </div>
-        <div class="col-md-4">
+        <div style="min-width:0;">
           <label class="form-label small text-muted mb-1">Unterschrift (gez.)</label>
           <input type="text" class="form-control form-control-sm" id="luvUnterschrift"
                  value="Daniel Chu">
         </div>
-        <div class="col-md-4 d-flex gap-2 flex-wrap align-items-end">
+        <div class="d-flex flex-column flex-sm-row gap-2 flex-wrap ms-md-auto">
           <button class="btn btn-outline-secondary btn-sm" id="btn-entwurf-2">
             <i class="bi bi-floppy me-1"></i> Entwurf speichern
           </button>
@@ -2343,40 +2461,7 @@
       </div>
       <div class="modal-body">
         <p class="text-muted small mb-3">Monatliche Beurteilungen durch den Praxisanleiter R. Piechowiak.</p>
-
-        <!-- Bewertung Nov 2025 -->
-        <div class="card border-0 bg-body-tertiary mb-3">
-          <div class="card-body pb-2">
-            <div class="d-flex justify-content-between align-items-start mb-3">
-              <div>
-                <div class="fw-semibold">November 2025</div>
-                <div class="text-muted small">R. Piechowiak · Maler &amp; Lackierer</div>
-              </div>
-              <button class="btn btn-sm btn-primary" data-monat="2025-11"
-                      onclick="anleiterNotenUebernehmen({anw:2,puenkt:1,mot:2,eig:2,handw:1,ausd:2,lern:2,soz:1,team:2});">
-                <i class="bi bi-arrow-down-circle me-1"></i> Diese Noten übernehmen
-              </button>
-            </div>
-            <div class="bewertung-grid" id="anleiter-grid-nov"></div>
-          </div>
-        </div>
-
-        <!-- Bewertung Okt 2025 -->
-        <div class="card border-0 bg-body-tertiary mb-3">
-          <div class="card-body pb-2">
-            <div class="d-flex justify-content-between align-items-start mb-3">
-              <div>
-                <div class="fw-semibold">Oktober 2025</div>
-                <div class="text-muted small">R. Piechowiak · Maler &amp; Lackierer</div>
-              </div>
-              <button class="btn btn-sm btn-outline-primary" data-monat="2025-10"
-                      onclick="anleiterNotenUebernehmen({anw:3,puenkt:2,mot:3,eig:3,handw:2,ausd:3,lern:3,soz:2,team:3});">
-                <i class="bi bi-arrow-down-circle me-1"></i> Diese Noten übernehmen
-              </button>
-            </div>
-            <div class="bewertung-grid" id="anleiter-grid-okt"></div>
-          </div>
-        </div>
+        <div class="accordion" id="anleiterAccordion"></div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Schließen</button>
@@ -2524,7 +2609,9 @@ function anleiterNotenUebernehmen(notenObj) {
     { id: 'soz',    label: 'Soziale Kompetenz' },
     { id: 'team',   label: 'Kooperations- / Teamf\u00e4higkeit' }
   ];
+  var customKriteriumLabel = '';
   KRITERIEN.forEach(function(k) { noten[k.id] = null; });
+  noten['custom'] = null;
 
   var LUV_CONFIG = {
     '1': {
@@ -2566,12 +2653,34 @@ function anleiterNotenUebernehmen(notenObj) {
     var grid = g(containerId);
     if (!grid) return;
     grid.innerHTML = '';
-    KRITERIEN.forEach(function(k) {
+    var alleKriterien = KRITERIEN.concat([{ id: 'custom', label: customKriteriumLabel || 'Weiteres Kriterium (frei definierbar)', isCustom: true }]);
+    alleKriterien.forEach(function(k) {
       var row = document.createElement('div');
       row.className = 'bew-row';
-      var lbl = document.createElement('span');
-      lbl.className = 'bew-label';
-      lbl.textContent = k.label + ':';
+
+      if (k.isCustom && !roNoten) {
+        // Editable label for custom criterion
+        var inp = document.createElement('input');
+        inp.type = 'text';
+        inp.className = 'bew-custom-input';
+        inp.placeholder = 'Eigenes Kriterium (optional) \u2013 z.B. Sprachkenntnisse';
+        inp.value = customKriteriumLabel || '';
+        inp.addEventListener('input', function() {
+          customKriteriumLabel = inp.value;
+        });
+        row.appendChild(inp);
+      } else {
+        var lbl = document.createElement('span');
+        lbl.className = 'bew-label';
+        lbl.textContent = k.isCustom ? (k.label || 'Weiteres Kriterium') : k.label;
+        row.appendChild(lbl);
+      }
+
+      // Skip rendering note buttons for empty custom criterion in readonly mode
+      if (k.isCustom && roNoten && !roNoten[k.id]) {
+        return;
+      }
+
       var btns = document.createElement('div');
       btns.className = 'note-btns';
       for (var n = 1; n <= 6; n++) {
@@ -2594,7 +2703,6 @@ function anleiterNotenUebernehmen(notenObj) {
           btns.appendChild(btn);
         })(n);
       }
-      row.appendChild(lbl);
       row.appendChild(btns);
       grid.appendChild(row);
     });
@@ -2635,11 +2743,18 @@ function anleiterNotenUebernehmen(notenObj) {
     }
     var zvb = g('block-zielvereinbarung'); if (zvb) zvb.style.display = cfg.ziel ? '' : 'none';
     var prv = g('block-vorherige-luvs'); if (prv) prv.style.display = cfg.vorherige ? '' : 'none';
+    if (cfg.vorherige) renderLuvTimeline();
   }
 
   function fmtDate(iso) {
-    if (!iso) return '\u2014';
+    if (!iso) {
+      var today = new Date();
+      var dd = String(today.getDate()).padStart(2,'0');
+      var mm = String(today.getMonth()+1).padStart(2,'0');
+      return dd + '.' + mm + '.' + today.getFullYear();
+    }
     var p = iso.split('-');
+    if (p.length !== 3) return iso;
     return p[2] + '.' + p[1] + '.' + p[0];
   }
 
@@ -2658,29 +2773,7 @@ function anleiterNotenUebernehmen(notenObj) {
   ];
 
   // ── Saved LuV store ──────────────────────────────────────────────────
-  var savedLuvs = [
-    {
-      id: 'luv-demo-1',
-      art: '1', artLabel: 'Start-LuV',
-      datum: '12.09.2025', von: '12.09.2025', bis: '11.11.2025',
-      betreuer: 'Daniel Chu', lehrkraft: 'H. Peter', anleiter: 'R. Piechowiak',
-      f1: 'Guter Start. Teilnehmer zeigt Bereitschaft, braucht noch Unterstützung beim Eingewöhnen.',
-      f2: '', zieltext: 'Regelmäßige Teilnahme sicherstellen. Praktikum für Nov/Dez planen.',
-      noten: {anw:3,puenkt:2,mot:3,eig:3,handw:2,ausd:3,lern:3,soz:2,team:2},
-      potential: 'mittel'
-    },
-    {
-      id: 'luv-demo-2',
-      art: '2', artLabel: 'Verlaufs-LuV',
-      datum: '30.11.2025', von: '12.09.2025', bis: '30.11.2025',
-      betreuer: 'Daniel Chu', lehrkraft: 'H. Peter', anleiter: 'R. Piechowiak',
-      f1: 'Deutliche Verbesserung in allen Bereichen. Besonders das handwerkliche Geschick ist überdurchschnittlich.',
-      f2: 'Praktikum verlängern. Fokus auf Pünktlichkeit beibehalten.',
-      zieltext: '',
-      noten: {anw:2,puenkt:1,mot:2,eig:2,handw:1,ausd:2,lern:2,soz:1,team:2},
-      potential: 'hoch'
-    }
-  ];
+  var savedLuvs = [];
 
   var ART_COLORS = {
     '1': 'bg-success-subtle text-success-emphasis',
@@ -2733,7 +2826,6 @@ function anleiterNotenUebernehmen(notenObj) {
         var luv = savedLuvs.find(function(x){ return x.id === id; });
         if (!luv) return;
         loadLuvIntoForm(luv);
-        luvInitDone = false;
         bootstrap.Modal.getOrCreateInstance(document.getElementById('modalLuVVollbild')).show();
       });
     });
@@ -2769,14 +2861,50 @@ function anleiterNotenUebernehmen(notenObj) {
     // luvAnsehen replaced by loadLuvIntoForm via renderLuvKarte
   window.luvAnsehen = function(id) { /* no-op */ };
 
+
+  // ── Render "Bereits erstellte LuVs" timeline (4a) ───────────────────
+  function renderLuvTimeline() {
+    var ul = g('luvTimeline');
+    var empty = g('luvTimelineEmpty');
+    if (!ul) return;
+    var list = savedLuvs.filter(function(x){ return x.id !== _editingLuvId; });
+    // Sort by date (DD.MM.YYYY) ascending
+    function toSortable(d) {
+      var p = (d || '').split('.');
+      return p.length === 3 ? p[2] + p[1] + p[0] : '';
+    }
+    list = list.slice().sort(function(a, b) {
+      return toSortable(a.datum).localeCompare(toSortable(b.datum));
+    });
+
+    if (list.length === 0) {
+      ul.innerHTML = '';
+      if (empty) empty.style.display = 'block';
+      return;
+    }
+    if (empty) empty.style.display = 'none';
+
+    ul.innerHTML = list.map(function(luv) {
+      var artCls = ART_COLORS[luv.art] || 'bg-secondary-subtle text-secondary-emphasis';
+      var entwurfTag = luv.entwurf
+        ? '<span class="badge bg-warning-subtle text-warning-emphasis ms-2">Entwurf</span>' : '';
+      return '<li class="art-' + luv.art + '">'
+        + '<span class="badge ' + artCls + ' me-2">' + luv.artLabel + '</span>'
+        + '<span class="fw-semibold">' + luv.datum + '</span>'
+        + '<span class="text-muted small ms-2">' + (luv.betreuer || '') + '</span>'
+        + entwurfTag
+        + '</li>';
+    }).join('');
+  }
+
   // ── Save LuV (called from Speichern buttons) ─────────────────────────
   function saveLuV(asEntwurf) {
     var luv = {
       id: 'luv-' + Date.now(),
       art: aktiveLuvArt,
       artLabel: LUV_CONFIG[aktiveLuvArt].label,
-      datum: gv('luvDatum') || new Date().toLocaleDateString('de-DE'),
-      von: gv('luvVon'), bis: gv('luvBis'),
+      datum: fmtDate(gv('luvDatum')) ,
+      von: fmtDate(gv('luvVon')), bis: fmtDate(gv('luvBis')),
       betreuer: gv('luvBetreuer'), lehrkraft: gv('luvLehrkraft'), anleiter: gv('luvAnleiter'),
       f1: gv('luvFreitext1'), f2: gv('luvFreitext2'), zieltext: gv('luvZieltext'),
       noten: Object.assign({}, noten),
@@ -2940,6 +3068,52 @@ function anleiterNotenUebernehmen(notenObj) {
   }
 
 
+  // Convert DD.MM.YYYY -> YYYY-MM-DD for <input type="date">
+  function toIsoDate(de) {
+    if (!de) return '';
+    var p = de.split('.');
+    if (p.length !== 3) return de; // already ISO or invalid
+    return p[2] + '-' + p[1] + '-' + p[0];
+  }
+
+  // Reset all LuV form fields to blank/default state (new LuV)
+  function resetLuvFormFields() {
+    var dEl = g('luvDatum');
+    var vEl = g('luvVon');
+    var bEl = g('luvBis');
+    var beEl = g('luvBetreuer');
+    var lkEl = g('luvLehrkraft');
+    var anEl = g('luvAnleiter');
+    var f1El = g('luvFreitext1');
+    var f2El = g('luvFreitext2');
+    var ztEl = g('luvZieltext');
+    var inEl = g('luvInfos');
+    var udEl = g('luvUnterschriftDatum');
+    var ugEl = g('luvUnterschrift');
+
+    var todayIso = (function() {
+      var t = new Date();
+      return t.getFullYear() + '-' + String(t.getMonth()+1).padStart(2,'0') + '-' + String(t.getDate()).padStart(2,'0');
+    })();
+
+    if (dEl) dEl.value = todayIso;
+    if (vEl) vEl.value = '';
+    if (bEl) bEl.value = '';
+    if (beEl) beEl.selectedIndex = 0;
+    if (lkEl) lkEl.selectedIndex = 0;
+    if (anEl) anEl.selectedIndex = 0;
+    if (f1El) f1El.value = '';
+    if (f2El) f2El.value = '';
+    if (ztEl) ztEl.value = '';
+    if (inEl) inEl.value = '';
+    if (udEl) udEl.value = todayIso;
+    if (ugEl) ugEl.value = 'Daniel Chu';
+
+    // ZVB chips
+    var chips = g('zielChips');
+    if (chips) chips.innerHTML = '';
+  }
+
   // Load a saved LuV into the form fields
   function loadLuvIntoForm(luv) {
     // Art
@@ -2960,9 +3134,9 @@ function anleiterNotenUebernehmen(notenObj) {
     var udEl = document.getElementById('luvUnterschriftDatum');
     var ugEl = document.getElementById('luvUnterschrift');
 
-    if (dEl) dEl.value = luv.datum || '';
-    if (vEl) vEl.value = luv.von || '';
-    if (bEl) bEl.value = luv.bis || '';
+    if (dEl) dEl.value = toIsoDate(luv.datum);
+    if (vEl) vEl.value = toIsoDate(luv.von);
+    if (bEl) bEl.value = toIsoDate(luv.bis);
     if (beEl) beEl.value = luv.betreuer || '';
     if (lkEl) lkEl.value = luv.lehrkraft || '';
     if (anEl) anEl.value = luv.anleiter || '';
@@ -2977,6 +3151,93 @@ function anleiterNotenUebernehmen(notenObj) {
     _editingLuvId = luv.id;
   }
 
+
+  // ── Anleiterbewertung Accordion (im LuV-Formular, mit Übernehmen-Buttons) ────
+  var ANLEITER_MONATE = [
+    { label: 'November 2025', noten: {anw:2,puenkt:1,mot:2,eig:2,handw:1,ausd:2,lern:2,soz:1,team:2} },
+    { label: 'Oktober 2025',  noten: {anw:3,puenkt:2,mot:3,eig:3,handw:2,ausd:3,lern:3,soz:2,team:3} },
+    { label: 'September 2025', noten: {anw:3,puenkt:3,mot:3,eig:3,handw:3,ausd:3,lern:3,soz:3,team:3} }
+  ];
+
+  function noteColorAcc(n) {
+    if (n <= 2) return '#198754';
+    if (n <= 4) return '#fd7e14';
+    return '#dc3545';
+  }
+
+  function avgNoteAcc(notenObj) {
+    var sum = 0, count = 0;
+    Object.values(notenObj).forEach(function(n) { if (n) { sum += n; count++; } });
+    return count ? (sum / count) : 0;
+  }
+
+  function buildAnleiterGridHtml(notenObj) {
+    var html = '<div style="display:grid;grid-template-columns:1fr 1fr;gap:.4rem 2rem;">';
+    KRITERIEN.forEach(function(k) {
+      var n = notenObj[k.id] || null;
+      var btns = '';
+      for (var v = 1; v <= 6; v++) {
+        var active = (v === n);
+        var bg = active ? noteColorAcc(n) : '#fff';
+        var color = active ? '#fff' : '#495057';
+        var border = active ? noteColorAcc(n) : '#ced4da';
+        btns += '<span style="display:inline-flex;align-items:center;justify-content:center;'
+          + 'width:28px;height:26px;border:1px solid ' + border + ';border-radius:4px;'
+          + 'background:' + bg + ';color:' + color + ';font-size:.8rem;'
+          + (active ? 'font-weight:700;' : '') + '">' + v + '</span>';
+      }
+      html += '<div style="display:flex;flex-direction:column;gap:.15rem;padding:.3rem 0;border-bottom:1px solid #f0f0f0;">'
+        + '<span style="font-size:.74rem;color:#6c757d;text-transform:uppercase;letter-spacing:.02em;">' + k.label + '</span>'
+        + '<div style="display:flex;gap:3px;">' + btns + '</div>'
+        + '</div>';
+    });
+    html += '</div>';
+    return html;
+  }
+
+  function renderAnleiterAccordion() {
+    var container = g('anleiterAccordion');
+    if (!container) return;
+    var html = '';
+    ANLEITER_MONATE.forEach(function(m, idx) {
+      var isFirst = (idx === 0);
+      var avg = avgNoteAcc(m.noten);
+      var avgColor = avg ? noteColorAcc(Math.round(avg)) : '#6c757d';
+      var avgBadge = avg
+        ? '<span class="badge ms-2" style="background:' + avgColor + ';color:#fff;">\u00d8 ' + avg.toFixed(1) + '</span>'
+        : '';
+      var collapseId = 'anleiterCollapse' + idx;
+      var headingId = 'anleiterHeading' + idx;
+      var notenJson = JSON.stringify(m.noten);
+      html += '<div class="accordion-item">'
+        + '<h2 class="accordion-header" id="' + headingId + '">'
+        + '<button class="accordion-button' + (isFirst ? '' : ' collapsed') + '" type="button"'
+        + ' data-bs-toggle="collapse" data-bs-target="#' + collapseId + '"'
+        + ' aria-expanded="' + (isFirst ? 'true' : 'false') + '" aria-controls="' + collapseId + '">'
+        + '<span class="flex-grow-1">' + m.label + '</span>' + avgBadge
+        + '</button></h2>'
+        + '<div id="' + collapseId + '" class="accordion-collapse collapse' + (isFirst ? ' show' : '') + '"'
+        + ' aria-labelledby="' + headingId + '" data-bs-parent="#anleiterAccordion">'
+        + '<div class="accordion-body">'
+        + '<div class="d-flex justify-content-between align-items-start mb-2">'
+        + '<div class="text-muted small">R. Piechowiak \u00b7 Maler &amp; Lackierer</div>'
+        + '<button type="button" class="btn btn-sm btn-outline-primary anleiter-uebernehmen-btn" data-idx="' + idx + '">'
+        + '<i class="bi bi-arrow-down-circle me-1"></i> Diese Noten \u00fcbernehmen</button>'
+        + '</div>'
+        + buildAnleiterGridHtml(m.noten)
+        + '</div></div></div>';
+    });
+    container.innerHTML = html;
+
+    // Wire übernehmen buttons
+    container.querySelectorAll('.anleiter-uebernehmen-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var idx = parseInt(btn.getAttribute('data-idx'));
+        anleiterNotenUebernehmen(ANLEITER_MONATE[idx].noten);
+      });
+    });
+  }
+
   function initLuV() {
     if (luvInitDone) return;
     luvInitDone = true;
@@ -2988,8 +3249,7 @@ function anleiterNotenUebernehmen(notenObj) {
 
     // Note grids
     renderBewGrid('bewertungGrid', null);
-    renderBewGrid('anleiter-grid-nov', {anw:2,puenkt:1,mot:2,eig:2,handw:1,ausd:2,lern:2,soz:1,team:2});
-    renderBewGrid('anleiter-grid-okt', {anw:3,puenkt:2,mot:3,eig:3,handw:2,ausd:3,lern:3,soz:2,team:3});
+    renderAnleiterAccordion();
 
     // Open sub-modals via JS (NOT data-bs-toggle to avoid closing the parent)
     var btnZvb = g('btnZielEinfuegen');
@@ -3030,7 +3290,7 @@ function anleiterNotenUebernehmen(notenObj) {
     var btnLetzte = g('btnLetzteAnleiterEinfuegen');
     if (btnLetzte) {
       btnLetzte.addEventListener('click', function() {
-        applyNoten({anw:2,puenkt:1,mot:2,eig:2,handw:1,ausd:2,lern:2,soz:1,team:2});
+        applyNoten(ANLEITER_MONATE[0].noten);
         btnLetzte.classList.add('btn-success');
         btnLetzte.classList.remove('btn-outline-primary');
         btnLetzte.innerHTML = '<i class="bi bi-check-circle me-1"></i> \u00dcbernommen (Nov 2025)';
@@ -3078,14 +3338,20 @@ function anleiterNotenUebernehmen(notenObj) {
     }
 
     // Speichern-Buttons verdrahten
+    var _luvSaving = false;
     function doSaveFertig() {
+      if (_luvSaving) return;
+      _luvSaving = true;
       var luv = saveLuV(false);
       var m = bootstrap.Modal.getInstance(g('modalLuVVollbild'));
       if (m) {
         m.hide();
         setTimeout(function() {
           alert('LuV gespeichert: ' + luv.artLabel + ' vom ' + luv.datum);
+          _luvSaving = false;
         }, 400);
+      } else {
+        _luvSaving = false;
       }
     }
 
@@ -3126,29 +3392,53 @@ function anleiterNotenUebernehmen(notenObj) {
 
     // Set default LuV art
     setLuvArt('1');
+  }
 
-    // Allow re-init when modal is closed and reopened (reset form)
-    var mainModal = g('modalLuVVollbild');
-    if (mainModal) {
-      mainModal.addEventListener('hidden.bs.modal', function() {
-        // Reset note buttons visual state but keep savedLuvs
-        KRITERIEN.forEach(function(k) { noten[k.id] = null; });
-        _editingLuvId = null;
-        renderBewGrid('bewertungGrid', null);
-        var art1 = g('luvArt'); if (art1) art1.value = '';
-        setLuvArt('1');
-        luvInitDone = false; // allow full re-init next open
-      });
-    }
+  // Per-open refresh: called every time the modal is shown (after first init)
+  function refreshLuvOnOpen() {
+    renderBewGrid('bewertungGrid', null);
+    renderAnleiterAccordion();
+    renderLuvKarte();
+    renderLuvTimeline();
+    if (!_editingLuvId) setLuvArt('1');
   }
 
   // Wire to modal open event + init card on page load
   document.addEventListener('DOMContentLoaded', function() {
     var modalEl = g('modalLuVVollbild');
-    if (modalEl) modalEl.addEventListener('shown.bs.modal', initLuV);
+    if (modalEl) {
+      // If opening WITHOUT an explicit edit request, ensure clean form
+      modalEl.addEventListener('show.bs.modal', function() {
+        if (!_editingLuvId) {
+          // fresh "Neue LuV erstellen" - clear any leftover state
+          KRITERIEN.forEach(function(k) { noten[k.id] = null; });
+          noten['custom'] = null;
+          customKriteriumLabel = '';
+        }
+      });
+      modalEl.addEventListener('shown.bs.modal', function() {
+        initLuV();          // one-time event binding (no-op after first call)
+        refreshLuvOnOpen(); // per-open: re-render grids/cards, reset art if new
+      });
+
+      // Bound ONCE: reset form/noten when modal closes, allow re-init next open
+      modalEl.addEventListener('hidden.bs.modal', function() {
+        KRITERIEN.forEach(function(k) { noten[k.id] = null; });
+        noten['custom'] = null;
+        customKriteriumLabel = '';
+        _editingLuvId = null;
+        renderBewGrid('bewertungGrid', null);
+        resetLuvFormFields();
+        setLuvArt('1');
+        // NOTE: initLuV runs only once for the page lifetime (event bindings
+        // are permanent); do NOT reset luvInitDone here, or click handlers
+        // would stack up on every re-open.
+      });
+    }
 
     // Render initial LuV badges in card (page load)
     renderLuvKarte();
+
     // Wire luvAnsehen for Ansehen modal drucken
     var btnDruck = document.getElementById('btnLuvAnsehenDrucken');
     if (btnDruck) btnDruck.addEventListener('click', function() { window.print(); });
@@ -6439,24 +6729,7 @@ function anleiterNotenUebernehmen(notenObj) {
       </div>
       <div class="modal-body">
         <p class="text-muted small mb-3">Monatliche Beurteilungen durch den Praxisanleiter R. Piechowiak.</p>
-
-        <!-- Nov 2025 -->
-        <div class="card border-0 bg-body-tertiary mb-3">
-          <div class="card-body pb-3">
-            <div class="fw-semibold mb-1">November 2025</div>
-            <div class="text-muted small mb-3">R. Piechowiak · Maler &amp; Lackierer</div>
-            <div id="anleiter-ro-grid-nov"></div>
-          </div>
-        </div>
-
-        <!-- Okt 2025 -->
-        <div class="card border-0 bg-body-tertiary mb-3">
-          <div class="card-body pb-3">
-            <div class="fw-semibold mb-1">Oktober 2025</div>
-            <div class="text-muted small mb-3">R. Piechowiak · Maler &amp; Lackierer</div>
-            <div id="anleiter-ro-grid-okt"></div>
-          </div>
-        </div>
+        <div class="accordion" id="anleiterRoAccordion"></div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Schließen</button>
@@ -6468,16 +6741,17 @@ function anleiterNotenUebernehmen(notenObj) {
 <script>
 (function() {
   var KRITERIEN_RO = [
-    'Anwesenheit / Zuverlässigkeit', 'Pünktlichkeit',
+    'Anwesenheit / Zuverl\u00e4ssigkeit', 'P\u00fcnktlichkeit',
     'Motivation / Engagement', 'Eigeninitiative',
     'Handwerkliches Geschick', 'Ausdauer / Geduld',
     'Lernbereitschaft', 'Soziale Kompetenz',
-    'Kooperations- / Teamfähigkeit'
+    'Kooperations- / Teamf\u00e4higkeit'
   ];
 
   var MONATE_DEMO = [
-    { gridId: 'anleiter-ro-grid-nov', noten: [2,1,2,2,1,2,2,1,2] },
-    { gridId: 'anleiter-ro-grid-okt', noten: [3,2,3,3,2,3,3,2,3] }
+    { label: 'November 2025', noten: [2,1,2,2,1,2,2,1,2] },
+    { label: 'Oktober 2025',  noten: [3,2,3,3,2,3,3,2,3] },
+    { label: 'September 2025', noten: [3,3,3,3,3,3,3,3,3] }
   ];
 
   function noteColor(n) {
@@ -6486,9 +6760,13 @@ function anleiterNotenUebernehmen(notenObj) {
     return '#dc3545';
   }
 
-  function renderROGrid(containerId, noten) {
-    var el = document.getElementById(containerId);
-    if (!el) return;
+  function avgNote(noten) {
+    var sum = 0, count = 0;
+    noten.forEach(function(n) { if (n) { sum += n; count++; } });
+    return count ? (sum / count) : 0;
+  }
+
+  function buildGridHtml(noten) {
     var html = '<div style="display:grid;grid-template-columns:1fr 1fr;gap:.4rem 2rem;">';
     KRITERIEN_RO.forEach(function(label, i) {
       var n = noten[i] || null;
@@ -6503,21 +6781,49 @@ function anleiterNotenUebernehmen(notenObj) {
           + 'background:' + bg + ';color:' + color + ';font-size:.8rem;'
           + (active ? 'font-weight:700;' : '') + '">' + v + '</span>';
       }
-      html += '<div style="display:flex;align-items:center;gap:.4rem;padding:.3rem 0;border-bottom:1px solid #f0f0f0;">'
-        + '<span style="font-size:.88rem;color:#444;flex:1;min-width:0;">' + label + ':</span>'
-        + '<div style="display:flex;gap:3px;flex-shrink:0;">' + btns + '</div>'
+      html += '<div style="display:flex;flex-direction:column;gap:.15rem;padding:.3rem 0;border-bottom:1px solid #f0f0f0;">'
+        + '<span style="font-size:.74rem;color:#6c757d;text-transform:uppercase;letter-spacing:.02em;">' + label + '</span>'
+        + '<div style="display:flex;gap:3px;">' + btns + '</div>'
         + '</div>';
     });
     html += '</div>';
-    el.innerHTML = html;
+    return html;
+  }
+
+  function renderAccordion() {
+    var container = document.getElementById('anleiterRoAccordion');
+    if (!container) return;
+    var html = '';
+    MONATE_DEMO.forEach(function(m, idx) {
+      var isFirst = (idx === 0);
+      var avg = avgNote(m.noten);
+      var avgColor = avg ? noteColor(Math.round(avg)) : '#6c757d';
+      var avgBadge = avg
+        ? '<span class="badge ms-2" style="background:' + avgColor + ';color:#fff;">\u00d8 ' + avg.toFixed(1) + '</span>'
+        : '';
+      var collapseId = 'anleiterRoCollapse' + idx;
+      var headingId = 'anleiterRoHeading' + idx;
+      html += '<div class="accordion-item">'
+        + '<h2 class="accordion-header" id="' + headingId + '">'
+        + '<button class="accordion-button' + (isFirst ? '' : ' collapsed') + '" type="button"'
+        + ' data-bs-toggle="collapse" data-bs-target="#' + collapseId + '"'
+        + ' aria-expanded="' + (isFirst ? 'true' : 'false') + '" aria-controls="' + collapseId + '">'
+        + '<span class="flex-grow-1">' + m.label + '</span>' + avgBadge
+        + '</button></h2>'
+        + '<div id="' + collapseId + '" class="accordion-collapse collapse' + (isFirst ? ' show' : '') + '"'
+        + ' aria-labelledby="' + headingId + '" data-bs-parent="#anleiterRoAccordion">'
+        + '<div class="accordion-body">'
+        + '<div class="text-muted small mb-2">R. Piechowiak \u00b7 Maler &amp; Lackierer</div>'
+        + buildGridHtml(m.noten)
+        + '</div></div></div>';
+    });
+    container.innerHTML = html;
   }
 
   document.addEventListener('DOMContentLoaded', function() {
     var modal = document.getElementById('modalAnleiterBewUebersicht');
     if (!modal) return;
-    modal.addEventListener('show.bs.modal', function() {
-      MONATE_DEMO.forEach(function(m) { renderROGrid(m.gridId, m.noten); });
-    });
+    modal.addEventListener('show.bs.modal', renderAccordion);
   });
 })();
 </script>
