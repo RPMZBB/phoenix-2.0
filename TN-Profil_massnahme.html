@@ -1503,7 +1503,7 @@
                           <div class="card-body">
                             <div class="d-flex justify-content-between align-items-start mb-1">
                               <div>
-                                <div class="fw-semibold">Förderplangespräch(e)</div>
+                                <div class="fw-semibold">Zielvereinbarungsgespräch(e)</div>
                                 <div class="text-muted small">(Was habe ich bisher erreicht / wobei hatte ich bisher Schwierigkeiten)</div>
                               </div>
                               <button class="btn btn-sm btn-primary" id="btnZVFPAddGespraech" type="button">
@@ -1880,7 +1880,7 @@
       + '<div style="flex:1;border-top:1px solid #333;padding-top:.3em;font-size:9pt;">Unterschrift Ausbilder*in, Lehrkraft</div>'
       + '<div style="flex:1;border-top:1px solid #333;padding-top:.3em;font-size:9pt;">Unterschrift Teilnehmer*in</div>'
       + '</div>'
-      + '<p style="font-size:11pt;font-weight:bold;margin-bottom:.1em;">F\u00f6rderplangespr\u00e4ch(e)</p>'
+      + '<p style="font-size:11pt;font-weight:bold;margin-bottom:.1em;">Zielvereinbarungsgespr\u00e4ch(e)</p>'
       + '<p style="font-size:9pt;font-style:italic;margin-bottom:.5em;">(Was habe ich bisher erreicht / wobei hatte ich bisher Schwierigkeiten)</p>'
       + (function() {
           var gespraeche = (zvfp.gespraeche || []).filter(function(gr){ return gr.datum || gr.text; });
@@ -2261,32 +2261,8 @@
                             </div>
                             <div class="row g-3">
                               <div class="col-md-4">
-                                <label class="form-label small text-muted mb-1">Neue Ziele / Förderplangespräch am</label>
+                                <label class="form-label small text-muted mb-1">Förderplangespräch am</label>
                                 <input type="date" class="form-control" id="fpNeueZieleDatum">
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-
-                        <!-- ── Unterschriften ───────────────────────────────────── -->
-                        <div class="card border-0 shadow-sm mb-4">
-                          <div class="card-body">
-                            <div class="row g-3 align-items-end">
-                              <div class="col-md-3">
-                                <label class="form-label small text-muted mb-1">Ort, Datum (Träger)</label>
-                                <input type="date" class="form-control form-control-sm" id="fpUnterschriftTraegerDatum">
-                              </div>
-                              <div class="col-md-3">
-                                <label class="form-label small text-muted mb-1">Unterschrift Träger</label>
-                                <input type="text" class="form-control form-control-sm" id="fpUnterschriftTraeger" placeholder="Name">
-                              </div>
-                              <div class="col-md-3">
-                                <label class="form-label small text-muted mb-1">Ort, Datum (TN)</label>
-                                <input type="date" class="form-control form-control-sm" id="fpUnterschriftTNDatum">
-                              </div>
-                              <div class="col-md-3">
-                                <label class="form-label small text-muted mb-1">Unterschrift Teilnehmer*in</label>
-                                <input type="text" class="form-control form-control-sm" id="fpUnterschriftTN" placeholder="Name">
                               </div>
                             </div>
                           </div>
@@ -2368,10 +2344,10 @@
       zieleStatus: (document.querySelector('input[name="fpZieleStatus"]:checked') || {}).value || '',
       begruendung: gv('fpBegruendung'),
       neueZieleDatum: gv('fpNeueZieleDatum'),
-      unterschriftTraegerDatum: gv('fpUnterschriftTraegerDatum'),
-      unterschriftTraeger: gv('fpUnterschriftTraeger'),
-      unterschriftTNDatum: gv('fpUnterschriftTNDatum'),
-      unterschriftTN: gv('fpUnterschriftTN')
+      unterschriftTraegerDatum: '',
+      unterschriftTraeger: '',
+      unterschriftTNDatum: '',
+      unterschriftTN: ''
     };
   }
 
@@ -2395,11 +2371,6 @@
     if (g('fpGesprVomDatum')) g('fpGesprVomDatum').value = toIsoFP(fp.gesprVomDatum);
     if (g('fpBegruendung')) g('fpBegruendung').value = fp.begruendung || '';
     if (g('fpNeueZieleDatum')) g('fpNeueZieleDatum').value = toIsoFP(fp.neueZieleDatum);
-    if (g('fpUnterschriftTraegerDatum')) g('fpUnterschriftTraegerDatum').value = toIsoFP(fp.unterschriftTraegerDatum);
-    if (g('fpUnterschriftTraeger')) g('fpUnterschriftTraeger').value = fp.unterschriftTraeger || '';
-    if (g('fpUnterschriftTNDatum')) g('fpUnterschriftTNDatum').value = toIsoFP(fp.unterschriftTNDatum);
-    if (g('fpUnterschriftTN')) g('fpUnterschriftTN').value = fp.unterschriftTN || '';
-
     document.querySelectorAll('input[name="fpZieleStatus"]').forEach(function(r) {
       r.checked = (r.value === fp.zieleStatus);
     });
@@ -2423,10 +2394,10 @@
     ['fpPsychosozial','fpSprachkompetenz','fpMotivation','fpSozialeKompetenzen',
      'fpLeistungsfaehigkeit','fpStaerken','fpAufsuchendeArbeit','fpAnwesenheit',
      'fpAktivitaeten','fpBerufsfelderprobung','fpBetrieblicheErprobung','fpSonstiges',
-     'fpBegruendung','fpUnterschriftTraeger','fpUnterschriftTN'].forEach(function(id) {
+     'fpBegruendung'].forEach(function(id) {
       if (g(id)) g(id).value = '';
     });
-    ['fpGesprVomDatum','fpNeueZieleDatum','fpUnterschriftTraegerDatum','fpUnterschriftTNDatum'].forEach(function(id) {
+    ['fpGesprVomDatum','fpNeueZieleDatum'].forEach(function(id) {
       if (g(id)) g(id).value = '';
     });
     document.querySelectorAll('input[name="fpZieleStatus"]').forEach(function(r) { r.checked = false; });
@@ -2560,21 +2531,11 @@
       + '<span style="display:inline-block;width:13px;height:13px;border:1px solid #333;text-align:center;line-height:13px;font-size:9pt;margin:0 3px 0 14px;">'
       + (fp.zieleStatus === 'nicht erreicht' ? 'x' : '&nbsp;') + '</span> nicht erreicht</p>'
       + block('Begründung', fp.begruendung)
-      + '<p style="font-size:10pt;margin-top:.8em;"><strong>Neue Ziele / Förderplangespräch am:</strong> ' + fmtFPDate(fp.neueZieleDatum) + '</p>'
+      + '<p style="font-size:10pt;margin-top:.8em;"><strong>Förderplangespräch am:</strong> ' + fmtFPDate(fp.neueZieleDatum) + '</p>'
 
       + '<div style="display:flex;gap:3em;margin-top:2.5em;">'
-      + '<div style="flex:1;">'
-      + '<div style="border-top:1px solid #333;padding-top:.3em;font-size:9pt;">'
-      + fmtFPDate(fp.unterschriftTraegerDatum) + (fp.unterschriftTraeger ? ' – ' + fp.unterschriftTraeger : '')
-      + '</div>'
-      + '<div style="font-size:8pt;color:#666;margin-top:.2em;">Ort, Datum &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Unterschrift Träger</div>'
-      + '</div>'
-      + '<div style="flex:1;">'
-      + '<div style="border-top:1px solid #333;padding-top:.3em;font-size:9pt;">'
-      + fmtFPDate(fp.unterschriftTNDatum) + (fp.unterschriftTN ? ' – ' + (anonym ? anonymizeName(fp.unterschriftTN) : fp.unterschriftTN) : '')
-      + '</div>'
-      + '<div style="font-size:8pt;color:#666;margin-top:.2em;">Ort, Datum &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Unterschrift Teilnehmer*in</div>'
-      + '</div>'
+      + '<div style="flex:1;border-top:1px solid #333;padding-top:.3em;font-size:8pt;color:#666;">Ort, Datum, Unterschrift sozialpädagogische Fachkraft</div>'
+      + '<div style="flex:1;border-top:1px solid #333;padding-top:.3em;font-size:8pt;color:#666;">Ort, Datum, Unterschrift Teilnehmer*in</div>'
       + '</div>';
 
     return html;
