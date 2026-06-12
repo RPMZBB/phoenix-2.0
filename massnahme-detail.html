@@ -2037,10 +2037,15 @@
                       <h6 class="mb-0">Leistungs- &amp; Verhaltensbeurteilung</h6>
                       <div class="text-muted small">Einschätzungen zum Arbeits- und Sozialverhalten sowie Lernfortschritt (LuV)</div>
                     </div>
-                    <button class="btn btn-primary btn-sm" type="button"
-                            data-bs-toggle="modal" data-bs-target="#modalLuVVollbild">
-                      <i class="bi bi-plus-lg me-1"></i> Neue LuV erstellen
-                    </button>
+                    <div class="d-flex gap-2">
+                      <button class="btn btn-outline-secondary btn-sm" type="button" id="btnLuvAlleLoeschen" title="Alle LuVs entfernen (Demo-Reset)">
+                        <i class="bi bi-trash3"></i>
+                      </button>
+                      <button class="btn btn-primary btn-sm" type="button"
+                              data-bs-toggle="modal" data-bs-target="#modalLuVVollbild">
+                        <i class="bi bi-plus-lg me-1"></i> Neue LuV erstellen
+                      </button>
+                    </div>
                   </div>
                   <div id="luvKarteListe" class="d-flex flex-column gap-2 mt-3">
                     <!-- wird per JS befüllt -->
@@ -2216,12 +2221,11 @@
       <div id="block-vorherige-luvs" class="zus-subblock" style="display:none;">
         <div class="zus-subhead">Bereits erstellte LuVs</div>
         <ul class="luv-timeline" id="luvTimeline">
-          <li class="art-1">
-            <span class="badge bg-success-subtle text-success-emphasis me-2">Start-LuV</span>
-            <span class="fw-semibold">12.09.2025</span>
-            <span class="text-muted small ms-2">D. Chu</span>
-          </li>
+          <!-- wird per JS befüllt -->
         </ul>
+        <div class="text-muted small fst-italic" id="luvTimelineEmpty" style="display:none;">
+          Noch keine weiteren LuVs vorhanden.
+        </div>
       </div>
 
       <!-- 4b) Anwesenheitsstatistik -->
@@ -2744,6 +2748,7 @@ function anleiterNotenUebernehmen(notenObj) {
     }
     var zvb = g('block-zielvereinbarung'); if (zvb) zvb.style.display = cfg.ziel ? '' : 'none';
     var prv = g('block-vorherige-luvs'); if (prv) prv.style.display = cfg.vorherige ? '' : 'none';
+    if (cfg.vorherige) renderLuvTimeline();
   }
 
   function fmtDate(iso) {
@@ -2860,6 +2865,42 @@ function anleiterNotenUebernehmen(notenObj) {
   // ── Open saved LuV in read-only modal ────────────────────────────────
     // luvAnsehen replaced by loadLuvIntoForm via renderLuvKarte
   window.luvAnsehen = function(id) { /* no-op */ };
+
+
+  // ── Render "Bereits erstellte LuVs" timeline (4a) ───────────────────
+  function renderLuvTimeline() {
+    var ul = g('luvTimeline');
+    var empty = g('luvTimelineEmpty');
+    if (!ul) return;
+    var list = savedLuvs.filter(function(x){ return x.id !== _editingLuvId; });
+    // Sort by date (DD.MM.YYYY) ascending
+    function toSortable(d) {
+      var p = (d || '').split('.');
+      return p.length === 3 ? p[2] + p[1] + p[0] : '';
+    }
+    list = list.slice().sort(function(a, b) {
+      return toSortable(a.datum).localeCompare(toSortable(b.datum));
+    });
+
+    if (list.length === 0) {
+      ul.innerHTML = '';
+      if (empty) empty.style.display = 'block';
+      return;
+    }
+    if (empty) empty.style.display = 'none';
+
+    ul.innerHTML = list.map(function(luv) {
+      var artCls = ART_COLORS[luv.art] || 'bg-secondary-subtle text-secondary-emphasis';
+      var entwurfTag = luv.entwurf
+        ? '<span class="badge bg-warning-subtle text-warning-emphasis ms-2">Entwurf</span>' : '';
+      return '<li class="art-' + luv.art + '">'
+        + '<span class="badge ' + artCls + ' me-2">' + luv.artLabel + '</span>'
+        + '<span class="fw-semibold">' + luv.datum + '</span>'
+        + '<span class="text-muted small ms-2">' + (luv.betreuer || '') + '</span>'
+        + entwurfTag
+        + '</li>';
+    }).join('');
+  }
 
   // ── Save LuV (called from Speichern buttons) ─────────────────────────
   function saveLuV(asEntwurf) {
@@ -3363,6 +3404,7 @@ function anleiterNotenUebernehmen(notenObj) {
     renderBewGrid('bewertungGrid', null);
     renderAnleiterAccordion();
     renderLuvKarte();
+    renderLuvTimeline();
     if (!_editingLuvId) setLuvArt('1');
   }
 
@@ -3401,6 +3443,17 @@ function anleiterNotenUebernehmen(notenObj) {
 
     // Render initial LuV badges in card (page load)
     renderLuvKarte();
+
+    // Demo-reset: clear all saved LuVs
+    var btnAlleLoeschen = document.getElementById('btnLuvAlleLoeschen');
+    if (btnAlleLoeschen) {
+      btnAlleLoeschen.addEventListener('click', function() {
+        if (savedLuvs.length === 0) return;
+        if (!confirm('Alle ' + savedLuvs.length + ' LuV-Eintr\u00e4ge wirklich entfernen?')) return;
+        savedLuvs = [];
+        renderLuvKarte();
+      });
+    }
     // Wire luvAnsehen for Ansehen modal drucken
     var btnDruck = document.getElementById('btnLuvAnsehenDrucken');
     if (btnDruck) btnDruck.addEventListener('click', function() { window.print(); });
