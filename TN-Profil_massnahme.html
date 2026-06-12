@@ -1391,12 +1391,12 @@
                 <div class="border rounded-3 p-3">
                   <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-2">
                     <div>
-                      <h6 class="mb-0">Zielvereinbarung / Förderplan</h6>
-                      <div class="text-muted small">Vereinbarte Ziele, Aufgabenverteilung und Förderplangespräch</div>
+                      <h6 class="mb-0">Zielvereinbarung</h6>
+                      <div class="text-muted small">Vereinbarte Ziele, Aufgabenverteilung und Überprüfungszeitpunkte</div>
                     </div>
                     <button class="btn btn-primary btn-sm" type="button"
                             data-bs-toggle="modal" data-bs-target="#modalZVFPVollbild">
-                      <i class="bi bi-plus-lg me-1"></i> Neue ZV/FP erstellen
+                      <i class="bi bi-plus-lg me-1"></i> Neue Zielvereinbarung erstellen
                     </button>
                   </div>
                   <div id="zvfpKarteListe">
@@ -2022,6 +2022,664 @@
       });
     }
     renderZVFPKarte();
+  });
+
+})();
+              </script>
+
+<!-- ============================================================
+                   FÖRDERPLAN
+                   ============================================================ -->
+              <div class="mb-3" id="foerderplanBereich">
+                <div class="border rounded-3 p-3">
+                  <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-2">
+                    <div>
+                      <h6 class="mb-0">F\u00f6rderplan</h6>
+                      <div class="text-muted small">Kompetenzen, Ma\u00dfnahmeverlauf und F\u00f6rderplangespr\u00e4che</div>
+                    </div>
+                    <button class="btn btn-primary btn-sm" type="button"
+                            data-bs-toggle="modal" data-bs-target="#modalFoerderplanVollbild">
+                      <i class="bi bi-plus-lg me-1"></i> Neuen F\u00f6rderplan erstellen
+                    </button>
+                  </div>
+                  <div id="fpKarteListe">
+                    <div class="text-muted small fst-italic">Noch kein F\u00f6rderplan erstellt.</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- ── F\u00f6rderplan Vollbild-Modal ───────────────────────────────────── -->
+              <div class="modal fade" id="modalFoerderplanVollbild" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-fullscreen">
+                  <div class="modal-content" style="background:#f0f2f5;">
+                    <div class="modal-header py-2 border-0" style="background:#1e2d3d;color:#fff;flex-wrap:wrap;gap:.5rem;">
+                      <div>
+                        <div class="fw-bold" style="font-size:1rem;">F\u00f6rderplan</div>
+                        <div style="font-size:.8rem;color:#adb5bd;">Max Mustermann &middot; Integra 2025</div>
+                      </div>
+                      <div class="ms-auto d-flex gap-2 align-items-center flex-wrap">
+                        <span id="fpEntwurfBadge" style="display:none;background:#fff3cd;color:#856404;border:1px solid #ffc107;border-radius:4px;padding:.15rem .5rem;font-size:.75rem;font-weight:600;">
+                          <i class="bi bi-floppy me-1"></i>Entwurf
+                        </span>
+                        <button class="btn btn-sm btn-outline-light" id="btnFPEntwurf">
+                          <i class="bi bi-floppy me-1"></i> Entwurf speichern
+                        </button>
+                        <button class="btn btn-sm btn-warning text-dark fw-semibold" id="btnFPVorschau">
+                          <i class="bi bi-eye me-1"></i> Vorschau &amp; Drucken
+                        </button>
+                        <button class="btn btn-sm btn-success fw-semibold" id="btnFPSpeichern">
+                          <i class="bi bi-check-lg me-1"></i> Speichern
+                        </button>
+                        <button type="button" class="btn-close btn-close-white ms-1" data-bs-dismiss="modal"></button>
+                      </div>
+                    </div>
+
+                    <div class="modal-body p-0" style="overflow-y:auto;">
+                      <div style="max-width:960px;margin:0 auto;padding:1.5rem 1rem 4rem;">
+
+                        <!-- ── Kopf ──────────────────────────────────────────── -->
+                        <div class="card border-0 shadow-sm mb-4">
+                          <div class="card-body">
+                            <div class="row g-3 align-items-end">
+                              <div class="col-md-4">
+                                <label class="form-label small text-muted mb-1">Name der Ma\u00dfnahme</label>
+                                <input type="text" class="form-control" id="fpMassnahme" value="INTEQRA" readonly>
+                              </div>
+                              <div class="col-md-4">
+                                <label class="form-label small text-muted mb-1">Datum *</label>
+                                <input type="date" class="form-control" id="fpDatum">
+                              </div>
+                              <div class="col-md-4">
+                                <label class="form-label small text-muted mb-1">Sozialp\u00e4d. Fachkraft</label>
+                                <select class="form-select" id="fpFachkraft">
+                                  <option selected>Daniel Chu</option>
+                                  <option>Corinna Adams</option>
+                                  <option>Janine Kerber</option>
+                                </select>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- ── Personenbezogene Daten (automatisch aus Grunddaten) ── -->
+                        <div class="card border-0 shadow-sm mb-4">
+                          <div class="card-body">
+                            <div class="fw-semibold mb-1">Personenbezogene Daten</div>
+                            <div class="text-muted small mb-3">
+                              <i class="bi bi-link-45deg me-1"></i>Wird automatisch aus den Grunddaten des Teilnehmers \u00fcbernommen.
+                            </div>
+                            <div class="row g-3">
+                              <div class="col-md-4">
+                                <label class="form-label small text-muted mb-1">Kundennummer</label>
+                                <input type="text" class="form-control form-control-sm bg-body-tertiary" id="fpKundennummer" value="555D021632" readonly>
+                              </div>
+                              <div class="col-md-4">
+                                <label class="form-label small text-muted mb-1">Name</label>
+                                <input type="text" class="form-control form-control-sm bg-body-tertiary" id="fpName" value="Mustermann, Max" readonly>
+                              </div>
+                              <div class="col-md-4">
+                                <label class="form-label small text-muted mb-1">Geburtsdatum</label>
+                                <input type="text" class="form-control form-control-sm bg-body-tertiary" id="fpGeburtsdatum" value="01.01.1990" readonly>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- ── Ma\u00dfnahmebezogene Daten (automatisch) ───────────── -->
+                        <div class="card border-0 shadow-sm mb-4">
+                          <div class="card-body">
+                            <div class="fw-semibold mb-1">Ma\u00dfnahmebezogene Daten</div>
+                            <div class="text-muted small mb-3">
+                              <i class="bi bi-link-45deg me-1"></i>Wird automatisch aus der Anwesenheitsstatistik \u00fcbernommen.
+                            </div>
+                            <div class="row g-3">
+                              <div class="col-md-6">
+                                <label class="form-label small text-muted mb-1">entschuldigte Fehlzeit</label>
+                                <input type="text" class="form-control form-control-sm bg-body-tertiary" id="fpFehlzeitEntschuldigt" value="9 Tage" readonly>
+                              </div>
+                              <div class="col-md-6">
+                                <label class="form-label small text-muted mb-1">unentschuldigte Fehlzeit</label>
+                                <input type="text" class="form-control form-control-sm bg-body-tertiary" id="fpFehlzeitUnentschuldigt" value="1 Tag" readonly>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- ── Berufliche Daten (automatisch) ──────────────────── -->
+                        <div class="card border-0 shadow-sm mb-4">
+                          <div class="card-body">
+                            <div class="fw-semibold mb-1">Berufliche Daten</div>
+                            <div class="text-muted small mb-3">
+                              <i class="bi bi-link-45deg me-1"></i>Wird automatisch aus den Grunddaten des Teilnehmers \u00fcbernommen.
+                            </div>
+                            <div class="row g-3">
+                              <div class="col-md-6">
+                                <label class="form-label small text-muted mb-1">Schulabschluss</label>
+                                <input type="text" class="form-control form-control-sm bg-body-tertiary" id="fpSchulabschluss" value="Hauptschulabschluss" readonly>
+                              </div>
+                              <div class="col-md-6">
+                                <label class="form-label small text-muted mb-1">sonstige Qualifikationen</label>
+                                <input type="text" class="form-control form-control-sm bg-body-tertiary" id="fpQualifikationen" value="Staplerschein" readonly>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- ── Kompetenzen ──────────────────────────────────────── -->
+                        <div class="card border-0 shadow-sm mb-4">
+                          <div class="card-body">
+                            <div class="fw-semibold mb-3">Kompetenzen</div>
+                            <div class="row g-3">
+                              <div class="col-12">
+                                <label class="form-label small text-muted mb-1">Psychosoziale Situation <span class="text-muted">(famili\u00e4re/s und soziale/s Situation / Umfeld)</span></label>
+                                <textarea class="form-control" id="fpPsychosozial" rows="2"></textarea>
+                              </div>
+                              <div class="col-12">
+                                <label class="form-label small text-muted mb-1">Sprachkompetenz</label>
+                                <textarea class="form-control" id="fpSprachkompetenz" rows="2"></textarea>
+                              </div>
+                              <div class="col-12">
+                                <label class="form-label small text-muted mb-1">Motivation <span class="text-muted">(Zuverl\u00e4ssigkeit, Ver\u00e4nderungsbereitschaft, Ziele, etc.)</span></label>
+                                <textarea class="form-control" id="fpMotivation" rows="2"></textarea>
+                              </div>
+                              <div class="col-12">
+                                <label class="form-label small text-muted mb-1">Soziale Kompetenzen <span class="text-muted">(Kommunikation, Teamf\u00e4higkeit, Kritikf\u00e4higkeit, etc.)</span></label>
+                                <textarea class="form-control" id="fpSozialeKompetenzen" rows="2"></textarea>
+                              </div>
+                              <div class="col-12">
+                                <label class="form-label small text-muted mb-1">Leistungsf\u00e4higkeit <span class="text-muted">(k\u00f6rperliche und intellektuelle Leistungsf\u00e4higkeit, Entscheidungsf\u00e4higkeit, Flexibilit\u00e4t, etc.)</span></label>
+                                <textarea class="form-control" id="fpLeistungsfaehigkeit" rows="2"></textarea>
+                              </div>
+                              <div class="col-12">
+                                <label class="form-label small text-muted mb-1">Berufliche/fachliche St\u00e4rken</label>
+                                <textarea class="form-control" id="fpStaerken" rows="2"></textarea>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- ── Ma\u00dfnahme Verlauf ───────────────────────────────── -->
+                        <div class="card border-0 shadow-sm mb-4">
+                          <div class="card-body">
+                            <div class="fw-semibold mb-3">Ma\u00dfnahme Verlauf</div>
+                            <div class="row g-3">
+                              <div class="col-12">
+                                <label class="form-label small text-muted mb-1">Aufsuchende Arbeit <span class="text-muted">(Datum der Aufsuche mit Stichwort des Ergebnisses)</span></label>
+                                <textarea class="form-control" id="fpAufsuchendeArbeit" rows="2"></textarea>
+                              </div>
+                              <div class="col-12">
+                                <label class="form-label small text-muted mb-1">Anwesenheit</label>
+                                <textarea class="form-control" id="fpAnwesenheit" rows="2"></textarea>
+                              </div>
+                              <div class="col-12">
+                                <label class="form-label small text-muted mb-1">Aktivit\u00e4ten <span class="text-muted">(Stichwort)</span></label>
+                                <textarea class="form-control" id="fpAktivitaeten" rows="2"></textarea>
+                              </div>
+                              <div class="col-12">
+                                <label class="form-label small text-muted mb-1">Berufsfelderprobung</label>
+                                <textarea class="form-control" id="fpBerufsfelderprobung" rows="2"></textarea>
+                              </div>
+                              <div class="col-12">
+                                <label class="form-label small text-muted mb-1">Betriebliche Erprobung</label>
+                                <textarea class="form-control" id="fpBetrieblicheErprobung" rows="2"></textarea>
+                              </div>
+                              <div class="col-12">
+                                <label class="form-label small text-muted mb-1">Sonstiges</label>
+                                <textarea class="form-control" id="fpSonstiges" rows="2"></textarea>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- ── F\u00f6rderplangespr\u00e4ch ─────────────────────────── -->
+                        <div class="card border-0 shadow-sm mb-4">
+                          <div class="card-body">
+                            <div class="fw-semibold mb-1">F\u00f6rderplangespr\u00e4ch</div>
+                            <div class="text-muted small mb-3">Bewertung der bisherigen Ziele aus dem letzten F\u00f6rderplangespr\u00e4ch</div>
+                            <div class="row g-3 align-items-end mb-3">
+                              <div class="col-md-4">
+                                <label class="form-label small text-muted mb-1">F\u00f6rderplangespr\u00e4ch vom</label>
+                                <input type="date" class="form-control" id="fpGesprVomDatum">
+                              </div>
+                              <div class="col-md-8">
+                                <label class="form-label small text-muted mb-1">Ziele</label>
+                                <div class="d-flex gap-3 pt-1">
+                                  <div class="form-check form-check-inline mb-0">
+                                    <input class="form-check-input" type="radio" name="fpZieleStatus" id="fpZieleErreicht" value="erreicht">
+                                    <label class="form-check-label" for="fpZieleErreicht">erreicht</label>
+                                  </div>
+                                  <div class="form-check form-check-inline mb-0">
+                                    <input class="form-check-input" type="radio" name="fpZieleStatus" id="fpZieleNichtErreicht" value="nicht erreicht">
+                                    <label class="form-check-label" for="fpZieleNichtErreicht">nicht erreicht</label>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="mb-3">
+                              <label class="form-label small text-muted mb-1">Begr\u00fcndung</label>
+                              <textarea class="form-control" id="fpBegruendung" rows="3"></textarea>
+                            </div>
+                            <div class="row g-3">
+                              <div class="col-md-4">
+                                <label class="form-label small text-muted mb-1">Neue Ziele / F\u00f6rderplangespr\u00e4ch am</label>
+                                <input type="date" class="form-control" id="fpNeueZieleDatum">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- ── Unterschriften ───────────────────────────────────── -->
+                        <div class="card border-0 shadow-sm mb-4">
+                          <div class="card-body">
+                            <div class="row g-3 align-items-end">
+                              <div class="col-md-3">
+                                <label class="form-label small text-muted mb-1">Ort, Datum (Tr\u00e4ger)</label>
+                                <input type="date" class="form-control form-control-sm" id="fpUnterschriftTraegerDatum">
+                              </div>
+                              <div class="col-md-3">
+                                <label class="form-label small text-muted mb-1">Unterschrift Tr\u00e4ger</label>
+                                <input type="text" class="form-control form-control-sm" id="fpUnterschriftTraeger" placeholder="Name">
+                              </div>
+                              <div class="col-md-3">
+                                <label class="form-label small text-muted mb-1">Ort, Datum (TN)</label>
+                                <input type="date" class="form-control form-control-sm" id="fpUnterschriftTNDatum">
+                              </div>
+                              <div class="col-md-3">
+                                <label class="form-label small text-muted mb-1">Unterschrift Teilnehmer*in</label>
+                                <input type="text" class="form-control form-control-sm" id="fpUnterschriftTN" placeholder="Name">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- ── F\u00f6rderplan Druckvorschau-Overlay ───────────────────────── -->
+              <div id="fpPreviewOverlay" style="display:none;position:fixed;inset:0;z-index:1200;background:rgba(0,0,0,.65);overflow-y:auto;">
+                <div style="position:sticky;top:0;background:#343a40;padding:.6rem 1rem;display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;">
+                  <span style="color:#fff;font-weight:600;margin-right:.5rem;">Vorschau \u2013 F\u00f6rderplan</span>
+                  <div class="form-check form-switch m-0 ms-2" style="color:#fff;">
+                    <input class="form-check-input" type="checkbox" id="fpAnonymCheckbox" role="switch">
+                    <label class="form-check-label small" for="fpAnonymCheckbox">Anonymisiert (Name &rarr; Initialen)</label>
+                  </div>
+                  <button class="btn btn-sm btn-warning text-dark" onclick="window.print()"><i class="bi bi-printer me-1"></i> Drucken</button>
+                  <button class="btn btn-sm btn-outline-light" onclick="alert('Als E-Mail senden (Demo)')"><i class="bi bi-envelope me-1"></i> E-Mail</button>
+                  <button class="btn btn-sm btn-outline-light ms-auto" id="btnFPClosePreview"><i class="bi bi-x-lg me-1"></i> Schlie\u00dfen</button>
+                </div>
+                <div id="fpPreviewPaper" style="background:#fff;max-width:760px;margin:2rem auto;padding:2.5rem 3rem;font-family:'Times New Roman',serif;font-size:11pt;line-height:1.5;"></div>
+              </div>
+
+              <!-- ── F\u00f6rderplan Script ───────────────────────────────────── -->
+              <script>
+(function() {
+  var fpInitDone = false;
+  var savedFPs = [];
+  var _editingFPId = null;
+
+  function g(id) { return document.getElementById(id); }
+  function gv(id) { var el = g(id); return el ? el.value : ''; }
+
+  function fmtFPDate(iso) {
+    if (!iso) return '\u2014';
+    var p = iso.split('-');
+    if (p.length !== 3) return iso;
+    return p[2] + '.' + p[1] + '.' + p[0];
+  }
+
+  // Anonymize a full name: "Max Mustermann" -> "M*** M**********"
+  function anonymizeName(name) {
+    if (!name) return name;
+    return name.split(' ').map(function(part) {
+      if (part.length <= 1) return part;
+      return part[0] + '*'.repeat(part.length - 1);
+    }).join(' ');
+  }
+
+  // ── Collect form data ────────────────────────────────────────────────
+  function collectFP() {
+    return {
+      id: _editingFPId || ('fp-' + Date.now()),
+      datum: gv('fpDatum'),
+      fachkraft: gv('fpFachkraft'),
+      kundennummer: gv('fpKundennummer'),
+      name: gv('fpName'),
+      geburtsdatum: gv('fpGeburtsdatum'),
+      fehlzeitEnt: gv('fpFehlzeitEntschuldigt'),
+      fehlzeitUnent: gv('fpFehlzeitUnentschuldigt'),
+      schulabschluss: gv('fpSchulabschluss'),
+      qualifikationen: gv('fpQualifikationen'),
+      psychosozial: gv('fpPsychosozial'),
+      sprachkompetenz: gv('fpSprachkompetenz'),
+      motivation: gv('fpMotivation'),
+      sozialeKompetenzen: gv('fpSozialeKompetenzen'),
+      leistungsfaehigkeit: gv('fpLeistungsfaehigkeit'),
+      staerken: gv('fpStaerken'),
+      aufsuchendeArbeit: gv('fpAufsuchendeArbeit'),
+      anwesenheit: gv('fpAnwesenheit'),
+      aktivitaeten: gv('fpAktivitaeten'),
+      berufsfelderprobung: gv('fpBerufsfelderprobung'),
+      betrieblicheErprobung: gv('fpBetrieblicheErprobung'),
+      sonstiges: gv('fpSonstiges'),
+      gesprVomDatum: gv('fpGesprVomDatum'),
+      zieleStatus: (document.querySelector('input[name="fpZieleStatus"]:checked') || {}).value || '',
+      begruendung: gv('fpBegruendung'),
+      neueZieleDatum: gv('fpNeueZieleDatum'),
+      unterschriftTraegerDatum: gv('fpUnterschriftTraegerDatum'),
+      unterschriftTraeger: gv('fpUnterschriftTraeger'),
+      unterschriftTNDatum: gv('fpUnterschriftTNDatum'),
+      unterschriftTN: gv('fpUnterschriftTN')
+    };
+  }
+
+  // ── Load into form ────────────────────────────────────────────────────
+  function loadFPIntoForm(fp) {
+    _editingFPId = fp.id;
+    if (g('fpDatum')) g('fpDatum').value = toIsoFP(fp.datum);
+    if (g('fpFachkraft')) g('fpFachkraft').value = fp.fachkraft || '';
+    if (g('fpPsychosozial')) g('fpPsychosozial').value = fp.psychosozial || '';
+    if (g('fpSprachkompetenz')) g('fpSprachkompetenz').value = fp.sprachkompetenz || '';
+    if (g('fpMotivation')) g('fpMotivation').value = fp.motivation || '';
+    if (g('fpSozialeKompetenzen')) g('fpSozialeKompetenzen').value = fp.sozialeKompetenzen || '';
+    if (g('fpLeistungsfaehigkeit')) g('fpLeistungsfaehigkeit').value = fp.leistungsfaehigkeit || '';
+    if (g('fpStaerken')) g('fpStaerken').value = fp.staerken || '';
+    if (g('fpAufsuchendeArbeit')) g('fpAufsuchendeArbeit').value = fp.aufsuchendeArbeit || '';
+    if (g('fpAnwesenheit')) g('fpAnwesenheit').value = fp.anwesenheit || '';
+    if (g('fpAktivitaeten')) g('fpAktivitaeten').value = fp.aktivitaeten || '';
+    if (g('fpBerufsfelderprobung')) g('fpBerufsfelderprobung').value = fp.berufsfelderprobung || '';
+    if (g('fpBetrieblicheErprobung')) g('fpBetrieblicheErprobung').value = fp.betrieblicheErprobung || '';
+    if (g('fpSonstiges')) g('fpSonstiges').value = fp.sonstiges || '';
+    if (g('fpGesprVomDatum')) g('fpGesprVomDatum').value = toIsoFP(fp.gesprVomDatum);
+    if (g('fpBegruendung')) g('fpBegruendung').value = fp.begruendung || '';
+    if (g('fpNeueZieleDatum')) g('fpNeueZieleDatum').value = toIsoFP(fp.neueZieleDatum);
+    if (g('fpUnterschriftTraegerDatum')) g('fpUnterschriftTraegerDatum').value = toIsoFP(fp.unterschriftTraegerDatum);
+    if (g('fpUnterschriftTraeger')) g('fpUnterschriftTraeger').value = fp.unterschriftTraeger || '';
+    if (g('fpUnterschriftTNDatum')) g('fpUnterschriftTNDatum').value = toIsoFP(fp.unterschriftTNDatum);
+    if (g('fpUnterschriftTN')) g('fpUnterschriftTN').value = fp.unterschriftTN || '';
+
+    document.querySelectorAll('input[name="fpZieleStatus"]').forEach(function(r) {
+      r.checked = (r.value === fp.zieleStatus);
+    });
+  }
+
+  function toIsoFP(de) {
+    if (!de || de === '\u2014') return '';
+    var p = de.split('.');
+    if (p.length !== 3) return de;
+    return p[2] + '-' + p[1] + '-' + p[0];
+  }
+
+  // ── Reset form ────────────────────────────────────────────────────────
+  function resetFPForm() {
+    _editingFPId = null;
+    var todayIso = (function() {
+      var t = new Date();
+      return t.getFullYear() + '-' + String(t.getMonth()+1).padStart(2,'0') + '-' + String(t.getDate()).padStart(2,'0');
+    })();
+    if (g('fpDatum')) g('fpDatum').value = todayIso;
+    ['fpPsychosozial','fpSprachkompetenz','fpMotivation','fpSozialeKompetenzen',
+     'fpLeistungsfaehigkeit','fpStaerken','fpAufsuchendeArbeit','fpAnwesenheit',
+     'fpAktivitaeten','fpBerufsfelderprobung','fpBetrieblicheErprobung','fpSonstiges',
+     'fpBegruendung','fpUnterschriftTraeger','fpUnterschriftTN'].forEach(function(id) {
+      if (g(id)) g(id).value = '';
+    });
+    ['fpGesprVomDatum','fpNeueZieleDatum','fpUnterschriftTraegerDatum','fpUnterschriftTNDatum'].forEach(function(id) {
+      if (g(id)) g(id).value = '';
+    });
+    document.querySelectorAll('input[name="fpZieleStatus"]').forEach(function(r) { r.checked = false; });
+    if (g('fpFachkraft')) g('fpFachkraft').selectedIndex = 0;
+  }
+
+  // ── Render card list ─────────────────────────────────────────────────
+  function renderFPKarte() {
+    var liste = g('fpKarteListe');
+    if (!liste) return;
+    if (savedFPs.length === 0) {
+      liste.innerHTML = '<div class="text-muted small fst-italic">Noch kein F\u00f6rderplan erstellt.</div>';
+      return;
+    }
+    var html = '';
+    savedFPs.forEach(function(fp) {
+      var entwurfTag = fp.entwurf
+        ? '<span class="badge bg-warning-subtle text-warning-emphasis ms-1">Entwurf</span>' : '';
+      html += '<div class="d-flex align-items-center gap-2 py-1 border-bottom">'
+        + '<span class="badge bg-info-subtle text-info-emphasis">F\u00f6rderplan</span>'
+        + '<span class="small fw-semibold">' + fmtFPDate(fp.datum) + '</span>'
+        + entwurfTag
+        + '<div class="ms-auto d-flex gap-1">'
+        + '<button class="btn btn-outline-primary btn-sm fp-open-btn" type="button" data-fp-id="' + fp.id + '">'
+        + '<i class="bi bi-pencil-square me-1"></i>Bearbeiten</button>'
+        + '<button class="btn btn-outline-secondary btn-sm fp-print-btn" type="button" data-fp-id="' + fp.id + '">'
+        + '<i class="bi bi-printer"></i></button>'
+        + '<button class="btn btn-outline-danger btn-sm fp-del-btn" type="button" data-fp-id="' + fp.id + '">'
+        + '<i class="bi bi-trash"></i></button>'
+        + '</div></div>';
+    });
+    liste.innerHTML = html;
+
+    liste.querySelectorAll('.fp-open-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var id = this.getAttribute('data-fp-id');
+        var fp = savedFPs.find(function(x){ return x.id === id; });
+        if (!fp) return;
+        loadFPIntoForm(fp);
+        bootstrap.Modal.getOrCreateInstance(g('modalFoerderplanVollbild')).show();
+      });
+    });
+
+    liste.querySelectorAll('.fp-print-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var id = this.getAttribute('data-fp-id');
+        var fp = savedFPs.find(function(x){ return x.id === id; });
+        if (!fp) return;
+        showFPPreview(fp);
+      });
+    });
+
+    liste.querySelectorAll('.fp-del-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var id = this.getAttribute('data-fp-id');
+        var fp = savedFPs.find(function(x){ return x.id === id; });
+        if (!fp) return;
+        if (!confirm('F\u00f6rderplan vom ' + fmtFPDate(fp.datum) + ' wirklich l\u00f6schen?')) return;
+        savedFPs = savedFPs.filter(function(x){ return x.id !== id; });
+        renderFPKarte();
+      });
+    });
+  }
+
+  // ── Build print preview HTML ─────────────────────────────────────────
+  var _currentPreviewFP = null;
+
+  function buildFPPreview(fp, anonym) {
+    var displayName = anonym ? anonymizeName(fp.name || '') : (fp.name || '\u2014');
+
+    function row(label, value) {
+      return '<tr><td style="border:1px solid #999;padding:.35em .6em;width:45%;font-weight:bold;vertical-align:top;">' + label + '</td>'
+        + '<td style="border:1px solid #999;padding:.35em .6em;vertical-align:top;">' + (value || '') + '</td></tr>';
+    }
+
+    function block(title, value) {
+      return '<div style="margin-bottom:.6em;">'
+        + '<div style="font-weight:bold;font-size:10pt;margin-bottom:.15em;">' + title + '</div>'
+        + '<div style="font-size:10pt;border:1px solid #ccc;padding:.4em .6em;min-height:1.6em;white-space:pre-wrap;">' + (value || '') + '</div>'
+        + '</div>';
+    }
+
+    var html = '<h1 style="font-size:16pt;font-weight:bold;margin-bottom:.6em;">F\u00f6rderplan</h1>'
+      + '<p style="font-size:11pt;margin:.2em 0;"><strong>Name der Ma\u00dfnahme:</strong> ' + (fp.massnahmeName || 'INTEQRA') + '</p>'
+      + '<p style="font-size:11pt;margin:.2em 0;"><strong>Datum:</strong> ' + fmtFPDate(fp.datum) + '</p>'
+      + '<p style="font-size:11pt;margin:.2em 0 1em;"><strong>Sozialp\u00e4d. Fachkraft:</strong> ' + (fp.fachkraft || '') + '</p>'
+
+      + '<p style="font-size:11pt;font-weight:bold;margin:.8em 0 .3em;">Personenbezogene Daten</p>'
+      + '<table style="width:100%;border-collapse:collapse;font-size:10pt;margin-bottom:.8em;">'
+      + row('Kundennummer', fp.kundennummer)
+      + row('Name', displayName)
+      + row('Geburtsdatum', anonym ? '\u2014' : fp.geburtsdatum)
+      + '</table>'
+
+      + '<p style="font-size:11pt;font-weight:bold;margin:.8em 0 .3em;">Ma\u00dfnahme bezogene Daten</p>'
+      + '<table style="width:100%;border-collapse:collapse;font-size:10pt;margin-bottom:.8em;">'
+      + row('entschuldigte Fehlzeit', fp.fehlzeitEnt)
+      + row('unentschuldigte Fehlzeit', fp.fehlzeitUnent)
+      + '</table>'
+
+      + '<p style="font-size:11pt;font-weight:bold;margin:.8em 0 .3em;">Berufliche Daten</p>'
+      + '<table style="width:100%;border-collapse:collapse;font-size:10pt;margin-bottom:.8em;">'
+      + row('Schulabschluss', fp.schulabschluss)
+      + row('sonstige Qualifikationen', fp.qualifikationen)
+      + '</table>'
+
+      + '<p style="font-size:11pt;font-weight:bold;margin:.8em 0 .3em;">Kompetenzen</p>'
+      + '<table style="width:100%;border-collapse:collapse;font-size:10pt;margin-bottom:.8em;">'
+      + row('psychosoziale Situation <span style="font-weight:normal;">(famili\u00e4re/s und soziale/s Situation / Umfeld)</span>', fp.psychosozial)
+      + row('Sprachkompetenz', fp.sprachkompetenz)
+      + row('Motivation <span style="font-weight:normal;">(Zuverl\u00e4ssigkeit, Ver\u00e4nderungsbereitschaft, Ziele, etc.)</span>', fp.motivation)
+      + row('soziale Kompetenzen <span style="font-weight:normal;">(Kommunikation, Teamf\u00e4higkeit, Kritikf\u00e4higkeit, etc.)</span>', fp.sozialeKompetenzen)
+      + row('Leistungsf\u00e4higkeit <span style="font-weight:normal;">(k\u00f6rperliche und intellektuelle Leistungsf\u00e4higkeit, Entscheidungsf\u00e4higkeit, Flexibilit\u00e4t, etc.)</span>', fp.leistungsfaehigkeit)
+      + row('berufliche/fachliche St\u00e4rken', fp.staerken)
+      + '</table>'
+
+      + '<p style="font-size:11pt;font-weight:bold;margin:.8em 0 .3em;">Ma\u00dfnahme Verlauf</p>'
+      + '<table style="width:100%;border-collapse:collapse;font-size:10pt;margin-bottom:.8em;">'
+      + row('Aufsuchende Arbeit <span style="font-weight:normal;">(Datum der Aufsuche mit Stichwort des Ergebnisses)</span>', fp.aufsuchendeArbeit)
+      + row('Anwesenheit', fp.anwesenheit)
+      + row('Aktivit\u00e4ten <span style="font-weight:normal;">(Stichwort)</span>', fp.aktivitaeten)
+      + row('Berufsfelderprobung', fp.berufsfelderprobung)
+      + row('Betriebliche Erprobung', fp.betrieblicheErprobung)
+      + row('Sonstiges', fp.sonstiges)
+      + '</table>'
+
+      + '<p style="font-size:11pt;font-weight:bold;margin:1em 0 .3em;">F\u00f6rderplangespr\u00e4ch vom: ' + fmtFPDate(fp.gesprVomDatum) + '</p>'
+      + '<p style="font-size:10pt;margin:.2em 0;"><strong>Ziele:</strong> '
+      + '<span style="display:inline-block;width:13px;height:13px;border:1px solid #333;text-align:center;line-height:13px;font-size:9pt;margin:0 3px 0 8px;">'
+      + (fp.zieleStatus === 'erreicht' ? 'x' : '&nbsp;') + '</span> erreicht'
+      + '<span style="display:inline-block;width:13px;height:13px;border:1px solid #333;text-align:center;line-height:13px;font-size:9pt;margin:0 3px 0 14px;">'
+      + (fp.zieleStatus === 'nicht erreicht' ? 'x' : '&nbsp;') + '</span> nicht erreicht</p>'
+      + block('Begr\u00fcndung', fp.begruendung)
+      + '<p style="font-size:10pt;margin-top:.8em;"><strong>Neue Ziele / F\u00f6rderplangespr\u00e4ch am:</strong> ' + fmtFPDate(fp.neueZieleDatum) + '</p>'
+
+      + '<div style="display:flex;gap:3em;margin-top:2.5em;">'
+      + '<div style="flex:1;">'
+      + '<div style="border-top:1px solid #333;padding-top:.3em;font-size:9pt;">'
+      + fmtFPDate(fp.unterschriftTraegerDatum) + (fp.unterschriftTraeger ? ' \u2013 ' + fp.unterschriftTraeger : '')
+      + '</div>'
+      + '<div style="font-size:8pt;color:#666;margin-top:.2em;">Ort, Datum &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Unterschrift Tr\u00e4ger</div>'
+      + '</div>'
+      + '<div style="flex:1;">'
+      + '<div style="border-top:1px solid #333;padding-top:.3em;font-size:9pt;">'
+      + fmtFPDate(fp.unterschriftTNDatum) + (fp.unterschriftTN ? ' \u2013 ' + (anonym ? anonymizeName(fp.unterschriftTN) : fp.unterschriftTN) : '')
+      + '</div>'
+      + '<div style="font-size:8pt;color:#666;margin-top:.2em;">Ort, Datum &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Unterschrift Teilnehmer*in</div>'
+      + '</div>'
+      + '</div>';
+
+    return html;
+  }
+
+  function showFPPreview(fp) {
+    _currentPreviewFP = fp;
+    var anonymCb = g('fpAnonymCheckbox');
+    if (anonymCb) anonymCb.checked = false;
+    var paper = g('fpPreviewPaper');
+    if (paper) paper.innerHTML = buildFPPreview(fp, false);
+    var ov = g('fpPreviewOverlay');
+    if (ov) { ov.style.display = 'block'; ov.scrollTop = 0; }
+  }
+
+  // ── Save ──────────────────────────────────────────────────────────────
+  function saveFP(asEntwurf) {
+    var fp = collectFP();
+    fp.entwurf = !!asEntwurf;
+    if (_editingFPId) {
+      var idx = savedFPs.findIndex(function(x){ return x.id === _editingFPId; });
+      if (idx > -1) savedFPs[idx] = fp; else savedFPs.push(fp);
+    } else {
+      savedFPs.push(fp);
+    }
+    _editingFPId = null;
+    renderFPKarte();
+    var ind = g('fpEntwurfBadge');
+    if (ind) {
+      ind.style.display = 'inline-block';
+      var t = new Date().toLocaleTimeString('de-DE', {hour:'2-digit', minute:'2-digit'});
+      ind.innerHTML = '<i class="bi bi-floppy me-1"></i>' + (asEntwurf ? 'Entwurf ' + t : 'Gespeichert ' + t);
+      setTimeout(function(){ if (ind) ind.style.display = 'none'; }, 3000);
+    }
+    return fp;
+  }
+
+  // ── Init (once) ──────────────────────────────────────────────────────
+  function initFP() {
+    if (fpInitDone) return;
+    fpInitDone = true;
+
+    var btnEntwurf = g('btnFPEntwurf');
+    if (btnEntwurf) btnEntwurf.addEventListener('click', function() { saveFP(true); });
+
+    var _fpSaving = false;
+    function doSaveFP() {
+      if (_fpSaving) return;
+      _fpSaving = true;
+      if (!gv('fpDatum')) {
+        alert('Bitte ein Datum angeben.');
+        if (g('fpDatum')) g('fpDatum').focus();
+        _fpSaving = false;
+        return;
+      }
+      var fp = saveFP(false);
+      var m = bootstrap.Modal.getInstance(g('modalFoerderplanVollbild'));
+      if (m) {
+        m.hide();
+        setTimeout(function() {
+          alert('F\u00f6rderplan vom ' + fmtFPDate(fp.datum) + ' gespeichert.');
+          _fpSaving = false;
+        }, 400);
+      } else {
+        _fpSaving = false;
+      }
+    }
+    var btnSave = g('btnFPSpeichern');
+    if (btnSave) btnSave.addEventListener('click', doSaveFP);
+
+    var btnVorschau = g('btnFPVorschau');
+    if (btnVorschau) btnVorschau.addEventListener('click', function() {
+      var fp = collectFP();
+      showFPPreview(fp);
+    });
+
+    var btnClose = g('btnFPClosePreview');
+    if (btnClose) btnClose.addEventListener('click', function() {
+      var ov = g('fpPreviewOverlay'); if (ov) ov.style.display = 'none';
+    });
+
+    // Anonymize toggle - re-render preview
+    var anonymCb = g('fpAnonymCheckbox');
+    if (anonymCb) {
+      anonymCb.addEventListener('change', function() {
+        var fp = _currentPreviewFP || collectFP();
+        var paper = g('fpPreviewPaper');
+        if (paper) paper.innerHTML = buildFPPreview(fp, anonymCb.checked);
+      });
+    }
+  }
+
+  // Wire to modal open/close
+  document.addEventListener('DOMContentLoaded', function() {
+    var modalEl = g('modalFoerderplanVollbild');
+    if (modalEl) {
+      modalEl.addEventListener('shown.bs.modal', function() {
+        initFP();
+      });
+      modalEl.addEventListener('hidden.bs.modal', function() {
+        if (!_editingFPId) resetFPForm();
+        _editingFPId = null;
+      });
+    }
+    renderFPKarte();
   });
 
 })();
@@ -2836,8 +3494,11 @@ function anleiterNotenUebernehmen(notenObj) {
         var id = this.getAttribute('data-luv-id');
         var luv = savedLuvs.find(function(x){ return x.id === id; });
         if (!luv) return;
+        _currentPreviewLuv = luv;
+        var anonymCb = document.getElementById('luvAnonymCheckbox');
+        if (anonymCb) anonymCb.checked = false;
         var paper = document.getElementById('luvPreviewPaper');
-        if (paper) paper.innerHTML = buildPreviewHtml(luv);
+        if (paper) paper.innerHTML = buildPreviewHtml(luv, false);
         var ov = document.getElementById('luvPreviewOverlay');
         if (ov) { ov.style.display = 'block'; ov.scrollTop = 0; }
       });
@@ -2925,8 +3586,13 @@ function anleiterNotenUebernehmen(notenObj) {
     return luv;
   }
 
-  function buildPreviewHtml(luv) {
+  function buildPreviewHtml(luv, anonym) {
     var cfg = LUV_CONFIG[luv.art] || LUV_CONFIG['1'];
+    var vorname = anonym ? 'M***' : 'Max';
+    var nachname = anonym ? 'M*********' : 'Mustermann';
+    var geburtsdatum = anonym ? '\u2014' : '01.01.1990';
+    var kdnr = anonym ? '\u2014' : '555D021632';
+    var betreuerName = anonym ? anonymizeNameLuv(luv.betreuer) : luv.betreuer;
 
     var bewGrid = KRITERIEN.map(function(k) {
       var n = luv.noten[k.id];
@@ -2963,11 +3629,11 @@ function anleiterNotenUebernehmen(notenObj) {
 
       + '<h2 style="font-size:12pt;font-weight:bold;margin-top:1.2em;">1) Personenbezogene Daten</h2>'
       + '<table style="width:100%;font-size:10pt;border-collapse:collapse;margin-bottom:.8em;">'
-      + '<tr><td style="color:#555;padding:.15em 1em .15em 0;width:180px;">Nachname:</td><td><strong>Mustermann</strong></td>'
-      + '<td style="padding-left:2em;color:#555;width:120px;">Geburtsdatum:</td><td>01.01.1990</td></tr>'
-      + '<tr><td style="color:#555;">Vorname:</td><td><strong>Max</strong></td>'
-      + '<td style="padding-left:2em;color:#555;">Kd-Nr.:</td><td>555D021632</td></tr>'
-      + '<tr><td style="color:#555;">Betreuer/in beim Träger:</td><td>' + luv.betreuer + '</td>'
+      + '<tr><td style="color:#555;padding:.15em 1em .15em 0;width:180px;">Nachname:</td><td><strong>' + nachname + '</strong></td>'
+      + '<td style="padding-left:2em;color:#555;width:120px;">Geburtsdatum:</td><td>' + geburtsdatum + '</td></tr>'
+      + '<tr><td style="color:#555;">Vorname:</td><td><strong>' + vorname + '</strong></td>'
+      + '<td style="padding-left:2em;color:#555;">Kd-Nr.:</td><td>' + kdnr + '</td></tr>'
+      + '<tr><td style="color:#555;">Betreuer/in beim Träger:</td><td>' + betreuerName + '</td>'
       + '<td style="padding-left:2em;color:#555;">Lehrkraft:</td><td>' + luv.lehrkraft + '</td></tr>'
       + '<tr><td style="color:#555;">Anleiter/in:</td><td>' + luv.anleiter + '</td><td></td><td></td></tr>'
       + '<tr><td style="color:#555;">Maßnahme:</td><td colspan="3">Integra 2025 &nbsp;&middot;&nbsp; 12.09.2025 – 11.09.2026</td></tr>'
@@ -3061,8 +3727,11 @@ function anleiterNotenUebernehmen(notenObj) {
       noten: Object.assign({}, noten),
       potential: gv('luvPotential')
     };
+    _currentPreviewLuv = luv;
+    var anonymCb = document.getElementById('luvAnonymCheckbox');
+    if (anonymCb) anonymCb.checked = false;
     var paper = document.getElementById('luvPreviewPaper');
-    if (paper) paper.innerHTML = buildPreviewHtml(luv);
+    if (paper) paper.innerHTML = buildPreviewHtml(luv, false);
     var ov = document.getElementById('luvPreviewOverlay');
     if (ov) { ov.style.display = 'block'; ov.scrollTop = 0; }
   }
@@ -3317,6 +3986,17 @@ function anleiterNotenUebernehmen(notenObj) {
     if (btnClose) {
       btnClose.addEventListener('click', function() {
         var ov = g('luvPreviewOverlay'); if (ov) ov.style.display = 'none';
+      });
+    }
+
+    // Anonymize toggle - re-render preview
+    var luvAnonymCb = g('luvAnonymCheckbox');
+    if (luvAnonymCb) {
+      luvAnonymCb.addEventListener('change', function() {
+        var luv = _currentPreviewLuv;
+        if (!luv) return;
+        var paper = g('luvPreviewPaper');
+        if (paper) paper.innerHTML = buildPreviewHtml(luv, luvAnonymCb.checked);
       });
     }
 
