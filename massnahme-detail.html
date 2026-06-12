@@ -3041,6 +3041,44 @@ function anleiterNotenUebernehmen(notenObj) {
     return p[2] + '-' + p[1] + '-' + p[0];
   }
 
+  // Reset all LuV form fields to blank/default state (new LuV)
+  function resetLuvFormFields() {
+    var dEl = g('luvDatum');
+    var vEl = g('luvVon');
+    var bEl = g('luvBis');
+    var beEl = g('luvBetreuer');
+    var lkEl = g('luvLehrkraft');
+    var anEl = g('luvAnleiter');
+    var f1El = g('luvFreitext1');
+    var f2El = g('luvFreitext2');
+    var ztEl = g('luvZieltext');
+    var inEl = g('luvInfos');
+    var udEl = g('luvUnterschriftDatum');
+    var ugEl = g('luvUnterschrift');
+
+    var todayIso = (function() {
+      var t = new Date();
+      return t.getFullYear() + '-' + String(t.getMonth()+1).padStart(2,'0') + '-' + String(t.getDate()).padStart(2,'0');
+    })();
+
+    if (dEl) dEl.value = todayIso;
+    if (vEl) vEl.value = '';
+    if (bEl) bEl.value = '';
+    if (beEl) beEl.selectedIndex = 0;
+    if (lkEl) lkEl.selectedIndex = 0;
+    if (anEl) anEl.selectedIndex = 0;
+    if (f1El) f1El.value = '';
+    if (f2El) f2El.value = '';
+    if (ztEl) ztEl.value = '';
+    if (inEl) inEl.value = '';
+    if (udEl) udEl.value = todayIso;
+    if (ugEl) ugEl.value = 'Daniel Chu';
+
+    // ZVB chips
+    var chips = g('zielChips');
+    if (chips) chips.innerHTML = '';
+  }
+
   // Load a saved LuV into the form fields
   function loadLuvIntoForm(luv) {
     // Art
@@ -3325,6 +3363,15 @@ function anleiterNotenUebernehmen(notenObj) {
   document.addEventListener('DOMContentLoaded', function() {
     var modalEl = g('modalLuVVollbild');
     if (modalEl) {
+      // If opening WITHOUT an explicit edit request, ensure clean form
+      modalEl.addEventListener('show.bs.modal', function() {
+        if (!_editingLuvId) {
+          // fresh "Neue LuV erstellen" - clear any leftover state
+          KRITERIEN.forEach(function(k) { noten[k.id] = null; });
+          noten['custom'] = null;
+          customKriteriumLabel = '';
+        }
+      });
       modalEl.addEventListener('shown.bs.modal', initLuV);
 
       // Bound ONCE: reset form/noten when modal closes, allow re-init next open
@@ -3334,6 +3381,7 @@ function anleiterNotenUebernehmen(notenObj) {
         customKriteriumLabel = '';
         _editingLuvId = null;
         renderBewGrid('bewertungGrid', null);
+        resetLuvFormFields();
         setLuvArt('1');
         luvInitDone = false; // allow full re-init next open
       });
