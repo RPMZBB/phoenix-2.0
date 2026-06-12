@@ -2747,8 +2747,14 @@ function anleiterNotenUebernehmen(notenObj) {
   }
 
   function fmtDate(iso) {
-    if (!iso) return '\u2014';
+    if (!iso) {
+      var today = new Date();
+      var dd = String(today.getDate()).padStart(2,'0');
+      var mm = String(today.getMonth()+1).padStart(2,'0');
+      return dd + '.' + mm + '.' + today.getFullYear();
+    }
     var p = iso.split('-');
+    if (p.length !== 3) return iso;
     return p[2] + '.' + p[1] + '.' + p[0];
   }
 
@@ -2768,7 +2774,6 @@ function anleiterNotenUebernehmen(notenObj) {
 
   // ── Saved LuV store ──────────────────────────────────────────────────
   var savedLuvs = [];
-;
 
   var ART_COLORS = {
     '1': 'bg-success-subtle text-success-emphasis',
@@ -2863,8 +2868,8 @@ function anleiterNotenUebernehmen(notenObj) {
       id: 'luv-' + Date.now(),
       art: aktiveLuvArt,
       artLabel: LUV_CONFIG[aktiveLuvArt].label,
-      datum: gv('luvDatum') || new Date().toLocaleDateString('de-DE'),
-      von: gv('luvVon'), bis: gv('luvBis'),
+      datum: fmtDate(gv('luvDatum')) ,
+      von: fmtDate(gv('luvVon')), bis: fmtDate(gv('luvBis')),
       betreuer: gv('luvBetreuer'), lehrkraft: gv('luvLehrkraft'), anleiter: gv('luvAnleiter'),
       f1: gv('luvFreitext1'), f2: gv('luvFreitext2'), zieltext: gv('luvZieltext'),
       noten: Object.assign({}, noten),
@@ -3028,6 +3033,14 @@ function anleiterNotenUebernehmen(notenObj) {
   }
 
 
+  // Convert DD.MM.YYYY -> YYYY-MM-DD for <input type="date">
+  function toIsoDate(de) {
+    if (!de) return '';
+    var p = de.split('.');
+    if (p.length !== 3) return de; // already ISO or invalid
+    return p[2] + '-' + p[1] + '-' + p[0];
+  }
+
   // Load a saved LuV into the form fields
   function loadLuvIntoForm(luv) {
     // Art
@@ -3048,9 +3061,9 @@ function anleiterNotenUebernehmen(notenObj) {
     var udEl = document.getElementById('luvUnterschriftDatum');
     var ugEl = document.getElementById('luvUnterschrift');
 
-    if (dEl) dEl.value = luv.datum || '';
-    if (vEl) vEl.value = luv.von || '';
-    if (bEl) bEl.value = luv.bis || '';
+    if (dEl) dEl.value = toIsoDate(luv.datum);
+    if (vEl) vEl.value = toIsoDate(luv.von);
+    if (bEl) bEl.value = toIsoDate(luv.bis);
     if (beEl) beEl.value = luv.betreuer || '';
     if (lkEl) lkEl.value = luv.lehrkraft || '';
     if (anEl) anEl.value = luv.anleiter || '';
@@ -3252,14 +3265,20 @@ function anleiterNotenUebernehmen(notenObj) {
     }
 
     // Speichern-Buttons verdrahten
+    var _luvSaving = false;
     function doSaveFertig() {
+      if (_luvSaving) return;
+      _luvSaving = true;
       var luv = saveLuV(false);
       var m = bootstrap.Modal.getInstance(g('modalLuVVollbild'));
       if (m) {
         m.hide();
         setTimeout(function() {
           alert('LuV gespeichert: ' + luv.artLabel + ' vom ' + luv.datum);
+          _luvSaving = false;
         }, 400);
+      } else {
+        _luvSaving = false;
       }
     }
 
@@ -3300,26 +3319,25 @@ function anleiterNotenUebernehmen(notenObj) {
 
     // Set default LuV art
     setLuvArt('1');
-
-    // Allow re-init when modal is closed and reopened (reset form)
-    var mainModal = g('modalLuVVollbild');
-    if (mainModal) {
-      mainModal.addEventListener('hidden.bs.modal', function() {
-        // Reset note buttons visual state but keep savedLuvs
-        KRITERIEN.forEach(function(k) { noten[k.id] = null; });
-        _editingLuvId = null;
-        renderBewGrid('bewertungGrid', null);
-        var art1 = g('luvArt'); if (art1) art1.value = '';
-        setLuvArt('1');
-        luvInitDone = false; // allow full re-init next open
-      });
-    }
   }
 
   // Wire to modal open event + init card on page load
   document.addEventListener('DOMContentLoaded', function() {
     var modalEl = g('modalLuVVollbild');
-    if (modalEl) modalEl.addEventListener('shown.bs.modal', initLuV);
+    if (modalEl) {
+      modalEl.addEventListener('shown.bs.modal', initLuV);
+
+      // Bound ONCE: reset form/noten when modal closes, allow re-init next open
+      modalEl.addEventListener('hidden.bs.modal', function() {
+        KRITERIEN.forEach(function(k) { noten[k.id] = null; });
+        noten['custom'] = null;
+        customKriteriumLabel = '';
+        _editingLuvId = null;
+        renderBewGrid('bewertungGrid', null);
+        setLuvArt('1');
+        luvInitDone = false; // allow full re-init next open
+      });
+    }
 
     // Render initial LuV badges in card (page load)
     renderLuvKarte();
