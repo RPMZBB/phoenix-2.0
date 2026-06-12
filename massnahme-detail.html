@@ -2826,7 +2826,6 @@ function anleiterNotenUebernehmen(notenObj) {
         var luv = savedLuvs.find(function(x){ return x.id === id; });
         if (!luv) return;
         loadLuvIntoForm(luv);
-        luvInitDone = false;
         bootstrap.Modal.getOrCreateInstance(document.getElementById('modalLuVVollbild')).show();
       });
     });
@@ -3359,6 +3358,14 @@ function anleiterNotenUebernehmen(notenObj) {
     setLuvArt('1');
   }
 
+  // Per-open refresh: called every time the modal is shown (after first init)
+  function refreshLuvOnOpen() {
+    renderBewGrid('bewertungGrid', null);
+    renderAnleiterAccordion();
+    renderLuvKarte();
+    if (!_editingLuvId) setLuvArt('1');
+  }
+
   // Wire to modal open event + init card on page load
   document.addEventListener('DOMContentLoaded', function() {
     var modalEl = g('modalLuVVollbild');
@@ -3372,7 +3379,10 @@ function anleiterNotenUebernehmen(notenObj) {
           customKriteriumLabel = '';
         }
       });
-      modalEl.addEventListener('shown.bs.modal', initLuV);
+      modalEl.addEventListener('shown.bs.modal', function() {
+        initLuV();          // one-time event binding (no-op after first call)
+        refreshLuvOnOpen(); // per-open: re-render grids/cards, reset art if new
+      });
 
       // Bound ONCE: reset form/noten when modal closes, allow re-init next open
       modalEl.addEventListener('hidden.bs.modal', function() {
@@ -3383,7 +3393,9 @@ function anleiterNotenUebernehmen(notenObj) {
         renderBewGrid('bewertungGrid', null);
         resetLuvFormFields();
         setLuvArt('1');
-        luvInitDone = false; // allow full re-init next open
+        // NOTE: initLuV runs only once for the page lifetime (event bindings
+        // are permanent); do NOT reset luvInitDone here, or click handlers
+        // would stack up on every re-open.
       });
     }
 
