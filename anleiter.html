@@ -1,11 +1,1596 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Titel der Webseite</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PHÖNIX Prototyp – Anleiter</title>
+
+  <!-- Bootstrap & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+
+  <!-- Custom Styles (gleiche Styles wie index.html) -->
+  <link rel="stylesheet" href="css/custom.css" />
+
+  <style>
+    .sidebar.is-hidden { display: none !important; }
+
+    /* View-Umschaltung (statt iframe) */
+    .view-pane { display: none; }
+    .view-pane.active { display: block; }
+
+    /* Anwesenheit Monatsübersicht */
+    .anw-month-table {
+      font-size: .78rem;
+      table-layout: fixed;
+      width: 100%;
+    }
+    .anw-month-table th,
+    .anw-month-table td {
+      padding: .25rem .18rem;
+      white-space: nowrap;
+    }
+    .anw-month-table .anw-month-person {
+      width: 150px;
+      max-width: 150px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .anw-month-table .anw-month-day { width: 30px; }
+    .anw-month-table .anw-month-kpi { width: 38px; }
+    .anw-month-table .badge { font-size: .7rem; min-width: 22px; padding: .25em .35em; }
+
+    /* Bewertungs-Raster (aus TN-Profil LuV übernommen) */
+    .bewertung-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: .5rem 2rem;
+    }
+    @media (max-width:600px) { .bewertung-grid { grid-template-columns: 1fr; } }
+
+    .bew-row {
+      display: flex;
+      flex-direction: column;
+      padding: .4rem 0;
+      border-bottom: 1px solid #f0f0f0;
+      gap: .15rem;
+    }
+    .bew-row:last-child { border-bottom: none; }
+    .bew-label { font-size: .74rem; color: #6c757d; text-transform: uppercase; letter-spacing: .02em; }
+    .note-btns { display: flex; gap: 3px; flex-shrink: 0; }
+    .note-btns button {
+      width: 30px; height: 28px;
+      border: 1px solid #ced4da;
+      background: #fff;
+      border-radius: 4px;
+      font-size: .8rem;
+      cursor: pointer;
+      transition: all .12s;
+      color: #495057;
+    }
+    .note-btns button:hover { background: #e9ecef; }
+    .note-btns button.sel-1,.note-btns button.sel-2 { background:#198754; border-color:#198754; color:#fff; font-weight:700; }
+    .note-btns button.sel-3,.note-btns button.sel-4 { background:#fd7e14; border-color:#fd7e14; color:#fff; font-weight:700; }
+    .note-btns button.sel-5,.note-btns button.sel-6 { background:#dc3545; border-color:#dc3545; color:#fff; font-weight:700; }
+  </style>
 </head>
+
 <body>
-    <h1>Hallo Welt!</h1>
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <button
+      id="sidebarToggle"
+      type="button"
+      class="btn btn-sm btn-outline-light me-2"
+      aria-label="Navigation ein-/ausblenden"
+      title="Navigation ein-/ausblenden"
+    >
+      <i class="bi bi-list"></i>
+    </button>
+
+    <div class="fw-bold">PHÖNIX</div>
+    <div class="small text-white-50">Anleiter</div>
+  </header>
+
+  <!-- LAYOUT -->
+  <div class="layout">
+
+    <!-- SIDEBAR -->
+    <nav class="sidebar" id="sidebar">
+
+      <a href="#" class="nav-link-custom active" data-view="view-uebersicht">
+        <i class="bi bi-speedometer2"></i> Meine Maßnahmen
+      </a>
+
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <main class="main">
+
+      <!-- ============================================================
+           VIEW: ÜBERSICHT (Maßnahmenliste)
+           ============================================================ -->
+      <div class="view-pane active" id="view-uebersicht">
+        <div class="bg-light p-4 p-lg-5">
+
+          <!-- CARD: Heading + Info -->
+          <div class="card border-0 shadow mb-3">
+            <div class="card-body p-4">
+              <div class="d-flex flex-wrap justify-content-between align-items-start gap-3">
+                <div class="flex-grow-1">
+                  <div class="d-flex align-items-center gap-2">
+                    <h2 class="fw-normal mb-0">Meine Maßnahmen</h2>
+                    <button class="btn btn-sm p-0 text-muted"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#hilfeAnleiterMassnahmen"
+                            aria-expanded="false"
+                            aria-controls="hilfeAnleiterMassnahmen"
+                            type="button">
+                      <i class="bi bi-info-circle"></i>
+                    </button>
+                  </div>
+                  <div class="text-secondary mt-1" style="font-size:.95rem;">
+                    Angemeldet als <strong>R. Piechowiak</strong> &middot; Anleiter
+                  </div>
+                </div>
+              </div>
+
+              <div class="collapse mt-3" id="hilfeAnleiterMassnahmen">
+                <div class="bg-body-tertiary rounded p-3 text-muted small">
+                  Hier sehen Sie die Maßnahmen, denen Sie als Anleiter zugeordnet sind.
+                  Wählen Sie eine Maßnahme aus, um Ihre Teilnehmer einzusehen, Anwesenheiten zu erfassen,
+                  Unterschriftenlisten zu drucken und monatliche Bewertungen (LuV) abzugeben.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- CARD: Maßnahmenliste -->
+          <div class="card border-0 shadow">
+            <div class="card-body p-0">
+              <div class="p-3 p-lg-4 border-bottom d-flex justify-content-between align-items-center">
+                <div>
+                  <div class="text-secondary small">Zugewiesen</div>
+                  <h6 class="mb-0">Maßnahmen mit Ihrem Arbeitsbereich</h6>
+                </div>
+                <span class="badge text-bg-light border">
+                  <i class="bi bi-collection me-1"></i> <span id="massnahmenCount">2</span>
+                </span>
+              </div>
+
+              <div class="list-group list-group-flush" id="massnahmenList">
+
+                <a href="#" class="list-group-item list-group-item-action massnahme-link" data-key="integra2026">
+                  <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                    <div>
+                      <div class="fw-semibold">Integra 2026</div>
+                      <small class="text-secondary">01.01.2026 bis 31.12.2026</small>
+                    </div>
+                    <div class="d-flex align-items-center gap-4 flex-wrap">
+                      <div class="text-end">
+                        <div class="text-secondary small">Mein Bereich</div>
+                        <div>Maler &amp; Lackierer</div>
+                      </div>
+                      <div class="text-end">
+                        <div class="text-secondary small">Teilnehmer (aktiv)</div>
+                        <div>4</div>
+                      </div>
+                      <button class="btn btn-outline-secondary btn-sm" onclick="event.stopPropagation();">
+                        <i class="bi bi-arrow-right me-1"></i> Öffnen
+                      </button>
+                    </div>
+                  </div>
+                </a>
+
+                <a href="#" class="list-group-item list-group-item-action massnahme-link" data-key="integra2025">
+                  <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                    <div>
+                      <div class="fw-semibold">Integra 2025</div>
+                      <small class="text-secondary">01.01.2024 bis 31.06.2025</small>
+                    </div>
+                    <div class="d-flex align-items-center gap-4 flex-wrap">
+                      <div class="text-end">
+                        <div class="text-secondary small">Mein Bereich</div>
+                        <div>Maler &amp; Lackierer</div>
+                      </div>
+                      <div class="text-end">
+                        <div class="text-secondary small">Teilnehmer (aktiv)</div>
+                        <div>3</div>
+                      </div>
+                      <button class="btn btn-outline-secondary btn-sm" onclick="event.stopPropagation();">
+                        <i class="bi bi-arrow-right me-1"></i> Öffnen
+                      </button>
+                    </div>
+                  </div>
+                </a>
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div><!-- /view-uebersicht -->
+
+
+      <!-- ============================================================
+           VIEW: MASSNAHME DETAIL
+           ============================================================ -->
+      <div class="view-pane" id="view-massnahme">
+        <div class="bg-light p-4 p-lg-5">
+
+          <!-- CARD: Titel -->
+          <div class="card border-0 shadow mb-3">
+            <div class="card-body p-4">
+              <div class="d-flex flex-wrap justify-content-between align-items-start gap-3">
+                <div>
+                  <div class="text-secondary small">Maßnahme</div>
+                  <h2 class="fw-normal mb-0" id="mNameTitle">Integra 2026</h2>
+                  <div class="text-secondary mt-2" style="font-size:.95rem;">
+                    Ihr Arbeitsbereich: <strong id="mArbeitsbereich">Maler &amp; Lackierer</strong>
+                  </div>
+                </div>
+
+                <div class="d-flex gap-2">
+                  <a href="#" class="btn btn-outline-secondary anleiter-back-link" data-view="view-uebersicht">
+                    <i class="bi bi-arrow-left me-1"></i> Zur Übersicht
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- CARD: Tabs -->
+          <div class="card border-0 shadow">
+            <div class="card-body p-0">
+
+              <div class="px-3 px-lg-4 pt-3 pt-lg-4 border-bottom">
+                <ul class="nav nav-tabs">
+                  <li class="nav-item">
+                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-teilnehmer" type="button">
+                      <i class="bi bi-people me-1"></i> Teilnehmer
+                    </button>
+                  </li>
+                  <li class="nav-item">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-anwesenheit" type="button">
+                      <i class="bi bi-calendar-check me-1"></i> Anwesenheiten erfassen
+                    </button>
+                  </li>
+                  <li class="nav-item">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-bewertung" type="button">
+                      <i class="bi bi-clipboard-check me-1"></i> Monatsbewertung
+                    </button>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="tab-content p-3 p-lg-4">
+
+                <!-- ============================================================
+                     TAB: TEILNEHMER
+                     ============================================================ -->
+                <div class="tab-pane fade show active" id="tab-teilnehmer">
+
+                  <div class="text-secondary mb-3" style="font-size:.95rem;">
+                    Diese Liste zeigt die <strong>aktiven Teilnehmer</strong>, die Ihrem Arbeitsbereich
+                    (<strong id="tnArbeitsbereichLabel">Maler &amp; Lackierer</strong>) zugewiesen sind.
+                    Über <strong>Mehr Filter</strong> können Sie zusätzlich <strong>beendete</strong> Teilnehmer einblenden,
+                    z.&nbsp;B. um nachträglich Anwesenheiten zu dokumentieren.
+                  </div>
+
+                  <!-- Filter -->
+                  <div class="card border-0 bg-body-tertiary mb-3">
+                    <div class="card-body p-3">
+
+                      <div class="row g-2 align-items-end">
+                        <div class="col-12 col-lg-6">
+                          <div class="input-group">
+                            <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+                            <input type="text" class="form-control" id="tnFilterSearch" placeholder="Name, Kennung, Kürzel …">
+                          </div>
+                        </div>
+
+                        <div class="col-12 col-lg-6">
+                          <div class="d-flex gap-2 justify-content-lg-end">
+                            <button class="btn btn-outline-secondary" type="button"
+                                    data-bs-toggle="collapse" data-bs-target="#tnMoreFilters"
+                                    aria-expanded="false" aria-controls="tnMoreFilters">
+                              <i class="bi bi-sliders me-1"></i> Mehr Filter
+                            </button>
+                            <button class="btn btn-outline-secondary" type="button" id="btnTnReset" title="Zurücksetzen">
+                              <i class="bi bi-arrow-counterclockwise"></i>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Mehr Filter -->
+                      <div class="collapse mt-2" id="tnMoreFilters">
+                        <div class="border rounded-3 bg-white p-3">
+                          <div class="small text-muted mb-1">Status anzeigen</div>
+                          <div class="d-flex flex-wrap gap-3">
+                            <div class="form-check">
+                              <input class="form-check-input" type="checkbox" id="statusAktiv" checked>
+                              <label class="form-check-label" for="statusAktiv">aktiv</label>
+                            </div>
+                            <div class="form-check">
+                              <input class="form-check-input" type="checkbox" id="statusBeendet">
+                              <label class="form-check-label" for="statusBeendet">beendet</label>
+                            </div>
+                          </div>
+                          <div class="form-text small">
+                            Standard ist nur <strong>aktiv</strong>. „Geplant" wird hier nicht angezeigt –
+                            diese Teilnehmer sind noch nicht in Ihrem Arbeitsbereich tätig.
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+
+                  <!-- Aktionen -->
+                  <div class="d-flex justify-content-end gap-2 mb-2">
+                    <button class="btn btn-success text-nowrap" type="button" id="btnOpenUnterschriftenModal">
+                      <i class="bi bi-pen me-2"></i> Unterschriftenliste
+                    </button>
+                  </div>
+
+                  <!-- Tabelle Teilnehmer -->
+                  <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                      <thead class="table-light">
+                        <tr>
+                          <th>Teilnehmer</th>
+                          <th>Status</th>
+                          <th>Zuweisung</th>
+                          <th>Betreuer</th>
+                          <th class="text-end">Aktionen</th>
+                        </tr>
+                      </thead>
+                      <tbody id="tnTableBody">
+                        <!-- per JS -->
+                      </tbody>
+                    </table>
+                  </div>
+
+                </div><!-- /tab-teilnehmer -->
+
+                <!-- ============================================================
+                     TAB: ANWESENHEIT
+                     ============================================================ -->
+                <div class="tab-pane fade" id="tab-anwesenheit">
+
+                  <div class="text-secondary mb-3" style="font-size:.95rem;">
+                    Erfassen Sie hier die Anwesenheit Ihrer Teilnehmer im Arbeitsbereich
+                    <strong id="anwArbeitsbereichLabel">Maler &amp; Lackierer</strong>.
+                  </div>
+
+                  <div class="card border-0 bg-body-tertiary mb-3">
+                    <div class="card-body p-3">
+
+                      <div class="d-flex flex-wrap align-items-center gap-2">
+                        <button class="btn btn-outline-secondary" type="button" id="btnAnwPrev"><i class="bi bi-chevron-left"></i></button>
+
+                        <input type="date" class="form-control w-auto" id="anwDate">
+
+                        <button class="btn btn-outline-secondary" type="button" id="btnAnwNext"><i class="bi bi-chevron-right"></i></button>
+
+                        <div class="btn-group ms-lg-2" role="group" aria-label="Anwesenheitsansicht umschalten">
+                          <input type="radio" class="btn-check" name="anwViewMode" id="anwViewDay" checked>
+                          <label class="btn btn-outline-primary" for="anwViewDay">
+                            <i class="bi bi-calendar-day me-1"></i> Tagesansicht
+                          </label>
+
+                          <input type="radio" class="btn-check" name="anwViewMode" id="anwViewMonth">
+                          <label class="btn btn-outline-primary" for="anwViewMonth">
+                            <i class="bi bi-calendar-month me-1"></i> Monatsübersicht
+                          </label>
+                        </div>
+
+                        <button class="btn btn-outline-dark ms-lg-auto" id="btnAllPresent" type="button">Alle anwesend</button>
+                      </div>
+
+                      <div class="small text-muted mt-2" id="anwViewHint">
+                        Tagesansicht: Anwesenheiten für einen einzelnen Tag erfassen.
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Tagesansicht -->
+                  <div id="anwDayView">
+                    <div class="table-responsive">
+                      <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light">
+                          <tr>
+                            <th>Teilnehmer</th>
+                            <th>Anwesenheit</th>
+                            <th class="text-end">Aktion</th>
+                          </tr>
+                        </thead>
+                        <tbody id="anwTableBody">
+                          <!-- per JS -->
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  <!-- Monatsübersicht -->
+                  <div id="anwMonthView" class="d-none">
+                    <div class="card border-0 shadow-sm mb-3">
+                      <div class="card-body p-3">
+                        <div class="d-flex flex-wrap justify-content-between align-items-start gap-3">
+                          <div>
+                            <div class="text-secondary small">Monatsübersicht</div>
+                            <h5 class="mb-1" id="anwMonthTitle">—</h5>
+                            <div class="text-secondary" style="font-size:.95rem;">
+                              Übersicht über Anwesenheit, Fehlzeiten, AU/Krank und Urlaub im ausgewählten Monat.
+                            </div>
+                          </div>
+
+                          <div class="d-flex flex-wrap gap-2">
+                            <span class="badge text-bg-success">A = anwesend</span>
+                            <span class="badge text-bg-warning text-dark">K = krank/AU</span>
+                            <span class="badge text-bg-primary">U = Urlaub</span>
+                            <span class="badge text-bg-danger">F = fehlt</span>
+                            <span class="badge text-bg-info">E = entschuldigt</span>
+                            <span class="badge text-bg-light border text-dark">– = offen</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="table-responsive border rounded-3 bg-white">
+                      <table class="table table-bordered table-sm align-middle text-center mb-0 anw-month-table">
+                        <thead class="table-light" id="anwMonthHead"></thead>
+                        <tbody id="anwMonthBody"></tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                </div><!-- /tab-anwesenheit -->
+
+                <!-- ============================================================
+                     TAB: MONATSBEWERTUNG
+                     ============================================================ -->
+                <div class="tab-pane fade" id="tab-bewertung">
+
+                  <div class="text-secondary mb-3" style="font-size:.95rem;">
+                    Tragen Sie hier einmal monatlich die <strong>Leistungs- und Verhaltensbewertung</strong>
+                    für jeden Teilnehmer ein. Diese Bewertungen stehen den Sozialpädagogen anschließend
+                    im Bereich „Verlauf &amp; Bewertung" zur Übernahme in die LuV zur Verfügung.
+                  </div>
+
+                  <!-- Teilnehmer-Auswahl + Monat -->
+                  <div class="card border-0 bg-body-tertiary mb-3">
+                    <div class="card-body p-3">
+                      <div class="row g-2 align-items-end">
+                        <div class="col-12 col-md-6">
+                          <div class="form-floating">
+                            <select class="form-select" id="bewTnSelect"></select>
+                            <label for="bewTnSelect">Teilnehmer</label>
+                          </div>
+                        </div>
+                        <div class="col-12 col-md-3">
+                          <div class="form-floating">
+                            <input type="month" class="form-control" id="bewMonat">
+                            <label for="bewMonat">Bewertungsmonat</label>
+                          </div>
+                        </div>
+                        <div class="col-12 col-md-3">
+                          <div class="d-flex h-100 align-items-end">
+                            <span class="badge text-bg-light border" id="bewStatusBadge">noch nicht erfasst</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Bewertungsraster -->
+                  <div class="border rounded-3 p-3 bg-white">
+                    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
+                      <div class="fw-semibold">Bewertung (Schulnotensystem)</div>
+                      <div class="text-muted small">
+                        1 = sehr gut · 2 = gut · 3 = befriedigend · 4 = ausreichend · 5 = mangelhaft · 6 = ungenügend
+                      </div>
+                    </div>
+
+                    <div class="bewertung-grid" id="bewertungGrid"></div>
+
+                    <hr class="my-3">
+
+                    <div class="mb-0">
+                      <label class="form-label small text-muted mb-1" for="bewKommentar">Kurzkommentar (optional)</label>
+                      <textarea class="form-control" id="bewKommentar" rows="3"
+                        placeholder="z. B. besondere Vorkommnisse, Fortschritte, Auffälligkeiten …"></textarea>
+                    </div>
+
+                    <div class="d-flex justify-content-end gap-2 mt-3">
+                      <button class="btn btn-outline-secondary" type="button" id="btnBewVerlauf" data-bs-toggle="modal" data-bs-target="#modalBewVerlauf">
+                        <i class="bi bi-clock-history me-1"></i> Verlauf ansehen
+                      </button>
+                      <button class="btn btn-primary" type="button" id="btnBewSpeichern">
+                        <i class="bi bi-check2 me-1"></i> Bewertung speichern
+                      </button>
+                    </div>
+                  </div>
+
+                </div><!-- /tab-bewertung -->
+
+              </div><!-- /tab-content -->
+            </div>
+          </div>
+
+        </div>
+      </div><!-- /view-massnahme -->
+
+    </main>
+  </div><!-- /layout -->
+
+
+  <!-- === Unterschriftenliste Modal === -->
+  <div class="modal fade" id="unterschriftenModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div>
+            <div class="text-secondary small">Drucken</div>
+            <h5 class="modal-title mb-0">Unterschriftenliste</h5>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Schließen"></button>
+        </div>
+
+        <div class="modal-body">
+          <div class="text-secondary mb-3" style="font-size:.95rem;">
+            Wählen Sie den Tag, für den die Unterschriftenliste für Ihren Arbeitsbereich
+            (<strong id="uArbeitsbereichLabel">Maler &amp; Lackierer</strong>) gedruckt werden soll.
+          </div>
+
+          <div class="form-floating mb-3">
+            <input type="date" class="form-control" id="uDatum">
+            <label for="uDatum">Datum (für den Ausdruck)</label>
+          </div>
+
+          <div class="d-grid gap-2">
+            <button class="btn btn-primary" type="button" id="btnUDruckPdf">
+              <i class="bi bi-printer me-2"></i> Unterschriftenliste (PDF drucken)
+            </button>
+            <button class="btn btn-outline-secondary" type="button" id="btnUDruckExcel">
+              <i class="bi bi-file-earmark-spreadsheet me-2"></i> Unterschriftenliste (Excel)
+            </button>
+          </div>
+
+          <div class="alert alert-info mt-3 mb-0 py-2">
+            <i class="bi bi-info-circle me-1"></i>
+            Demo: Buttons zeigen nur eine Meldung (keine echte Datei-Erzeugung).
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- === Anwesenheit Übersicht Modal === -->
+  <div class="modal fade" id="anwesenheitModal" tabindex="-1" aria-labelledby="anwesenheitModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="anwesenheitModalLabel">Anwesenheit – Detailansicht</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body">
+          <div class="row g-3 mb-4">
+            <div class="col-md-4">
+              <div class="border rounded-3 p-4 h-100 d-flex flex-column justify-content-center text-center">
+                <div class="display-4 fw-semibold" id="anwModalQuote">56&nbsp;%</div>
+                <div class="text-muted text-uppercase small mt-2">Anwesenheitsquote</div>
+              </div>
+            </div>
+
+            <div class="col-md-8">
+              <div class="row g-3">
+                <div class="col-6">
+                  <div class="border rounded-3 p-3 text-center h-100">
+                    <div class="small text-muted">Fehltage</div>
+                    <div class="fs-4 fw-semibold" id="anwModalFehltage">2</div>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="border rounded-3 p-3 text-center h-100">
+                    <div class="small text-muted">Quote AU</div>
+                    <div class="fs-4 fw-semibold" id="anwModalAU">90&nbsp;%</div>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="border rounded-3 p-3 text-center h-100">
+                    <div class="small text-muted">Urlaub</div>
+                    <div class="fs-4 fw-semibold" id="anwModalUrlaub">30</div>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="border rounded-3 p-3 text-center h-100">
+                    <div class="small text-muted">Quote F</div>
+                    <div class="fs-4 fw-semibold" id="anwModalF">10&nbsp;%</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="text-muted small">
+            Detaillierte Kalenderübersicht steht im Sozialpädagogen-Bereich (Maßnahme-Detail) zur Verfügung.
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Schließen</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- === Bewertungsverlauf Modal === -->
+  <div class="modal fade" id="modalBewVerlauf" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Bewertungsverlauf – <span id="bewVerlaufName">Teilnehmer</span></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Schließen"></button>
+        </div>
+        <div class="modal-body">
+          <div class="accordion" id="bewVerlaufAccordion"></div>
+          <div class="text-muted small fst-italic mt-2" id="bewVerlaufEmpty" style="display:none;">
+            Noch keine Bewertungen vorhanden.
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Schließen</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Toast -->
+  <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1080;">
+    <div id="appToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="toast-header">
+        <i class="bi bi-info-circle me-2"></i>
+        <strong class="me-auto" id="toastTitle">Info</strong>
+        <small class="text-muted">jetzt</small>
+        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Schließen"></button>
+      </div>
+      <div class="toast-body" id="toastBody">—</div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    // =========================
+    // Sidebar Toggle
+    // =========================
+    const sidebar = document.getElementById("sidebar");
+    const sidebarToggle = document.getElementById("sidebarToggle");
+    sidebarToggle.addEventListener("click", () => {
+      sidebar.classList.toggle("is-hidden");
+    });
+
+    // =========================
+    // View-Umschaltung (Übersicht <-> Maßnahme), kein iframe
+    // =========================
+    function showView(viewId) {
+      document.querySelectorAll(".view-pane").forEach(v => v.classList.remove("active"));
+      const target = document.getElementById(viewId);
+      if (target) target.classList.add("active");
+      window.scrollTo({ top: 0, behavior: "instant" });
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      // Sidebar-Link "Meine Maßnahmen"
+      document.querySelectorAll(".nav-link-custom").forEach(link => {
+        link.addEventListener("click", function (e) {
+          e.preventDefault();
+          document.querySelectorAll(".nav-link-custom").forEach(l => l.classList.remove("active"));
+          this.classList.add("active");
+          const view = this.getAttribute("data-view");
+          if (view) showView(view);
+        });
+      });
+
+      // Maßnahmen-Kacheln in der Übersicht
+      document.querySelectorAll(".massnahme-link").forEach(link => {
+        link.style.cursor = "pointer";
+        link.addEventListener("click", function (e) {
+          e.preventDefault();
+          const key = this.getAttribute("data-key");
+          loadMassnahme(key);
+          showView("view-massnahme");
+        });
+      });
+
+      // "Zur Übersicht" Link in der Maßnahme-Detailansicht
+      document.querySelector(".anleiter-back-link")?.addEventListener("click", function (e) {
+        e.preventDefault();
+        document.querySelectorAll(".nav-link-custom").forEach(l => l.classList.remove("active"));
+        document.querySelector('[data-view="view-uebersicht"]')?.classList.add("active");
+        showView("view-uebersicht");
+      });
+    });
+  </script>
+
+  <script>
+    // =========================
+    // Utils
+    // =========================
+    function fmtDateDE(iso) {
+      if (!iso) return "–";
+      const [y,m,d] = iso.split("-");
+      if (!y || !m || !d) return iso;
+      return `${d}.${m}.${y}`;
+    }
+    function escapeHtml(s){
+      return String(s ?? "")
+        .replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;").replaceAll("'","&#039;");
+    }
+    function showToast(title, body) {
+      const t = document.getElementById("appToast");
+      document.getElementById("toastTitle").textContent = title;
+      document.getElementById("toastBody").textContent = body;
+      const toast = bootstrap.Toast.getOrCreateInstance(t, { delay: 2500 });
+      toast.show();
+    }
+    function todayISO(){
+      const d = new Date();
+      const y = d.getFullYear();
+      const m = String(d.getMonth()+1).padStart(2,"0");
+      const dd = String(d.getDate()).padStart(2,"0");
+      return `${y}-${m}-${dd}`;
+    }
+    function addDaysISO(iso, diff){
+      const d = new Date(iso + "T00:00:00");
+      d.setDate(d.getDate() + diff);
+      return d.toISOString().slice(0,10);
+    }
+    function daysInMonth(year, monthIndex){
+      return new Date(year, monthIndex + 1, 0).getDate();
+    }
+    function getMonthNameDE(monthIndex){
+      return [
+        "Januar","Februar","März","April","Mai","Juni",
+        "Juli","August","September","Oktober","November","Dezember"
+      ][monthIndex];
+    }
+  </script>
+
+  <script>
+    // =========================
+    // Maßnahme / Anleiter-Kontext
+    // =========================
+
+    // Welcher Anleiter ist eingeloggt + welcher Arbeitsbereich (Demo: fest hinterlegt)
+    const ANLEITER = {
+      name: "R. Piechowiak",
+      arbeitsbereich: "Maler" // intern verwendeter Schlüssel, entspricht "arbeitsbereich" der TN
+    };
+
+    const MASSNAHMEN = {
+      integra2026: { name: "Integra 2026", arbeitsbereichLabel: "Maler & Lackierer" },
+      integra2025: { name: "Integra 2025", arbeitsbereichLabel: "Maler & Lackierer" }
+    };
+
+    let massnahmeKey = "integra2026";
+    let massnahme = MASSNAHMEN[massnahmeKey];
+
+    // Wird beim Klick auf eine Maßnahmen-Kachel aufgerufen
+    function loadMassnahme(key) {
+      massnahmeKey = MASSNAHMEN[key] ? key : "integra2026";
+      massnahme = MASSNAHMEN[massnahmeKey];
+
+      document.getElementById("mNameTitle").textContent = massnahme.name;
+      document.querySelectorAll("#mArbeitsbereich, #tnArbeitsbereichLabel, #anwArbeitsbereichLabel, #uArbeitsbereichLabel")
+        .forEach(el => el.textContent = massnahme.arbeitsbereichLabel);
+
+      allTn = DEMO_TN_BY_MASSNAHME[massnahmeKey] || DEMO_TN_BY_MASSNAHME.integra2026;
+
+      // alles neu rendern für die gewählte Maßnahme
+      resetTeilnehmerFilter();
+
+      anwState.statusByDate = {};
+      anwState.selectedDate = todayISO();
+      const dateEl = document.getElementById("anwDate");
+      if (dateEl) dateEl.value = anwState.selectedDate;
+      initAnwesenheitDemoData();
+      setAnwView("day");
+      const dayRadio = document.getElementById("anwViewDay");
+      if (dayRadio) dayRadio.checked = true;
+
+      populateBewTnSelect();
+      document.getElementById("bewMonat").value = currentMonthValue();
+      loadBewertungFor(document.getElementById("bewTnSelect").value, document.getElementById("bewMonat").value);
+
+      // ersten Tab aktivieren
+      const firstTabBtn = document.querySelector('[data-bs-target="#tab-teilnehmer"]');
+      if (firstTabBtn) bootstrap.Tab.getOrCreateInstance(firstTabBtn).show();
+    }
+  </script>
+
+  <script>
+    // =========================
+    // Teilnehmer-Demodaten
+    // (gefiltert auf Arbeitsbereich des Anleiters, nur aktiv/beendet, kein "geplant")
+    // =========================
+
+    const DEMO_TN_BY_MASSNAHME = {
+      integra2026: [
+        {
+          id: "tn-101", kuerzel: "MM", name: "Max Mustermann", kennung: "555XV5974",
+          status: "aktiv", betreuer: "Daniel Chu", arbeitsbereich: "Maler",
+          zuweisungVon: "2026-01-01", zuweisungBis: "2026-12-31"
+        },
+        {
+          id: "tn-102", kuerzel: "LS", name: "Leonie Schmitt", kennung: "JC-2044",
+          status: "aktiv", betreuer: "Daniel Chu", arbeitsbereich: "Maler",
+          zuweisungVon: "2026-01-15", zuweisungBis: "2026-12-31"
+        },
+        {
+          id: "tn-103", kuerzel: "FB", name: "Fatima Bouzid", kennung: "JC-5122",
+          status: "aktiv", betreuer: "Holger Irmak", arbeitsbereich: "Maler",
+          zuweisungVon: "2026-02-01", zuweisungBis: "2026-12-31"
+        },
+        {
+          id: "tn-104", kuerzel: "TR", name: "Tim Richter", kennung: "JC-6001",
+          status: "aktiv", betreuer: "Daniel Chu", arbeitsbereich: "Maler",
+          zuweisungVon: "2026-03-01", zuweisungBis: "2026-12-31"
+        },
+        {
+          id: "tn-105", kuerzel: "JM", name: "Julia Mayer", kennung: "JC-7002",
+          status: "beendet", betreuer: "Holger Irmak", arbeitsbereich: "Maler",
+          zuweisungVon: "2026-01-01", zuweisungBis: "2026-05-31"
+        },
+        // anderer Arbeitsbereich -> wird für diesen Anleiter nicht angezeigt
+        {
+          id: "tn-106", kuerzel: "AB", name: "Ali Benali", kennung: "JC-1003",
+          status: "aktiv", betreuer: "Holger Irmak", arbeitsbereich: "Hauswirtschaft",
+          zuweisungVon: "2026-01-01", zuweisungBis: "2026-12-31"
+        },
+        // geplant -> nie sichtbar für Anleiter
+        {
+          id: "tn-107", kuerzel: "NK", name: "Nina Keller", kennung: "JC-4088",
+          status: "geplant", betreuer: "Daniel Chu", arbeitsbereich: "Maler",
+          zuweisungVon: "2026-09-01", zuweisungBis: "2026-12-31"
+        }
+      ],
+      integra2025: [
+        {
+          id: "tn-001", kuerzel: "MM", name: "Max Mustermann", kennung: "KV-555NXX",
+          status: "aktiv", betreuer: "Daniel Chu", arbeitsbereich: "Maler",
+          zuweisungVon: "2024-01-15", zuweisungBis: "2024-12-31"
+        },
+        {
+          id: "tn-004", kuerzel: "LS", name: "Leonie Schmitt", kennung: "JC-2044",
+          status: "beendet", betreuer: "Daniel Chu", arbeitsbereich: "Maler",
+          zuweisungVon: "2024-02-05", zuweisungBis: "2024-10-31"
+        },
+        {
+          id: "tn-007", kuerzel: "FB", name: "Fatima Bouzid", kennung: "JC-5122",
+          status: "beendet", betreuer: "Holger Irmak", arbeitsbereich: "Maler",
+          zuweisungVon: "2024-01-20", zuweisungBis: "2024-07-31"
+        },
+        {
+          id: "tn-002", kuerzel: "CP", name: "Claudia Peters", kennung: "JC-555XCRT",
+          status: "aktiv", betreuer: "Daniel Chu", arbeitsbereich: "Gärtnerei",
+          zuweisungVon: "2024-03-01", zuweisungBis: "2025-03-01"
+        }
+      ]
+    };
+
+    let allTn = DEMO_TN_BY_MASSNAHME[massnahmeKey] || DEMO_TN_BY_MASSNAHME.integra2026;
+
+    // Grundfilter: nur der Arbeitsbereich dieses Anleiters, nie "geplant"
+    function getRelevantTn() {
+      return allTn.filter(tn =>
+        tn.arbeitsbereich === ANLEITER.arbeitsbereich &&
+        tn.status !== "geplant"
+      );
+    }
+
+    function statusBadgeTn(status) {
+      const s = String(status || "").toLowerCase();
+      if (s === "aktiv") return `<span class="badge text-bg-success">aktiv</span>`;
+      if (s === "beendet") return `<span class="badge text-bg-dark">beendet</span>`;
+      return `<span class="badge text-bg-light border text-dark">—</span>`;
+    }
+
+    function renderTeilnehmerTable(list) {
+      const tbody = document.getElementById("tnTableBody");
+      if (!tbody) return;
+
+      if (!list || list.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="5" class="text-center text-secondary py-4">
+              <i class="bi bi-inbox me-1"></i> Keine Treffer für die aktuellen Filter.
+            </td>
+          </tr>`;
+        return;
+      }
+
+      tbody.innerHTML = list.map(tn => `
+        <tr>
+          <td class="fw-semibold">
+            <span class="badge text-bg-secondary me-2">${escapeHtml(tn.kuerzel)}</span> ${escapeHtml(tn.name)}<br>
+            <span class="text-secondary small">${escapeHtml(tn.kennung)}</span>
+          </td>
+          <td>${statusBadgeTn(tn.status)}</td>
+          <td>${fmtDateDE(tn.zuweisungVon)} – ${fmtDateDE(tn.zuweisungBis)}</td>
+          <td>${escapeHtml(tn.betreuer || "—")}</td>
+          <td class="text-end">
+            <button class="btn btn-outline-secondary btn-sm" type="button"
+                    onclick="goToAnwesenheit('${tn.id}')">
+              <i class="bi bi-calendar-check me-1"></i> Anwesenheit
+            </button>
+          </td>
+        </tr>
+      `).join("");
+    }
+
+    function applyTeilnehmerFilter() {
+      const q = (document.getElementById("tnFilterSearch")?.value || "").trim().toLowerCase();
+      const showAktiv = document.getElementById("statusAktiv")?.checked;
+      const showBeendet = document.getElementById("statusBeendet")?.checked;
+
+      const statusSet = new Set();
+      if (showAktiv) statusSet.add("aktiv");
+      if (showBeendet) statusSet.add("beendet");
+
+      let list = getRelevantTn();
+
+      list = list.filter(tn => statusSet.has(String(tn.status || "").toLowerCase()));
+
+      if (q) {
+        list = list.filter(tn =>
+          (tn.name || "").toLowerCase().includes(q) ||
+          (tn.kennung || "").toLowerCase().includes(q) ||
+          (tn.kuerzel || "").toLowerCase().includes(q)
+        );
+      }
+
+      renderTeilnehmerTable(list);
+    }
+
+    function resetTeilnehmerFilter() {
+      document.getElementById("tnFilterSearch").value = "";
+      document.getElementById("statusAktiv").checked = true;
+      document.getElementById("statusBeendet").checked = false;
+      applyTeilnehmerFilter();
+    }
+
+    // Springt vom Teilnehmer direkt in die Tagesansicht der Anwesenheit
+    function goToAnwesenheit(tnId) {
+      const tabBtn = document.querySelector('[data-bs-target="#tab-anwesenheit"]');
+      if (tabBtn) bootstrap.Tab.getOrCreateInstance(tabBtn).show();
+      anwState.selectedDate = anwState.selectedDate || todayISO();
+      const dateEl = document.getElementById("anwDate");
+      if (dateEl) dateEl.value = anwState.selectedDate;
+      setAnwView("day");
+
+      setTimeout(() => {
+        const row = document.querySelector(`tr.anw-row[data-tn="${tnId}"]`);
+        if (row) {
+          row.scrollIntoView({ behavior: "smooth", block: "center" });
+          row.classList.add("table-warning");
+          setTimeout(() => row.classList.remove("table-warning"), 1500);
+        }
+      }, 150);
+    }
+  </script>
+
+  <script>
+    // =========================
+    // Anwesenheit (Tagesansicht + Monatsübersicht)
+    // gleiche Logik wie Maßnahme-Detail, aber nur auf relevante TN beschränkt
+    // =========================
+
+    const anwState = {
+      view: "day",
+      selectedDate: "",
+      statusByDate: {}
+    };
+
+    function getStatus(tnId, iso){
+      return anwState.statusByDate?.[iso]?.[tnId] || "";
+    }
+    function setStatus(tnId, iso, status){
+      if(!anwState.statusByDate[iso]) anwState.statusByDate[iso] = {};
+      anwState.statusByDate[iso][tnId] = status;
+    }
+    function statusShort(status){
+      if(status === "anwesend") return "A";
+      if(status === "krank") return "K";
+      if(status === "urlaub") return "U";
+      if(status === "unentschuldigt") return "F";
+      if(status === "entschuldigt") return "E";
+      return "–";
+    }
+    function statusBadgeClass(status){
+      if(status === "anwesend") return "text-bg-success";
+      if(status === "krank") return "text-bg-warning text-dark";
+      if(status === "urlaub") return "text-bg-primary";
+      if(status === "unentschuldigt") return "text-bg-danger";
+      if(status === "entschuldigt") return "text-bg-info";
+      return "text-bg-light border text-dark";
+    }
+
+    // ===== Tagesansicht =====
+    function renderAnwesenheitTable(){
+      const tbody = document.getElementById("anwTableBody");
+      if(!tbody) return;
+
+      const list = getRelevantTn();
+      const iso = anwState.selectedDate || todayISO();
+
+      if (list.length === 0) {
+        tbody.innerHTML = `
+          <tr><td colspan="3" class="text-center text-secondary py-4">
+            <i class="bi bi-inbox me-1"></i> Keine Teilnehmer in Ihrem Arbeitsbereich.
+          </td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = list.map(tn => {
+        const cur = getStatus(tn.id, iso);
+        const beendetHint = tn.status === "beendet"
+          ? `<span class="badge text-bg-dark ms-2">beendet</span>`
+          : "";
+
+        function btnClass(type){
+          if (cur !== type) return "btn-outline-secondary";
+          if (type === "anwesend") return "bg-success text-white";
+          if (type === "krank") return "bg-warning text-dark";
+          if (type === "entschuldigt") return "bg-info text-white";
+          if (type === "unentschuldigt") return "bg-danger text-white";
+          if (type === "urlaub") return "bg-primary text-white";
+          return "btn-outline-secondary";
+        }
+
+        return `
+        <tr class="anw-row" data-tn="${tn.id}">
+          <td>
+            <span class="badge text-bg-secondary me-2">${escapeHtml(tn.kuerzel)}</span>
+            ${escapeHtml(tn.name)}${beendetHint}
+          </td>
+          <td>
+            <div class="d-flex flex-wrap gap-1">
+              <button class="btn btn-sm ${btnClass('anwesend')}" type="button"
+                onclick="setAttendanceStatus('${tn.id}','anwesend', this)">Anwesend</button>
+
+              <button class="btn btn-sm ${btnClass('krank')}" type="button"
+                onclick="setAttendanceStatus('${tn.id}','krank', this)">Krank</button>
+
+              <button class="btn btn-sm ${btnClass('entschuldigt')}" type="button"
+                onclick="setAttendanceStatus('${tn.id}','entschuldigt', this)">Entschuldigt</button>
+
+              <button class="btn btn-sm ${btnClass('unentschuldigt')}" type="button"
+                onclick="setAttendanceStatus('${tn.id}','unentschuldigt', this)">Unentschuldigt</button>
+
+              <button class="btn btn-sm ${btnClass('urlaub')}" type="button"
+                onclick="setAttendanceStatus('${tn.id}','urlaub', this)">Urlaub</button>
+            </div>
+          </td>
+          <td class="text-end">
+            <button class="btn btn-outline-secondary btn-sm" type="button"
+              onclick="openAnwesenheitOverview('${tn.id}')">
+              <i class="bi bi-graph-up me-1"></i> Übersicht
+            </button>
+          </td>
+        </tr>
+        `;
+      }).join("");
+    }
+
+    function setAttendanceStatus(tnId, type, buttonEl){
+      const iso = anwState.selectedDate || document.getElementById("anwDate")?.value || todayISO();
+      setStatus(tnId, iso, type);
+      renderAnwesenheitTable();
+      renderAnwesenheitMonth();
+    }
+
+    function setAllPresent(){
+      const iso = anwState.selectedDate || document.getElementById("anwDate")?.value || todayISO();
+      getRelevantTn().forEach(tn => setStatus(tn.id, iso, "anwesend"));
+      renderAnwesenheitTable();
+      renderAnwesenheitMonth();
+      showToast("Anwesenheit", "Alle Teilnehmer wurden als anwesend markiert.");
+    }
+
+    function openAnwesenheitOverview(tnId){
+      const tn = getRelevantTn().find(x => x.id === tnId);
+      const title = document.getElementById("anwesenheitModalLabel");
+      if(title){
+        title.textContent = tn ? `Anwesenheit – ${tn.name}` : "Anwesenheit – Detailansicht";
+      }
+      const modalEl = document.getElementById("anwesenheitModal");
+      if(!modalEl) return;
+      bootstrap.Modal.getOrCreateInstance(modalEl).show();
+    }
+
+    // ===== Monatsübersicht =====
+    function renderAnwesenheitMonth(){
+      const head = document.getElementById("anwMonthHead");
+      const body = document.getElementById("anwMonthBody");
+      const title = document.getElementById("anwMonthTitle");
+      if(!head || !body) return;
+
+      const list = getRelevantTn();
+
+      const iso = anwState.selectedDate || document.getElementById("anwDate")?.value || todayISO();
+      const d = new Date(iso + "T00:00:00");
+      const year = d.getFullYear();
+      const monthIndex = d.getMonth();
+      const count = daysInMonth(year, monthIndex);
+
+      if(title){
+        title.textContent = `${getMonthNameDE(monthIndex)} ${year}`;
+      }
+
+      let headHtml = `
+        <tr>
+          <th class="text-start anw-month-person" title="Teilnehmer">TN</th>
+      `;
+
+      for(let day = 1; day <= count; day++){
+        const current = new Date(year, monthIndex, day);
+        const weekday = current.getDay();
+        const isWeekend = weekday === 0 || weekday === 6;
+
+        headHtml += `
+          <th class="anw-month-day ${isWeekend ? "table-secondary" : ""}" title="Tag ${day}">
+            ${day}
+          </th>
+        `;
+      }
+
+      headHtml += `
+          <th class="anw-month-kpi" title="Anwesenheitsquote in Prozent"><i class="bi bi-person-check"></i></th>
+          <th class="anw-month-kpi" title="Fehltage"><i class="bi bi-calendar-x"></i></th>
+          <th class="anw-month-kpi" title="Quote Arbeitsunfähigkeit in Prozent"><i class="bi bi-heart-pulse"></i></th>
+          <th class="anw-month-kpi" title="Urlaub Anzahl"><i class="bi bi-airplane"></i></th>
+          <th class="anw-month-kpi" title="Quote Fehlzeit in Prozent"><i class="bi bi-exclamation-triangle"></i></th>
+        </tr>
+      `;
+
+      head.innerHTML = headHtml;
+
+      if (list.length === 0) {
+        body.innerHTML = `<tr><td colspan="${count+6}" class="text-center text-secondary py-3">Keine Teilnehmer.</td></tr>`;
+        return;
+      }
+
+      body.innerHTML = list.map(tn => {
+        let anwesend = 0, fehlt = 0, krank = 0, urlaub = 0, relevanteTage = 0;
+        let cells = "";
+
+        for(let day = 1; day <= count; day++){
+          const dd = String(day).padStart(2,"0");
+          const mm = String(monthIndex + 1).padStart(2,"0");
+          const currentIso = `${year}-${mm}-${dd}`;
+          const current = new Date(currentIso + "T00:00:00");
+          const weekday = current.getDay();
+          const isWeekend = weekday === 0 || weekday === 6;
+          const status = getStatus(tn.id, currentIso);
+
+          if(!isWeekend) relevanteTage++;
+          if(status === "anwesend") anwesend++;
+          if(status === "unentschuldigt") fehlt++;
+          if(status === "krank") krank++;
+          if(status === "urlaub") urlaub++;
+
+          cells += `
+            <td class="anw-month-day ${isWeekend ? "table-secondary" : ""}">
+              <button class="badge ${statusBadgeClass(status)} border-0"
+                type="button"
+                title="${fmtDateDE(currentIso)}"
+                onclick="jumpToDay('${currentIso}')">
+                ${statusShort(status)}
+              </button>
+            </td>
+          `;
+        }
+
+        const anwesenheitsquote = relevanteTage > 0 ? Math.round((anwesend / relevanteTage) * 100) : 0;
+        const quoteAU = relevanteTage > 0 ? Math.round((krank / relevanteTage) * 100) : 0;
+        const quoteF = relevanteTage > 0 ? Math.round((fehlt / relevanteTage) * 100) : 0;
+
+        return `
+          <tr>
+            <td class="text-start fw-semibold">
+              <span class="badge text-bg-secondary me-2">${escapeHtml(tn.kuerzel)}</span>
+              ${escapeHtml(tn.name)}
+            </td>
+            ${cells}
+            <td class="fw-semibold">${anwesenheitsquote}&nbsp;%</td>
+            <td class="fw-semibold text-danger">${fehlt}</td>
+            <td class="fw-semibold text-warning">${quoteAU}&nbsp;%</td>
+            <td class="fw-semibold text-primary">${urlaub}</td>
+            <td class="fw-semibold text-danger">${quoteF}&nbsp;%</td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    function jumpToDay(iso){
+      anwState.selectedDate = iso;
+      const dateEl = document.getElementById("anwDate");
+      if (dateEl) dateEl.value = iso;
+
+      const dayRadio = document.getElementById("anwViewDay");
+      if (dayRadio) dayRadio.checked = true;
+      setAnwView("day");
+    }
+
+    function setAnwView(view){
+      anwState.view = view;
+
+      const dayView = document.getElementById("anwDayView");
+      const monthView = document.getElementById("anwMonthView");
+      const hint = document.getElementById("anwViewHint");
+
+      if(view === "month"){
+        dayView?.classList.add("d-none");
+        monthView?.classList.remove("d-none");
+        if(hint) hint.textContent = "Monatsübersicht: Alle Teilnehmer und Status je Tag im Überblick.";
+        renderAnwesenheitMonth();
+      } else {
+        monthView?.classList.add("d-none");
+        dayView?.classList.remove("d-none");
+        if(hint) hint.textContent = "Tagesansicht: Anwesenheiten für einen einzelnen Tag erfassen.";
+        renderAnwesenheitTable();
+      }
+    }
+
+    function initAnwesenheitDemoData(){
+      const iso = anwState.selectedDate || todayISO();
+      const d = new Date(iso + "T00:00:00");
+      const year = d.getFullYear();
+      const month = String(d.getMonth()+1).padStart(2,"0");
+
+      const list = getRelevantTn();
+      if (list.length === 0) return;
+
+      // ein paar Demo-Einträge für den aktuellen Monat
+      const sample = [];
+      list.forEach((tn, idx) => {
+        sample.push([tn.id, `${year}-${month}-03`, "anwesend"]);
+        sample.push([tn.id, `${year}-${month}-04`, "anwesend"]);
+        if (idx % 2 === 0) sample.push([tn.id, `${year}-${month}-05`, "krank"]);
+        else sample.push([tn.id, `${year}-${month}-05`, "anwesend"]);
+      });
+
+      sample.forEach(([tnId, date, status]) => setStatus(tnId, date, status));
+    }
+  </script>
+
+  <script>
+    // =========================
+    // Monatsbewertung (LuV-Kriterien)
+    // =========================
+
+    const KRITERIEN = [
+      { id: 'anw',    label: 'Anwesenheit / Zuverlässigkeit' },
+      { id: 'puenkt', label: 'Pünktlichkeit' },
+      { id: 'mot',    label: 'Motivation / Engagement' },
+      { id: 'eig',    label: 'Eigeninitiative' },
+      { id: 'handw',  label: 'Handwerkliches Geschick' },
+      { id: 'ausd',   label: 'Ausdauer / Geduld' },
+      { id: 'lern',   label: 'Lernbereitschaft' },
+      { id: 'soz',    label: 'Soziale Kompetenz' },
+      { id: 'team',   label: 'Kooperations- / Teamfähigkeit' }
+    ];
+
+    // In-Memory Speicher: bewertungen[tnId][YYYY-MM] = { noten:{...}, kommentar:"", erstelltAm:"..." }
+    const bewertungen = {};
+
+    // Demo: bestehende Monatsbewertungen für Max Mustermann
+    bewertungen["tn-101"] = {
+      "2025-11": { noten: {anw:3,puenkt:2,mot:3,eig:3,handw:2,ausd:3,lern:3,soz:2,team:3}, kommentar: "Guter Start, etwas zurückhaltend.", erstelltAm: "04.12.2025" },
+      "2025-12": { noten: {anw:2,puenkt:1,mot:2,eig:2,handw:1,ausd:2,lern:2,soz:1,team:2}, kommentar: "Deutliche Verbesserung, sehr motiviert.", erstelltAm: "03.01.2026" }
+    };
+    bewertungen["tn-001"] = {
+      "2025-10": { noten: {anw:3,puenkt:3,mot:3,eig:3,handw:3,ausd:3,lern:3,soz:3,team:3}, kommentar: "", erstelltAm: "04.11.2025" },
+      "2025-11": { noten: {anw:3,puenkt:2,mot:3,eig:3,handw:2,ausd:3,lern:3,soz:2,team:3}, kommentar: "", erstelltAm: "03.12.2025" },
+      "2025-12": { noten: {anw:2,puenkt:1,mot:2,eig:2,handw:1,ausd:2,lern:2,soz:1,team:2}, kommentar: "Letzte Bewertung vor Maßnahmeende.", erstelltAm: "07.01.2026" }
+    };
+
+    let aktuelleBewNoten = {};
+    KRITERIEN.forEach(k => aktuelleBewNoten[k.id] = null);
+
+    function currentMonthValue() {
+      const d = new Date();
+      return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+    }
+
+    function fmtMonthDE(ym) {
+      if (!ym) return "—";
+      const [y, m] = ym.split("-");
+      const idx = parseInt(m, 10) - 1;
+      return `${getMonthNameDE(idx)} ${y}`;
+    }
+
+    function renderBewertungGrid() {
+      const grid = document.getElementById("bewertungGrid");
+      if (!grid) return;
+      grid.innerHTML = "";
+
+      KRITERIEN.forEach(k => {
+        const row = document.createElement("div");
+        row.className = "bew-row";
+
+        const lbl = document.createElement("span");
+        lbl.className = "bew-label";
+        lbl.textContent = k.label;
+        row.appendChild(lbl);
+
+        const btns = document.createElement("div");
+        btns.className = "note-btns";
+
+        for (let n = 1; n <= 6; n++) {
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.textContent = n;
+          btn.setAttribute("data-n", n);
+          btn.setAttribute("data-k", k.id);
+
+          const cur = aktuelleBewNoten[k.id];
+          if (cur == n) btn.className = "sel-" + n;
+
+          btn.addEventListener("click", () => {
+            aktuelleBewNoten[k.id] = n;
+            grid.querySelectorAll(`[data-k="${k.id}"]`).forEach(b => {
+              const bn = parseInt(b.getAttribute("data-n"));
+              b.className = (bn === n) ? "sel-" + n : "";
+            });
+          });
+
+          btns.appendChild(btn);
+        }
+
+        row.appendChild(btns);
+        grid.appendChild(row);
+      });
+    }
+
+    function loadBewertungFor(tnId, monat) {
+      const eintrag = bewertungen[tnId]?.[monat];
+
+      KRITERIEN.forEach(k => aktuelleBewNoten[k.id] = eintrag ? (eintrag.noten[k.id] || null) : null);
+      renderBewertungGrid();
+
+      document.getElementById("bewKommentar").value = eintrag ? (eintrag.kommentar || "") : "";
+
+      const badge = document.getElementById("bewStatusBadge");
+      if (eintrag) {
+        badge.className = "badge text-bg-success";
+        badge.textContent = "erfasst am " + eintrag.erstelltAm;
+      } else {
+        badge.className = "badge text-bg-light border";
+        badge.textContent = "noch nicht erfasst";
+      }
+    }
+
+    function populateBewTnSelect() {
+      const sel = document.getElementById("bewTnSelect");
+      if (!sel) return;
+
+      const list = getRelevantTn();
+      sel.innerHTML = list.map(tn =>
+        `<option value="${tn.id}">${escapeHtml(tn.kuerzel)} – ${escapeHtml(tn.name)}${tn.status === "beendet" ? " (beendet)" : ""}</option>`
+      ).join("");
+    }
+
+    function saveBewertung() {
+      const tnId = document.getElementById("bewTnSelect").value;
+      const monat = document.getElementById("bewMonat").value;
+
+      if (!monat) {
+        showToast("Fehlt", "Bitte einen Bewertungsmonat auswählen.");
+        return;
+      }
+
+      const offen = KRITERIEN.filter(k => !aktuelleBewNoten[k.id]);
+      if (offen.length > 0) {
+        const ok = window.confirm(
+          `Es wurden ${offen.length} von ${KRITERIEN.length} Kriterien noch nicht bewertet.\n` +
+          `Trotzdem speichern?`
+        );
+        if (!ok) return;
+      }
+
+      if (!bewertungen[tnId]) bewertungen[tnId] = {};
+
+      const today = new Date();
+      const todayDE = `${String(today.getDate()).padStart(2,'0')}.${String(today.getMonth()+1).padStart(2,'0')}.${today.getFullYear()}`;
+
+      bewertungen[tnId][monat] = {
+        noten: { ...aktuelleBewNoten },
+        kommentar: document.getElementById("bewKommentar").value,
+        erstelltAm: todayDE
+      };
+
+      const badge = document.getElementById("bewStatusBadge");
+      badge.className = "badge text-bg-success";
+      badge.textContent = "erfasst am " + todayDE;
+
+      showToast("Gespeichert", "Monatsbewertung wurde gespeichert.");
+    }
+
+    const NL = {1:'sehr gut',2:'gut',3:'befriedigend',4:'ausreichend',5:'mangelhaft',6:'ungenügend'};
+
+    function renderBewVerlauf() {
+      const tnId = document.getElementById("bewTnSelect").value;
+      const tn = getRelevantTn().find(x => x.id === tnId);
+
+      document.getElementById("bewVerlaufName").textContent = tn ? tn.name : "Teilnehmer";
+
+      const data = bewertungen[tnId] || {};
+      const monate = Object.keys(data).sort().reverse();
+
+      const container = document.getElementById("bewVerlaufAccordion");
+      const empty = document.getElementById("bewVerlaufEmpty");
+
+      if (monate.length === 0) {
+        container.innerHTML = "";
+        empty.style.display = "block";
+        return;
+      }
+      empty.style.display = "none";
+
+      container.innerHTML = monate.map((monat, idx) => {
+        const eintrag = data[monat];
+        const isFirst = idx === 0;
+        const collapseId = "bewCollapse" + idx;
+        const headingId = "bewHeading" + idx;
+
+        const rows = KRITERIEN.map(k => {
+          const n = eintrag.noten[k.id];
+          return `<div class="d-flex justify-content-between border-bottom py-1 small">
+            <span class="text-muted">${k.label}</span>
+            <span>${n ? `<strong>${n}</strong> (${NL[n]})` : "–"}</span>
+          </div>`;
+        }).join("");
+
+        const kommentarHtml = eintrag.kommentar
+          ? `<div class="mt-2 small"><span class="text-muted">Kommentar:</span> ${escapeHtml(eintrag.kommentar)}</div>`
+          : "";
+
+        return `
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="${headingId}">
+              <button class="accordion-button ${isFirst ? "" : "collapsed"}" type="button"
+                      data-bs-toggle="collapse" data-bs-target="#${collapseId}"
+                      aria-expanded="${isFirst ? "true" : "false"}" aria-controls="${collapseId}">
+                ${fmtMonthDE(monat)}
+                <span class="text-muted small ms-2">erfasst am ${eintrag.erstelltAm}</span>
+              </button>
+            </h2>
+            <div id="${collapseId}" class="accordion-collapse collapse ${isFirst ? "show" : ""}"
+                 aria-labelledby="${headingId}" data-bs-parent="#bewVerlaufAccordion">
+              <div class="accordion-body">
+                ${rows}
+                ${kommentarHtml}
+              </div>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+  </script>
+
+  <script>
+    // =========================
+    // Init
+    // =========================
+    document.addEventListener("DOMContentLoaded", () => {
+
+      // Teilnehmer
+      resetTeilnehmerFilter();
+      document.getElementById("tnFilterSearch")?.addEventListener("keyup", applyTeilnehmerFilter);
+      document.getElementById("statusAktiv")?.addEventListener("change", applyTeilnehmerFilter);
+      document.getElementById("statusBeendet")?.addEventListener("change", applyTeilnehmerFilter);
+      document.getElementById("btnTnReset")?.addEventListener("click", resetTeilnehmerFilter);
+
+      // Anwesenheit
+      anwState.selectedDate = todayISO();
+      const dateEl = document.getElementById("anwDate");
+      if (dateEl) {
+        dateEl.value = anwState.selectedDate;
+        dateEl.addEventListener("change", () => {
+          anwState.selectedDate = dateEl.value || todayISO();
+          renderAnwesenheitTable();
+          renderAnwesenheitMonth();
+        });
+      }
+
+      initAnwesenheitDemoData();
+
+      document.getElementById("anwViewDay")?.addEventListener("change", () => setAnwView("day"));
+      document.getElementById("anwViewMonth")?.addEventListener("change", () => setAnwView("month"));
+
+      document.getElementById("btnAnwPrev")?.addEventListener("click", () => {
+        if (anwState.view === "month") {
+          const d = new Date(anwState.selectedDate + "T00:00:00");
+          d.setMonth(d.getMonth() - 1);
+          anwState.selectedDate = d.toISOString().slice(0,10);
+        } else {
+          anwState.selectedDate = addDaysISO(anwState.selectedDate, -1);
+        }
+        if (dateEl) dateEl.value = anwState.selectedDate;
+        renderAnwesenheitTable();
+        renderAnwesenheitMonth();
+      });
+
+      document.getElementById("btnAnwNext")?.addEventListener("click", () => {
+        if (anwState.view === "month") {
+          const d = new Date(anwState.selectedDate + "T00:00:00");
+          d.setMonth(d.getMonth() + 1);
+          anwState.selectedDate = d.toISOString().slice(0,10);
+        } else {
+          anwState.selectedDate = addDaysISO(anwState.selectedDate, 1);
+        }
+        if (dateEl) dateEl.value = anwState.selectedDate;
+        renderAnwesenheitTable();
+        renderAnwesenheitMonth();
+      });
+
+      document.getElementById("btnAllPresent")?.addEventListener("click", setAllPresent);
+
+      renderAnwesenheitTable();
+      renderAnwesenheitMonth();
+
+      // Unterschriftenliste
+      document.getElementById("btnOpenUnterschriftenModal")?.addEventListener("click", () => {
+        document.getElementById("uDatum").value = anwState.selectedDate || todayISO();
+        bootstrap.Modal.getOrCreateInstance(document.getElementById("unterschriftenModal")).show();
+      });
+
+      document.getElementById("btnUDruckPdf")?.addEventListener("click", () => {
+        const dt = document.getElementById("uDatum")?.value;
+        if (!dt) { showToast("Fehlt", "Bitte Datum auswählen."); return; }
+        showToast("Druck", `Unterschriftenliste (PDF) für ${fmtDateDE(dt)}, Bereich ${massnahme.arbeitsbereichLabel} (Demo).`);
+        bootstrap.Modal.getOrCreateInstance(document.getElementById("unterschriftenModal")).hide();
+      });
+
+      document.getElementById("btnUDruckExcel")?.addEventListener("click", () => {
+        const dt = document.getElementById("uDatum")?.value;
+        if (!dt) { showToast("Fehlt", "Bitte Datum auswählen."); return; }
+        showToast("Export", `Unterschriftenliste (Excel) für ${fmtDateDE(dt)}, Bereich ${massnahme.arbeitsbereichLabel} (Demo).`);
+        bootstrap.Modal.getOrCreateInstance(document.getElementById("unterschriftenModal")).hide();
+      });
+
+      // Monatsbewertung
+      populateBewTnSelect();
+      document.getElementById("bewMonat").value = currentMonthValue();
+      renderBewertungGrid();
+      loadBewertungFor(document.getElementById("bewTnSelect").value, document.getElementById("bewMonat").value);
+
+      document.getElementById("bewTnSelect")?.addEventListener("change", () => {
+        loadBewertungFor(document.getElementById("bewTnSelect").value, document.getElementById("bewMonat").value);
+      });
+      document.getElementById("bewMonat")?.addEventListener("change", () => {
+        loadBewertungFor(document.getElementById("bewTnSelect").value, document.getElementById("bewMonat").value);
+      });
+
+      document.getElementById("btnBewSpeichern")?.addEventListener("click", saveBewertung);
+
+      document.getElementById("modalBewVerlauf")?.addEventListener("show.bs.modal", renderBewVerlauf);
+
+      // Initiale Maßnahme vorladen (Werte/Labels setzen)
+      loadMassnahme(massnahmeKey);
+    });
+  </script>
+
 </body>
 </html>
