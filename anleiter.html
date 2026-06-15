@@ -390,6 +390,18 @@
                         <button class="btn btn-outline-dark ms-lg-auto" id="btnAllPresent" type="button">Alle anwesend</button>
                       </div>
 
+                      <div class="d-flex flex-wrap gap-3 align-items-center mt-3">
+                        <div class="small text-muted me-2">Teilnehmer anzeigen:</div>
+                        <div class="form-check form-check-inline m-0">
+                          <input class="form-check-input" type="checkbox" id="anwStatusAktiv" checked>
+                          <label class="form-check-label" for="anwStatusAktiv">aktiv</label>
+                        </div>
+                        <div class="form-check form-check-inline m-0">
+                          <input class="form-check-input" type="checkbox" id="anwStatusBeendet">
+                          <label class="form-check-label" for="anwStatusBeendet">beendet</label>
+                        </div>
+                      </div>
+
                       <div class="small text-muted mt-2" id="anwViewHint">
                         Tagesansicht: Anwesenheiten für einen einzelnen Tag erfassen.
                       </div>
@@ -464,22 +476,40 @@
                   <div class="card border-0 bg-body-tertiary mb-3">
                     <div class="card-body p-3">
                       <div class="row g-2 align-items-end">
-                        <div class="col-12 col-md-6">
+                        <div class="col-12 col-lg-4">
+                          <div class="input-group">
+                            <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+                            <input type="text" class="form-control" id="bewFilterSearch" placeholder="Name, Kennung, Kürzel …">
+                          </div>
+                        </div>
+                        <div class="col-12 col-lg-3">
                           <div class="form-floating">
                             <select class="form-select" id="bewTnSelect"></select>
                             <label for="bewTnSelect">Teilnehmer</label>
                           </div>
                         </div>
-                        <div class="col-12 col-md-3">
+                        <div class="col-12 col-lg-2">
                           <div class="form-floating">
                             <input type="month" class="form-control" id="bewMonat">
                             <label for="bewMonat">Bewertungsmonat</label>
                           </div>
                         </div>
-                        <div class="col-12 col-md-3">
+                        <div class="col-12 col-lg-3">
                           <div class="d-flex h-100 align-items-end">
                             <span class="badge text-bg-light border" id="bewStatusBadge">noch nicht erfasst</span>
                           </div>
+                        </div>
+                      </div>
+
+                      <div class="d-flex flex-wrap gap-3 align-items-center mt-3">
+                        <div class="small text-muted me-2">Teilnehmer anzeigen:</div>
+                        <div class="form-check form-check-inline m-0">
+                          <input class="form-check-input" type="checkbox" id="bewStatusAktiv" checked>
+                          <label class="form-check-label" for="bewStatusAktiv">aktiv</label>
+                        </div>
+                        <div class="form-check form-check-inline m-0">
+                          <input class="form-check-input" type="checkbox" id="bewStatusBeendet">
+                          <label class="form-check-label" for="bewStatusBeendet">beendet</label>
                         </div>
                       </div>
                     </div>
@@ -803,14 +833,24 @@
       anwState.selectedDate = todayISO();
       const dateEl = document.getElementById("anwDate");
       if (dateEl) dateEl.value = anwState.selectedDate;
+      const anwAktivEl = document.getElementById("anwStatusAktiv");
+      const anwBeendetEl = document.getElementById("anwStatusBeendet");
+      if (anwAktivEl) anwAktivEl.checked = true;
+      if (anwBeendetEl) anwBeendetEl.checked = false;
       initAnwesenheitDemoData();
       setAnwView("day");
       const dayRadio = document.getElementById("anwViewDay");
       if (dayRadio) dayRadio.checked = true;
 
-      populateBewTnSelect();
+      const bewSearchEl = document.getElementById("bewFilterSearch");
+      const bewAktivEl = document.getElementById("bewStatusAktiv");
+      const bewBeendetEl = document.getElementById("bewStatusBeendet");
+      if (bewSearchEl) bewSearchEl.value = "";
+      if (bewAktivEl) bewAktivEl.checked = true;
+      if (bewBeendetEl) bewBeendetEl.checked = false;
+
       document.getElementById("bewMonat").value = currentMonthValue();
-      loadBewertungFor(document.getElementById("bewTnSelect").value, document.getElementById("bewMonat").value);
+      populateBewTnSelect();
 
       // ersten Tab aktivieren
       const firstTabBtn = document.querySelector('[data-bs-target="#tab-teilnehmer"]');
@@ -896,6 +936,18 @@
         tn.arbeitsbereich === ANLEITER.arbeitsbereich &&
         tn.status !== "geplant"
       );
+    }
+
+    // Für die Anwesenheit: Grundmenge + Status-Filter (Standard: nur aktiv)
+    function getAnwTn() {
+      const showAktiv = document.getElementById("anwStatusAktiv")?.checked;
+      const showBeendet = document.getElementById("anwStatusBeendet")?.checked;
+
+      const statusSet = new Set();
+      if (showAktiv) statusSet.add("aktiv");
+      if (showBeendet) statusSet.add("beendet");
+
+      return getRelevantTn().filter(tn => statusSet.has(String(tn.status || "").toLowerCase()));
     }
 
     function statusBadgeTn(status) {
@@ -1030,13 +1082,13 @@
       const tbody = document.getElementById("anwTableBody");
       if(!tbody) return;
 
-      const list = getRelevantTn();
+      const list = getAnwTn();
       const iso = anwState.selectedDate || todayISO();
 
       if (list.length === 0) {
         tbody.innerHTML = `
           <tr><td colspan="3" class="text-center text-secondary py-4">
-            <i class="bi bi-inbox me-1"></i> Keine Teilnehmer in Ihrem Arbeitsbereich.
+            <i class="bi bi-inbox me-1"></i> Keine Teilnehmer für die aktuellen Filter.
           </td></tr>`;
         return;
       }
@@ -1101,14 +1153,14 @@
 
     function setAllPresent(){
       const iso = anwState.selectedDate || document.getElementById("anwDate")?.value || todayISO();
-      getRelevantTn().forEach(tn => setStatus(tn.id, iso, "anwesend"));
+      getAnwTn().forEach(tn => setStatus(tn.id, iso, "anwesend"));
       renderAnwesenheitTable();
       renderAnwesenheitMonth();
       showToast("Anwesenheit", "Alle Teilnehmer wurden als anwesend markiert.");
     }
 
     function openAnwesenheitOverview(tnId){
-      const tn = getRelevantTn().find(x => x.id === tnId);
+      const tn = getAnwTn().find(x => x.id === tnId);
       const title = document.getElementById("anwesenheitModalLabel");
       if(title){
         title.textContent = tn ? `Anwesenheit – ${tn.name}` : "Anwesenheit – Detailansicht";
@@ -1125,7 +1177,7 @@
       const title = document.getElementById("anwMonthTitle");
       if(!head || !body) return;
 
-      const list = getRelevantTn();
+      const list = getAnwTn();
 
       const iso = anwState.selectedDate || document.getElementById("anwDate")?.value || todayISO();
       const d = new Date(iso + "T00:00:00");
@@ -1364,6 +1416,17 @@
     }
 
     function loadBewertungFor(tnId, monat) {
+      if (!tnId) {
+        KRITERIEN.forEach(k => aktuelleBewNoten[k.id] = null);
+        renderBewertungGrid();
+        document.getElementById("bewKommentar").value = "";
+
+        const badge = document.getElementById("bewStatusBadge");
+        badge.className = "badge text-bg-light border";
+        badge.textContent = "kein Teilnehmer ausgewählt";
+        return;
+      }
+
       const eintrag = bewertungen[tnId]?.[monat];
 
       KRITERIEN.forEach(k => aktuelleBewNoten[k.id] = eintrag ? (eintrag.noten[k.id] || null) : null);
@@ -1381,19 +1444,62 @@
       }
     }
 
+    function getBewTn() {
+      const showAktiv = document.getElementById("bewStatusAktiv")?.checked;
+      const showBeendet = document.getElementById("bewStatusBeendet")?.checked;
+
+      const statusSet = new Set();
+      if (showAktiv) statusSet.add("aktiv");
+      if (showBeendet) statusSet.add("beendet");
+
+      const q = (document.getElementById("bewFilterSearch")?.value || "").trim().toLowerCase();
+
+      let list = getRelevantTn().filter(tn => statusSet.has(String(tn.status || "").toLowerCase()));
+
+      if (q) {
+        list = list.filter(tn =>
+          (tn.name || "").toLowerCase().includes(q) ||
+          (tn.kennung || "").toLowerCase().includes(q) ||
+          (tn.kuerzel || "").toLowerCase().includes(q)
+        );
+      }
+
+      return list;
+    }
+
     function populateBewTnSelect() {
       const sel = document.getElementById("bewTnSelect");
       if (!sel) return;
 
-      const list = getRelevantTn();
+      const previousValue = sel.value;
+      const list = getBewTn();
+
+      if (list.length === 0) {
+        sel.innerHTML = `<option value="">Keine Treffer</option>`;
+        loadBewertungFor("", document.getElementById("bewMonat")?.value);
+        return;
+      }
+
       sel.innerHTML = list.map(tn =>
         `<option value="${tn.id}">${escapeHtml(tn.kuerzel)} – ${escapeHtml(tn.name)}${tn.status === "beendet" ? " (beendet)" : ""}</option>`
       ).join("");
+
+      // vorherige Auswahl beibehalten, falls noch in der Liste
+      if (previousValue && list.some(tn => tn.id === previousValue)) {
+        sel.value = previousValue;
+      }
+
+      loadBewertungFor(sel.value, document.getElementById("bewMonat")?.value);
     }
 
     function saveBewertung() {
       const tnId = document.getElementById("bewTnSelect").value;
       const monat = document.getElementById("bewMonat").value;
+
+      if (!tnId) {
+        showToast("Fehlt", "Bitte einen Teilnehmer auswählen.");
+        return;
+      }
 
       if (!monat) {
         showToast("Fehlt", "Bitte einen Bewertungsmonat auswählen.");
@@ -1429,6 +1535,44 @@
 
     const NL = {1:'sehr gut',2:'gut',3:'befriedigend',4:'ausreichend',5:'mangelhaft',6:'ungenügend'};
 
+    function noteColor(n) {
+      if (n <= 2) return '#198754';
+      if (n <= 4) return '#fd7e14';
+      return '#dc3545';
+    }
+
+    function avgNote(notenObj) {
+      let sum = 0, count = 0;
+      KRITERIEN.forEach(k => {
+        const n = notenObj[k.id];
+        if (n) { sum += n; count++; }
+      });
+      return count ? (sum / count) : 0;
+    }
+
+    function buildBewGridHtml(notenObj) {
+      let html = '<div class="bewertung-grid">';
+      KRITERIEN.forEach(k => {
+        const n = notenObj[k.id] || null;
+        let btns = '';
+        for (let v = 1; v <= 6; v++) {
+          const active = (v === n);
+          const bg = active ? noteColor(n) : '#fff';
+          const color = active ? '#fff' : '#495057';
+          const border = active ? noteColor(n) : '#ced4da';
+          btns += `<span style="display:inline-flex;align-items:center;justify-content:center;
+            width:30px;height:28px;border:1px solid ${border};border-radius:4px;
+            background:${bg};color:${color};font-size:.8rem;${active ? 'font-weight:700;' : ''}">${v}</span>`;
+        }
+        html += `<div class="bew-row">
+          <span class="bew-label">${k.label}</span>
+          <div class="note-btns" style="gap:3px;">${btns}</div>
+        </div>`;
+      });
+      html += '</div>';
+      return html;
+    }
+
     function renderBewVerlauf() {
       const tnId = document.getElementById("bewTnSelect").value;
       const tn = getRelevantTn().find(x => x.id === tnId);
@@ -1441,7 +1585,7 @@
       const container = document.getElementById("bewVerlaufAccordion");
       const empty = document.getElementById("bewVerlaufEmpty");
 
-      if (monate.length === 0) {
+      if (!tnId || monate.length === 0) {
         container.innerHTML = "";
         empty.style.display = "block";
         return;
@@ -1454,32 +1598,31 @@
         const collapseId = "bewCollapse" + idx;
         const headingId = "bewHeading" + idx;
 
-        const rows = KRITERIEN.map(k => {
-          const n = eintrag.noten[k.id];
-          return `<div class="d-flex justify-content-between border-bottom py-1 small">
-            <span class="text-muted">${k.label}</span>
-            <span>${n ? `<strong>${n}</strong> (${NL[n]})` : "–"}</span>
-          </div>`;
-        }).join("");
+        const avg = avgNote(eintrag.noten);
+        const avgColor = avg ? noteColor(Math.round(avg)) : '#6c757d';
+        const avgBadge = avg
+          ? `<span class="badge ms-2" style="background:${avgColor};color:#fff;">Ø ${avg.toFixed(1)}</span>`
+          : '';
 
         const kommentarHtml = eintrag.kommentar
-          ? `<div class="mt-2 small"><span class="text-muted">Kommentar:</span> ${escapeHtml(eintrag.kommentar)}</div>`
+          ? `<div class="mt-3 small"><span class="text-muted">Kommentar:</span> ${escapeHtml(eintrag.kommentar)}</div>`
           : "";
 
         return `
           <div class="accordion-item">
             <h2 class="accordion-header" id="${headingId}">
-              <button class="accordion-button ${isFirst ? "" : "collapsed"}" type="button"
+              <button class="accordion-button ${isFirst ? "" : "collapsed"} flex-wrap" type="button"
                       data-bs-toggle="collapse" data-bs-target="#${collapseId}"
                       aria-expanded="${isFirst ? "true" : "false"}" aria-controls="${collapseId}">
-                ${fmtMonthDE(monat)}
+                <span class="flex-grow-1">${fmtMonthDE(monat)}</span>
+                ${avgBadge}
                 <span class="text-muted small ms-2">erfasst am ${eintrag.erstelltAm}</span>
               </button>
             </h2>
             <div id="${collapseId}" class="accordion-collapse collapse ${isFirst ? "show" : ""}"
                  aria-labelledby="${headingId}" data-bs-parent="#bewVerlaufAccordion">
               <div class="accordion-body">
-                ${rows}
+                ${buildBewGridHtml(eintrag.noten)}
                 ${kommentarHtml}
               </div>
             </div>
@@ -1518,6 +1661,15 @@
 
       document.getElementById("anwViewDay")?.addEventListener("change", () => setAnwView("day"));
       document.getElementById("anwViewMonth")?.addEventListener("change", () => setAnwView("month"));
+
+      document.getElementById("anwStatusAktiv")?.addEventListener("change", () => {
+        renderAnwesenheitTable();
+        renderAnwesenheitMonth();
+      });
+      document.getElementById("anwStatusBeendet")?.addEventListener("change", () => {
+        renderAnwesenheitTable();
+        renderAnwesenheitMonth();
+      });
 
       document.getElementById("btnAnwPrev")?.addEventListener("click", () => {
         if (anwState.view === "month") {
@@ -1571,10 +1723,9 @@
       });
 
       // Monatsbewertung
-      populateBewTnSelect();
       document.getElementById("bewMonat").value = currentMonthValue();
       renderBewertungGrid();
-      loadBewertungFor(document.getElementById("bewTnSelect").value, document.getElementById("bewMonat").value);
+      populateBewTnSelect();
 
       document.getElementById("bewTnSelect")?.addEventListener("change", () => {
         loadBewertungFor(document.getElementById("bewTnSelect").value, document.getElementById("bewMonat").value);
@@ -1582,6 +1733,9 @@
       document.getElementById("bewMonat")?.addEventListener("change", () => {
         loadBewertungFor(document.getElementById("bewTnSelect").value, document.getElementById("bewMonat").value);
       });
+      document.getElementById("bewFilterSearch")?.addEventListener("keyup", populateBewTnSelect);
+      document.getElementById("bewStatusAktiv")?.addEventListener("change", populateBewTnSelect);
+      document.getElementById("bewStatusBeendet")?.addEventListener("change", populateBewTnSelect);
 
       document.getElementById("btnBewSpeichern")?.addEventListener("click", saveBewertung);
 
