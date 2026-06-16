@@ -131,7 +131,8 @@
                     </button>
                   </div>
                   <div class="text-secondary mt-1" style="font-size:.95rem;">
-                    Angemeldet als <strong>R. Piechowiak</strong> &middot; Anleiter
+                    Angemeldet als <strong id="anleiterNameLabel">[Name]</strong> &middot; Anleiter
+                    &middot; Arbeitsbereich: <strong id="anleiterArbeitsbereichLabel">—</strong>
                   </div>
                 </div>
               </div>
@@ -151,7 +152,6 @@
             <div class="card-body p-0">
               <div class="p-3 p-lg-4 border-bottom d-flex justify-content-between align-items-center">
                 <div>
-                  <div class="text-secondary small">Zugewiesen</div>
                   <h6 class="mb-0">Laufende Maßnahmen</h6>
                 </div>
                 <span class="badge text-bg-light border">
@@ -766,13 +766,18 @@
     // Welcher Anleiter ist eingeloggt + welcher Arbeitsbereich (Demo: fest hinterlegt)
     const ANLEITER = {
       name: "R. Piechowiak",
-      arbeitsbereich: "Maler" // intern verwendeter Schlüssel, entspricht "arbeitsbereich" der TN
+      arbeitsbereich: "Maler", // intern verwendeter Schlüssel, entspricht "arbeitsbereich" der TN
+      arbeitsbereichLabel: "Maler & Lackierer"
     };
 
     const MASSNAHMEN = {
       integra2026: {
         name: "Integra 2026", arbeitsbereichLabel: "Maler & Lackierer",
         von: "2026-01-01", bis: "2026-12-31", status: "laufend"
+      },
+      geton2026: {
+        name: "GetOn", arbeitsbereichLabel: "Maler & Lackierer",
+        von: "2026-02-01", bis: "2026-12-31", status: "laufend"
       },
       integra2025: {
         name: "Integra 2025", arbeitsbereichLabel: "Maler & Lackierer",
@@ -907,6 +912,18 @@
           status: "beendet", betreuer: "Holger Irmak", arbeitsbereich: "Maler",
           zuweisungVon: "2022-09-01", zuweisungBis: "2023-06-30"
         }
+      ],
+      geton2026: [
+        {
+          id: "tn-301", kuerzel: "PW", name: "Paul Weber", kennung: "JC-8801",
+          status: "aktiv", betreuer: "Daniel Chu", arbeitsbereich: "Maler",
+          zuweisungVon: "2026-02-01", zuweisungBis: "2026-12-31"
+        },
+        {
+          id: "tn-302", kuerzel: "AY", name: "Aylin Yildiz", kennung: "JC-8802",
+          status: "aktiv", betreuer: "Holger Irmak", arbeitsbereich: "Maler",
+          zuweisungVon: "2026-02-15", zuweisungBis: "2026-12-31"
+        }
       ]
     };
 
@@ -938,6 +955,11 @@
       const abgeschlossenEl = document.getElementById("massnahmenAbgeschlossenAccordion");
       const countEl = document.getElementById("massnahmenCount");
       if (!laufendeListEl || !abgeschlossenEl) return;
+
+      const nameLabelEl = document.getElementById("anleiterNameLabel");
+      const bereichLabelEl = document.getElementById("anleiterArbeitsbereichLabel");
+      if (nameLabelEl) nameLabelEl.textContent = ANLEITER.name;
+      if (bereichLabelEl) bereichLabelEl.textContent = ANLEITER.arbeitsbereichLabel;
 
       const keys = Object.keys(MASSNAHMEN);
       const laufende = keys.filter(k => MASSNAHMEN[k].status === "laufend");
