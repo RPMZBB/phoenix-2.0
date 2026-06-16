@@ -622,11 +622,17 @@
           <!-- Aktuelle Bewertung -->
           <div class="border rounded-3 p-3 bg-white mb-3">
             <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
-              <div class="form-floating" style="max-width:220px;">
-                <input type="month" class="form-control" id="bewMonat">
-                <label for="bewMonat">Bewertungsmonat</label>
+              <div class="d-flex gap-2">
+                <select class="form-select form-select-sm" id="bewMonatSelect" style="width:auto;"></select>
+                <select class="form-select form-select-sm" id="bewJahrSelect" style="width:auto;"></select>
               </div>
               <span class="badge text-bg-light border" id="bewStatusBadge">noch nicht erfasst</span>
+            </div>
+
+            <div class="d-flex justify-content-end mb-2">
+              <button class="btn btn-outline-secondary btn-sm" type="button" id="btnBewVormonat">
+                <i class="bi bi-arrow-repeat me-1"></i> Vorherige Bewertung laden
+              </button>
             </div>
 
             <div class="text-muted small mb-2">
@@ -830,8 +836,7 @@
       const bewBeendetEl = document.getElementById("bewStatusBeendet");
       if (bewBeendetEl) bewBeendetEl.checked = false;
 
-      const bewMonatEl = document.getElementById("bewMonat");
-      if (bewMonatEl) bewMonatEl.value = currentMonthValue();
+      setBewMonat(currentMonthValue());
       renderBewUebersicht();
 
       // ersten Tab aktivieren
@@ -1601,8 +1606,48 @@
     function fmtMonthDE(ym) {
       if (!ym) return "—";
       const [y, m] = ym.split("-");
-      const idx = parseInt(m, 10) - 1;
-      return `${getMonthNameDE(idx)} ${y}`;
+      return `${m}.${y}`;
+    }
+
+    // ===== Monat/Jahr Auswahl (Bewertungsmodal) =====
+    function getBewMonat() {
+      const m = document.getElementById("bewMonatSelect")?.value;
+      const y = document.getElementById("bewJahrSelect")?.value;
+      if (!m || !y) return "";
+      return `${y}-${m}`;
+    }
+
+    function setBewMonat(ym) {
+      if (!ym) ym = currentMonthValue();
+      const [y, m] = ym.split("-");
+      const monatEl = document.getElementById("bewMonatSelect");
+      const jahrEl = document.getElementById("bewJahrSelect");
+      if (monatEl) monatEl.value = m;
+      if (jahrEl) jahrEl.value = y;
+    }
+
+    function populateBewMonatJahrSelects() {
+      const monatEl = document.getElementById("bewMonatSelect");
+      const jahrEl = document.getElementById("bewJahrSelect");
+      if (!monatEl || !jahrEl) return;
+
+      monatEl.innerHTML = Array.from({ length: 12 }, (_, i) => {
+        const mm = String(i + 1).padStart(2, "0");
+        return `<option value="${mm}">${mm}</option>`;
+      }).join("");
+
+      const thisYear = new Date().getFullYear();
+      const years = [];
+      for (let y = thisYear - 2; y <= thisYear + 1; y++) years.push(y);
+
+      jahrEl.innerHTML = years.map(y => `<option value="${y}">${y}</option>`).join("");
+    }
+
+    // Vormonat zu einem YYYY-MM Wert berechnen
+    function previousMonthValue(ym) {
+      const [y, m] = ym.split("-").map(Number);
+      const d = new Date(y, m - 2, 1); // m ist 1-basiert, daher -2 für Vormonat
+      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
     }
 
     function renderBewertungGrid() {
@@ -1729,10 +1774,9 @@
       const nameEl = document.getElementById("bewModalName");
       if (nameEl) nameEl.textContent = tn ? tn.name : "Teilnehmer";
 
-      const monatEl = document.getElementById("bewMonat");
-      if (monatEl && !monatEl.value) monatEl.value = currentMonthValue();
+      setBewMonat(currentMonthValue());
 
-      loadBewertungFor(tnId, monatEl?.value);
+      loadBewertungFor(tnId, getBewMonat());
       renderBewVerlauf();
 
       const modalEl = document.getElementById("modalBewertung");
@@ -1741,7 +1785,7 @@
 
     function saveBewertung() {
       const tnId = currentBewTnId;
-      const monat = document.getElementById("bewMonat").value;
+      const monat = getBewMonat();
 
       if (!tnId) {
         showToast("Fehlt", "Kein Teilnehmer ausgewählt.");
@@ -1826,7 +1870,7 @@
     // Zeigt alle FRÜHEREN Bewertungen (nicht der aktuell im Formular gewählte Monat) als Accordion
     function renderBewVerlauf() {
       const tnId = currentBewTnId;
-      const aktuellerMonat = document.getElementById("bewMonat")?.value;
+      const aktuellerMonat = getBewMonat();
 
       const data = bewertungen[tnId] || {};
       const monate = Object.keys(data).sort().reverse().filter(m => m !== aktuellerMonat);
@@ -1970,17 +2014,40 @@
       });
 
       // Monatsbewertung
-      document.getElementById("bewMonat").value = currentMonthValue();
+      populateBewMonatJahrSelects();
+      setBewMonat(currentMonthValue());
       renderBewertungGrid();
       renderBewUebersicht();
 
-      document.getElementById("bewMonat")?.addEventListener("change", () => {
-        loadBewertungFor(currentBewTnId, document.getElementById("bewMonat").value);
+      document.getElementById("bewMonatSelect")?.addEventListener("change", () => {
+        loadBewertungFor(currentBewTnId, getBewMonat());
+        renderBewVerlauf();
+      });
+      document.getElementById("bewJahrSelect")?.addEventListener("change", () => {
+        loadBewertungFor(currentBewTnId, getBewMonat());
         renderBewVerlauf();
       });
       document.getElementById("bewStatusBeendet")?.addEventListener("change", renderBewUebersicht);
 
       document.getElementById("btnBewSpeichern")?.addEventListener("click", saveBewertung);
+
+      document.getElementById("btnBewVormonat")?.addEventListener("click", () => {
+        if (!currentBewTnId) return;
+
+        const vormonat = previousMonthValue(getBewMonat());
+        const vorherigeEintrag = bewertungen[currentBewTnId]?.[vormonat];
+
+        if (!vorherigeEintrag) {
+          showToast("Keine Daten", `Für ${fmtMonthDE(vormonat)} liegt keine Bewertung vor.`);
+          return;
+        }
+
+        KRITERIEN.forEach(k => aktuelleBewNoten[k.id] = vorherigeEintrag.noten[k.id] || null);
+        renderBewertungGrid();
+        document.getElementById("bewKommentar").value = vorherigeEintrag.kommentar || "";
+
+        showToast("Übernommen", `Bewertung aus ${fmtMonthDE(vormonat)} wurde übernommen. Bitte prüfen und ggf. anpassen.`);
+      });
 
       // Initiale Maßnahme vorladen (Werte/Labels setzen)
       loadMassnahme(massnahmeKey);
