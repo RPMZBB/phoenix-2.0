@@ -166,10 +166,11 @@
           </div>
 
           <!-- ABGESCHLOSSENE MASSNAHMEN -->
-          <div class="mb-2">
-            <h6 class="text-secondary mb-2">Abgeschlossene Maßnahmen</h6>
-            <div class="accordion" id="massnahmenAbgeschlossenAccordion">
-              <!-- per JS -->
+          <div class="card border-0 shadow mb-3" id="massnahmenAbgeschlossenCard">
+            <div class="card-body p-0">
+              <div class="accordion" id="massnahmenAbgeschlossenAccordion">
+                <!-- per JS -->
+              </div>
             </div>
           </div>
 
@@ -776,6 +777,10 @@
       integra2025: {
         name: "Integra 2025", arbeitsbereichLabel: "Maler & Lackierer",
         von: "2024-01-01", bis: "2025-06-30", status: "abgeschlossen"
+      },
+      integra2023: {
+        name: "Integra 2023", arbeitsbereichLabel: "Maler & Lackierer",
+        von: "2022-07-01", bis: "2023-12-31", status: "abgeschlossen"
       }
     };
 
@@ -890,6 +895,18 @@
           status: "aktiv", betreuer: "Daniel Chu", arbeitsbereich: "Gärtnerei",
           zuweisungVon: "2024-03-01", zuweisungBis: "2025-03-01"
         }
+      ],
+      integra2023: [
+        {
+          id: "tn-201", kuerzel: "SH", name: "Sven Hoffmann", kennung: "JC-3301",
+          status: "beendet", betreuer: "Daniel Chu", arbeitsbereich: "Maler",
+          zuweisungVon: "2022-07-01", zuweisungBis: "2023-12-31"
+        },
+        {
+          id: "tn-202", kuerzel: "MK", name: "Mira Klein", kennung: "JC-3302",
+          status: "beendet", betreuer: "Holger Irmak", arbeitsbereich: "Maler",
+          zuweisungVon: "2022-09-01", zuweisungBis: "2023-06-30"
+        }
       ]
     };
 
@@ -965,49 +982,63 @@
           </div>`;
       }
 
-      // ----- Abgeschlossene Maßnahmen: Accordion, standardmäßig zu, "Teilnehmer" gesamt -----
-      abgeschlossenEl.innerHTML = abgeschlossene.map((key, idx) => {
-        const m = MASSNAHMEN[key];
-        const gesamtCount = countTnForMassnahme(key);
-        const collapseId = "massnahmeAbgeschlossenCollapse" + idx;
-        const headingId = "massnahmeAbgeschlossenHeading" + idx;
+      // ----- Abgeschlossene Maßnahmen: ein Akkordeon, standardmäßig zu -----
+      const abgeschlossenCard = document.getElementById("massnahmenAbgeschlossenCard");
 
-        return `
-          <div class="accordion-item">
-            <h2 class="accordion-header" id="${headingId}">
-              <button class="accordion-button collapsed" type="button"
-                      data-bs-toggle="collapse" data-bs-target="#${collapseId}"
-                      aria-expanded="false" aria-controls="${collapseId}">
-                <div class="d-flex justify-content-between align-items-center flex-grow-1 flex-wrap gap-2 me-2">
-                  <div>
-                    <span class="fw-semibold">${escapeHtml(m.name)}</span>
-                    <span class="text-secondary small ms-2">${fmtDateDE(m.von)} bis ${fmtDateDE(m.bis)}</span>
-                  </div>
-                  <span class="badge text-bg-light border text-dark">${gesamtCount} Teilnehmer</span>
+      if (abgeschlossene.length === 0) {
+        abgeschlossenEl.innerHTML = "";
+        abgeschlossenCard?.classList.add("d-none");
+      } else {
+        abgeschlossenCard?.classList.remove("d-none");
+        const itemsHtml = abgeschlossene.map(key => {
+          const m = MASSNAHMEN[key];
+          const gesamtCount = countTnForMassnahme(key);
+
+          return `
+            <a href="#" class="list-group-item list-group-item-action massnahme-link" data-key="${key}">
+              <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <div>
+                  <div class="fw-semibold">${escapeHtml(m.name)}</div>
+                  <small class="text-secondary">${fmtDateDE(m.von)} bis ${fmtDateDE(m.bis)}</small>
                 </div>
+                <div class="d-flex align-items-center gap-4 flex-wrap">
+                  <div class="text-end">
+                    <div class="text-secondary small">Mein Bereich</div>
+                    <div>${escapeHtml(m.arbeitsbereichLabel)}</div>
+                  </div>
+                  <div class="text-end">
+                    <div class="text-secondary small">Teilnehmer gesamt</div>
+                    <div>${gesamtCount}</div>
+                  </div>
+                  <button class="btn btn-outline-secondary btn-sm" onclick="event.stopPropagation();">
+                    <i class="bi bi-arrow-right me-1"></i> Öffnen
+                  </button>
+                </div>
+              </div>
+            </a>
+          `;
+        }).join("");
+
+        abgeschlossenEl.innerHTML = `
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="massnahmenAbgeschlossenHeading">
+              <button class="accordion-button collapsed" type="button"
+                      data-bs-toggle="collapse" data-bs-target="#massnahmenAbgeschlossenCollapse"
+                      aria-expanded="false" aria-controls="massnahmenAbgeschlossenCollapse">
+                <span class="flex-grow-1">Abgeschlossene Maßnahmen</span>
+                <span class="badge text-bg-light border text-dark ms-2">${abgeschlossene.length}</span>
               </button>
             </h2>
-            <div id="${collapseId}" class="accordion-collapse collapse"
-                 aria-labelledby="${headingId}" data-bs-parent="#massnahmenAbgeschlossenAccordion">
-              <div class="accordion-body">
-                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
-                  <div class="text-secondary small">
-                    Mein Bereich: <strong>${escapeHtml(m.arbeitsbereichLabel)}</strong>
-                    &middot; Teilnehmer gesamt (aktiv + beendet): <strong>${gesamtCount}</strong>
-                  </div>
-                  <a href="#" class="btn btn-outline-secondary btn-sm massnahme-link" data-key="${key}">
-                    <i class="bi bi-arrow-right me-1"></i> Öffnen
-                  </a>
+            <div id="massnahmenAbgeschlossenCollapse" class="accordion-collapse collapse"
+                 aria-labelledby="massnahmenAbgeschlossenHeading">
+              <div class="accordion-body p-0">
+                <div class="list-group list-group-flush">
+                  ${itemsHtml}
                 </div>
               </div>
             </div>
           </div>
         `;
-      }).join("");
-
-      if (abgeschlossene.length === 0) {
-        abgeschlossenEl.innerHTML = `
-          <div class="text-secondary small fst-italic p-2">Keine abgeschlossenen Maßnahmen.</div>`;
       }
 
       // Klick-Handler für alle (auch neu gerenderten) Maßnahmen-Links erneut binden
