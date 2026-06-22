@@ -491,6 +491,18 @@
             </button>
             </li>
 
+            <li class="nav-item" role="presentation">
+              <button class="nav-link"
+                      id="dokJCVordrucke-tab"
+                      data-bs-toggle="tab"
+                      data-bs-target="#dokJCVordrucke"
+                      type="button" role="tab"
+                      aria-controls="dokJCVordrucke"
+                      aria-selected="false">
+                Jobcenter-Vordrucke
+              </button>
+            </li>
+
 
 
               </ul>
@@ -1215,6 +1227,804 @@
   </div>
 
 </div>
+
+
+<!-- ============================================================
+     TAB: JOBCENTER-VORDRUCKE
+     ============================================================ -->
+<div class="tab-pane fade" id="dokJCVordrucke" role="tabpanel" aria-labelledby="dokJCVordrucke-tab">
+
+  <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-3">
+    <div>
+      <h5 class="mb-0">Jobcenter-Vordrucke</h5>
+      <small class="text-muted">Bundesagentur für Arbeit Vordrucke – Teilnehmerbezogen</small>
+    </div>
+  </div>
+
+  <!-- F.5.2 Card -->
+  <div class="row g-3">
+    <div class="col-12 col-md-6 col-lg-4">
+      <div class="border rounded-3 p-3 h-100">
+        <div class="d-flex align-items-start gap-2 mb-2">
+          <div class="bg-primary-subtle text-primary-emphasis rounded-2 p-2 flex-shrink-0">
+            <i class="bi bi-file-earmark-text fs-5"></i>
+          </div>
+          <div>
+            <div class="fw-semibold">F.5.2</div>
+            <div class="small text-muted">Teilnahmebezogener Bericht</div>
+            <div class="small text-muted" style="font-size:.72rem;">für alle Maßnahmen außer Kombina­tionen mit erfolgsorientierter Vergütung</div>
+          </div>
+        </div>
+        <div id="f52StatusBadge" class="mb-2" style="display:none;">
+          <span class="badge bg-success-subtle text-success-emphasis" id="f52StatusText"></span>
+        </div>
+        <div class="d-flex flex-wrap gap-2">
+          <button class="btn btn-primary btn-sm" type="button"
+                  id="btnF52Erstellen">
+            <i class="bi bi-plus-lg me-1"></i> Bericht erstellen
+          </button>
+          <button class="btn btn-outline-secondary btn-sm" type="button"
+                  id="btnF52Vorschau" style="display:none;">
+            <i class="bi bi-eye me-1"></i> Vorschau
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Placeholder für weitere Vordrucke -->
+    <div class="col-12 col-md-6 col-lg-4">
+      <div class="border rounded-3 p-3 h-100 border-dashed" style="border-style:dashed!important;">
+        <div class="d-flex align-items-center gap-2 text-muted">
+          <i class="bi bi-plus-circle fs-5"></i>
+          <div>
+            <div class="small fw-semibold">Weitere Vordrucke</div>
+            <div class="small">künftig erweiterbar</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── F.5.2 Vollbild-Modal ───────────────────────────────────────── -->
+<div class="modal fade" id="modalF52Vollbild" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-fullscreen">
+    <div class="modal-content" style="background:#f0f2f5;">
+      <div class="modal-header py-2 border-0" style="background:#1e2d3d;color:#fff;flex-wrap:wrap;gap:.5rem;">
+        <div>
+          <div class="fw-bold" style="font-size:1rem;">F.5.2 – Teilnahmebezogener Bericht</div>
+          <div style="font-size:.8rem;color:#adb5bd;">Max Mustermann &middot; Integra 2025 &middot; Vordruck F.5.2 – 10/2024</div>
+        </div>
+        <div class="ms-auto d-flex gap-2 align-items-center flex-wrap">
+          <button class="btn btn-sm btn-outline-light" id="btnF52Entwurf">
+            <i class="bi bi-floppy me-1"></i> Entwurf speichern
+          </button>
+          <button class="btn btn-sm btn-warning text-dark fw-semibold" id="btnF52Vorschau2">
+            <i class="bi bi-eye me-1"></i> Vorschau &amp; Drucken
+          </button>
+          <button class="btn btn-sm btn-success fw-semibold" id="btnF52Speichern">
+            <i class="bi bi-check-lg me-1"></i> Speichern
+          </button>
+          <button type="button" class="btn-close btn-close-white ms-1" data-bs-dismiss="modal"></button>
+        </div>
+      </div>
+
+      <div class="modal-body p-0" style="overflow-y:auto;">
+        <div style="max-width:860px;margin:0 auto;padding:1.5rem 1rem 4rem;">
+
+          <!-- Hinweis -->
+          <div class="alert alert-info small py-2 mb-4">
+            <i class="bi bi-info-circle me-1"></i>
+            Zutreffendes bitte ausfüllen oder ankreuzen. Grau hinterlegte Felder werden automatisch aus den Teilnehmerdaten übernommen.
+          </div>
+
+          <!-- ── Abschnitt 1+2: Auftragnehmer + Maßnahmenummer ── -->
+          <div class="card border-0 shadow-sm mb-4">
+            <div class="card-body">
+              <div class="row g-3">
+                <div class="col-md-8">
+                  <label class="form-label small text-muted mb-1">
+                    <span class="badge bg-secondary me-1">1</span> Auftragnehmer
+                  </label>
+                  <input type="text" class="form-control form-control-sm bg-body-tertiary"
+                         id="f52Auftragnehmer"
+                         value="Zentrum für Bildung und Beruf Saar gGmbH" readonly>
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label small text-muted mb-1">
+                    <span class="badge bg-secondary me-1">2</span> Maßnahmenummer
+                  </label>
+                  <input type="text" class="form-control form-control-sm bg-body-tertiary"
+                         id="f52Massnahmenummer"
+                         value="951-52185-2025-002" readonly>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── A: Teilnehmende Person ── -->
+          <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header bg-dark text-white py-2">
+              <strong>A. Teilnehmende Person</strong>
+            </div>
+            <div class="card-body">
+              <div class="row g-3">
+                <div class="col-md-4">
+                  <label class="form-label small text-muted mb-1">
+                    <span class="badge bg-secondary me-1">3</span> Vorname
+                  </label>
+                  <input type="text" class="form-control form-control-sm bg-body-tertiary"
+                         id="f52Vorname" value="Max" readonly>
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label small text-muted mb-1">
+                    <span class="badge bg-secondary me-1">4</span> Nachname
+                  </label>
+                  <input type="text" class="form-control form-control-sm bg-body-tertiary"
+                         id="f52Nachname" value="Mustermann" readonly>
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label small text-muted mb-1">
+                    <span class="badge bg-secondary me-1">5</span> Kundennummer
+                  </label>
+                  <input type="text" class="form-control form-control-sm bg-body-tertiary"
+                         id="f52Kundennummer" value="555D021632" readonly>
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label small text-muted mb-1">
+                    <span class="badge bg-secondary me-1">6</span> Teilnahmedauer von
+                  </label>
+                  <input type="text" class="form-control form-control-sm bg-body-tertiary"
+                         id="f52TeilnahmeVon" value="12.09.2025" readonly>
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label small text-muted mb-1">Teilnahmedauer bis</label>
+                  <input type="text" class="form-control form-control-sm bg-body-tertiary"
+                         id="f52TeilnahmeBis" value="11.09.2026" readonly>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── B: Berichtsanlass ── -->
+          <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header bg-dark text-white py-2">
+              <strong>B. Berichtsanlass</strong>
+            </div>
+            <div class="card-body">
+              <label class="form-label small text-muted mb-2">
+                <span class="badge bg-primary me-1">7</span> Berichtsanlass <span class="text-danger">*</span>
+              </label>
+
+              <div class="d-flex flex-column gap-2">
+
+                <!-- Nichtantritt -->
+                <div class="border rounded-3 p-3">
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="f52Berichtsanlass"
+                           id="f52AnlassNichtantritt" value="nichtantritt">
+                    <label class="form-check-label fw-semibold" for="f52AnlassNichtantritt">
+                      Nichtantritt der teilnehmenden Person
+                    </label>
+                  </div>
+                  <div class="text-muted small ms-4 mt-1">Vorlage: sofort nach Feststellung &mdash; Nachfolgende Angaben entfallen!</div>
+                </div>
+
+                <!-- Abbruch -->
+                <div class="border rounded-3 p-3" id="f52AbbruchBlock">
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="f52Berichtsanlass"
+                           id="f52AnlassAbbruch" value="abbruch">
+                    <label class="form-check-label fw-semibold" for="f52AnlassAbbruch">
+                      Abbruch durch den Bedarfsträger
+                    </label>
+                  </div>
+                  <div class="text-muted small ms-4 mt-1 mb-2">Vorlage: sofort nach Abstimmung mit dem Bedarfsträger</div>
+                  <div id="f52AbbruchDetails" style="display:none;" class="ms-4">
+                    <div class="row g-2">
+                      <div class="col-md-4">
+                        <label class="form-label small text-muted mb-1">Datum des Abbruchs</label>
+                        <input type="date" class="form-control form-control-sm" id="f52AbbruchDatum">
+                      </div>
+                      <div class="col-12">
+                        <label class="form-label small text-muted mb-1">Gründe / Anlässe</label>
+                        <textarea class="form-control form-control-sm" id="f52AbbruchGruende" rows="3"></textarea>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Abschlussbericht -->
+                <div class="border rounded-3 p-3">
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="f52Berichtsanlass"
+                           id="f52AnlassAbschluss" value="abschluss">
+                    <label class="form-check-label fw-semibold" for="f52AnlassAbschluss">
+                      Zum Ende der Teilnahmedauer – Abschlussbericht
+                    </label>
+                  </div>
+                  <div class="text-muted small ms-4 mt-1">Vorlage: spätestens am letzten Tag der individuellen Teilnahmedauer</div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- ── C: Ergebnis und Beurteilung ── -->
+          <div class="card border-0 shadow-sm mb-4" id="f52AbschnittC">
+            <div class="card-header bg-dark text-white py-2">
+              <strong>C. Ergebnis der Maßnahme und Beurteilung der teilnehmenden Person</strong>
+            </div>
+            <div class="card-body">
+
+              <!-- 8: Ergebnis -->
+              <div class="mb-4">
+                <label class="form-label small text-muted mb-2">
+                  <span class="badge bg-primary me-1">8</span> Ergebnis der Maßnahmedurchführung
+                </label>
+                <div class="d-flex gap-4">
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="f52Ergebnis"
+                           id="f52ErgebnisErreicht" value="erreicht">
+                    <label class="form-check-label" for="f52ErgebnisErreicht">
+                      Maßnahmeziel wurde erreicht
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="f52Ergebnis"
+                           id="f52ErgebnisNichtErreicht" value="nicht_erreicht">
+                    <label class="form-check-label" for="f52ErgebnisNichtErreicht">
+                      Maßnahmeziel wurde nicht erreicht
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 9: Begründung (nur bei nicht erreicht) -->
+              <div class="mb-4" id="f52BegruendungBlock" style="display:none;">
+                <label class="form-label small text-muted mb-1">
+                  <span class="badge bg-primary me-1">9</span> Begründung
+                </label>
+                <textarea class="form-control" id="f52Begruendung" rows="4"
+                          placeholder="Begründung, warum das Maßnahmeziel nicht erreicht wurde …"></textarea>
+              </div>
+
+              <!-- 10: Berufsbezogene Feststellungen -->
+              <div class="mb-4">
+                <label class="form-label small text-muted mb-1">
+                  <span class="badge bg-primary me-1">10</span> Berufsbezogene Feststellungen
+                </label>
+                <textarea class="form-control" id="f52BerufsbezogeneFeststellungen" rows="5"
+                          placeholder="Feststellungen zu beruflichen Kenntnissen, Fähigkeiten und Fertigkeiten …"></textarea>
+              </div>
+
+              <!-- 11: Beurteilung -->
+              <div class="mb-4">
+                <label class="form-label small text-muted mb-1">
+                  <span class="badge bg-primary me-1">11</span> Beurteilung der teilnehmenden Person
+                </label>
+                <textarea class="form-control" id="f52Beurteilung" rows="5"
+                          placeholder="Beurteilung des Verhaltens, der Leistungsbereitschaft und der sozialen Kompetenzen …"></textarea>
+              </div>
+
+              <!-- 12: Maßnahmeteile bei Arbeitgeber -->
+              <div class="mb-4">
+                <label class="form-label small text-muted mb-2">
+                  <span class="badge bg-primary me-1">12</span> Maßnahmeteile bei einem Arbeitgeber
+                </label>
+                <div class="d-flex flex-column gap-2 mb-3">
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="f52Arbeitgeber"
+                           id="f52ArbeitgeberKeine" value="keine" checked>
+                    <label class="form-check-label" for="f52ArbeitgeberKeine">
+                      Es wurden keine Maßnahmeteile bei einem Arbeitgeber/Betrieb durchgeführt.
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="f52Arbeitgeber"
+                           id="f52ArbeitgeberJa" value="ja">
+                    <label class="form-check-label" for="f52ArbeitgeberJa">
+                      Es wurden Maßnahmeteile bei folgendem/n Arbeitgeber(n)/Betrieb(en) durchgeführt:
+                    </label>
+                  </div>
+                </div>
+
+                <div id="f52ArbeitgeberTabelle" style="display:none;">
+                  <div class="table-responsive">
+                    <table class="table table-sm table-bordered mb-2" id="f52AgTable">
+                      <thead class="table-light">
+                        <tr>
+                          <th>Arbeitgeber (Name und Ort)</th>
+                          <th>Tätigkeit</th>
+                          <th style="width:200px;">Datum von – bis</th>
+                          <th style="width:40px;"></th>
+                        </tr>
+                      </thead>
+                      <tbody id="f52AgTableBody"></tbody>
+                    </table>
+                  </div>
+                  <button type="button" class="btn btn-sm btn-outline-primary" id="btnF52AgZeile">
+                    <i class="bi bi-plus-lg me-1"></i> Zeile hinzufügen
+                  </button>
+                </div>
+              </div>
+
+              <!-- 13: Fehlzeiten -->
+              <div class="mb-2">
+                <label class="form-label small text-muted mb-2">
+                  <span class="badge bg-primary me-1">13</span> Fehlzeiten der teilnehmenden Person
+                </label>
+                <div class="d-flex flex-column gap-2">
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="f52Fehlzeiten"
+                           id="f52FehlzeitenKeine" value="keine" checked>
+                    <label class="form-check-label" for="f52FehlzeitenKeine">keine Fehlzeiten</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="f52Fehlzeiten"
+                           id="f52FehlzeitenJa" value="ja">
+                    <label class="form-check-label" for="f52FehlzeitenJa">Anzahl der Fehltage:</label>
+                  </div>
+                </div>
+                <div id="f52FehlzeitenDetails" class="mt-2 ms-4" style="display:none;">
+                  <div class="row g-2">
+                    <div class="col-md-3">
+                      <label class="form-label small text-muted mb-1">Fehltage gesamt</label>
+                      <input type="number" class="form-control form-control-sm" id="f52Fehltage"
+                             min="0" placeholder="0">
+                    </div>
+                    <div class="col-md-3">
+                      <label class="form-label small text-muted mb-1">davon unentschuldigt</label>
+                      <input type="number" class="form-control form-control-sm" id="f52FehltageUnentschuldigt"
+                             min="0" placeholder="0">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- ── D: Erklärung ── -->
+          <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header bg-dark text-white py-2">
+              <strong>D. Erklärung</strong>
+            </div>
+            <div class="card-body">
+              <div class="row g-3">
+                <div class="col-md-4">
+                  <label class="form-label small text-muted mb-1">
+                    <span class="badge bg-primary me-1">14</span> Bericht erstellt am
+                  </label>
+                  <input type="date" class="form-control" id="f52ErstelltAm">
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label small text-muted mb-1">
+                    <span class="badge bg-primary me-1">15</span> Verfasser
+                  </label>
+                  <select class="form-select" id="f52Verfasser">
+                    <option selected>Daniel Chu</option>
+                    <option>Corinna Adams</option>
+                    <option>Janine Kerber</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── F.5.2 Druckvorschau-Overlay ───────────────────────────────── -->
+<div id="f52PreviewOverlay" style="display:none;position:fixed;inset:0;z-index:1200;background:rgba(0,0,0,.65);overflow-y:auto;">
+  <div style="position:sticky;top:0;background:#343a40;padding:.6rem 1rem;display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;">
+    <span style="color:#fff;font-weight:600;margin-right:.5rem;">Vorschau – F.5.2 Teilnahmebezogener Bericht</span>
+    <div class="form-check form-switch m-0 ms-2" style="color:#fff;">
+      <input class="form-check-input" type="checkbox" id="f52AnonymCheckbox" role="switch">
+      <label class="form-check-label small" for="f52AnonymCheckbox">Anonymisiert (Name &rarr; Initialen)</label>
+    </div>
+    <button class="btn btn-sm btn-warning text-dark" onclick="window.print()"><i class="bi bi-printer me-1"></i> Drucken</button>
+    <button class="btn btn-sm btn-outline-light" onclick="alert('E-Mail (Demo)')"><i class="bi bi-envelope me-1"></i> E-Mail</button>
+    <button class="btn btn-sm btn-outline-light ms-auto" id="btnF52ClosePreview"><i class="bi bi-x-lg me-1"></i> Schließen</button>
+  </div>
+  <div id="f52PreviewPaper" style="background:#fff;max-width:760px;margin:2rem auto;padding:2.5rem 3rem;font-family:'Times New Roman',serif;font-size:11pt;line-height:1.5;"></div>
+</div>
+
+<!-- ── F.5.2 Script ───────────────────────────────────────────────── -->
+<script>
+(function() {
+  var f52InitDone = false;
+  var savedF52 = null;
+  var _currentF52Preview = null;
+
+  function g(id) { return document.getElementById(id); }
+  function gv(id) { var el = g(id); return el ? el.value : ''; }
+
+  function fmtDate(iso) {
+    if (!iso) return '—';
+    var p = iso.split('-');
+    if (p.length !== 3) return iso;
+    return p[2] + '.' + p[1] + '.' + p[0];
+  }
+
+  function toIso(de) {
+    if (!de || de === '—') return '';
+    var p = de.split('.');
+    if (p.length !== 3) return de;
+    return p[2] + '-' + p[1] + '-' + p[0];
+  }
+
+  function todayIso() {
+    var t = new Date();
+    return t.getFullYear() + '-' + String(t.getMonth()+1).padStart(2,'0') + '-' + String(t.getDate()).padStart(2,'0');
+  }
+
+  function anonymize(name) {
+    if (!name) return name;
+    return name.split(' ').map(function(p) {
+      return p.length <= 1 ? p : p[0] + '*'.repeat(p.length - 1);
+    }).join(' ');
+  }
+
+  // ── Arbeitgeber-Zeilen ────────────────────────────────────────────
+  function createAgRow(data) {
+    data = data || {};
+    var tr = document.createElement('tr');
+    tr.innerHTML =
+      '<td><input type="text" class="form-control form-control-sm f52-ag-name" placeholder="Firma, Ort …" value="' + (data.name || '') + '"></td>'
+      + '<td><input type="text" class="form-control form-control-sm f52-ag-taetigkeit" placeholder="Tätigkeit …" value="' + (data.taetigkeit || '') + '"></td>'
+      + '<td><div class="d-flex gap-1 align-items-center">'
+      + '<input type="date" class="form-control form-control-sm f52-ag-von" value="' + (data.von || '') + '">'
+      + '<span class="text-muted">–</span>'
+      + '<input type="date" class="form-control form-control-sm f52-ag-bis" value="' + (data.bis || '') + '">'
+      + '</div></td>'
+      + '<td><button type="button" class="btn btn-outline-danger btn-sm f52-ag-del"><i class="bi bi-trash"></i></button></td>';
+    tr.querySelector('.f52-ag-del').addEventListener('click', function() {
+      var tbody = g('f52AgTableBody');
+      if (tbody && tbody.children.length > 1) tr.remove();
+      else { tr.querySelectorAll('input').forEach(function(i) { i.value = ''; }); }
+    });
+    return tr;
+  }
+
+  // ── Collect ───────────────────────────────────────────────────────
+  function collectF52() {
+    var anlass = (document.querySelector('input[name="f52Berichtsanlass"]:checked') || {}).value || '';
+    var ergebnis = (document.querySelector('input[name="f52Ergebnis"]:checked') || {}).value || '';
+    var arbeitgeber = (document.querySelector('input[name="f52Arbeitgeber"]:checked') || {}).value || 'keine';
+    var fehlzeiten = (document.querySelector('input[name="f52Fehlzeiten"]:checked') || {}).value || 'keine';
+
+    var agRows = [];
+    g('f52AgTableBody').querySelectorAll('tr').forEach(function(tr) {
+      agRows.push({
+        name: tr.querySelector('.f52-ag-name').value,
+        taetigkeit: tr.querySelector('.f52-ag-taetigkeit').value,
+        von: tr.querySelector('.f52-ag-von').value,
+        bis: tr.querySelector('.f52-ag-bis').value
+      });
+    });
+
+    return {
+      auftragnehmer: gv('f52Auftragnehmer'),
+      massnahmenummer: gv('f52Massnahmenummer'),
+      vorname: gv('f52Vorname'),
+      nachname: gv('f52Nachname'),
+      kundennummer: gv('f52Kundennummer'),
+      teilnahmeVon: gv('f52TeilnahmeVon'),
+      teilnahmeBis: gv('f52TeilnahmeBis'),
+      berichtsanlass: anlass,
+      abbruchDatum: gv('f52AbbruchDatum'),
+      abbruchGruende: gv('f52AbbruchGruende'),
+      ergebnis: ergebnis,
+      begruendung: gv('f52Begruendung'),
+      berufsbezogeneFeststellungen: gv('f52BerufsbezogeneFeststellungen'),
+      beurteilung: gv('f52Beurteilung'),
+      arbeitgeber: arbeitgeber,
+      agRows: agRows,
+      fehlzeiten: fehlzeiten,
+      fehltage: gv('f52Fehltage'),
+      fehltageUnentschuldigt: gv('f52FehltageUnentschuldigt'),
+      erstelltAm: gv('f52ErstelltAm'),
+      verfasser: gv('f52Verfasser')
+    };
+  }
+
+  // ── Build preview HTML ────────────────────────────────────────────
+  function buildF52Preview(d, anonym) {
+    var vorname = anonym ? anonymize(d.vorname) : d.vorname;
+    var nachname = anonym ? anonymize(d.nachname) : d.nachname;
+    var kdnr = anonym ? '—' : d.kundennummer;
+
+    function row2(l, v) {
+      return '<tr><td style="border:1px solid #999;padding:.3em .5em;font-weight:bold;width:35%;vertical-align:top;font-size:10pt;">' + l
+        + '</td><td style="border:1px solid #999;padding:.3em .5em;font-size:10pt;vertical-align:top;">' + (v || '') + '</td></tr>';
+    }
+    function cb(checked) {
+      return '<span style="display:inline-block;width:13px;height:13px;border:1px solid #333;text-align:center;line-height:13px;font-size:9pt;margin-right:4px;">'
+        + (checked ? 'x' : '&nbsp;') + '</span>';
+    }
+    function sec(title, color) {
+      return '<tr style="background:' + (color || '#333') + ';color:#fff;">'
+        + '<td colspan="2" style="border:1px solid #999;padding:.4em .6em;font-weight:bold;font-size:10pt;">' + title + '</td></tr>';
+    }
+    function nl(text) {
+      return (text || '').split(String.fromCharCode(10)).join('<br>');
+    }
+
+    // Anlasstext
+    var anlassText = '';
+    if (d.berichtsanlass === 'nichtantritt') anlassText = 'Nichtantritt der teilnehmenden Person';
+    else if (d.berichtsanlass === 'abbruch') anlassText = 'Abbruch durch den Bedarfsträger am ' + fmtDate(d.abbruchDatum);
+    else if (d.berichtsanlass === 'abschluss') anlassText = 'Zum Ende der Teilnahmedauer – Abschlussbericht';
+
+    // Arbeitgeber rows
+    var agHtml = '';
+    if (d.arbeitgeber === 'ja') {
+      var agRows = (d.agRows || []).filter(function(r){ return r.name; });
+      if (agRows.length) {
+        agHtml = '<table style="width:100%;border-collapse:collapse;font-size:9pt;margin-top:.3em;">'
+          + '<tr style="background:#eee;">'
+          + '<th style="border:1px solid #ccc;padding:.2em .4em;">Arbeitgeber (Name und Ort)</th>'
+          + '<th style="border:1px solid #ccc;padding:.2em .4em;">Tätigkeit</th>'
+          + '<th style="border:1px solid #ccc;padding:.2em .4em;width:150px;">Datum von – bis</th>'
+          + '</tr>'
+          + agRows.map(function(r) {
+              return '<tr><td style="border:1px solid #ccc;padding:.2em .4em;">' + r.name + '</td>'
+                + '<td style="border:1px solid #ccc;padding:.2em .4em;">' + r.taetigkeit + '</td>'
+                + '<td style="border:1px solid #ccc;padding:.2em .4em;">' + fmtDate(r.von) + ' – ' + fmtDate(r.bis) + '</td></tr>';
+            }).join('')
+          + '</table>';
+      }
+    }
+
+    var html = '<div style="font-size:9pt;color:#666;margin-bottom:.2em;">Vordruck F.5.2 – 10/2024</div>'
+      + '<h1 style="font-size:14pt;font-weight:bold;text-align:center;margin-bottom:.8em;">Teilnahmebezogener Bericht</h1>'
+      + '<p style="font-size:9pt;color:#666;margin-bottom:.8em;">Vordruck F.5.2 für alle Maßnahmen außer Maßnahmekombinationen mit erfolgsorientierter Vergütung</p>'
+      + '<p style="font-size:9pt;font-style:italic;margin-bottom:1em;">Hinweis: Zutreffendes bitte ausfüllen oder ankreuzen.</p>'
+
+      + '<table style="width:100%;border-collapse:collapse;margin-bottom:1em;">'
+      + row2('<span style="color:#888;font-size:9pt;">1</span> Auftragnehmer', d.auftragnehmer)
+      + row2('<span style="color:#888;font-size:9pt;">2</span> Maßnahmenummer', d.massnahmenummer)
+      + '</table>'
+
+      + '<table style="width:100%;border-collapse:collapse;margin-bottom:1em;">'
+      + sec('A. Teilnehmende Person')
+      + row2('<span style="color:#ddd;font-size:9pt;">3</span> Vorname', vorname)
+      + row2('<span style="color:#ddd;font-size:9pt;">4</span> Nachname', nachname)
+      + row2('<span style="color:#ddd;font-size:9pt;">5</span> Kundennummer', kdnr)
+      + row2('<span style="color:#ddd;font-size:9pt;">6</span> Teilnahmedauer', d.teilnahmeVon + ' bis ' + d.teilnahmeBis)
+      + '</table>'
+
+      + '<table style="width:100%;border-collapse:collapse;margin-bottom:1em;">'
+      + sec('B. Berichtsanlass')
+      + '<tr><td colspan="2" style="border:1px solid #999;padding:.5em .6em;font-size:10pt;">'
+      + '<p style="margin:.2em 0;">' + cb(d.berichtsanlass === 'nichtantritt') + ' Nichtantritt der teilnehmenden Person</p>'
+      + (d.berichtsanlass === 'nichtantritt' ? '<p style="margin:.1em 0 .1em 1.2em;font-size:9pt;color:#666;">Nachfolgende Angaben entfallen!</p>' : '')
+      + '<p style="margin:.4em 0 .2em;">' + cb(d.berichtsanlass === 'abbruch') + ' Abbruch durch den Bedarfsträger'
+      + (d.berichtsanlass === 'abbruch' && d.abbruchDatum ? ' am ' + fmtDate(d.abbruchDatum) : '') + '</p>'
+      + (d.berichtsanlass === 'abbruch' && d.abbruchGruende ? '<div style="margin:.2em 0 .2em 1.2em;font-size:10pt;">Gründe: ' + nl(d.abbruchGruende) + '</div>' : '')
+      + '<p style="margin:.4em 0 .2em;">' + cb(d.berichtsanlass === 'abschluss') + ' Zum Ende der Teilnahmedauer – Abschlussbericht</p>'
+      + '</td></tr>'
+      + '</table>';
+
+    if (d.berichtsanlass !== 'nichtantritt') {
+      html += '<table style="width:100%;border-collapse:collapse;margin-bottom:1em;">'
+        + sec('C. Ergebnis der Maßnahme und Beurteilung der teilnehmenden Person')
+        + '<tr><td colspan="2" style="border:1px solid #999;padding:.5em .6em;font-size:10pt;">'
+        + '<p style="margin:.2em 0;font-weight:bold;font-size:9pt;">8 Ergebnis der Maßnahmedurchführung</p>'
+        + '<p style="margin:.2em 0;">' + cb(d.ergebnis === 'erreicht') + ' Maßnahmeziel wurde erreicht (weiter mit 10)'
+        + '&nbsp;&nbsp;&nbsp;&nbsp;' + cb(d.ergebnis === 'nicht_erreicht') + ' Maßnahmeziel wurde nicht erreicht</p>'
+        + '</td></tr>'
+        + (d.ergebnis === 'nicht_erreicht' ? '<tr><td colspan="2" style="border:1px solid #999;padding:.5em .6em;">'
+          + '<p style="font-weight:bold;font-size:9pt;margin:.2em 0;">9 Begründung</p>'
+          + '<p style="font-size:10pt;">' + nl(d.begruendung) + '</p></td></tr>' : '')
+        + '<tr><td colspan="2" style="border:1px solid #999;padding:.5em .6em;">'
+        + '<p style="font-weight:bold;font-size:9pt;margin:.2em 0;">10 Berufsbezogene Feststellungen</p>'
+        + '<p style="font-size:10pt;min-height:3em;">' + nl(d.berufsbezogeneFeststellungen) + '</p></td></tr>'
+        + '<tr><td colspan="2" style="border:1px solid #999;padding:.5em .6em;">'
+        + '<p style="font-weight:bold;font-size:9pt;margin:.2em 0;">11 Beurteilung der teilnehmenden Person</p>'
+        + '<p style="font-size:10pt;min-height:3em;">' + nl(d.beurteilung) + '</p></td></tr>'
+        + '<tr><td colspan="2" style="border:1px solid #999;padding:.5em .6em;">'
+        + '<p style="font-weight:bold;font-size:9pt;margin:.2em 0;">12 Maßnahmeteile bei einem Arbeitgeber</p>'
+        + '<p style="margin:.2em 0;font-size:10pt;">' + cb(d.arbeitgeber !== 'ja') + ' Es wurden keine Maßnahmeteile bei einem Arbeitgeber/Betrieb durchgeführt.</p>'
+        + '<p style="margin:.2em 0;font-size:10pt;">' + cb(d.arbeitgeber === 'ja') + ' Es wurden Maßnahmeteile bei folgendem/n Arbeitgeber(n)/Betrieb(en) durchgeführt:</p>'
+        + agHtml
+        + '</td></tr>'
+        + '<tr><td colspan="2" style="border:1px solid #999;padding:.5em .6em;">'
+        + '<p style="font-weight:bold;font-size:9pt;margin:.2em 0;">13 Fehlzeiten der teilnehmenden Person</p>'
+        + '<p style="margin:.2em 0;font-size:10pt;">' + cb(d.fehlzeiten === 'keine') + ' keine Fehlzeiten</p>'
+        + '<p style="margin:.2em 0;font-size:10pt;">' + cb(d.fehlzeiten === 'ja') + ' Anzahl der Fehltage: '
+        + (d.fehlzeiten === 'ja' ? '<strong>' + (d.fehltage || '—') + '</strong> &nbsp;&nbsp; davon unentschuldigt: <strong>' + (d.fehltageUnentschuldigt || '—') + '</strong>' : '') + '</p>'
+        + '</td></tr>'
+        + '</table>';
+    }
+
+    html += '<table style="width:100%;border-collapse:collapse;margin-bottom:2em;">'
+      + sec('D. Erklärung')
+      + row2('<span style="color:#ddd;font-size:9pt;">14</span> Bericht erstellt am', fmtDate(d.erstelltAm))
+      + row2('<span style="color:#ddd;font-size:9pt;">15</span> Verfasser', d.verfasser)
+      + '</table>'
+      + '<div style="margin-top:3em;display:flex;gap:4em;">'
+      + '<div style="flex:1;border-top:1px solid #333;padding-top:.3em;font-size:8pt;color:#666;">Ort, Datum, Unterschrift Auftragnehmer</div>'
+      + '</div>';
+
+    return html;
+  }
+
+  // ── Init (once) ──────────────────────────────────────────────────
+  function initF52() {
+    if (f52InitDone) return;
+    f52InitDone = true;
+
+    // Set today as default for ErstelltAm
+    var ed = g('f52ErstelltAm');
+    if (ed && !ed.value) ed.value = todayIso();
+
+    // Berichtsanlass toggle
+    document.querySelectorAll('input[name="f52Berichtsanlass"]').forEach(function(r) {
+      r.addEventListener('change', function() {
+        var v = r.value;
+        var abbruchDetails = g('f52AbbruchDetails');
+        var abschnittC = g('f52AbschnittC');
+        if (abbruchDetails) abbruchDetails.style.display = (v === 'abbruch') ? 'block' : 'none';
+        if (abschnittC) abschnittC.style.display = (v === 'nichtantritt') ? 'none' : 'block';
+      });
+    });
+
+    // Ergebnis toggle Begründung
+    document.querySelectorAll('input[name="f52Ergebnis"]').forEach(function(r) {
+      r.addEventListener('change', function() {
+        var b = g('f52BegruendungBlock');
+        if (b) b.style.display = (r.value === 'nicht_erreicht') ? 'block' : 'none';
+      });
+    });
+
+    // Arbeitgeber toggle
+    document.querySelectorAll('input[name="f52Arbeitgeber"]').forEach(function(r) {
+      r.addEventListener('change', function() {
+        var t = g('f52ArbeitgeberTabelle');
+        if (t) t.style.display = (r.value === 'ja') ? 'block' : 'none';
+        if (r.value === 'ja') {
+          var tbody = g('f52AgTableBody');
+          if (tbody && tbody.children.length === 0) tbody.appendChild(createAgRow());
+        }
+      });
+    });
+
+    // Fehlzeiten toggle
+    document.querySelectorAll('input[name="f52Fehlzeiten"]').forEach(function(r) {
+      r.addEventListener('change', function() {
+        var d = g('f52FehlzeitenDetails');
+        if (d) d.style.display = (r.value === 'ja') ? 'block' : 'none';
+      });
+    });
+
+    // Arbeitgeber Zeile hinzufügen
+    var btnAg = g('btnF52AgZeile');
+    if (btnAg) btnAg.addEventListener('click', function() {
+      g('f52AgTableBody').appendChild(createAgRow());
+    });
+
+    // Entwurf
+    var btnEntwurf = g('btnF52Entwurf');
+    if (btnEntwurf) btnEntwurf.addEventListener('click', function() {
+      savedF52 = collectF52();
+      savedF52.entwurf = true;
+      updateF52Card();
+      var badge = g('btnF52Entwurf');
+      if (badge) {
+        var t = new Date().toLocaleTimeString('de-DE', {hour:'2-digit', minute:'2-digit'});
+        badge.innerHTML = '<i class="bi bi-check me-1"></i> Entwurf ' + t;
+        setTimeout(function() {
+          badge.innerHTML = '<i class="bi bi-floppy me-1"></i> Entwurf speichern';
+        }, 2500);
+      }
+    });
+
+    // Speichern
+    var _f52Saving = false;
+    var btnSave = g('btnF52Speichern');
+    if (btnSave) btnSave.addEventListener('click', function() {
+      if (_f52Saving) return;
+      if (!document.querySelector('input[name="f52Berichtsanlass"]:checked')) {
+        alert('Bitte einen Berichtsanlass auswählen.');
+        return;
+      }
+      _f52Saving = true;
+      savedF52 = collectF52();
+      savedF52.entwurf = false;
+      updateF52Card();
+      var m = bootstrap.Modal.getInstance(g('modalF52Vollbild'));
+      if (m) m.hide();
+      setTimeout(function() {
+        alert('F.5.2 gespeichert.');
+        _f52Saving = false;
+      }, 400);
+    });
+
+    // Vorschau (im modal)
+    var btnVorschau2 = g('btnF52Vorschau2');
+    if (btnVorschau2) btnVorschau2.addEventListener('click', function() {
+      var d = collectF52();
+      _currentF52Preview = d;
+      var anonymCb = g('f52AnonymCheckbox');
+      if (anonymCb) anonymCb.checked = false;
+      var paper = g('f52PreviewPaper');
+      if (paper) paper.innerHTML = buildF52Preview(d, false);
+      var modal = bootstrap.Modal.getInstance(g('modalF52Vollbild'));
+      if (modal) modal.hide();
+      setTimeout(function() {
+        var ov = g('f52PreviewOverlay');
+        if (ov) { ov.style.display = 'block'; ov.scrollTop = 0; }
+      }, 350);
+    });
+
+    // Vorschau (from card)
+    var btnVorschauCard = g('btnF52Vorschau');
+    if (btnVorschauCard) btnVorschauCard.addEventListener('click', function() {
+      if (!savedF52) return;
+      _currentF52Preview = savedF52;
+      var anonymCb = g('f52AnonymCheckbox');
+      if (anonymCb) anonymCb.checked = false;
+      var paper = g('f52PreviewPaper');
+      if (paper) paper.innerHTML = buildF52Preview(savedF52, false);
+      var ov = g('f52PreviewOverlay');
+      if (ov) { ov.style.display = 'block'; ov.scrollTop = 0; }
+    });
+
+    // Close preview
+    var btnClose = g('btnF52ClosePreview');
+    if (btnClose) btnClose.addEventListener('click', function() {
+      var ov = g('f52PreviewOverlay');
+      if (ov) ov.style.display = 'none';
+    });
+
+    // Anonymize toggle
+    var anonymCb = g('f52AnonymCheckbox');
+    if (anonymCb) anonymCb.addEventListener('change', function() {
+      var d = _currentF52Preview;
+      if (!d) return;
+      var paper = g('f52PreviewPaper');
+      if (paper) paper.innerHTML = buildF52Preview(d, anonymCb.checked);
+    });
+  }
+
+  function updateF52Card() {
+    if (!savedF52) return;
+    var statusBadge = g('f52StatusBadge');
+    var statusText = g('f52StatusText');
+    var btnVorschau = g('btnF52Vorschau');
+    if (statusBadge) statusBadge.style.display = 'block';
+    if (statusText) {
+      var anlassMap = {nichtantritt:'Nichtantritt', abbruch:'Abbruch', abschluss:'Abschluss'};
+      var anlass = anlassMap[savedF52.berichtsanlass] || 'Erstellt';
+      statusText.textContent = (savedF52.entwurf ? 'Entwurf' : '✓ Gespeichert') + ' – ' + anlass + ' – ' + fmtDate(savedF52.erstelltAm);
+      statusBadge.className = 'mb-2';
+    }
+    if (btnVorschau) btnVorschau.style.display = 'inline-block';
+  }
+
+  // Wire "Bericht erstellen" button on card + modal open
+  document.addEventListener('DOMContentLoaded', function() {
+    var btnErstellen = g('btnF52Erstellen');
+    if (btnErstellen) btnErstellen.addEventListener('click', function() {
+      var m = bootstrap.Modal.getOrCreateInstance(g('modalF52Vollbild'));
+      m.show();
+    });
+    var modalEl = g('modalF52Vollbild');
+    if (modalEl) {
+      modalEl.addEventListener('shown.bs.modal', function() {
+        initF52();
+      });
+    }
+  });
+
+})();
+</script>
 
 
                 
